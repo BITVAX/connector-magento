@@ -226,7 +226,7 @@ class MagentoImporter(AbstractComponent):
         else:
             record = self._create_data(map_record,**kwargs)
             binding = self._create(record, **kwargs)
-        if binding.external_id!=self.external_id:
+        if binding.external_id and binding.external_id!=self.external_id:
             self.external_id = binding.external_id
 
         self.binder.bind(self.external_id, binding)
