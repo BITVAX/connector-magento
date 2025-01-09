@@ -60,6 +60,7 @@
                         <field name="updated_at" readonly="1"/>
                         <field name="product_type"/>
                         <field name="attribute_set_id"/>
+                        <field name="website_ids" widget="many2many_tags"/>
                     </group>
                     <notebook>
                         <page name="product_links" string="Products Links"
