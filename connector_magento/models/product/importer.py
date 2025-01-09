@@ -282,7 +282,7 @@ class ProductImportMapper(Component):
         https://github.com/magento/magento2/issues/3864 """
         website_ids = []
         binder = self.binder_for('magento.website')
-        for mag_website_id in record.get('websites', []):
+        for mag_website_id in record.get('extension_attributes',{}).get('website_ids', []):
             website_binding = binder.to_internal(mag_website_id)
             website_ids.append((4, website_binding.id))
         return {'website_ids': website_ids}
