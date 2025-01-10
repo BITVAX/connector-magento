@@ -55,7 +55,7 @@ class MagentoProductProduct(models.Model):
     # XXX website_ids can be computed from categories
     website_ids = fields.Many2many(comodel_name='magento.website',
                                    string='Websites',
-                                   readonly=True)
+                                   )
     created_at = fields.Datetime('Created At (on Magento)')
     updated_at = fields.Datetime('Updated At (on Magento)')
     product_type = fields.Selection(selection='product_type_get',
