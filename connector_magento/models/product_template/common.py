@@ -165,6 +165,11 @@ class ProductTemplate(models.Model):
         string='Public Categories',
     )
 
+    website_ids = fields.Many2many(
+        comodel_name='magento.website',
+        string='Magento Websites',
+    )
+
     @api.depends('job_ids', 'job_ids.state')
     def _compute_job_counts(self):
         for template in self.sudo():

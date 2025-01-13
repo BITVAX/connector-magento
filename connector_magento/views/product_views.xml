@@ -11,6 +11,7 @@
             </page>
             <field name="categ_id" position="after">
                 <field name="product_category_public_ids" widget="many2many_tags"/>
+                <field name="website_ids" widget="many2many_tags"/>
             </field>
             <page name="connector" position="inside">
                 <group string="Magento Bindings" col="6">

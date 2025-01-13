@@ -53,9 +53,9 @@ class MagentoProductProduct(models.Model):
             'product SKU) which is used in the Magento2 REST API, as well as '
             'the Magento internal id as used in the admin URL.'))
     # XXX website_ids can be computed from categories
-    website_ids = fields.Many2many(comodel_name='magento.website',
-                                   string='Websites',
-                                   )
+    # website_ids = fields.Many2many(comodel_name='magento.website',
+    #                                string='Websites',
+    #                                )
     created_at = fields.Datetime('Created At (on Magento)')
     updated_at = fields.Datetime('Updated At (on Magento)')
     product_type = fields.Selection(selection='product_type_get',
@@ -237,8 +237,6 @@ class ProductProduct(models.Model):
         inverse_name='odoo_id',
         string='Magento Bindings',
     )
-
-
 
 class ProductProductAdapter(Component):
     _name = 'magento.product.product.adapter'
