@@ -399,6 +399,8 @@ class ProductProductExportMapper(Component):
                 media_gallery_entries.append({
                     "media_type": "image",
                     "label": image.name or record.name,
+                    "position": image_count,
+                    "disabled": False,
                     "types": [
                         "image",
                         "small_image",
