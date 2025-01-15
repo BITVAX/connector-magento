@@ -344,7 +344,7 @@ class ProductProductExportMapper(Component):
 
     @mapping
     def status(self, record):
-        return {'status': '2' if not record.active else record.magento_status}
+        return {'status': record.magento_status}
 
     mime_to_extension = {
         'image/jpeg': 'jpg',

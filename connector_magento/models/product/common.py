@@ -100,7 +100,6 @@ class MagentoProductProduct(models.Model):
     magento_status = fields.Selection([
         ('2', 'Disabled'),
         ('1', 'Enabled'),
-        ('0', 'Unknown'),
     ], default='1', string="Status")
 
     magento_visibility = fields.Selection([
