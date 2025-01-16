@@ -392,6 +392,8 @@ class ProductProductExportMapper(Component):
             mime = magic.Magic(mime=True)
             image_count=0
             for image in record.image_ids:
+                if not image.image_1920:
+                    continue
                 mimetype = mime.from_buffer(base64.b64decode(image.image_1920))
                 extension = self.mime_to_extension.get(mimetype, 'jpg')
                 filename = f"{slugify(image.name or record.default_code)}_{record.id}_{image_count}.{extension}"
