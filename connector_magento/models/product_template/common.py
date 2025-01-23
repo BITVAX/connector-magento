@@ -162,14 +162,28 @@ class ProductTemplate(models.Model):
     product_category_public_ids = fields.Many2many(
         comodel_name='product.category.public',
         relation='product_category_public_rel',
-        string='Public Categories',
+        string='Public Categories'
     )
 
     website_ids = fields.Many2many(
         comodel_name='magento.website',
         string='Magento Websites',
     )
+    root_category_ids = fields.Many2many(
+        comodel_name='product.category.public',
+        string='Root Categories',
+        compute='_compute_root_category_ids',
+        invisible=True,
+    )
 
+    @api.depends('website_ids')
+    def _compute_root_category_ids(self):
+        for rec in self:
+            rec.root_category_ids = rec.website_ids.mapped('root_category_id.odoo_id')
+            if not rec.root_category_ids:
+                rec.root_category_ids = self.env['product.category.public'].search([('parent_id', '=', False)])
+
+    @api.depends('product_variant_ids', 'product_variant_ids.magento_bind_ids')
     @api.depends('job_ids', 'job_ids.state')
     def _compute_job_counts(self):
         for template in self.sudo():

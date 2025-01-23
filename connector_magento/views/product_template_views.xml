@@ -9,7 +9,8 @@
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
                 <field name="categ_id" position="after">
-                    <field name="product_category_public_ids" widget="many2many_tags"/>
+                    <field name="root_category_ids" />
+                    <field name="product_category_public_ids" widget="many2many_tags" domain="[('id','child_of',root_category_ids)]"/>
                     <field name="website_ids" widget="many2many_tags"/>
                 </field>
                 <notebook position="inside">

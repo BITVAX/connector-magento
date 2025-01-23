@@ -231,6 +231,7 @@
                         <field name="backend_id" readonly="1"/>
                         <field name="code"/>
                         <field name="sort_order"/>
+                        <field name="root_category_id"/>
                     </group>
                     <group string="Options" name="options">
                         <field name="account_analytic_id" groups="analytic.group_analytic_accounting"
