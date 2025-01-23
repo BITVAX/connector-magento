@@ -183,7 +183,6 @@ class ProductTemplate(models.Model):
             if not rec.root_category_ids:
                 rec.root_category_ids = self.env['product.category.public'].search([('parent_id', '=', False)])
 
-    @api.depends('product_variant_ids', 'product_variant_ids.magento_bind_ids')
     @api.depends('job_ids', 'job_ids.state')
     def _compute_job_counts(self):
         for template in self.sudo():
