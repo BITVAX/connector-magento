@@ -62,6 +62,8 @@
                         <field name="product_type"/>
                         <field name="attribute_set_id"/>
                         <field name="website_ids" widget="many2many_tags"/>
+                        <field name="magento_status"/>
+                        <field name="magento_visibility"/>
                     </group>
                     <notebook>
                         <page name="product_links" string="Products Links"

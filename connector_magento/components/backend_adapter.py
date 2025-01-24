@@ -1,16 +1,17 @@
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import socket
 import logging
-import requests
-from urllib.parse import quote_plus
+import socket
 import xmlrpc.client
+from datetime import datetime
+from urllib.parse import quote_plus
+
+import requests
 
 from odoo.addons.component.core import AbstractComponent
+from odoo.addons.connector.exception import NetworkRetryableError, JobError
 from odoo.addons.queue_job.exception import RetryableJobError
-from odoo.addons.connector.exception import NetworkRetryableError
-from datetime import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -79,6 +80,10 @@ class Magento2Client(object):
         elif arguments is not None:
             kwargs['json'] = arguments
         res = function(url, **kwargs)
+        if res.status_code == 400:
+            if 'message' in res.json():
+                raise JobError(res.json()['message'])
+            raise JobError(res.text)
         res.raise_for_status()
         return res.json()
 
@@ -142,9 +147,10 @@ class MagentoAPI(object):
                 result = self.api_call(
                     method, arguments, http_method=http_method,
                     storeview=storeview)
-            except Exception:
+            except Exception as e:
                 _logger.error("api.call('%s', %s) failed", method, arguments)
-                raise
+                # _logger.exception(e)
+                raise e
             else:
                 _logger.debug("api.call('%s', %s) returned %s in %s seconds",
                               method, arguments, result,

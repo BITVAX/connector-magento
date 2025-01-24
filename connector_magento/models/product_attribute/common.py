@@ -110,6 +110,16 @@ class ProductAttribute(models.Model):
         string='Magento Bindings',
     )
 
+    is_user_visible = fields.Boolean( string='Invisible',
+                                compute='_compute_is_user_visible',
+                                store=True)
+
+    @api.depends('magento_bind_ids.exclude', 'magento_bind_ids.is_user_defined', 'create_variant')
+    def _compute_is_user_visible(self):
+        for record in self:
+            record.is_user_visible = not ((any([x.exclude for x in record.magento_bind_ids])
+                                or not record.create_variant=='always'
+                                or any([not x.is_user_defined for x in record.magento_bind_ids])))
 
 class ProductAttributeAdapter(Component):
     _name = 'magento.product.attribute.adapter'
