@@ -110,7 +110,7 @@ class ProductAttribute(models.Model):
         string='Magento Bindings',
     )
 
-    is_user_visible = fields.Boolean( string='Invisible',
+    is_user_visible = fields.Boolean( string='User Visible',
                                 compute='_compute_is_user_visible',
                                 store=True)
 
