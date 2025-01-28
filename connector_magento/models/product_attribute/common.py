@@ -1,9 +1,9 @@
 import logging
+
 from odoo import models, fields, api
 from odoo.addons.component.core import Component
 # from odoo.addons.queue_job.job import job, related_action, identity_exact
 from odoo.addons.queue_job.job import identity_exact
-
 
 _logger = logging.getLogger(__name__)
 
@@ -24,8 +24,8 @@ class MagentoProductAttribute(models.Model):
     #     string='Magento product attribute value'
     # )
     field_id = fields.Many2one(comodel_name='ir.model.fields',
-                                      string="Odoo Field",
-                                      domain=[('model', 'ilike', 'product.template')])
+                               string="Odoo Field",
+                               domain=[('model', 'ilike', 'product.template')])
 
     attribute_id = fields.Integer(string='Magento Attribute ID')
     attribute_code = fields.Char(string='Magento Attribute Attribute Code')
@@ -110,16 +110,17 @@ class ProductAttribute(models.Model):
         string='Magento Bindings',
     )
 
-    is_user_visible = fields.Boolean( string='User Visible',
-                                compute='_compute_is_user_visible',
-                                store=True)
+    is_user_visible = fields.Boolean(string='User Visible',
+                                     compute='_compute_is_user_visible',
+                                     store=True)
 
     @api.depends('magento_bind_ids.exclude', 'magento_bind_ids.is_user_defined', 'create_variant')
     def _compute_is_user_visible(self):
         for record in self:
             record.is_user_visible = not ((any([x.exclude for x in record.magento_bind_ids])
-                                or not record.create_variant=='always'
-                                or any([not x.is_user_defined for x in record.magento_bind_ids])))
+                                           or not record.create_variant == 'always'
+                                           or any([not x.is_user_defined for x in record.magento_bind_ids])))
+
 
 class ProductAttributeAdapter(Component):
     _name = 'magento.product.attribute.adapter'
@@ -131,8 +132,7 @@ class ProductAttributeAdapter(Component):
     _magento2_key = 'attribute_id'
     _magento2_name = 'attribute'
 
-
-    def read(self, id,  attributes=None,storeview=None, **kwargs):
+    def read(self, id, attributes=None, storeview=None, **kwargs):
         """ Returns the information of a record
         :rtype: dict
         """
@@ -142,7 +142,7 @@ class ProductAttributeAdapter(Component):
             res = super(ProductAttributeAdapter, self).read(
                 id, attributes=attributes, storeview='all', **kwargs)
             return res
-        return super(ProductAttributeAdapter, self).read(id, attributes=None,storeview=None, **kwargs )
+        return super(ProductAttributeAdapter, self).read(id, attributes=None, storeview=None, **kwargs)
 
     def _get_id_from_create(self, result, data=None):
         # We do need the complete result after the create function - to work on the options...
