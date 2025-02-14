@@ -38,9 +38,9 @@ class AttributeImporter(Component):
         )
         # Do import attribute values here
         _logger.info("Got %s Attribute Record Options", len(record['options']))
-        if len(record['options']) > 200:
-            _logger.error('We do not import such big option arrays')
-            return
+        # if len(record['options']) > 200:
+        #     _logger.error('We do not import such big option arrays')
+        #     return
         for i in range(len(record['options'])):
             _logger.info("Do work on option %s", i)
             value = record['options'][i]

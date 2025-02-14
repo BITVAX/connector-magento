@@ -3,16 +3,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+
 from odoo import api, models, fields
 from odoo.addons.component.core import Component
+from odoo.addons.queue_job.job import identity_exact
 # from odoo.addons.queue_job.job import job, related_action
 from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
-import urllib.request, urllib.parse, urllib.error
-import odoo.addons.decimal_precision as dp
-from urllib.parse import urljoin
-from odoo.addons.queue_job.job import identity_exact
-from odoo.models import NewId
-
 
 _logger = logging.getLogger(__name__)
 
@@ -39,7 +35,7 @@ class MagentoProductTemplate(models.Model):
             ('simple', 'Simple Product'),
             ('configurable', 'Configurable Product'),
             ('bundle', 'Bundle Product'),
-            ]
+        ]
 
     # @api.depends('backend_id', 'odoo_id')
     # def _compute_product_categories(self):
@@ -89,9 +85,9 @@ class MagentoProductTemplate(models.Model):
     created_at = fields.Datetime('Created At (on Magento)')
     updated_at = fields.Datetime('Updated At (on Magento)')
     magento_product_ids = fields.One2many(comodel_name='magento.product.product',
-                                           related='odoo_id.product_variant_ids.magento_bind_ids',
-                                           string='Variants',
-                                           readonly=True)
+                                          related='odoo_id.product_variant_ids.magento_bind_ids',
+                                          string='Variants',
+                                          readonly=True)
 
     magento_template_attribute_line_ids = fields.One2many(
         comodel_name='magento.product.template.attribute.line',
@@ -222,7 +218,6 @@ class ProductTemplate(models.Model):
         ('4', 'Catalog, Search'),
     ], default='4', string="Visibility")
 
-
     def action_view_jobs(self):
         self.ensure_one()
         action = self.env.ref('queue_job.action_queue_job').read()[0]
@@ -297,18 +292,15 @@ class ProductTemplateAdapter(Component):
         if self.work.magento_api._location.version == '2.0':
             return super(ProductTemplateAdapter, self).search(filters=filters)
         # TODO add a search entry point on the Magento API
-        return [int(row['product_id']) for row
-                in self._call('%s.list' % self._magento_model,
-                              [filters] if filters else [{}])]
+        raise NotImplementedError
 
     def list_variants(self, sku):
         if self.work.magento_api._location.version == '2.0':
             res = self._call('configurable-products/%s/children' % (self.escape(sku)), None)
             return res
-
-    def write(self, id, data, binding=None):
+        raise NotImplementedError
+    def write(self, id, data, storeview=None, **kwargs):
         """ Update records on the external system """
-        storeview_id = self.work.storeview_id if hasattr(self.work, 'storeview_id') else False
         if self.work.magento_api._location.version == '2.0':
             # Replace by the
             id = data['sku']
@@ -317,9 +309,8 @@ class ProductTemplateAdapter(Component):
                 'products/%s' % id, {
                     'product': data
                 },
-                http_method='put', storeview=storeview_code)
-        return self._call('ol_catalog_product.update',
-                          [int(id), data, storeview_id, 'id'])
+                http_method='put', storeview=storeview)
+        raise NotImplementedError
 
     # def get_images(self, id, storeview_id=None, data=None):
     #     if self.work.magento_api._location.version == '2.0':
@@ -335,16 +326,14 @@ class ProductTemplateAdapter(Component):
     #         raise NotImplementedError  # TODO
     #     return self._call('product_media.info',
     #                       [int(id), image_name, storeview_id, 'id'])
-    def read(self, external_id, attributes=None,storeview=None, **kwargs):
+    def read(self, external_id, attributes=None, storeview=None, **kwargs):
         """ Returns the information of a record
 
         :rtype: dict
         """
         # pylint: disable=method-required-super
         if self.collection.version == '1.7':
-            return self._call(
-                'ol_catalog_product.info',
-                [int(external_id), storeview, attributes, 'id'])
+            raise NotImplementedError
         res = super(ProductTemplateAdapter, self).read(
             external_id, attributes=attributes, storeview=storeview)
         if res:

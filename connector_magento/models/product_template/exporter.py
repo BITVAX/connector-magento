@@ -342,7 +342,7 @@ class ProductTemplateExportMapper(Component):
 
     def category_ids(self, record):
         c_ids = []
-        c_ids.append(record.categ_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id).external_id)
+        c_ids.append(record.product_category_public_ids.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id).external_id)
         for c in record.categ_ids:
             c_ids.append(c.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id).external_id)
         return {

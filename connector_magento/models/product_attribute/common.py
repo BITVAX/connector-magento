@@ -45,6 +45,7 @@ class MagentoProductAttribute(models.Model):
         ('gallery', 'Gallery'),
         ('weee', 'Fixed Product Tax'),
         ('image', 'Image'),
+        ('hidden', 'Hidden'),
         ('None', 'None'),
     ], 'Frontend Input', default='select'
     )
