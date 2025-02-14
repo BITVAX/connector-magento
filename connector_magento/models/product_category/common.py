@@ -47,7 +47,7 @@ class ProductCategoryPublic(models.Model):
     @api.depends('name', 'parent_id.name')
     def _compute_display_name(self):
         for category in self:
-            category.display_name = self.name_get()[0][1]
+            category.display_name = category.name_get()[0][1]
 
     magento_bind_ids = fields.One2many(
         comodel_name='magento.product.category',
