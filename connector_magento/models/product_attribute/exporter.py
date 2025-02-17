@@ -71,9 +71,11 @@ class ProductAttributeExporter(Component):
         return result
 
     def _update(self, data, storeview_code=None):
-        del data['attribute_group_id']
-        del data['attribute_set_id']
-        result = super(ProductAttributeExporter, self)._update(data, storeview_code)
+        if data.get('attribute_group_id'):  # we don't want to update this
+            del data['attribute_group_id']
+        if data.get('attribute_set_id'):  # we don't want to update this
+            del data['attribute_set_id']
+        result = super(ProductAttributeExporter, self)._update(data, storeview=storeview_code)
         self._update_attribute_with_result(result)
         return result
 
@@ -117,7 +119,7 @@ class ProductAttributeExportMapper(Component):
     def attribute_set_id(self, record):
         return {
             'attribute_set_id': int(record.attribute_set_ids[0].external_id),
-            'attribute_group_id': int(record.backend_id.default_attribute_group_id.external_id)
+            # 'attribute_group_id': int(record.backend_id.default_attribute_group_id.external_id)
         }
 
     @mapping
@@ -137,8 +139,8 @@ class ProductAttributeExportMapper(Component):
             map_record = mvalue_mapper.map_record(mvalue, parent=record)
             mids.append(mvalue.odoo_id.id)
             mapped.append(map_record.values())
-        if self.backend_record.export_all_options:
-            for value in record.value_ids.filtered(lambda v: v.id not in mids):
-                map_record = value_mapper.map_record(value, parent=record)
-                mapped.append(map_record.values())
+        # if self.backend_record.export_all_options:
+        #     for value in record.value_ids.filtered(lambda v: v.id not in mids):
+        #         map_record = value_mapper.map_record(value, parent=record)
+        #         mapped.append(map_record.values())
         return {'options': mapped}

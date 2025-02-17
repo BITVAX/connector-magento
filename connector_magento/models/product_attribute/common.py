@@ -18,11 +18,11 @@ class MagentoProductAttribute(models.Model):
                               string='Product attribute',
                               required=True,
                               ondelete='cascade')
-    # magento_attribute_value_ids = fields.One2many(
-    #     comodel_name='magento.product.attribute.value',
-    #     inverse_name='magento_attribute_id',
-    #     string='Magento product attribute value'
-    # )
+    magento_attribute_value_ids = fields.One2many(
+        comodel_name='magento.product.attribute.value',
+        inverse_name='magento_attribute_id',
+        string='Magento product attribute value'
+    )
     field_id = fields.Many2one(comodel_name='ir.model.fields',
                                string="Odoo Field",
                                domain=[('model', 'ilike', 'product.template')])

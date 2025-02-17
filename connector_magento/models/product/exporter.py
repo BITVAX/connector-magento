@@ -262,62 +262,6 @@ class ProductProductExporter(Component):
         self._export_attribute_values()
         return
 
-    # def _export_base_image(self):
-    #     def sort_by_position(elem):
-    #         return elem.position
-    #
-    #     if not self.binding.export_base_image or not self.binding.odoo_id.image:
-    #         # Do not export base image is set or no base image - so check if there was already base image exported - if so - delete it
-    #         for media_binding in self.binding.magento_image_bind_ids.filtered(lambda m: m.type == 'product_image'):
-    #             media_binding.unlink()
-    #         return
-    #     # We do export the base image on position 0
-    #     mbinding = None
-    #     for media_binding in sorted(self.binding.magento_image_bind_ids.filtered(lambda m: m.type == 'product_image'), key=sort_by_position):
-    #         mbinding = media_binding
-    #         break
-    #     # Create new media binding entry for main image
-    #     mime = magic.Magic(mime=True)
-    #     mimetype = mime.from_buffer(base64.b64decode(self.binding.odoo_id.image))
-    #     extension = 'png' if mimetype == 'image/png' else 'jpeg'
-    #     if 'magento.product.template' in self._apply_on:
-    #         model_key = 'magento_product_tmpl_id'
-    #     else:
-    #         model_key = 'magento_product_id'
-    #     # Find unique filename
-    #     filename = "%s.%s" % (slugify(self.binding.odoo_id.name, to_lower=True), extension)
-    #     i = 0
-    #     while self.env['magento.product.media'].search_count([
-    #         ('backend_id', '=', self.binding.backend_id.id),
-    #         ('file', '=', filename)
-    #     ]) > 0:
-    #         filename = "%s-%s.%s" % (slugify(self.binding.odoo_id.name, to_lower=True), i, extension)
-    #         i += 1
-    #     if not mbinding:
-    #         mbinding = self.env['magento.product.media'].sudo().with_context(connector_no_export=True).create({
-    #             'backend_id': self.binding.backend_id.id,
-    #             model_key: self.binding.id,
-    #             'label': self.binding.odoo_id.name,
-    #             'file': filename,
-    #             'type': 'product_image',
-    #             'position': 0,
-    #             'mimetype': mimetype,
-    #             'image_type_image': True,
-    #             'image_type_small_image': True,
-    #             'image_type_thumbnail': True,
-    #         })
-    #     else:
-    #         mbinding.sudo().with_context(connector_no_export=True).update({
-    #             'label': self.binding.odoo_id.name,
-    #             'file': filename,
-    #             'position': 0,
-    #             'mimetype': mimetype,
-    #             'image_type_image': True,
-    #             'image_type_small_image': True,
-    #             'image_type_thumbnail': True,
-    #         })
-    #     self._export_dependency(mbinding.sudo(), "magento.product.media", force_update=True)
-
     def _export_stock(self):
         for stock_item in self.binding.magento_stock_item_ids:
             stock_item.sync_to_magento()
