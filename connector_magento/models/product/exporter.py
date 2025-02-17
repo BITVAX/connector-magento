@@ -464,10 +464,10 @@ class ProductProductExportMapper(Component):
                     })
             if record.attribute_set_id:
                 for matt_id in record.attribute_set_id.attribute_ids.filtered(lambda a: a.field_id):
-                    if record[matt_id.field_id.name]:
+                    if record[matt_id.field_id.sudo().name]:
                         custom_attributes.append({
                             'attribute_code': matt_id.attribute_code,
-                            'value': record[matt_id.field_id.name]
+                            'value': record[matt_id.field_id.sudo().name]
                         })
             custom_attributes.append(self.category_ids(record))
             _logger.info("Do use custom attributes: %r", custom_attributes)
