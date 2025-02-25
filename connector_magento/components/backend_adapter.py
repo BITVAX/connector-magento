@@ -364,12 +364,12 @@ class GenericAdapter(AbstractComponent):
                     self._magento2_model % kwargs,
                     {self._magento2_name: data,
                      'saveOptions': True}, http_method='post')
-                if isinstance(new_object, dict):
-                    data.update(new_object)
             else:
                 new_object = self._call(
                     self._magento2_model % kwargs,
                     data, http_method='post')
+            if isinstance(new_object, dict):
+                data.update(new_object)
             return self._get_id_from_create(new_object, data)
         return self._call('%s.create' % self._magento_model, [data])
 
