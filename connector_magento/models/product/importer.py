@@ -562,17 +562,18 @@ class ProductImporter(Component):
         if ptav_ids:
             binding.write({'product_template_attribute_value_ids': [(6, 0, ptav_ids)]})
 
-    def _after_import(self, binding):
+    def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
-        self._after_import_attributes(binding)
-        translation_importer = self.component(
-            usage='translation.importer',
-        )
-        translation_importer.run(
-            self.external_id,
-            binding,
-            mapper='magento.product.product.import.mapper'
-        )
+        if not 'binding_template_id' in kwargs:
+            self._after_import_attributes(binding)
+        # translation_importer = self.component(
+        #     usage='translation.importer',
+        # )
+        # translation_importer.run(
+        #     self.external_id,
+        #     binding,
+        #     mapper='magento.product.product.import.mapper'
+        # )
         image_importer = self.component(usage='product.image.importer')
         image_importer.run(self.external_id, binding, data=self.magento_record)
 

@@ -66,7 +66,7 @@ class MagentoProductTemplate(models.Model):
     odoo_id = fields.Many2one(comodel_name='product.template',
                               string='Product Template',
                               required=True,
-                              ondelete='restrict')
+                              ondelete='cascade')
     website_ids = fields.Many2many(comodel_name='magento.website',
                                    string='Websites',
                                    readonly=False)
@@ -197,7 +197,7 @@ class ProductTemplate(models.Model):
     )
     magento_variant_bind_ids = fields.One2many(
         comodel_name='magento.product.product',
-        related='product_variant_ids.magento_bind_ids',
+        compute="_compute_magento_variant_bind_ids",
         string='Magento Variant Bindings',
     )
     auto_create_variants = fields.Boolean('Auto Create Variants', default=True)
@@ -217,6 +217,10 @@ class ProductTemplate(models.Model):
         ('3', 'Search'),
         ('4', 'Catalog, Search'),
     ], default='4', string="Visibility")
+
+    def _compute_magento_variant_bind_ids(self):
+        for rec in self:
+            rec.magento_variant_bind_ids = rec.product_variant_ids.mapped('magento_bind_ids')
 
     def action_view_jobs(self):
         self.ensure_one()

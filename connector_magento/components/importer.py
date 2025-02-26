@@ -231,7 +231,7 @@ class MagentoImporter(AbstractComponent):
 
         self.binder.bind(self.external_id, binding)
 
-        self._after_import(binding)
+        self._after_import(binding, **kwargs)
 
     def _preprocess_magento_record(self):
         """ Hook after we got magento record """

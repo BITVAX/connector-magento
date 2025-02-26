@@ -138,8 +138,8 @@ class ProductTemplateImporter(Component):
         # self._import_category_positions(binding)
         # Do import stock item
         # self._import_stock(binding)
-        if self.backend_record.product_synchro_strategy == 'odoo_first':
-            return
+        # if self.backend_record.product_synchro_strategy == 'odoo_first':
+        #     return
         # Import Images
         # media_importer = self.component(usage='product.media.importer', model_name='magento.product.media')
         # for media in self.magento_record['media_gallery_entries']:
@@ -158,7 +158,7 @@ class ProductTemplateImporter(Component):
                 price = magento_variant['price']
             # Search by sku - because this is also what is available in the mapper !
             variant = variant_binder.to_internal(magento_variant['sku'], unwrap=False)
-            # Import / Update the variant here
+            # Import / Update t                                                                                                                                                                         he variant here
             if not variant:
                 # Pass product_template_id in arguments - so the product mapper will map it
                 self._import_dependency(magento_variant['sku'], 'magento.product.product', always=True,
@@ -178,14 +178,14 @@ class ProductTemplateImporter(Component):
             templates_delete[template_delete].unlink()
         # self._update_price(binding, price)
         # Do also import translations
-        translation_importer = self.component(
-            usage='translation.importer',
-        )
-        translation_importer.run(
-            self.external_id,
-            binding,
-            mapper='magento.product.template.import.mapper'
-        )
+        # translation_importer = self.component(
+        #     usage='translation.importer',
+        # )
+        # translation_importer.run(
+        #     self.external_id,
+        #     binding,
+        #     mapper='magento.product.template.import.mapper'
+        # )
 
 
     def _import_stock(self, binding):
