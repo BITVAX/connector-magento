@@ -49,7 +49,7 @@ class CatalogImageImporter(Component):
     """
     _name = 'magento.product.image.importer'
     _inherit = 'magento.importer'
-    _apply_on = ['magento.product.product']
+    _apply_on = ['magento.product.product','magento.product.template']
     _usage = 'product.image.importer'
 
     def _get_images(self, storeview_id=None, data=None):
@@ -425,7 +425,7 @@ class ProductImporter(Component):
                 self._import_dependency(dependency['sku'],
                                         'magento.product.product')
 
-    def _import_dependencies(self):
+    def _import_dependencies(self, **kwargs):
         """ Import the dependencies for the record"""
         record = self.magento_record
         # import related categories

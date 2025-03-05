@@ -134,6 +134,9 @@ class ProductTemplateImporter(Component):
         def sort_by_position(elem):
             return elem.position
 
+        image_importer = self.component(usage='product.image.importer')
+        image_importer.run(self.external_id, binding, data=self.magento_record)
+
         # Import Category positions
         # self._import_category_positions(binding)
         # Do import stock item
@@ -236,7 +239,7 @@ class ProductTemplateImporter(Component):
                 _logger.info("import cat link: %s", category_link)
                 self._import_dependency(category_link['category_id'], 'magento.product.category')
 
-    def _import_dependencies(self):
+    def _import_dependencies(self, **kwargs):
         record = self.magento_record
         # Import attribute deps
         for attribute in record.get('custom_attributes'):

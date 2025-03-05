@@ -298,6 +298,26 @@ class ProductTemplateAdapter(Component):
         # TODO add a search entry point on the Magento API
         raise NotImplementedError
 
+    def get_images(self, dummy, storeview_id=None, data=None):
+        """ Fetch image metadata either by querying Magento 1.x, or extracting
+        it from the product data for Magento 2.x """
+        res = []
+        # Fetch base media url from storeview
+        storeview = (
+            self.env['magento.storeview'].browse(storeview_id) if storeview_id
+            else self.env['magento.storeview'].search(
+                [('backend_id', '=', self.collection.id),
+                 ('code', '=', 'default')]))
+        base_url = (storeview.base_media_url or
+                    '%s/media/' % self.backend_record.location)
+
+        for entry in data.get('media_gallery_entries', []):
+            if entry['media_type'] == 'image':
+                entry['url'] = '%scatalog/product/%s' % (
+                    base_url, entry['file'])
+                res.append(entry)
+        return res
+
     def list_variants(self, sku):
         if self.work.magento_api._location.version == '2.0':
             res = self._call('configurable-products/%s/children' % (self.escape(sku)), None)

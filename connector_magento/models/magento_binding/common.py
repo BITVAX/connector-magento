@@ -48,40 +48,40 @@ class MagentoBinding(models.AbstractModel):
 
     # @job(default_channel='root.magento')
     @api.model
-    def import_batch(self, backend, filters=None):
+    def import_batch(self, backend, filters=None, **kwargs ):
         """ Prepare the import of records modified on Magento """
         if filters is None:
             filters = {}
         with backend.work_on(self._name) as work:
             importer = work.component(usage='batch.importer')
-            return importer.run(filters=filters)
+            return importer.run(filters=filters, **kwargs)
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_magento_link')
     @api.model
-    def import_record(self, backend, external_id, force=False):
+    def import_record(self, backend, external_id, force=False, **kwargs):
         """ Import a Magento record """
         with backend.with_env(self.env).work_on(self._name) as work:
             importer = work.component(usage='record.importer')
-            return importer.run(external_id, force=force)
+            return importer.run(external_id, force=force, **kwargs)
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_unwrap_binding')
     # @api.multi
-    def export_record(self, fields=None):
+    def export_record(self, fields=None, **kwargs):
         """ Export a record on Magento """
         self.ensure_one()
         with self.backend_id.work_on(self._name) as work:
             exporter = work.component(usage='record.exporter')
-            return exporter.run(self, fields)
+            return exporter.run(self, fields, **kwargs)
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_magento_link')
-    def export_delete_record(self, backend, external_id):
+    def export_delete_record(self, backend, external_id, **kwargs):
         """ Delete a record on Magento """
         with backend.work_on(self._name) as work:
             deleter = work.component(usage='record.exporter.deleter')
-            return deleter.run(external_id)
+            return deleter.run(external_id, **kwargs)
 
     def sync_from_magento(self):
         for binding in self:

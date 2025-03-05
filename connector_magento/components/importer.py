@@ -100,7 +100,7 @@ class MagentoImporter(AbstractComponent):
                     binding_model._name, external_id
                 )
 
-    def _import_dependencies(self):
+    def _import_dependencies(self, **kwargs):
         """ Import the dependencies for the record
 
         Import of dependencies can be done manually or by calling
@@ -216,7 +216,7 @@ class MagentoImporter(AbstractComponent):
         self._before_import()
 
         # import the missing linked resources
-        self._import_dependencies()
+        self._import_dependencies(**kwargs)
 
         map_record = self._map_data()
 
