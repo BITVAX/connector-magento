@@ -74,7 +74,7 @@ class ProductCategoryImporter(Component):
         self.backend_record.add_checkpoint(binding)
         return binding
 
-    def _after_import(self, binding):
+    def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
         translation_importer = self.component(usage='translation.importer')
         translation_importer.run(self.external_id, binding)

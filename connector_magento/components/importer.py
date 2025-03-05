@@ -165,7 +165,7 @@ class MagentoImporter(AbstractComponent):
         _logger.debug('%d updated from magento %s', binding, self.external_id)
         return
 
-    def _after_import(self, binding):
+    def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
         return
 

@@ -503,7 +503,7 @@ class SaleOrderImporter(Component):
             binding.odoo_id._recompute_taxes()
         return binding
 
-    def _after_import(self, binding):
+    def _after_import(self, binding, **kwargs):
         self._link_parent_orders(binding)
 
     def _get_storeview(self, record):

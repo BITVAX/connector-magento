@@ -150,7 +150,7 @@ class PartnerImporter(Component):
         self._import_dependency(record['group_id'],
                                 'magento.res.partner.category')
 
-    def _after_import(self, partner_binding):
+    def _after_import(self, partner_binding, **kwargs):
         """ Import the addresses """
         book = self.component(usage='address.book',
                               model_name='magento.address')
