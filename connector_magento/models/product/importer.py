@@ -233,9 +233,9 @@ class ProductImportMapper(Component):
 
     @mapping
     def type(self, record):
-        if record['type_id'] in ('simple', 'grouped'):
+        if record['type_id'] in ('simple'):
             return {'detailed_type': 'product'}
-        elif record['type_id'] in ('virtual', 'downloadable', 'giftcard'):
+        elif record['type_id'] in ('virtual', 'downloadable', 'giftcard','grouped'):
             return {'detailed_type': 'service'}
         return
 
