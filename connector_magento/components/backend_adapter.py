@@ -395,14 +395,8 @@ class GenericAdapter(AbstractComponent):
         if self.collection.version == '1.7':
             return self._call('%s.delete' % self._magento_model,
                               [int(external_id)])
-        try:
-            res = self._call('%s/%s' % (self._magento2_model, self.escape(external_id)) , None, http_method="delete")
-            _logger.info("Record %s deleted on Magento", id)
-        except Exception as e:
-            if e.response.status_code == 404:
-                _logger.info("Record %s already deleted", id)
-                return True
-            raise
+        res = self._call('%s/%s' % (self._magento2_model, self.escape(external_id)) , None, http_method="delete")
+        _logger.info("Record %s deleted on Magento", id)
         return res
 
     def admin_url(self, external_id):
