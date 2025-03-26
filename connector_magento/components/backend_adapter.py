@@ -10,7 +10,7 @@ from urllib.parse import quote_plus
 import requests
 
 from odoo.addons.component.core import AbstractComponent
-from odoo.addons.connector.exception import NetworkRetryableError, JobError
+from odoo.addons.connector.exception import NetworkRetryableError, JobError, IDMissingInBackend
 from odoo.addons.queue_job.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
@@ -80,10 +80,14 @@ class Magento2Client(object):
         elif arguments is not None:
             kwargs['json'] = arguments
         res = function(url, **kwargs)
-        if res.status_code == 400:
+        if res.status_code != 200:
             if 'message' in res.json():
-                raise JobError(res.json()['message'])
-            raise JobError(res.text)
+                message=res.json()['message']
+            else:
+                message=res.text
+            if res.status_code == 404:
+                raise IDMissingInBackend(message)
+            raise JobError(message)
         res.raise_for_status()
         return res.json()
 

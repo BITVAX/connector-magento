@@ -201,7 +201,8 @@ class MagentoExporter(AbstractComponent):
                            component_usage='record.exporter',
                            binding_field='magento_bind_ids',
                            binding_extra_vals=None,
-                           force_update=False):
+                           force_update=False,
+                           **kwargs):
         """
         Export a dependency. The exporter class is a subclass of
         ``MagentoExporter``. If a more precise class need to be defined,
@@ -289,7 +290,7 @@ class MagentoExporter(AbstractComponent):
         if not rel_binder.to_external(binding) or force_update:
             exporter = self.component(usage=component_usage,
                                       model_name=binding_model)
-            exporter.run(binding)
+            exporter.run(binding, **kwargs)
 
     def _get_binding(self, model, _id):
         return self.env[model].search([
@@ -297,7 +298,7 @@ class MagentoExporter(AbstractComponent):
             ('backend_id', '=', self.backend_record.id)
         ])
 
-    def _export_dependencies(self):
+    def _export_dependencies(self, **kwargs):
         """ Export the dependencies for the record"""
         return
 
@@ -360,7 +361,7 @@ class MagentoExporter(AbstractComponent):
             return
 
         # export the missing linked resources
-        self._export_dependencies()
+        self._export_dependencies(**kwargs)
 
         # prevent other jobs to export the same record
         # will be released on commit (or rollback)
