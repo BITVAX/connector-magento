@@ -59,6 +59,12 @@ class ProductAttributeExporter(Component):
                         'code': tools.ustr(option['value'])
                     })
 
+    def _export_dependencies(self):
+        # Here we do export the attribute values
+        for value in self.binding.magento_attribute_value_ids:
+            self._export_dependency(value, 'magento.product.attribute.value', binding_extra_vals={
+                'magento_attribute_id': self.binding.id
+            },binding_attribute=self.binding)
     '''
     We do overwrite the _create - because we need to analyze the result
     '''

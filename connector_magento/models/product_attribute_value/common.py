@@ -2,6 +2,9 @@ import logging
 from odoo import models, fields, api
 from odoo.addons.component.core import Component
 import urllib.request, urllib.parse, urllib.error
+
+from odoo.addons.queue_job.exception import JobError
+
 _logger = logging.getLogger(__name__)
 
 
@@ -75,17 +78,23 @@ class ProductAttributeValueAdapter(Component):
                 for attr in res_admin.get('custom_attributes', []):
                     res_admin[attr['attribute_code']] = attr['value']
             return res_admin
-        return super(ProductAttributeValueAdapter, self).read(id, attributes=None,storeview=None)
-
-    def _create_url(self, binding=None):
-        return '%s' % (self._magento2_model % {'attributeCode': binding.magento_attribute_id.attribute_code})
+        return super(ProductAttributeValueAdapter, self).read(id, attributes=None,storeview=None, **kwargs)
 
     def delete(self, magento_value_id, magento_attribute_id):
         """ Delete a record on the external system """
         if self.work.magento_api._location.version == '2.0':
-            res = self._call('%s/%s' % (self._magento2_model % {'attributeCode': magento_attribute_id}, self.escape(magento_value_id)), http_method="delete")
+            res = self._call('%s/%s' % (self._magento2_model % {'attribute_code': magento_attribute_id}, self.escape(magento_value_id)), http_method="delete")
             return res
         return self._call('%s.delete' % self._magento_model, [int(id)])
 
-    def _get_id_from_create(self, result, data=None):
-        return data['value']
+
+    def create(self, data, **kwargs):
+        """ Create a record on the external system """
+        if self.work.magento_api._location.version == '2.0':
+            # special check on data before export
+            if 'binding_attribute' in kwargs:
+                value = self._call(self._magento2_model % {'attribute_code': kwargs['binding_attribute'].attribute_code},{"option": data}, http_method="post")
+                return "{}_{}".format(kwargs['binding_attribute'].attribute_id,value)
+            else:
+                raise JobError('Data error: binding or attribute_code not found in kwargs')
+        raise NotImplementedError('Method not implemented for Magento version 1.x')

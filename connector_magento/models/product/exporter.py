@@ -118,29 +118,30 @@ class ProductProductExporter(Component):
         self.binding.with_context(no_connector_export=True).magento_internal_id = res
         return res
 
-    def _should_import(self):
-        """ Before the export, compare the update date
-        in Magento and the last sync date in Odoo,
-        Regarding the product_synchro_strategy Choose
-        to whether the import or the export is necessary
-        """
-        assert self.binding
-        if not self.external_id:
-            return False
-        # if self.backend_record.product_synchro_strategy == 'odoo_first':
-        #     return False
-        sync = self.binding.sync_date
-        if not sync:
-            return True
-        record = self.backend_adapter.read(self.external_id,
-                                           attributes=['updated_at'])
-        if not record['updated_at']:
-            # in rare case it can be empty, in doubt, import it0
-            return True
-        sync_date = odoo.fields.Datetime.from_string(sync)
-        magento_date = datetime.strptime(record['updated_at'],
-                                         MAGENTO_DATETIME_FORMAT)
-        return sync_date < magento_date
+    # def _should_import(self):
+    #     """ Before the export, compare the update date
+    #     in Magento and the last sync date in Odoo,
+    #     Regarding the product_synchro_strategy Choose
+    #     to whether the import or the export is necessary
+    #     """
+    #     assert self.binding
+    #     if not self.external_id:
+    #         return False
+    #     # if self.backend_record.product_synchro_strategy == 'odoo_first':
+    #     #     return False
+    #     sync = self.binding.sync_date
+    #     if not sync:
+    #         return True
+    #     record = self.backend_adapter.read(self.external_id,
+    #                                    attributes=['updated_at'])
+    #
+    #     if not record['updated_at']:
+    #         # in rare case it can be empty, in doubt, import it0
+    #         return True
+    #     sync_date = odoo.fields.Datetime.from_string(sync)
+    #     magento_date = datetime.strptime(record['updated_at'],
+    #                                      MAGENTO_DATETIME_FORMAT)
+    #     return sync_date < magento_date
 
     def _update_binding_record_after_write(self, data):
         """
@@ -222,6 +223,7 @@ class ProductProductExporter(Component):
         # Then the attribute values
         record = self.binding
         att_exporter = self.component(usage='record.exporter', model_name='magento.product.attribute')
+        mpav_exporter = self.component(usage='record.exporter', model_name='magento.product.attribute.value')
         exported_attribute_ids = []
         for att_line in record.attribute_line_ids:
             m_att_id = self._get_binding('magento.product.attribute',
@@ -252,7 +254,10 @@ class ProductProductExporter(Component):
                 # Write the values - then update the attribute
                 m_att_id.sudo().with_context(connector_no_export=True).magento_attribute_value_ids = m_att_values
                 # We only do sync if a new attribute arrived
-                att_exporter.run(m_att_id)
+                for m_att_id in exported_attribute_ids:
+                    att_exporter.run(m_att_id)
+                for mpav in m_att_id.magento_attribute_value_ids.filtered(lambda m: m.backend_id == self.backend_record and not m.sync_date):
+                    mpav_exporter.run(mpav, binding_attribute=m_att_id)
 
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
