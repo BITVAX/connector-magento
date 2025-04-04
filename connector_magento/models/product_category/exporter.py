@@ -73,7 +73,7 @@ class ProductCategoryExporter(Component):
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
         # Check parent category
-        if self.binding.parent_id and not self.binder_for('magento.product.category').to_external(record.parent_id, wrap=True):
+        if self.binding.parent_id and not self.binder_for('magento.product.category').to_external(self.binding.parent_id, wrap=True):
             self._export_dependency(self.binding.parent_id, "magento.product.category", force_update=True)
 
     def _has_to_skip(self):
