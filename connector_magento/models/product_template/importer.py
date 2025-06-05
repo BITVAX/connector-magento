@@ -161,7 +161,7 @@ class ProductTemplateImporter(Component):
                 price = magento_variant['price']
             # Search by sku - because this is also what is available in the mapper !
             variant = variant_binder.to_internal(magento_variant['sku'], unwrap=False)
-            # Import / Update t                                                                                                                                                                         he variant here
+            # Import / Update the variant here
             if not variant:
                 # Pass product_template_id in arguments - so the product mapper will map it
                 self._import_dependency(magento_variant['sku'], 'magento.product.product', always=True,
@@ -384,11 +384,79 @@ class ProductTemplateImportMapper(Component):
             [('default_code', '=', record['sku'])], limit=1)
         if template:
             return {'odoo_id': template.id}
+        return {}
 
     @mapping
     def type(self, record):
         return {'detailed_type': 'product'}
 
+    @mapping
+    def attributes(self, record):
+        attribute_binder = self.binder_for('magento.product.attribute')
+        value_binder = self.binder_for('magento.product.attribute.value')
+        data = {'attribute_line_ids': []}
+        value_ids = []
+        changes = {}
+        binding = self.options.get('binding')
+        for attribute in record['custom_attributes']:
+            mattribute = attribute_binder.to_internal(attribute['attribute_code'], unwrap=False,
+                                                      external_field='attribute_code')
+            if mattribute:
+                if mattribute.exclude:
+                    continue
+                if mattribute.field_id:
+                    data.update({mattribute.field_id.name: attribute['value']})
+                    continue
+                if mattribute.create_variant != 'no_variant' or not mattribute.is_user_defined or mattribute.frontend_input != 'select':
+                    continue
+                mvalue = value_binder.to_internal("%s_%s" % (mattribute.attribute_id, str(attribute['value'])),
+                                                  unwrap=False)
+                if not mvalue:
+                    raise MappingError("The product attribute value %s in attribute %s is not imported." %
+                                       ("%s_%s" % (mattribute.attribute_id, str(attribute['value'])), mattribute.name))
+                # Also create an attribute.line.value entrie here
+                data['attribute_line_ids'].append((0, 0, {
+                    'attribute_id': mattribute.odoo_id.id,
+                    'value_ids': [(6, 0, [mvalue.odoo_id.id])],
+                }))
+                value_ids.append(mvalue.odoo_id.id)
+        if binding:
+            # data['attribute_line_ids'] = [(5,0,0)] + data['attribute_line_ids']
+            lines = data['attribute_line_ids']
+            data['attribute_line_ids'] = []
+            if set(value_ids) != set(binding.attribute_line_ids.mapped('value_ids').ids):
+                for line in lines:
+                    odoo_value_ids = binding.attribute_line_ids.filtered(
+                        lambda l: l.attribute_id.id == line[2]['attribute_id']).mapped('value_ids').ids
+                    if set(odoo_value_ids) != set(line[2]['value_ids'][0][2]):
+                        changes[line[2]['attribute_id']] = {
+                            'old': odoo_value_ids,
+                            'new': line[2]['value_ids'][0][2],
+                            'line_id': odoo_value_ids and binding.attribute_line_ids.filtered(
+                                lambda l: l.attribute_id.id == line[2]['attribute_id']).id or False
+                        }
+                if len(changes):
+                    for key, value in changes.items():
+                        if value['line_id']:
+                            data['attribute_line_ids'].append((1, value['line_id'], {
+                                'value_ids': [(6, 0, value['new'])]
+                            }))
+                        else:
+                            data['attribute_line_ids'].append((0, 0, {
+                                'attribute_id': key,
+                                'value_ids': [(6, 0, value['new'])]
+                            }))
+
+        if self.options.get('binding_template_id') and len(value_ids):
+            if data.get('attribute_line_ids'):
+                del data['attribute_line_ids']
+            binding_template_id = self.options['binding_template_id']
+            template_id = binding_template_id.odoo_id
+            ptav_ids = template_id.mapped('attribute_line_ids.product_template_value_ids').filtered(
+                lambda x: x.product_attribute_value_id.id in value_ids)
+            data['product_template_attribute_value_ids'] = [(6, 0, ptav_ids.ids)]
+
+        return data
 
 
 class ProductTemplateUpdateWriteMapper(Component):
