@@ -391,7 +391,7 @@ class ProductTemplateImportMapper(Component):
         return {'detailed_type': 'product'}
 
     @mapping
-    def attributes(self, record):
+    def attributes_no_variant(self, record):
         attribute_binder = self.binder_for('magento.product.attribute')
         value_binder = self.binder_for('magento.product.attribute.value')
         data = {'attribute_line_ids': []}
