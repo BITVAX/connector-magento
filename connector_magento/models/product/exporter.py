@@ -231,7 +231,8 @@ class ProductProductExporter(Component):
             if not m_att_id and att_line.attribute_id.id not in exported_attribute_ids:
                 # We need to export the attribute first
                 self._export_dependency(att_line.attribute_id, "magento.product.attribute", binding_extra_vals={
-                    'create_variant': True,
+                    'attribute_set_ids' : [(4,record.attribute_set_id.id,0)] if record.attribute_set_id else False,
+                    'attribute_code': att_line.attribute_id.name.lower(),
                 })
                 m_att_id = att_line.attribute_id.magento_bind_ids.filtered(
                     lambda m: m.backend_id == self.backend_record)
@@ -257,14 +258,19 @@ class ProductProductExporter(Component):
                 for m_att_id in exported_attribute_ids:
                     att_exporter.run(m_att_id)
                 for mpav in m_att_id.magento_attribute_value_ids.filtered(lambda m: m.backend_id == self.backend_record and not m.sync_date):
-                    mpav_exporter.run(mpav, binding_attribute=m_att_id)
+                    mpav_exporter.run(mpav, binding_attribute=m_att_id,attribute_code=m_att_id.attribute_code)
 
     def _export_dependencies(self):
         """ Export the dependencies for the record"""
+        # Handle categories (works for both templates and variants)
         for extra_category in self.binding.product_category_public_ids:
             self._export_dependency(extra_category, "magento.product.category")
-        for link in self.binding.product_links:
-            self._export_dependency(link, "magento.product.product")  # Clear spezial prices here
+
+        # Handle product_links only for variants (not templates)
+        if hasattr(self.binding, 'product_links'):
+            for link in self.binding.product_links:
+                self._export_dependency(link, "magento.product.product")  # Clear spezial prices here
+
         self._export_attribute_values()
         return
 
