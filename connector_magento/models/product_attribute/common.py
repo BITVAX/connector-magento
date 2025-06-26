@@ -149,16 +149,16 @@ class ProductAttributeAdapter(Component):
         # We do need the complete result after the create function - to work on the options...
         return result
 
-    def create(self, data, binding=None, storeview_code=None):
+    def create(self, data, storeview_code=None, **kwargs):
         """ Create a record on the external system """
         if self.work.magento_api._location.version == '2.0':
             if self._magento2_name:
                 set_id = data['attribute_set_id']
-                group_id = data['attribute_group_id']
+                # group_id = data['attribute_group_id']
                 del data['attribute_set_id']
-                del data['attribute_group_id']
+                # del data['attribute_group_id']
                 new_object = self._call(
-                    self._create_url(binding),
+                    self._magento2_model % kwargs,
                     {self._magento2_name: data,
                      'saveOptions': True}, http_method='post')
                 # Make a second call to add the new attribute to the correct attribute set
@@ -167,7 +167,7 @@ class ProductAttributeAdapter(Component):
                     'products/attribute-sets/attributes',
                     {
                         "attributeSetId": set_id,
-                        "attributeGroupId": group_id,
+                        "attributeGroupId": 1,  # Default group
                         "attributeCode": new_object['attribute_code'],
                         "sortOrder": 0
                     }, http_method='post')
@@ -175,7 +175,9 @@ class ProductAttributeAdapter(Component):
                     data.update(new_object)
             else:
                 new_object = self._call(
-                    self._create_url(binding),
+                    self._magento2_model % kwargs,
                     data, http_method='post')
             return self._get_id_from_create(new_object, data)
-        return self._call('%s.create' % self._magento_model, [data])
+        raise NotImplementedError(
+            "The create method is not implemented for Magento 1.x, please use the Magento 2.x version of this module."
+        )

@@ -77,22 +77,7 @@ class ProductCategoryExporter(Component):
             self._export_dependency(self.binding.parent_id, "magento.product.category", force_update=True)
 
     def _has_to_skip(self):
-        """ Check if category does have parent category - and if the upper most parent is already in sync"""
-
-        def check_parent_recursive(binding):
-            parent_binding = binding.odoo_id.parent_id.magento_bind_ids.filtered(
-                lambda b: b.backend_id == self.backend_record)
-            if not parent_binding and not binding.odoo_id.parent_id.parent_id:
-                raise UserWarning(
-                    'Cannot export the category %s which is not under the main magento category' % binding.name)
-            if parent_binding and not binding.odoo_id.parent_id.parent_id:
-                # We are at the magento root category
-                return
-            check_parent_recursive(parent_binding)
-
-        if not self.binding.odoo_id.parent_id:
-            raise UserWarning('Cannot export a root level category to magento')
-        check_parent_recursive(self.binding)
+        """ Allow export of any category - removed artificial root category restriction """
         return False
 
     def _should_import(self):
