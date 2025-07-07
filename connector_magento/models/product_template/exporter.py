@@ -59,7 +59,7 @@ class ProductTemplateDefinitionExporter(Component):
             data = self._create(record)
             if not data:
                 raise UserWarning('Create did not returned anything on %s with binding id %s', self._name, self.binding.id)
-            self._update_binding_record_after_create(data)
+            self._update_binding_record_after_create(record)
         return _('Record exported with ID %s on Magento.') % self.external_id
 
     def _sku_inuse(self, sku):
@@ -72,14 +72,22 @@ class ProductTemplateDefinitionExporter(Component):
                 ('backend_id', '=', self.backend_record.id),
                 ('external_id', '=', sku),
             ])
-        if not search_count:
-            search_count += self.env['magento.product.bundle'].search_count([
-                ('backend_id', '=', self.backend_record.id),
-                ('external_id', '=', sku),
-            ])
+        # if not search_count:
+        #     search_count += self.env['magento.product.bundle'].search_count([
+        #         ('backend_id', '=', self.backend_record.id),
+        #         ('external_id', '=', sku),
+        #     ])
         return search_count > 0
 
     def _get_sku_proposal(self):
+        if self.binding.code_prefix:
+            return self.binding.code_prefix
+        # Fallback: si el template tiene variantes, usar los 5 primeros caracteres del default_code de la primera variante que lo tenga
+        if self.binding.product_variant_count > 1:
+            for variant in self.binding.product_variant_ids:
+                if variant.default_code:
+                    return variant.default_code[:5]
+        # Fallback del fallback: lógica previa
         if self.binding.magento_default_code:
             sku = self.binding.magento_default_code[0:64]
         else:
@@ -117,11 +125,11 @@ class ProductTemplateDefinitionExporter(Component):
             _logger.info("Got Create data: %s", update_data)
             self.binding.with_context(connector_no_export=True).write(update_data)
             # Update / Import stock item
-            stock_importer = self.component(
-                usage='record.importer',
-                model_name='magento.stock.item'
-            )
-            stock_importer.run(data['extension_attributes']['stock_item'])
+            # stock_importer = self.component(
+            #     usage='record.importer',
+            #     model_name='magento.stock.item'
+            # )
+            # stock_importer.run(data['extension_attributes']['stock_item'])
             return False
         # Do use the importer to update the binding
         importer = self.component(usage='record.importer',
@@ -160,13 +168,13 @@ class ProductTemplateDefinitionExporter(Component):
         for p in record.product_variant_ids:
             m_prod = p.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
             created = False
-            if not m_prod.id:
+            if not m_prod:
                 m_prod = self.env['magento.product.product'].with_context(connector_no_export=True).create({
                     'backend_id': self.backend_record.id,
                     'odoo_id': p.id,
                     'attribute_set_id': record.attribute_set_id.id,
-                    'magento_configurable_id': record.id,
-                    'visibility': '1',
+                    # 'magento_configurable_id': record.id,
+                    # 'visibility': '1',
                 })
                 created = True
             if self._must_update_variants() or created or not m_prod.external_id:
@@ -175,7 +183,7 @@ class ProductTemplateDefinitionExporter(Component):
                     variant_exporter.run(m_prod)
                 else:
                     _logger.info("Do queue export variant: %s", m_prod)
-                    delayed = m_prod.with_delay(identity_key=('magento_product_product_%s' % m_prod.id), priority=5).run_sync_to_magento()
+                    delayed = m_prod.with_delay(identity_key=('magento_product_product_%s' % m_prod.id), priority=5).sync_to_magento()
                     job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
                     self.binding.odoo_id.with_context(connector_no_export=True).job_ids += job
 
@@ -225,29 +233,9 @@ class ProductTemplateExportMapper(Component):
     _inherit = 'magento.export.mapper'
     _apply_on = ['magento.product.template']
 
-    direct = []
-
-    @mapping
-    def names(self, record):
-        storeview_id = self.work.storeview_id or False
-        name = record.name
-        if storeview_id:
-            value_ids = record.\
-            magento_template_attribute_value_ids.filtered(
-                lambda att:
-                    att.odoo_field_name.name == 'name'
-                    and att.store_view_id.id == storeview_id.id
-                    and att.attribute_id.create_variant != True
-                    and (
-                        att.attribute_text != False
-                    )
-                )
-        if len(value_ids) == 0:
-            _logger.debug("No name found for %s on storeview %s" % (name, storeview_id))
-        else:
-            name = value_ids[0].attribute_text
-        return {'name': name}
-
+    direct = [
+        ('name', 'name'),
+    ]
 
     @mapping
     def visibility(self, record):
@@ -285,24 +273,32 @@ class ProductTemplateExportMapper(Component):
         links = []
         pavalues = []
         available_attribute_ids = []
-        att_lines = record.attribute_line_ids.filtered(lambda l: l.attribute_id.create_variant in ['always', 'dynamic'] and len(l.value_ids)>1 and len(
-            l.attribute_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)) > 0)
+        att_lines = record.attribute_line_ids.filtered(
+            lambda l: l.attribute_id.create_variant in ['always', 'dynamic']
+            and len(l.value_ids) > 1
+            and len(l.attribute_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)) > 0
+        )
         for l in att_lines:
             available_attribute_ids.append(l.attribute_id.id)
         for p in record.product_variant_ids:
             mp = p.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
             if not mp.external_id:
                 continue
-            # We do check to avoid variants with duplicates attribute sets
+            # Adaptación Odoo 16: usar product_template_attribute_value_ids
             key = ""
-            for value in p.attribute_value_ids.filtered(lambda v: v.attribute_id.id in available_attribute_ids).sorted(lambda v: v.attribute_id.id):
-                binding_value_ids = value.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
+            ptavs = p.product_template_attribute_value_ids.filtered(
+                lambda ptav: ptav.attribute_id.id in available_attribute_ids
+            ).sorted(lambda ptav: ptav.attribute_id.id)
+            for ptav in ptavs:
+                binding_value_ids = ptav.product_attribute_value_id.magento_bind_ids.filtered(
+                    lambda m: m.backend_id == record.backend_id
+                )
                 binding_value = binding_value_ids[0] if binding_value_ids else None
                 if not binding_value:
                     continue
-                key += "%s%s" % (value.attribute_id.id, value.name)
+                key += "%s%s" % (ptav.attribute_id.id, ptav.product_attribute_value_id.name)
             if key not in pavalues:
-                links.append(mp.magento_id)
+                links.append(mp.magento_internal_id)
                 pavalues.append(key)
         return {'configurable_product_links': links}
 
@@ -319,7 +315,7 @@ class ProductTemplateExportMapper(Component):
                                    "is not exported yet." %
                                    l.attribute_id.name)
             opt = {
-                "id": 1,
+                "id": 0,
                 "attribute_id": m_att_id.external_id,
                 "label": m_att_id.attribute_code,
                 "position": 0,
@@ -341,10 +337,9 @@ class ProductTemplateExportMapper(Component):
         return {'website_ids': website_ids}
 
     def category_ids(self, record):
-        c_ids = []
-        c_ids.append(record.product_category_public_ids.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id).external_id)
-        for c in record.categ_ids:
-            c_ids.append(c.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id).external_id)
+        magento_categ_ids = record.product_category_public_ids.mapped('magento_bind_ids').filtered(
+            lambda bc: bc.backend_id.id == record.backend_id.id)
+        c_ids = magento_categ_ids.mapped('external_id')
         return {
             'attribute_code': 'category_ids',
             'value': c_ids

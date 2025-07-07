@@ -32,7 +32,6 @@ class MagentoProductTemplate(models.Model):
     @api.model
     def product_type_get(self):
         return [
-            ('simple', 'Simple Product'),
             ('configurable', 'Configurable Product'),
             ('bundle', 'Bundle Product'),
         ]
@@ -84,10 +83,6 @@ class MagentoProductTemplate(models.Model):
     # )
     created_at = fields.Datetime('Created At (on Magento)')
     updated_at = fields.Datetime('Updated At (on Magento)')
-    magento_product_ids = fields.One2many(comodel_name='magento.product.product',
-                                          related='odoo_id.product_variant_ids.magento_bind_ids',
-                                          string='Variants',
-                                          readonly=True)
 
     magento_template_attribute_line_ids = fields.One2many(
         comodel_name='magento.product.template.attribute.line',
