@@ -147,7 +147,7 @@ class ProductAttributeAdapter(Component):
 
     def _get_id_from_create(self, result, data=None):
         # We do need the complete result after the create function - to work on the options...
-        return result
+        return result.get('attribute_id')
 
     def create(self, data, storeview_code=None, **kwargs):
         """ Create a record on the external system """
@@ -167,8 +167,8 @@ class ProductAttributeAdapter(Component):
                     'products/attribute-sets/attributes',
                     {
                         "attributeSetId": set_id,
-                        "attributeGroupId": 1,  # Default group
-                        "attributeCode": new_object['attribute_code'],
+                        "attributeGroupId": self.backend_record.default_attribute_group_id or 7,  # Configurable group
+                        "attributeCode": new_object['attribute_code'],  # El valor se obtiene del backend configurado
                         "sortOrder": 0
                     }, http_method='post')
                 if isinstance(new_object, dict):

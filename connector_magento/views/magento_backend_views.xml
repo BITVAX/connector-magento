@@ -178,6 +178,7 @@
                                 <field name="default_lang_id" widget="selection"/>
                                 <field name="default_category_id"/>
                                 <field name="default_attribute_set_id"/>
+                                <field name="default_attribute_group_id" help="ID de grupo de atributos por defecto para nuevos atributos en Magento. Usado si no se especifica otro grupo."/>
                                 <field name="no_stock_sync"/>
                                 <field name="sale_prefix" placeholder="mag-"/>
                                 <field name="product_stock_field_id" widget="selection"

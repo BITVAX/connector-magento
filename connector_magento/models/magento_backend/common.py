@@ -25,6 +25,13 @@ class MagentoBackend(models.Model):
     _description = 'Magento Backend'
     _inherit = 'connector.backend'
 
+    default_attribute_group_id = fields.Integer(
+        string="Default Attribute Group ID",
+        default=7,
+        help="ID de grupo de atributos que se usará por defecto al crear nuevos atributos en Magento. Por defecto es 7 (grupo 'General' en Magento)."
+    )
+
+
     @api.model
     def select_versions(self):
         """ Available versions in the backend.

@@ -11,7 +11,8 @@
              'delivery',
              'sale_stock',
              'connector_ecommerce',
-             'product_multi_image'
+             'product_multi_image',
+             'product_variant_default_code'
              ],
  'external_dependencies': {
      'python': ['magento'],

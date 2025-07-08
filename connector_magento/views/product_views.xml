@@ -123,4 +123,68 @@
         </field>
     </record>
 
+    <record id="view_magento_product_template_search" model="ir.ui.view">
+        <field name="name">magento.product.template.search</field>
+        <field name="model">magento.product.template</field>
+        <field name="arch" type="xml">
+            <search string="Magento Product Template">
+                <field name="magento_id" string="Magento ID"/>
+                <field name="odoo_id" string="Product Template"/>
+                <field name="attribute_set_id" string="Attribute Set"/>
+                <field name="website_ids" string="Websites"/>
+                <field name="product_type" string="Product Type"/>
+                <field name="magento_status" string="Status"/>
+                <field name="magento_url_key" string="URL Key"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_magento_product_template_form" model="ir.ui.view">
+        <field name="name">magento.product.template.form</field>
+        <field name="model">magento.product.template</field>
+        <field name="arch" type="xml">
+            <form string="Magento Product Template">
+                <header>
+                    <button name="sync_to_magento" string="To Magento" type="object" class="oe_highlight"/>
+                    <button name="sync_from_magento" string="From Magento" type="object" class="oe_highlight"/>
+                    <button name="delete_from_magento" string="Delete from Magento" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="backend_id"/>
+                        <field name="magento_id"/>
+                        <field name="odoo_id"/>
+                        <field name="created_at" readonly="1"/>
+                        <field name="updated_at" readonly="1"/>
+                        <field name="product_type"/>
+                        <field name="attribute_set_id"/>
+                        <field name="website_ids" widget="many2many_tags"/>
+                        <field name="magento_status"/>
+                        <field name="magento_url_key"/>
+                    </group>
+                    <notebook>
+                        <page string="Variants">
+                            <field name="magento_variant_bind_ids">
+                                <tree string="Magento Variants">
+                                    <field name="external_id"/>
+                                    <field name="odoo_id"/>
+                                    <field name="product_type"/>
+                                    <field name="magento_status"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Attribute Lines">
+                            <field name="magento_template_attribute_line_ids">
+                                <tree string="Attribute Lines">
+                                    <field name="attribute_id"/>
+                                    <field name="value_ids" widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 </odoo>
