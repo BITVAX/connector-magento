@@ -62,7 +62,7 @@ class ProductCategoryPublic(models.Model):
     def name_get(self):
         res = []
         for category in self:
-            res.append((category.id, " / ".join(category.parents_and_self.mapped('name'))))
+            res.append((category.id, "/".join(category.parents_and_self.mapped(lambda x: x.name if x.parent_id else ''))))
         return res
 
     def _compute_parents_and_self(self):
