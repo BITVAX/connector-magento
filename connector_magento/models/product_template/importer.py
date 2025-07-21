@@ -508,3 +508,7 @@ class ProductTemplateUpdateCreateMapper(Component):
     @mapping
     def no_stock_sync(self, record):
         return {}
+
+    @mapping
+    def magento_id(self, record):
+        return {'magento_id': record.get('id', '')}
