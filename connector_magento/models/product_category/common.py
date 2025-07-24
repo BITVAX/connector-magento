@@ -94,6 +94,7 @@ class ProductCategoryAdapter(Component):
 
     _magento_model = 'catalog_category'
     _magento2_model = 'categories'
+    _magento2_search = 'categories'
     _magento2_key = 'id'
     _admin_path = '/{model}/index/'
     _magento2_name = 'category'
@@ -167,6 +168,10 @@ class ProductCategoryAdapter(Component):
                 tree = self._call('%s.tree' % self._magento_model,
                                   [parent_id, storeview_id])
             return filter_ids(tree)
+        if self.collection.version == '2.0':
+            ret = self._call('{}/list'.format(self._magento2_model),
+                              {'searchCriteria': ''})
+            return { c['id']: c['children'] for c in ret.get('items',[])}
         raise NotImplementedError  # TODO
 
     def move(self, categ_id, parent_id, after_categ_id=None):

@@ -26,9 +26,6 @@ class ProductCategoryBatchImporter(Component):
 
     def run(self, filters=None):
         """ Run the synchronization """
-        if self.collection.version == '2.0':
-            # TODO. See 8.0 version
-            raise NotImplementedError
         from_date = filters.pop('from_date', None)
         to_date = filters.pop('to_date', None)
         if from_date or to_date:
@@ -54,6 +51,10 @@ class ProductCategoryBatchImporter(Component):
                         node_id, job_options=job_options)
                 import_nodes(children, level=level + 1)
         tree = self.backend_adapter.tree()
+        if self.collection.version == '2.0':
+            for cat_id in list(tree.keys()):
+                self._import_record(cat_id)
+            return
         import_nodes(tree)
 
 
