@@ -1,23 +1,21 @@
-from . import magento_binding  # should be loaded first for inheritance
-
-from . import account_invoice
-from . import account_payment_mode
-from . import delivery
-from . import magento_backend
-from . import magento_store
-from . import magento_storeview
-from . import magento_website
-from . import partner
-from . import partner_category
-from . import product
-from . import product_category
-from . import queue_job
-from . import sale_order
-from . import stock_picking
-from . import magento_taxclass
-from . import magento_attribute_set
-from . import product_attribute
-from . import product_attribute_value
-from . import product_template
-from . import product_template_attribute_line
-
+from . import account_invoice  # noqa
+from . import account_payment_mode  # noqa
+from . import delivery  # noqa
+from . import magento_attribute_set  # noqa
+from . import magento_backend  # noqa
+from . import magento_binding  # noqa  # should be loaded first for inheritance
+from . import magento_store  # noqa
+from . import magento_storeview  # noqa
+from . import magento_taxclass  # noqa
+from . import magento_website  # noqa
+from . import partner  # noqa
+from . import partner_category  # noqa
+from . import product  # noqa
+from . import product_attribute  # noqa
+from . import product_attribute_value  # noqa
+from . import product_category  # noqa
+from . import product_template  # noqa
+from . import product_template_attribute_line  # noqa
+from . import queue_job  # noqa
+from . import sale_order  # noqa
+from . import stock_picking  # noqa
