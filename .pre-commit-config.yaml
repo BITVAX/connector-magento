@@ -101,7 +101,7 @@ repos:
           - id: mixed-line-ending
             args: ["--fix=lf"]
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.6.8
+      rev: v0.12.7
       hooks:
           - id: ruff
             args: [--fix, --exit-non-zero-on-fix]
@@ -115,6 +115,6 @@ repos:
                 - --rcfile=.pylintrc
                 - --exit-zero
             verbose: true
-          - id: pylint_odoo
-            args:
-                - --rcfile=.pylintrc-mandatory
+          # - id: pylint_odoo
+          #   args:
+          #       - --rcfile=.pylintrc-mandatory

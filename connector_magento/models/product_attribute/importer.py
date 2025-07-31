@@ -1,79 +1,93 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # © 2016 Sodexis
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
-
-from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping, only_create
 import uuid
+
 from odoo import tools
+from odoo.addons.component.core import Component
+from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import only_create
 
 _logger = logging.getLogger(__name__)
 
 
 class AttributeBatchImporter(Component):
-    """ Import the Magento Products attributes.
+    """Import the Magento Products attributes.
 
     For every product attributes in the list, a delayed job is created.
     Import from a date
     """
-    _name = 'magento.product.attribute.batch.importer'
-    _inherit = 'magento.delayed.batch.importer'
-    _apply_on = ['magento.product.attribute']
+
+    _name = "magento.product.attribute.batch.importer"
+    _inherit = "magento.delayed.batch.importer"
+    _apply_on = ["magento.product.attribute"]
 
 
 class AttributeImporter(Component):
-    _name = 'magento.product.attribute.import'
-    _inherit = ['magento.importer']
-    _apply_on = ['magento.product.attribute']
-    _magento_id_field = 'attribute_id'
+    _name = "magento.product.attribute.import"
+    _inherit = ["magento.importer"]
+    _apply_on = ["magento.product.attribute"]
+    _magento_id_field = "attribute_id"
 
     def _after_import(self, binding, **kwargs):
         record = self.magento_record
         importer = self.component(
-            usage='record.importer',
-            model_name='magento.product.attribute.value'
+            usage="record.importer", model_name="magento.product.attribute.value"
         )
         # Do import attribute values here
-        _logger.info("Got %s Attribute Record Options", len(record['options']))
+        _logger.info("Got %s Attribute Record Options", len(record["options"]))
         # if len(record['options']) > 200:
         #     _logger.error('We do not import such big option arrays')
         #     return
-        for i in range(len(record['options'])):
+        for i in range(len(record["options"])):
             _logger.info("Do work on option %s", i)
-            value = record['options'][i]
-            if not value['value']:
+            value = record["options"][i]
+            if not value["value"]:
                 continue
-            value['external_id'] = "%s_%s" % (str(record.get('attribute_id')), tools.ustr(value.get('value')))
-            importer.run(value, magento_attribute=binding,attribute_code=record['attribute_code'])
+            value["external_id"] = "%s_%s" % (
+                str(record.get("attribute_id")),
+                tools.ustr(value.get("value")),
+            )
+            importer.run(value, magento_attribute=binding, attribute_code=record["attribute_code"])
 
     def _before_import(self):
         record = self.magento_record
         # Check for duplicate values here
         existing_values = []
         existing_names = []
-        for i in range(len(record['options'])):
-            value = record['options'][i]
-            if value['value'] in existing_values:
-                raise Exception('Value %s is a duplicate in %s' % (value['value'], record['default_frontend_label']))
-            existing_values.append(value['value'])
-            if value['label'] in existing_names and self.backend_record.rename_duplicate_values:
-                self.magento_record['options'][i]['label'] = "%s (%s)" % (value['label'], str(uuid.uuid4()))
-            elif value['label'] in existing_names and not self.backend_record.rename_duplicate_values:
-                raise Exception('Value %s is a duplicate in %s' % (value['label'], record['default_frontend_label']))
-            existing_names.append(value['label'])
-
+        for i in range(len(record["options"])):
+            value = record["options"][i]
+            if value["value"] in existing_values:
+                raise Exception(
+                    "Value %s is a duplicate in %s"
+                    % (value["value"], record["default_frontend_label"])
+                )
+            existing_values.append(value["value"])
+            if value["label"] in existing_names and self.backend_record.rename_duplicate_values:
+                self.magento_record["options"][i]["label"] = "%s (%s)" % (
+                    value["label"],
+                    str(uuid.uuid4()),
+                )
+            elif (
+                value["label"] in existing_names
+                and not self.backend_record.rename_duplicate_values
+            ):
+                raise Exception(
+                    "Value %s is a duplicate in %s"
+                    % (value["label"], record["default_frontend_label"])
+                )
+            existing_names.append(value["label"])
 
     def _update(self, binding, data):
-        """ Update an OpenERP record """
+        """Update an OpenERP record"""
         # special check on data before import
         self._validate_data(data)
         binding.with_context(connector_no_export=True).write(data)
-        _logger.debug('%d updated from magento %s', binding, self.external_id)
+        _logger.debug("%d updated from magento %s", binding, self.external_id)
         # Disabled for now - should be configurable using backend option
-        '''
+        """
         record = self.magento_record
         values = [r['value'] for r in record['options']]
         _logger.info("Got values from magento: %s", values)
@@ -86,20 +100,22 @@ class AttributeImporter(Component):
             ('code', 'not in', values),
         ], odoo_magento_values)
         odoo_magento_values.with_context(connector_no_export=True).unlink()
-        '''
+        """
         return
 
 
 class AttributeImportMapper(Component):
-    _name = 'magento.product.attribute.import.mapper'
-    _inherit = 'magento.import.mapper'
-    _apply_on = ['magento.product.attribute']
+    _name = "magento.product.attribute.import.mapper"
+    _inherit = "magento.import.mapper"
+    _apply_on = ["magento.product.attribute"]
 
-    direct = [('attribute_code', 'attribute_code'),
-              ('attribute_id', 'attribute_id'),
-              ('attribute_id', 'external_id'),
-              ('frontend_input', 'frontend_input'),
-              ('is_user_defined', 'is_user_defined'),]
+    direct = [
+        ("attribute_code", "attribute_code"),
+        ("attribute_id", "attribute_id"),
+        ("attribute_id", "external_id"),
+        ("frontend_input", "frontend_input"),
+        ("is_user_defined", "is_user_defined"),
+    ]
 
     @only_create
     @mapping
@@ -108,28 +124,36 @@ class AttributeImportMapper(Component):
         # if self.backend_record.always_create_new_attributes:
         #     return {}
         # Else search for existing attribute
-        att_id = self.env['product.attribute'].search([
-            ('name', '=ilike', self._get_name(record)['name'])
-        ], limit=1)
+        att_id = self.env["product.attribute"].search(
+            [("name", "=ilike", self._get_name(record)["name"])], limit=1
+        )
         if att_id:
-            return {'odoo_id': att_id.id}
+            return {"odoo_id": att_id.id}
         return {}
 
     @mapping
     def _get_name(self, record):
-        name = record['attribute_code']
-        if 'default_frontend_label' in record and record['default_frontend_label']:
-            name = record['default_frontend_label']
-        return {'name': name}
+        name = record["attribute_code"]
+        if "default_frontend_label" in record and record["default_frontend_label"]:
+            name = record["default_frontend_label"]
+        return {"name": name}
 
     @only_create
     @mapping
     def create_variant(self, record):
-        if not record['frontend_input'] or record['frontend_input'] in ['text', 'date', 'gallery', 'media_image', 'price', 'textarea', 'weight']:
-            return {'create_variant': 'no_variant'}
+        if not record["frontend_input"] or record["frontend_input"] in [
+            "text",
+            "date",
+            "gallery",
+            "media_image",
+            "price",
+            "textarea",
+            "weight",
+        ]:
+            return {"create_variant": "no_variant"}
         else:
-            return {'create_variant': 'always'}
+            return {"create_variant": "always"}
 
     @mapping
     def backend_id(self, record):
-        return {'backend_id': self.backend_record.id}
+        return {"backend_id": self.backend_record.id}

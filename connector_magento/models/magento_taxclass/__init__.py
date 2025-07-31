@@ -1,3 +1,2 @@
-# -*- coding: utf-8 -*-
-from . import common
-from . import importer
+from . import common  # noqa
+from . import importer  # noqa

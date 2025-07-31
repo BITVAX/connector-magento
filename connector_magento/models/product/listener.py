@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo.addons.component.core import Component
@@ -7,36 +6,37 @@ from odoo.addons.queue_job.job import identity_exact
 
 
 class MagentoProductProductBindingExportListener(Component):
-    _name = 'magento.product.product.binding.export.listener'
-    _inherit = 'base.connector.listener'
-    _apply_on = ['magento.product.product']
+    _name = "magento.product.product.binding.export.listener"
+    _inherit = "base.connector.listener"
+    _apply_on = ["magento.product.product"]
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_create(self, record, fields=None):
-        if record.backend_id.product_synchro_strategy == 'odoo_first':
+        if record.backend_id.product_synchro_strategy == "odoo_first":
             return
         record.with_delay(identity_key=identity_exact).export_record(record.backend_id)
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
-        if record.backend_id.product_synchro_strategy == 'odoo_first':
+        if record.backend_id.product_synchro_strategy == "odoo_first":
             return
         record.with_delay(identity_key=identity_exact).export_record(record.backend_id)
 
     def on_record_unlink(self, record):
-        if record.backend_id.product_synchro_strategy == 'odoo_first':
+        if record.backend_id.product_synchro_strategy == "odoo_first":
             return
         with record.backend_id.work_on(record._name) as work:
-            external_id = work.component(usage='binder').to_external(record)
+            external_id = work.component(usage="binder").to_external(record)
             if external_id:
-                record.with_delay(identity_key=identity_exact).export_delete_record(record.backend_id,
-                                                         external_id)
+                record.with_delay(identity_key=identity_exact).export_delete_record(
+                    record.backend_id, external_id
+                )
 
 
 class MagentoProductProductExportListener(Component):
-    _name = 'magento.product.product.export.listener'
-    _inherit = 'base.connector.listener'
-    _apply_on = ['product.product']
+    _name = "magento.product.product.export.listener"
+    _inherit = "base.connector.listener"
+    _apply_on = ["product.product"]
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
@@ -44,26 +44,28 @@ class MagentoProductProductExportListener(Component):
         #     # We do ignore image field
         #     fields.remove('image')
         for binding in record.magento_bind_ids:
-            if binding.backend_id.product_synchro_strategy == 'magento_first':
+            if binding.backend_id.product_synchro_strategy == "magento_first":
                 continue
-            if binding.backend_id.product_export_strategy in ('never','create'):
+            if binding.backend_id.product_export_strategy in ("never", "create"):
                 continue
             binding.with_delay(identity_key=identity_exact).export_record(binding.backend_id)
 
 
 class MagentoProductPricelistItemUpdateListener(Component):
-    _name = 'magento.product.pricelist.item.listener'
-    _inherit = 'base.connector.listener'
-    _apply_on = ['product.pricelist.item']
+    _name = "magento.product.pricelist.item.listener"
+    _inherit = "base.connector.listener"
+    _apply_on = ["product.pricelist.item"]
 
     def update_products(self, record):
-        if record.applied_on == '1_product':
+        if record.applied_on == "1_product":
             for binding in record.product_tmpl_id.magento_template_bind_ids:
                 binding.with_delay(identity_key=identity_exact).export_record(binding.backend_id)
                 for variant in record.product_tmpl_id.product_variant_ids:
                     for binding in variant.magento_bind_ids:
-                        binding.with_delay(identity_key=identity_exact).export_record(binding.backend_id)
-        elif record.applied_on == '0_product_variant':
+                        binding.with_delay(identity_key=identity_exact).export_record(
+                            binding.backend_id
+                        )
+        elif record.applied_on == "0_product_variant":
             for binding in record.product_id.magento_bind_ids:
                 binding.with_delay(identity_key=identity_exact).export_record(binding.backend_id)
 
