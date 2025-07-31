@@ -1,0 +1,27 @@
+[build-system]
+requires = ["whool"]
+build-backend = "whool.buildapi"
+
+[tool.ruff]
+    include = ["pyproject.toml", "*.py"]
+    line-length = 99
+    extend-exclude = [
+        "__pycache__",
+        "__manifest__.py",
+    ]
+    src = ["."]
+
+[tool.ruff.lint]
+    select = [
+        "F401", # unused imports
+        "I"
+    ] # https://docs.astral.sh/ruff/rules
+
+[tool.ruff.lint.isort]
+    length-sort = false
+    force-single-line = true
+    force-sort-within-sections = true
+    section-order = ["future", "standard-library", "pylib", "odoo", "third-party", "first-party", "local-folder"]
+
+[tool.ruff.lint.isort.sections]
+"odoo" = ["odoo"]
