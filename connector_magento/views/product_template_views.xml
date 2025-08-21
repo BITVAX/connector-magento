@@ -8,10 +8,15 @@
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="priority" eval="8"/>
             <field name="arch" type="xml">
-                <field name="categ_id" position="after">
-                    <field name="root_category_ids" />
+                <field name="uom_po_id" position="after">
+                    <separator string="Magento"/>
+                    <field name="root_category_ids" invisible="1"/>
                     <field name="product_category_public_ids" widget="many2many_tags" domain="[('id','child_of',root_category_ids)]"/>
                     <field name="website_ids" widget="many2many_tags"/>
+                    <separator string="SEO"/>
+                    <field name="meta_title" placeholder="Ejemplo: Camiseta roja deportiva para entrenamiento"/>
+                    <field name="meta_keywords" placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"/>
+                    <field name="meta_description" placeholder="Descripción SEO del producto"/>
                 </field>
                 <notebook position="inside">
                     <page string="Magento Bindings">

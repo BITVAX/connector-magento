@@ -100,7 +100,18 @@ class MagentoProductTemplate(models.Model):
     #     compute='_compute_product_categories',
     #     string='Product categories'
     # )
-    magento_url_key = fields.Char(string="URL Key")
+    magento_url_key = fields.Char(
+        string="URL Key",
+        compute='_compute_magento_url_key',
+        inverse='_inverse_magento_url_key',
+        store=True,
+        readonly=False
+    )
+    url_key_backend_specific = fields.Boolean(
+        string="Backend-specific URL Key",
+        default=False,
+        help="Check if this URL key is specific to this backend"
+    )
     magento_status = fields.Selection([
         ('2', 'Disabled'),
         ('1', 'Enabled'),
@@ -116,6 +127,18 @@ class MagentoProductTemplate(models.Model):
          'Duplicate URL Key is not allowed - please set a new one !'
          ),
     ]
+
+    @api.depends('odoo_id.url_key', 'url_key_backend_specific')
+    def _compute_magento_url_key(self):
+        for record in self:
+            if not record.url_key_backend_specific:
+                record.magento_url_key = record.odoo_id.url_key or ''
+
+    def _inverse_magento_url_key(self):
+        for record in self:
+            if not record.url_key_backend_specific:
+                if record.magento_url_key != record.odoo_id.url_key:
+                    record.odoo_id.url_key = record.magento_url_key
 
     # @api.multi
     # @job(default_channel='root.magento')
@@ -149,6 +172,27 @@ class MagentoProductTemplate(models.Model):
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
+
+    url_key = fields.Char(
+        string="URL Key",
+        help="SEO-friendly URL key for this product. Usually imported from Magento.",
+        index=True
+    )
+    
+    meta_title = fields.Char(
+        string="Título SEO",
+        help="SEO title for this product. Usually imported from Magento.",
+        translate=True
+    )
+    meta_keywords = fields.Char(
+        string="Palabras clave", 
+        help="SEO keywords for this product. Usually imported from Magento."
+    )
+    meta_description = fields.Text(
+        string="Descripción SEO",
+        help="SEO description for this product. Usually imported from Magento.",
+        translate=True
+    )
 
     product_category_public_ids = fields.Many2many(
         comodel_name='product.category.public',

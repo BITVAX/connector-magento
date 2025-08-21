@@ -379,6 +379,24 @@ class ProductTemplateExportMapper(Component):
         return {'status': '2' if not record.active else record.magento_status}
 
     @mapping
+    def meta_title(self, record):
+        if record.odoo_id.meta_title:
+            return {'meta_title': record.odoo_id.meta_title}
+        return {}
+
+    @mapping  
+    def meta_keywords(self, record):
+        if record.odoo_id.meta_keywords:
+            return {'meta_keywords': record.odoo_id.meta_keywords}
+        return {}
+
+    @mapping
+    def meta_description(self, record):
+        if record.odoo_id.meta_description:
+            return {'meta_description': record.odoo_id.meta_description}
+        return {}
+
+    @mapping
     def option_products(self, record):
         return {}
 

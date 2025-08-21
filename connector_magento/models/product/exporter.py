@@ -483,6 +483,30 @@ class ProductProductExportMapper(Component):
         return {'custom_attributes': custom_attributes}
 
     @mapping
+    def url_key(self, record):
+        if record.magento_url_key:
+            return {'url_key': record.magento_url_key}
+        return {}
+
+    @mapping
+    def meta_title(self, record):
+        if record.odoo_id.meta_title:
+            return {'meta_title': record.odoo_id.meta_title}
+        return {}
+
+    @mapping  
+    def meta_keywords(self, record):
+        if record.odoo_id.meta_keywords:
+            return {'meta_keywords': record.odoo_id.meta_keywords}
+        return {}
+
+    @mapping
+    def meta_description(self, record):
+        if record.odoo_id.meta_description:
+            return {'meta_description': record.odoo_id.meta_description}
+        return {}
+
+    @mapping
     def price(self, record):
         if record.backend_id.pricelist_id and record.backend_id.pricelist_id.discount_policy == 'with_discount':
             price = record.with_context(pricelist=record.backend_id.pricelist_id.id).price

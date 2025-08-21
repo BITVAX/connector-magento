@@ -90,7 +90,18 @@ class MagentoProductProduct(models.Model):
              "from stock synchronizations.",
     )
 
-    magento_url_key = fields.Char(string="URL Key")
+    magento_url_key = fields.Char(
+        string="URL Key",
+        compute='_compute_magento_url_key',
+        inverse='_inverse_magento_url_key',
+        store=True,
+        readonly=False
+    )
+    url_key_backend_specific = fields.Boolean(
+        string="Backend-specific URL Key",
+        default=False,
+        help="Check if this URL key is specific to this backend"
+    )
     attribute_set_id = fields.Many2one(
         comodel_name='magento.product.attribute.set',
         string='Attribute Set',
@@ -109,6 +120,18 @@ class MagentoProductProduct(models.Model):
         ('4', 'Catalog, Search'),
     ], default='4', string="Visibility")
     RECOMPUTE_QTY_STEP = 1000  # products at a time
+
+    @api.depends('odoo_id.url_key', 'url_key_backend_specific')
+    def _compute_magento_url_key(self):
+        for record in self:
+            if not record.url_key_backend_specific:
+                record.magento_url_key = record.odoo_id.url_key or ''
+
+    def _inverse_magento_url_key(self):
+        for record in self:
+            if not record.url_key_backend_specific:
+                if record.magento_url_key != record.odoo_id.url_key:
+                    record.odoo_id.url_key = record.magento_url_key
 
     product_links = fields.Many2many(
         comodel_name='magento.product.product',
