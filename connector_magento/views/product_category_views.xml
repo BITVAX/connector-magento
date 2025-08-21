@@ -4,19 +4,29 @@
     <record id="view_product_category_public_form" model="ir.ui.view">
         <field name="name">product.category.public.form</field>
         <field name="model">product.category.public</field>
-<!--
-        <field name="groups_id"
-               eval="[(4, ref('connector.group_connector_manager'))]"/>
--->
+        <!--
+                <field name="groups_id"
+                       eval="[(4, ref('connector.group_connector_manager'))]"/>
+        -->
+
         <field name="arch" type="xml">
             <form string="Magento Product Category">
-                <group>
-                    <field name="name"/>
-                    <field name="description"/>
-                    <field name="sequence"/>
-                    <field name="parent_id"/>
-                    <field name="child_ids"/>
-                </group>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_products"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o">
+                            <field name="product_count" widget="statinfo" string="Products"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="sequence"/>
+                        <field name="parent_id"/>
+                        <field name="child_ids"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
@@ -29,6 +39,7 @@
             <tree string="Product Category Public">
                 <field name="name"/>
                 <field name="parent_id"/>
+                <field name="product_count"/>
             </tree>
         </field>
     </record>
@@ -40,6 +51,7 @@
                 <field name="name"/>
                 <field name="parent_id"/>
                 <field name="backend_id"/>
+                <field name="product_count"/>
             </tree>
         </field>
     </record>

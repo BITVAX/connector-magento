@@ -39,10 +39,22 @@ class ProductCategoryPublic(models.Model):
     name = fields.Char(required=True, translate=True)
     sequence = fields.Integer(help="Gives the sequence order when displaying a list of product categories.", index=True, default=_default_sequence)
     website_description = fields.Html('Category Description', sanitize_overridable=True, sanitize_attributes=False, translate=html_translate, sanitize_form=False)
-    product_tmpl_ids = fields.Many2many('product.template', relation='product_category_public_product_template_rel')
+    product_tmpl_ids = fields.Many2many('product.template', relation='product_category_public_rel')
+    product_count = fields.Integer(
+        compute='_compute_product_count',
+        string='# Products',
+        help="The number of products under this category (Does not consider the children categories)",
+    )
     parent_path = fields.Char(index=True, unaccent=False)
     parents_and_self = fields.Many2many('product.category.public', compute='_compute_parents_and_self')
     display_name = fields.Char(compute='_compute_display_name', )
+
+    @api.depends('product_tmpl_ids')
+    def _compute_product_count(self):
+        """ Compute the number of products in this category and its children """
+        for category in self:
+            category.product_count = len(category.product_tmpl_ids)
+        return
 
     # @api.depends('name', 'parent_id.name')
     def _compute_display_name(self):
@@ -71,6 +83,12 @@ class ProductCategoryPublic(models.Model):
                 category.parents_and_self = self.env['product.category.public'].browse([int(p) for p in category.parent_path.split('/')[:-1]])
             else:
                 category.parents_and_self = category
+
+    def action_view_products(self):
+        """ Action to view products in this category """
+        action = self.env.ref('product.product_template_action').read()[0]
+        action['domain'] = [('id', 'in', self.product_tmpl_ids.ids)]
+        return action
 
 #
 # class ProductCategory(models.Model):
