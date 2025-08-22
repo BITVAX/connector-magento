@@ -178,14 +178,14 @@ class ProductTemplate(models.Model):
         help="SEO-friendly URL key for this product. Usually imported from Magento.",
         index=True
     )
-    
+
     meta_title = fields.Char(
         string="Título SEO",
         help="SEO title for this product. Usually imported from Magento.",
         translate=True
     )
     meta_keywords = fields.Char(
-        string="Palabras clave", 
+        string="Palabras clave",
         help="SEO keywords for this product. Usually imported from Magento."
     )
     meta_description = fields.Text(
@@ -245,7 +245,6 @@ class ProductTemplate(models.Model):
     open_job_count = fields.Integer(string='Open Jobs', compute='_compute_job_counts', store=False)
     failed_job_count = fields.Integer(string='Failed Jobs', compute='_compute_job_counts', store=False)
     magento_internal_id = fields.Char(string="Magento Internal ID")
-    magento_url_key = fields.Char(string="URL Key")
     magento_status = fields.Selection([
         ('2', 'Disabled'),
         ('1', 'Enabled'),

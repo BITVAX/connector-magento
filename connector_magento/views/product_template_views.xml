@@ -14,6 +14,7 @@
                     <field name="product_category_public_ids" widget="many2many_tags" domain="[('id','child_of',root_category_ids)]"/>
                     <field name="website_ids" widget="many2many_tags"/>
                     <separator string="SEO"/>
+                    <field name="url_key" placeholder="Ejemplo: camiseta-roja-deportiva-entrenamiento"/>
                     <field name="meta_title" placeholder="Ejemplo: Camiseta roja deportiva para entrenamiento"/>
                     <field name="meta_keywords" placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"/>
                     <field name="meta_description" placeholder="Descripción SEO del producto"/>
