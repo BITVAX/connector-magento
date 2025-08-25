@@ -37,11 +37,13 @@ class ProductCategoryPublic(models.Model):
         return 10000
 
     name = fields.Char(required=True, translate=True)
+    active = fields.Boolean(default=True)
     sequence = fields.Integer(help="Gives the sequence order when displaying a list of product categories.", index=True, default=_default_sequence)
     website_description = fields.Html('Category Description', sanitize_overridable=True, sanitize_attributes=False, translate=html_translate, sanitize_form=False)
     product_tmpl_ids = fields.Many2many('product.template', relation='product_category_public_rel')
     product_count = fields.Integer(
         compute='_compute_product_count',
+        store=True,
         string='# Products',
         help="The number of products under this category (Does not consider the children categories)",
     )

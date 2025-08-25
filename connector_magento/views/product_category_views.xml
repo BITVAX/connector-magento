@@ -56,4 +56,38 @@
         </field>
     </record>
 
+    <record id="view_product_category_public_search" model="ir.ui.view">
+        <field name="name">product.category.public.search</field>
+        <field name="model">product.category.public</field>
+        <field name="arch" type="xml">
+            <search string="Search Product Categories">
+                <field name="name" filter_domain="[('name','ilike',self)]"/>
+                <field name="description" filter_domain="[('description','ilike',self)]"/>
+                <field name="parent_id"/>
+                
+                <filter string="Root Categories" name="root_categories" 
+                        domain="[('parent_id','=',False)]"/>
+                <filter string="Has Children" name="has_children" 
+                        domain="[('child_ids','!=',False)]"/>
+                <filter string="Has Products" name="has_products" 
+                        domain="[('product_count','>',0)]"/>
+                
+                <separator/>
+                <filter string="Active" name="active" domain="[('active','=',True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active','=',False)]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Parent Category" name="group_parent" 
+                            context="{'group_by':'parent_id'}"/>
+                    <filter string="Product Count" name="group_product_count" 
+                            context="{'group_by':'product_count'}"/>
+                </group>
+                
+                <searchpanel>
+                    <field name="parent_id" icon="fa-folder" select="multi" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
 </odoo>
