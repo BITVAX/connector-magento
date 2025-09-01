@@ -478,33 +478,33 @@ class ProductProductExportMapper(Component):
                             'value': record[matt_id.field_id.sudo().name]
                         })
             custom_attributes.append(self.category_ids(record))
+            if record.magento_url_key:
+                custom_attributes.append({
+                    'attribute_code': 'url_key',
+                    'value': record.magento_url_key
+                })
+            # Add meta fields as custom attributes
+            if record.odoo_id.meta_title:
+                custom_attributes.append({
+                    'attribute_code': 'meta_title',
+                    'value': record.odoo_id.meta_title
+                })
+
+            if record.odoo_id.meta_keyword:
+                custom_attributes.append({
+                    'attribute_code': 'meta_keyword',
+                    'value': record.odoo_id.meta_keyword
+                })
+
+            if record.odoo_id.meta_description:
+                custom_attributes.append({
+                    'attribute_code': 'meta_description',
+                    'value': record.odoo_id.meta_description
+                })
+
             _logger.info("Do use custom attributes: %r", custom_attributes)
 
         return {'custom_attributes': custom_attributes}
-
-    @mapping
-    def url_key(self, record):
-        if record.magento_url_key:
-            return {'url_key': record.magento_url_key}
-        return {}
-
-    @mapping
-    def meta_title(self, record):
-        if record.odoo_id.meta_title:
-            return {'meta_title': record.odoo_id.meta_title}
-        return {}
-
-    @mapping  
-    def meta_keywords(self, record):
-        if record.odoo_id.meta_keywords:
-            return {'meta_keywords': record.odoo_id.meta_keywords}
-        return {}
-
-    @mapping
-    def meta_description(self, record):
-        if record.odoo_id.meta_description:
-            return {'meta_description': record.odoo_id.meta_description}
-        return {}
 
     @mapping
     def price(self, record):

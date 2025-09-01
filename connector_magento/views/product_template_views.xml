@@ -16,7 +16,7 @@
                     <separator string="SEO"/>
                     <field name="url_key" placeholder="Ejemplo: camiseta-roja-deportiva-entrenamiento"/>
                     <field name="meta_title" placeholder="Ejemplo: Camiseta roja deportiva para entrenamiento"/>
-                    <field name="meta_keywords" placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"/>
+                    <field name="meta_keyword" placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"/>
                     <field name="meta_description" placeholder="Descripción SEO del producto"/>
                 </field>
                 <notebook position="inside">

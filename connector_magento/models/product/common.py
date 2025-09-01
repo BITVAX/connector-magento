@@ -92,15 +92,8 @@ class MagentoProductProduct(models.Model):
 
     magento_url_key = fields.Char(
         string="URL Key",
-        compute='_compute_magento_url_key',
-        inverse='_inverse_magento_url_key',
         store=True,
         readonly=False
-    )
-    url_key_backend_specific = fields.Boolean(
-        string="Backend-specific URL Key",
-        default=False,
-        help="Check if this URL key is specific to this backend"
     )
     attribute_set_id = fields.Many2one(
         comodel_name='magento.product.attribute.set',
@@ -120,18 +113,6 @@ class MagentoProductProduct(models.Model):
         ('4', 'Catalog, Search'),
     ], default='4', string="Visibility")
     RECOMPUTE_QTY_STEP = 1000  # products at a time
-
-    @api.depends('odoo_id.url_key', 'url_key_backend_specific')
-    def _compute_magento_url_key(self):
-        for record in self:
-            if not record.url_key_backend_specific:
-                record.magento_url_key = record.odoo_id.url_key or ''
-
-    def _inverse_magento_url_key(self):
-        for record in self:
-            if not record.url_key_backend_specific:
-                if record.magento_url_key != record.odoo_id.url_key:
-                    record.odoo_id.url_key = record.magento_url_key
 
     product_links = fields.Many2many(
         comodel_name='magento.product.product',
@@ -259,6 +240,34 @@ class ProductProduct(models.Model):
         inverse_name='odoo_id',
         string='Magento Bindings',
     )
+    #
+    # variant_url_key = fields.Char(
+    #     compute='_compute_variant_url_key',
+    #     store=True,
+    #     string="Variant URL Key",
+    #     help="SEO-friendly URL key for product variants. Auto-generated from template + variant attributes."
+    # )
+    #
+    # @api.depends('product_tmpl_id.url_key', 'product_template_attribute_value_ids')
+    # def _compute_variant_url_key(self):
+    #     for product in self:
+    #         if product.product_tmpl_id.url_key:
+    #             base_url = product.product_tmpl_id.url_key
+    #
+    #             # Extract variant attributes that create variants (dynamic)
+    #             variant_parts = []
+    #             for ptav in product.product_template_attribute_value_ids:
+    #                 if ptav.attribute_id.create_variant == 'always':
+    #                     variant_parts.append(ptav.name.lower().replace(' ', '-'))
+    #
+    #             if variant_parts:
+    #                 # Has real variant attributes: add them to URL
+    #                 product.variant_url_key = f"{base_url}-{'-'.join(variant_parts)}"
+    #             else:
+    #                 # Simple product without variants: use template URL as-is
+    #                 product.variant_url_key = base_url
+    #         else:
+    #             product.variant_url_key = False
 
 class ProductProductAdapter(Component):
     _name = 'magento.product.product.adapter'

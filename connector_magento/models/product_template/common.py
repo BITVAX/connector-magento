@@ -102,15 +102,8 @@ class MagentoProductTemplate(models.Model):
     # )
     magento_url_key = fields.Char(
         string="URL Key",
-        compute='_compute_magento_url_key',
-        inverse='_inverse_magento_url_key',
         store=True,
         readonly=False
-    )
-    url_key_backend_specific = fields.Boolean(
-        string="Backend-specific URL Key",
-        default=False,
-        help="Check if this URL key is specific to this backend"
     )
     magento_status = fields.Selection([
         ('2', 'Disabled'),
@@ -127,18 +120,6 @@ class MagentoProductTemplate(models.Model):
          'Duplicate URL Key is not allowed - please set a new one !'
          ),
     ]
-
-    @api.depends('odoo_id.url_key', 'url_key_backend_specific')
-    def _compute_magento_url_key(self):
-        for record in self:
-            if not record.url_key_backend_specific:
-                record.magento_url_key = record.odoo_id.url_key or ''
-
-    def _inverse_magento_url_key(self):
-        for record in self:
-            if not record.url_key_backend_specific:
-                if record.magento_url_key != record.odoo_id.url_key:
-                    record.odoo_id.url_key = record.magento_url_key
 
     # @api.multi
     # @job(default_channel='root.magento')
@@ -184,7 +165,7 @@ class ProductTemplate(models.Model):
         help="SEO title for this product. Usually imported from Magento.",
         translate=True
     )
-    meta_keywords = fields.Char(
+    meta_keyword = fields.Char(
         string="Palabras clave",
         help="SEO keywords for this product. Usually imported from Magento."
     )

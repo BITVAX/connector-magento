@@ -192,7 +192,7 @@ class ProductImportMapper(Component):
               (convert('visibility',str), 'magento_visibility'),
               ('url_key', 'magento_url_key'),
               ('meta_title', 'meta_title'),
-              ('meta_keywords', 'meta_keywords'),
+              ('meta_keyword', 'meta_keyword'),
               ('meta_description', 'meta_description'),
               # (convert('cost', float), 'standard_price'),
               # (convert('price',float), 'list_price'),

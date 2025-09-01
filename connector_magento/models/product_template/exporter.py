@@ -371,6 +371,26 @@ class ProductTemplateExportMapper(Component):
                 'attribute_code': 'url_key',
                 'value': record.magento_url_key
             })
+        
+        # Add meta fields as custom attributes
+        if record.odoo_id.meta_title:
+            custom_attributes.append({
+                'attribute_code': 'meta_title',
+                'value': record.odoo_id.meta_title
+            })
+        
+        if record.odoo_id.meta_keyword:
+            custom_attributes.append({
+                'attribute_code': 'meta_keyword', 
+                'value': record.odoo_id.meta_keyword
+            })
+        
+        if record.odoo_id.meta_description:
+            custom_attributes.append({
+                'attribute_code': 'meta_description',
+                'value': record.odoo_id.meta_description
+            })
+        
         result = {'custom_attributes': custom_attributes}
         return result
 
@@ -378,23 +398,7 @@ class ProductTemplateExportMapper(Component):
     def status(self, record):
         return {'status': '2' if not record.active else record.magento_status}
 
-    @mapping
-    def meta_title(self, record):
-        if record.odoo_id.meta_title:
-            return {'meta_title': record.odoo_id.meta_title}
-        return {}
-
-    @mapping  
-    def meta_keywords(self, record):
-        if record.odoo_id.meta_keywords:
-            return {'meta_keywords': record.odoo_id.meta_keywords}
-        return {}
-
-    @mapping
-    def meta_description(self, record):
-        if record.odoo_id.meta_description:
-            return {'meta_description': record.odoo_id.meta_description}
-        return {}
+    # Meta fields now handled in get_custom_attributes method
 
     @mapping
     def option_products(self, record):
