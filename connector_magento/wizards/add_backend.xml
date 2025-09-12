@@ -11,7 +11,7 @@
                 <form string="Export to magento">
                     <p>Choose the backend you want to bind to</p>
                     <field name="product_type"/>
-                    <field name="product_links" attrs="{'invisible': [('product_type', '=', 'simple')]}"/>
+                    <field name="product_links" attrs="{'invisible': [('product_type', '!=', 'grouped')]}"/>
                     <field name="backend_id"/>
                     <field name="model_id" invisible="1"/>
                     <field name="action"/>
