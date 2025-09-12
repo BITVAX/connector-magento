@@ -469,34 +469,34 @@ class ProductTemplateUpdateWriteMapper(Component):
     def no_stock_sync(self, record):
         return {}
 
-    @mapping
-    def category_positions(self, record):
-        # Only for configure products
-        if not record['type_id'] == 'configurable':
-            return {}
-        if not 'extension_attributes' in record or not'category_links' in record['extension_attributes']:
-            return {}
-        data = []
-        for position in record['extension_attributes']['category_links']:
-            binder = self.binder_for('magento.product.category')
-            magento_category = binder.to_internal(position['category_id'])
-            if not magento_category:
-                raise ValueError('Magento category with id %s is missing on odoo side.' % position['category_id'])
-            magento_position = self.env['magento.product.position'].search([
-                ('magento_product_category_id', '=', magento_category.id),
-                ('product_template_id', '=', self.options.binding.odoo_id.id),
-            ])
-            if magento_position:
-                data.append((1, magento_position.id, {
-                    'position': position['position'],
-                }))
-            else:
-                data.append((0, 0, {
-                    'product_template_id': self.options.binding.odoo_id.id,
-                    'magento_product_category_id': magento_category.id,
-                    'position': position['position'],
-                }))
-        return {'magento_product_position_ids': data}
+    # @mapping
+    # def category_positions(self, record):
+    #     # Only for configure products
+    #     if not record['type_id'] == 'configurable':
+    #         return {}
+    #     if not 'extension_attributes' in record or not'category_links' in record['extension_attributes']:
+    #         return {}
+    #     data = []
+    #     for position in record['extension_attributes']['category_links']:
+    #         binder = self.binder_for('magento.product.category')
+    #         magento_category = binder.to_internal(position['category_id'])
+    #         if not magento_category:
+    #             raise ValueError('Magento category with id %s is missing on odoo side.' % position['category_id'])
+    #         magento_position = self.env['magento.product.position'].search([
+    #             ('magento_product_category_id', '=', magento_category.id),
+    #             ('product_template_id', '=', self.options.binding.odoo_id.id),
+    #         ])
+    #         if magento_position:
+    #             data.append((1, magento_position.id, {
+    #                 'position': position['position'],
+    #             }))
+    #         else:
+    #             data.append((0, 0, {
+    #                 'product_template_id': self.options.binding.odoo_id.id,
+    #                 'magento_product_category_id': magento_category.id,
+    #                 'position': position['position'],
+    #             }))
+    #     return {'magento_product_position_ids': data}
 
 
 class ProductTemplateUpdateCreateMapper(Component):

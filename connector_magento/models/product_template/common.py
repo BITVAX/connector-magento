@@ -347,7 +347,7 @@ class ProductTemplateAdapter(Component):
         if self.work.magento_api._location.version == '2.0':
             # Replace by the
             id = data['sku']
-            storeview_code = storeview_id.code if storeview_id else False
+#            storeview_code = storeview.code if storeview else False
             return super(ProductTemplateAdapter, self)._call(
                 'products/%s' % id, {
                     'product': data

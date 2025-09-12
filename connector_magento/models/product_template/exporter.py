@@ -152,12 +152,12 @@ class ProductTemplateDefinitionExporter(Component):
             update_data = map_record.values(binding=self.binding)
             _logger.info("Got Update data: %s for binding %s", update_data, self.binding)
             self.binding.with_context(connector_no_export=True).write(update_data)
-            # Update / Import stock item
-            stock_importer = self.component(
-                usage='record.importer',
-                model_name='magento.stock.item'
-            )
-            stock_importer.run(data['extension_attributes']['stock_item'])
+            # # Update / Import stock item
+            # stock_importer = self.component(
+            #     usage='record.importer',
+            #     model_name='magento.stock.item'
+            # )
+            # stock_importer.run(data['extension_attributes']['stock_item'])
             return False
         _logger.info("Got result data: %s", data)
 
