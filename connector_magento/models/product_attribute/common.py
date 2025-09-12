@@ -118,9 +118,9 @@ class ProductAttribute(models.Model):
     @api.depends('magento_bind_ids.exclude', 'magento_bind_ids.is_user_defined', 'create_variant')
     def _compute_is_user_visible(self):
         for record in self:
-            record.is_user_visible = not ((any([x.exclude for x in record.magento_bind_ids])
-                                           or not record.create_variant == 'always'
-                                           or any([not x.is_user_defined for x in record.magento_bind_ids])))
+            record.is_user_visible = not (any([any([x.exclude for x in record.magento_bind_ids])
+                                           , record.create_variant == 'always'
+                                           , any([not x.is_user_defined for x in record.magento_bind_ids])]))
 
 
 class ProductAttributeAdapter(Component):
