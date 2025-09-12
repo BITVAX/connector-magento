@@ -3,7 +3,8 @@
 # Copyright 2019 Callino
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-
+import base64
+import magic
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.connector.exception import MappingError
@@ -238,6 +239,20 @@ class ProductTemplateExportMapper(Component):
         ('name', 'name'),
     ]
 
+    mime_to_extension = {
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/gif': 'gif',
+        'image/bmp': 'bmp',
+        'image/webp': 'webp',
+        'image/tiff': 'tiff',
+        'image/svg+xml': 'svg',
+        'image/x-icon': 'ico',
+        'image/vnd.microsoft.icon': 'ico',
+        'image/heif': 'heif',
+        'image/heic': 'heic'
+    }
+
     @mapping
     def visibility(self, record):
         return {'visibility': 4}
@@ -355,6 +370,37 @@ class ProductTemplateExportMapper(Component):
         return {'weight': val}
 
     @mapping
+    def media_gallery_entries(self, record):
+        if record.image_ids:
+            media_gallery_entries = []
+            mime = magic.Magic(mime=True)
+            image_count = 0
+            for image in [record.odoo_id]:
+                mimetype = mime.from_buffer(base64.b64decode(image.image_1920))
+                extension = self.mime_to_extension.get(mimetype, 'jpg')
+                filename = f"{slugify(image.name or record.external_id)}_{record.id}_{image_count}.{extension}"
+                image_count += 1
+                media_gallery_entries.append({
+                    "media_type": "image",
+                    "label": image.name or record.name,
+                    "position": image_count,
+                    "disabled": False,
+                    "types": [
+                        "image",
+                        "small_image",
+                        "thumbnail",
+                    ],
+                    "content": {
+                        "base64_encoded_data": image.image_1920,
+                        "type": mimetype,
+                        "name": filename,
+                    },
+                })
+
+            return {'media_gallery_entries': media_gallery_entries}
+        return {}
+
+    @mapping
     def attribute_set_id(self, record):
         if record.attribute_set_id:
             val = record.attribute_set_id.external_id
@@ -362,35 +408,62 @@ class ProductTemplateExportMapper(Component):
             val = record.backend_id.default_attribute_set_id.external_id
         return {'attributeSetId': val}
 
+    def get_non_configurable_attributes(self, record):
+        non_configurable_attributes = []
+        for line in record.attribute_line_ids:
+            if line.attribute_id.create_variant in ['always', 'dynamic'] or len(line.value_ids) > 1 or not line.value_ids:
+                continue
+            m_att_id = line.attribute_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
+            if not m_att_id:
+                raise MappingError("The product attribute %s "
+                                   "is not exported yet." %
+                                   line.attribute_id.name)
+            # Take the first value only - non configurable attributes should not have more than one value anyway
+            v = line.value_ids[0]
+            v_ids = v.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
+            if not v_ids:
+                raise MappingError("The product attribute value %s "
+                                   "is not exported yet." %
+                                   v.name)
+            non_configurable_attributes.append({
+                'attribute_code': m_att_id.attribute_code,
+                'value': v_ids[0].external_id.split('_')[1]
+            })
+
+        return  non_configurable_attributes
+
+
     @mapping
     def get_custom_attributes(self, record):
         custom_attributes = []
         custom_attributes.append(self.category_ids(record))
+        custom_attributes.extend(self.get_non_configurable_attributes(record))
+
         if record.magento_url_key:
             custom_attributes.append({
                 'attribute_code': 'url_key',
                 'value': record.magento_url_key
             })
-        
+
         # Add meta fields as custom attributes
         if record.odoo_id.meta_title:
             custom_attributes.append({
                 'attribute_code': 'meta_title',
                 'value': record.odoo_id.meta_title
             })
-        
+
         if record.odoo_id.meta_keyword:
             custom_attributes.append({
-                'attribute_code': 'meta_keyword', 
+                'attribute_code': 'meta_keyword',
                 'value': record.odoo_id.meta_keyword
             })
-        
+
         if record.odoo_id.meta_description:
             custom_attributes.append({
                 'attribute_code': 'meta_description',
                 'value': record.odoo_id.meta_description
             })
-        
+
         result = {'custom_attributes': custom_attributes}
         return result
 
