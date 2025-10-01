@@ -630,7 +630,7 @@ class ProductInventoryExporter(Component):
         if binding._name == 'magento.product.template':
             data= {
                 'manage_stock': 0,
-                'is_in_stock' : 1,
+                'use_config_manage_stock': 0,
             }
         else:
             data = self._get_data(binding, fields)
