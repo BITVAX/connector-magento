@@ -82,7 +82,7 @@ class ProductAttributeExporter(Component):
         if data.get('attribute_set_id'):  # we don't want to update this
             del data['attribute_set_id']
         result = super(ProductAttributeExporter, self)._update(data, storeview=storeview_code, **kwargs)
-        self._update_attribute_with_result(data)
+        self._update_attribute_with_result(result)
         return result
 
     '''

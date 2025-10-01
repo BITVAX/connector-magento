@@ -176,7 +176,7 @@ class ProductTemplateDefinitionExporter(Component):
                     'odoo_id': p.id,
                     'attribute_set_id': record.attribute_set_id.id,
                     # 'magento_configurable_id': record.id,
-                    # 'visibility': '1',
+                    'magento_visibility': '1',
                 })
                 created = True
             if self._must_update_variants() or created or not m_prod.external_id:
