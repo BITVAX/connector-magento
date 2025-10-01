@@ -149,7 +149,12 @@ class MagentoProductTemplate(models.Model):
     #         template.magento_stock_item_ids.unlink()
     #         template.magento_product_ids.unlink()
     #     return super(MagentoProductTemplate, self).unlink()
-
+    def export_inventory(self, fields=None):
+        """ Export the inventory configuration and quantity of a product. """
+        self.ensure_one()
+        with self.backend_id.work_on(self._name) as work:
+            exporter = work.component(usage='product.inventory.exporter')
+            return exporter.run(self, fields)
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'

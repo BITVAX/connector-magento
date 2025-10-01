@@ -139,6 +139,7 @@ class ProductTemplateDefinitionExporter(Component):
         importer.run(data, force=True, binding=self.binding)
         self.external_id = data['sku']
         self.magento_id = data['id']
+        self.binding.export_inventory()
 
     def _update_binding_record_after_write(self, data):
         for attr in data.get('custom_attributes', []):

@@ -593,7 +593,7 @@ class ProductImporter(Component):
 class ProductInventoryExporter(Component):
     _name = 'magento.product.inventory.exporter'
     _inherit = 'magento.exporter'
-    _apply_on = ['magento.product.product']
+    _apply_on = ['magento.product.product','magento.product.template']
     _usage = 'product.inventory.exporter'
 
     _map_backorders = {'use_default': 0,
@@ -627,7 +627,13 @@ class ProductInventoryExporter(Component):
     def run(self, binding, fields):
         """ Export the product inventory to Magento """
         external_id = self.binder.to_external(binding)
-        data = self._get_data(binding, fields)
+        if binding._name == 'magento.product.template':
+            data= {
+                'manage_stock': 0,
+                'is_in_stock' : 1,
+            }
+        else:
+            data = self._get_data(binding, fields)
         self.backend_adapter.update_inventory(external_id, data)
 
 
