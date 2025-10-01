@@ -388,3 +388,28 @@ class ProductTemplateAdapter(Component):
             for attr in res.get('custom_attributes', []):
                 res[attr['attribute_code']] = attr['value']
         return res
+
+    def update_inventory(self, external_id, data):
+        """ Update the default stock. For Magento2, first retrieve the stock
+        item that applies to this stock for the product. """
+        if self.collection.version == '1.7':
+            # product_stock.update is too slow
+            return self._call('oerp_cataloginventory_stock_item.update',
+                              [int(external_id), data])
+
+        # Magento2
+        data = {'stockItem': data}
+        res = self._call('stockItems/%s' % self.escape(external_id), None)
+        if isinstance(res, dict):
+            res = [res]
+        item_id = 0
+        for item in res:
+            if item['stock_id'] == 1:
+                item_id = item['item_id']
+                break
+        else:
+            raise ValueError(
+                'No stock item found for product %s for default stock_id 1' %
+                external_id)
+        self._call('products/%s/stockItems/%s' % (
+            self.escape(external_id), item_id), data, http_method='put')
