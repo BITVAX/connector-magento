@@ -62,7 +62,7 @@ class ProductProductExporter(Component):
             self._update_binding_record_after_create(record)
             self.external_id = record.get('sku')
             self.binding.recompute_magento_qty()
-            self.binding.export_inventory()
+            self.binding.export_inventory(fields=['magento_qty'])
         return _('Record exported with ID %s on Magento.') % self.external_id
 
     def _sku_inuse(self, sku):
