@@ -60,6 +60,9 @@ class ProductProductExporter(Component):
                 raise UserWarning('Create did not returned anything on %s with binding id %s', self._name,
                                   self.binding.id)
             self._update_binding_record_after_create(record)
+            self.external_id = record.get('sku')
+            self.binding.recompute_magento_qty()
+            self.binding.export_inventory()
         return _('Record exported with ID %s on Magento.') % self.external_id
 
     def _sku_inuse(self, sku):
