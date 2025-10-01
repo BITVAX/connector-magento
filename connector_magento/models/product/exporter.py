@@ -383,7 +383,13 @@ class ProductProductExportMapper(Component):
             media_gallery_entries = []
             mime = magic.Magic(mime=True)
             image_count=0
-            for image in record.image_ids:
+            img_without_variants=record.image_ids.filtered(lambda i: len(i.product_variant_ids) == 0)
+            if len(record.image_ids) > 1 and img_without_variants:
+                # If we have multiple images and some are not linked to variants - use them first
+                images = record.image_ids - img_without_variants
+            else:
+                images = record.image_ids
+            for image in images:
                 if not image.image_1920:
                     continue
                 mimetype = mime.from_buffer(base64.b64decode(image.image_1920))
