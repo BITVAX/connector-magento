@@ -291,7 +291,6 @@ class ProductProductExportMapper(Component):
         ('external_id', 'sku'),
         ('product_type', 'typeId'),
         ('magento_visibility', 'visibility'),
-        ('description', 'description'),
     ]
 
     @mapping
