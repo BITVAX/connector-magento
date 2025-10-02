@@ -280,10 +280,6 @@ class ProductProductExporter(Component):
         self._export_attribute_values()
         return
 
-    def _export_stock(self):
-        for stock_item in self.binding.magento_stock_item_ids:
-            stock_item.sync_to_magento()
-
 
 class ProductProductExportMapper(Component):
     _name = 'magento.product.export.mapper'
@@ -404,11 +400,6 @@ class ProductProductExportMapper(Component):
                     "label": image.name or record.name,
                     "position": image_count,
                     "disabled": False,
-                    "types": [
-                        "image",
-                        "small_image",
-                        "thumbnail",
-                    ],
                     # "file": filename,
                     "content": {
                         "base64_encoded_data": image.image_1920,
@@ -416,8 +407,11 @@ class ProductProductExportMapper(Component):
                         "name": filename,
                     },
                 })
+            if len(media_gallery_entries):
+                media_gallery_entries[0]['types'] = ['image', 'small_image', 'thumbnail']
             return {'media_gallery_entries': media_gallery_entries}
         return {}
+
     def get_website_ids(self, record):
         if record.website_ids:
             website_ids = [s.external_id for s in record.website_ids]

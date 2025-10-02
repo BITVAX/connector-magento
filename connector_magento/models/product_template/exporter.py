@@ -380,18 +380,14 @@ class ProductTemplateExportMapper(Component):
                     "label": image.name or record.name,
                     "position": image_count,
                     "disabled": False,
-                    "types": [
-                        "image",
-                        "small_image",
-                        "thumbnail",
-                    ],
                     "content": {
                         "base64_encoded_data": image.image_1920,
                         "type": mimetype,
                         "name": filename,
                     },
                 })
-
+            if len(media_gallery_entries):
+                media_gallery_entries[0]['types'] = ['image', 'small_image', 'thumbnail']
             return {'media_gallery_entries': media_gallery_entries}
         return {}
 
