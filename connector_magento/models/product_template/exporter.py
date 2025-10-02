@@ -286,8 +286,7 @@ class ProductTemplateExportMapper(Component):
         pavalues = []
         available_attribute_ids = []
         att_lines = record.attribute_line_ids.filtered(
-            lambda l: l.attribute_id.create_variant in ['always', 'dynamic']
-            and len(l.value_ids) > 1
+            lambda l: l.attribute_id.create_variant != 'no_variant'
             and len(l.attribute_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)) > 0
         )
         for l in att_lines:
