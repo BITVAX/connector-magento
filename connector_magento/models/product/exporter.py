@@ -449,7 +449,7 @@ class ProductProductExportMapper(Component):
                 matt_id = line.attribute_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
                 if not matt_id:
                     continue
-                if not matt_id.is_user_visible or not matt_id.field_id or not matt_id.create_variant == 'always' or line.value_count > 1:
+                if not matt_id.is_user_visible or not matt_id.field_id or matt_id.create_variant != 'no_variant':
                     continue
                 for value_id in line.value_ids:
                     mvalue_id = value_id.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
