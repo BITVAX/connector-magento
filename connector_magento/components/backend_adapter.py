@@ -82,10 +82,6 @@ class Magento2Client(object):
         res = function(url, **kwargs)
         if res.status_code != 200:
             message=res.text
-            try:
-                message = res.json().get('message', message)
-            except Exception:
-                pass
             if res.status_code == 404:
                 raise IDMissingInBackend(message)
             raise JobError(message)
