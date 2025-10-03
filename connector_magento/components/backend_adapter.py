@@ -126,8 +126,11 @@ class MagentoAPI(object):
 
     def api_call(self, method, arguments, http_method=None, storeview=None):
         """ Adjust available arguments per API """
-        if isinstance(self.api, magentolib.API):
-            return self.api.call(method, arguments)
+        try:
+            if isinstance(self.api, magentolib.API):
+                return self.api.call(method, arguments)
+        except NameError:
+            pass
         return self.api.call(method, arguments, http_method=http_method,
                              storeview=storeview)
 
