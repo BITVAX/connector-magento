@@ -386,6 +386,8 @@ class ProductProductExportMapper(Component):
             if len(record.image_ids) > 1 and img_without_variants:
                 # If we have multiple images and some are not linked to variants - use them first
                 images = record.image_ids - img_without_variants
+                if not images:
+                    images = record.image_ids
             else:
                 images = record.image_ids
             for image in images:
