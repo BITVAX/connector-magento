@@ -107,7 +107,7 @@ class MagentoPickingExporter(Component):
             }
             external_id = self.backend_adapter._call(
                 'order/%s/ship' %
-                binding.sale_id.magento_bind_ids[0].external_id,
+                str(binding.sale_id.magento_bind_ids[0].magento_order_id),
                 arguments, http_method='post')
 
         self.binder.bind(external_id, binding)

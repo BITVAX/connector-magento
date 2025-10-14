@@ -132,7 +132,7 @@ class SaleOrderImportMapper(Component):
     _apply_on = 'magento.sale.order'
 
     direct = [('increment_id', 'external_id'),
-              ('order_id', 'magento_order_id'),
+              ('entity_id', 'magento_order_id'),
               ('base_grand_total', 'total_amount'),
               ('base_tax_amount', 'total_amount_tax'),
               (normalize_datetime('created_at'), 'date_order'),
