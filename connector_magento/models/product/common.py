@@ -271,7 +271,7 @@ class ProductProduct(models.Model):
 
 class ProductProductAdapter(Component):
     _name = 'magento.product.product.adapter'
-    _inherit = 'magento.adapter'
+    _inherit = 'magento.product.adapter'
     _apply_on = 'magento.product.product'
 
     _magento_model = 'catalog_product'
@@ -317,23 +317,6 @@ class ProductProductAdapter(Component):
                                   [filters] if filters else [{}])]
         return super(ProductProductAdapter, self).search(filters=filters)
 
-    def read(self, external_id, storeview=None, attributes=None, **kwargs):
-        """ Returns the information of a record
-
-        :rtype: dict
-        """
-        # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            return self._call(
-                'ol_catalog_product.info',
-                [int(external_id), storeview, attributes, 'id'])
-        res = super(ProductProductAdapter, self).read(
-            external_id, attributes=attributes, storeview=storeview)
-        if res:
-            for attr in res.get('custom_attributes', []):
-                res[attr['attribute_code']] = attr['value']
-        return res
-
     def write(self, external_id, data, storeview=None, **kwargs):
         """ Update records on the external system """
         # pylint: disable=method-required-super
@@ -345,61 +328,12 @@ class ProductProductAdapter(Component):
         return super(ProductProductAdapter, self).write(
             external_id, data, storeview=storeview, **kwargs)
 
-    def get_images(self, external_id, storeview_id=None, data=None):
-        """ Fetch image metadata either by querying Magento 1.x, or extracting
-        it from the product data for Magento 2.x """
-        if self.collection.version == '1.7':
-            return self._call('product_media.list',
-                              [int(external_id), storeview_id, 'id'])
-
-        res = []
-        # Fetch base media url from storeview
-        storeview = (
-            self.env['magento.storeview'].browse(storeview_id) if storeview_id
-            else self.env['magento.storeview'].search(
-                [('backend_id', '=', self.collection.id),
-                 ('code', '=', 'default')]))
-        base_url = (storeview.base_media_url or
-                    '%s/media/' % self.backend_record.location)
-
-        for entry in data.get('media_gallery_entries', []):
-            if entry['media_type'] == 'image':
-                entry['url'] = '%scatalog/product/%s' % (
-                    base_url, entry['file'])
-                res.append(entry)
-        return res
-
     def read_image(self, external_id, image_name, storeview_id=None):
         if self.collection.version == '1.7':
             return self._call(
                 'product_media.info',
                 [int(external_id), image_name, storeview_id, 'id'])
         raise NotImplementedError  # TODO
-
-    def update_inventory(self, external_id, data):
-        """ Update the default stock. For Magento2, first retrieve the stock
-        item that applies to this stock for the product. """
-        if self.collection.version == '1.7':
-            # product_stock.update is too slow
-            return self._call('oerp_cataloginventory_stock_item.update',
-                              [int(external_id), data])
-
-        # Magento2
-        data = {'stockItem': data}
-        res = self._call('stockItems/%s' % self.escape(external_id), None)
-        if isinstance(res, dict):
-            res = [res]
-        item_id = 0
-        for item in res:
-            if item['stock_id'] == 1:
-                item_id = item['item_id']
-                break
-        else:
-            raise ValueError(
-                'No stock item found for product %s for default stock_id 1' %
-                external_id)
-        self._call('products/%s/stockItems/%s' % (
-            self.escape(external_id), item_id), data, http_method='put')
 
 
 class MagentoBindingProductListener(Component):

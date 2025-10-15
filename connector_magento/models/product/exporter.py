@@ -48,6 +48,10 @@ class ProductProductExporter(Component):
             record = self._update_data(map_record, fields=fields)
             if not record:
                 return _('Nothing to export.')
+
+            # Clear ALL existing images BEFORE update to maintain sync
+            self._clear_existing_images_before_update(record)
+
             data = self._update(record, **kwargs)
             if data:
                 self._update_binding_record_after_write(data)
@@ -64,6 +68,29 @@ class ProductProductExporter(Component):
             self.binding.recompute_magento_qty()
             self.binding.export_inventory(fields=['magento_qty'])
         return _('Record exported with ID %s on Magento.') % self.external_id
+
+    def _clear_existing_images_before_update(self, record):
+        """Clear all existing images from Magento before updating product.
+        
+        This prevents image duplication when syncing products.
+        Called during update operations, before sending new image data.
+        
+        :param record: Product data dictionary to be sent to Magento
+        :return: None
+        """
+        new_image_count = len(record.get('media_gallery_entries', []))
+        entity_type = "Product" if self._apply_on == ['magento.product.product'] else "Template"
+        
+        _logger.debug("%s %s: clearing existing images before update (%d new)",
+                     entity_type, self.external_id, new_image_count)
+        try:
+            deleted, failed = self.backend_adapter.clear_product_images(self.external_id)
+            if failed > 0:
+                _logger.warning("%s %s: failed to delete %d images",
+                              entity_type, self.external_id, failed)
+        except Exception as e:
+            _logger.error("%s %s: error clearing images: %s", 
+                         entity_type, self.external_id, e)
 
     def _sku_inuse(self, sku):
         search_count = self.env['magento.product.template'].search_count([

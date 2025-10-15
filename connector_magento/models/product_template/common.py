@@ -274,6 +274,7 @@ class ProductTemplate(models.Model):
 
     # @api.multi
     def write(self, vals):
+        res = False
         for tpl in self:
             if vals.get('auto_create_variants', tpl.auto_create_variants):
                 # do auto create variants
@@ -287,7 +288,7 @@ class ProductTemplate(models.Model):
 
 class ProductTemplateAdapter(Component):
     _name = 'magento.product.template.adapter'
-    _inherit = 'magento.adapter'
+    _inherit = 'magento.product.adapter'
     _apply_on = 'magento.product.template'
 
     _magento_model = 'catalog_product'
@@ -322,26 +323,6 @@ class ProductTemplateAdapter(Component):
         # TODO add a search entry point on the Magento API
         raise NotImplementedError
 
-    def get_images(self, dummy, storeview_id=None, data=None):
-        """ Fetch image metadata either by querying Magento 1.x, or extracting
-        it from the product data for Magento 2.x """
-        res = []
-        # Fetch base media url from storeview
-        storeview = (
-            self.env['magento.storeview'].browse(storeview_id) if storeview_id
-            else self.env['magento.storeview'].search(
-                [('backend_id', '=', self.collection.id),
-                 ('code', '=', 'default')]))
-        base_url = (storeview.base_media_url or
-                    '%s/media/' % self.backend_record.location)
-
-        for entry in data.get('media_gallery_entries', []):
-            if entry['media_type'] == 'image':
-                entry['url'] = '%scatalog/product/%s' % (
-                    base_url, entry['file'])
-                res.append(entry)
-        return res
-
     def list_variants(self, sku):
         if self.work.magento_api._location.version == '2.0':
             res = self._call('configurable-products/%s/children' % (self.escape(sku)), None)
@@ -359,57 +340,3 @@ class ProductTemplateAdapter(Component):
                 },
                 http_method='put', storeview=storeview)
         raise NotImplementedError
-
-    # def get_images(self, id, storeview_id=None, data=None):
-    #     if self.work.magento_api._location.version == '2.0':
-    #         assert data
-    #         return (entry for entry in
-    #                 data.get('media_gallery_entries', [])
-    #                 if entry['media_type'] == 'image')
-    #     else:
-    #         return self._call('product_media.list', [int(id), storeview_id, 'id'])
-    #
-    # def read_image(self, id, image_name, storeview_id=None):
-    #     if self.work.magento_api._location.version == '2.0':
-    #         raise NotImplementedError  # TODO
-    #     return self._call('product_media.info',
-    #                       [int(id), image_name, storeview_id, 'id'])
-    def read(self, external_id, attributes=None, storeview=None, **kwargs):
-        """ Returns the information of a record
-
-        :rtype: dict
-        """
-        # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            raise NotImplementedError
-        res = super(ProductTemplateAdapter, self).read(
-            external_id, attributes=attributes, storeview=storeview)
-        if res:
-            for attr in res.get('custom_attributes', []):
-                res[attr['attribute_code']] = attr['value']
-        return res
-
-    def update_inventory(self, external_id, data):
-        """ Update the default stock. For Magento2, first retrieve the stock
-        item that applies to this stock for the product. """
-        if self.collection.version == '1.7':
-            # product_stock.update is too slow
-            return self._call('oerp_cataloginventory_stock_item.update',
-                              [int(external_id), data])
-
-        # Magento2
-        data = {'stockItem': data}
-        res = self._call('stockItems/%s' % self.escape(external_id), None)
-        if isinstance(res, dict):
-            res = [res]
-        item_id = 0
-        for item in res:
-            if item['stock_id'] == 1:
-                item_id = item['item_id']
-                break
-        else:
-            raise ValueError(
-                'No stock item found for product %s for default stock_id 1' %
-                external_id)
-        self._call('products/%s/stockItems/%s' % (
-            self.escape(external_id), item_id), data, http_method='put')

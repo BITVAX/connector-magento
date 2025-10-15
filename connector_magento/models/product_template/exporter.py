@@ -50,6 +50,10 @@ class ProductTemplateDefinitionExporter(Component):
             record = self._update_data(map_record, fields=fields)
             if not record:
                 return _('Nothing to export.')
+
+            # Clear ALL existing images BEFORE update to maintain sync
+            self._clear_existing_images_before_update(record)
+
             data = self._update(record)
             if data:
                 self._update_binding_record_after_write(data)
@@ -62,23 +66,6 @@ class ProductTemplateDefinitionExporter(Component):
                 raise UserWarning('Create did not returned anything on %s with binding id %s', self._name, self.binding.id)
             self._update_binding_record_after_create(record)
         return _('Record exported with ID %s on Magento.') % self.external_id
-
-    def _sku_inuse(self, sku):
-        search_count = self.env['magento.product.template'].search_count([
-            ('backend_id', '=', self.backend_record.id),
-            ('external_id', '=', sku),
-        ])
-        if not search_count:
-            search_count += self.env['magento.product.product'].search_count([
-                ('backend_id', '=', self.backend_record.id),
-                ('external_id', '=', sku),
-            ])
-        # if not search_count:
-        #     search_count += self.env['magento.product.bundle'].search_count([
-        #         ('backend_id', '=', self.backend_record.id),
-        #         ('external_id', '=', sku),
-        #     ])
-        return search_count > 0
 
     def _get_sku_proposal(self):
         if self.binding.code_prefix:
