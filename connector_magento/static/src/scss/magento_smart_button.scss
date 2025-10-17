@@ -1,0 +1,43 @@
+/* Magento Smart Button Colors */
+
+.oe_stat_button.magento_published {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.oe_stat_button.magento_published:hover {
+    background-color: #218838 !important;
+}
+
+.oe_stat_button.magento_published .o_stat_value,
+.oe_stat_button.magento_published .o_stat_text {
+    color: white !important;
+}
+
+.oe_stat_button.magento_partial {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.oe_stat_button.magento_partial:hover {
+    background-color: #e0a800 !important;
+}
+
+.oe_stat_button.magento_partial .o_stat_value,
+.oe_stat_button.magento_partial .o_stat_text {
+    color: #212529 !important;
+}
+
+.oe_stat_button.magento_unpublished {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.oe_stat_button.magento_unpublished:hover {
+    background-color: #c82333 !important;
+}
+
+.oe_stat_button.magento_unpublished .o_stat_value,
+.oe_stat_button.magento_unpublished .o_stat_text {
+    color: white !important;
+}
