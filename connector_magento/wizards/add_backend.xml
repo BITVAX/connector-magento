@@ -8,15 +8,43 @@
             <field name="name">Bind an Object to a backend</field>
             <field name="model">connector_magento.add_backend.wizard</field>
             <field name="arch" type="xml">
-                <form string="Export to magento">
-                    <p>Choose the backend you want to bind to</p>
-                    <field name="product_type"/>
-                    <field name="product_links" attrs="{'invisible': [('product_type', '!=', 'grouped')]}"/>
-                    <field name="backend_id"/>
+                <form string="Add Magento Backend">
+                    <p>Configure Magento backend binding for selected products</p>
+
+                    <!-- Auto-detected product type -->
+                    <group>
+                        <field name="detected_template_type" readonly="1"
+                               attrs="{'invisible': [('detected_template_type', '=', False)]}"/>
+                        <field name="product_type" readonly="1"
+                               attrs="{'invisible': [('product_type', '=', False)]}"/>
+                    </group>
+
+                    <!-- Configuration fields -->
+                    <group>
+                        <field name="backend_id"/>
+                        <field name="action"/>
+                    </group>
+
+                    <!-- Grouped product links -->
+                    <group>
+                        <field name="product_links"
+                               attrs="{'invisible': [('product_type', '!=', 'grouped')],
+                                       'required': [('product_type', '=', 'grouped')]}"/>
+                    </group>
+
+                    <!-- Validation warnings -->
+                    <group>
+                        <field name="warning_message" readonly="1" class="text-danger"
+                               attrs="{'invisible': [('warning_message', '=', False)]}"/>
+                    </group>
+
+                    <!-- Hidden fields -->
                     <field name="model_id" invisible="1"/>
-                    <field name="action"/>
+
                     <footer>
-                        <button name="action_accept" type="object" string="Export" class="oe_highlight"/>
+                        <button name="action_accept" type="object" string="Create Binding"
+                                class="oe_highlight"
+                                attrs="{'invisible': ['|', ('product_type', '=', False), ('warning_message', 'ilike', 'ERROR')]}"/>
                         or
                         <button special="cancel" string="Cancel"/>
                     </footer>

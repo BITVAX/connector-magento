@@ -62,16 +62,129 @@ class WizardModel(models.TransientModel):
                 "Please import attribute sets first using the backend form."
             ) % backend.name)
 
-    def _is_configurable_template(self, template):
-        """Check if template has variant-creating attributes (configurable)"""
-        if not template.attribute_line_ids:
-            return False
+    @api.depends('backend_id', 'product_links')
+    def _compute_product_type(self):
+        """Automatically detect product type based on context and configuration."""
+        for wizard in self:
+            active_model = wizard.env.context.get('active_model')
+            active_ids = wizard.env.context.get('active_ids', [])
 
-        # Check if any attribute creates variants
-        for line in template.attribute_line_ids:
-            if line.attribute_id.create_variant in ('always', 'dynamic'):
-                return True
-        return False
+            # Default values
+            wizard.product_type = False
+            wizard.detected_template_type = False
+
+            if not active_model or not active_ids:
+                wizard.detected_template_type = "No product selected"
+                continue
+
+            if active_model == 'product.template':
+                # Called from template
+                templates = wizard.env['product.template'].browse(active_ids)
+                if not templates:
+                    continue
+                template = templates[0]  # Use first template for detection
+
+                if template.has_variant_attributes:
+                    wizard.product_type = 'configurable'
+                    wizard.detected_template_type = "Configurable Template (has variant attributes)"
+                else:
+                    wizard.product_type = 'simple'
+                    wizard.detected_template_type = "Simple Template (no variant attributes)"
+
+            elif active_model == 'product.product':
+                # Called from product variant
+                products = wizard.env['product.product'].browse(active_ids)
+                if not products:
+                    continue
+                product = products[0]  # Use first product for detection
+                template = product.product_tmpl_id
+
+                # Check if template has variant attributes
+                if template.has_variant_attributes:
+                    # ERROR: Cannot create binding from variant of configurable template
+                    wizard.product_type = False
+                    wizard.detected_template_type = "ERROR: This product belongs to a configurable template. Please use the template instead."
+                else:
+                    # Simple product or grouped
+                    if wizard.product_links:
+                        wizard.product_type = 'grouped'
+                        wizard.detected_template_type = "Grouped Product (simple product with links)"
+                    else:
+                        wizard.product_type = 'simple'
+                        wizard.detected_template_type = "Simple Product (add linked products for Grouped)"
+
+    @api.depends('product_type', 'product_links', 'backend_id')
+    def _compute_warnings(self):
+        """Generate validation warnings before creating bindings."""
+        for wizard in self:
+            warnings = []
+
+            # Check for ERROR in detected_template_type
+            if wizard.detected_template_type and 'ERROR' in wizard.detected_template_type:
+                warnings.append("⚠ " + wizard.detected_template_type)
+
+            # Check if grouped product has no links
+            if wizard.product_type == 'grouped' and not wizard.product_links:
+                warnings.append("⚠ Grouped products require at least one linked product")
+
+            # Check if product_links have different backends
+            if wizard.product_links and wizard.backend_id:
+                for link in wizard.product_links:
+                    # Get Magento bindings for this product
+                    link_bindings = link.magento_bind_ids.filtered(
+                        lambda b: b.backend_id == wizard.backend_id
+                    )
+                    if not link_bindings:
+                        warnings.append(f"⚠ Linked product '{link.display_name}' is not configured for backend '{wizard.backend_id.name}'")
+
+            # Check for duplicate bindings
+            if wizard.backend_id:
+                active_model = wizard.env.context.get('active_model')
+                active_ids = wizard.env.context.get('active_ids', [])
+
+                if active_model == 'product.template' and active_ids:
+                    # Check for existing template bindings
+                    existing = wizard.env['magento.product.template'].search([
+                        ('odoo_id', 'in', active_ids),
+                        ('backend_id', '=', wizard.backend_id.id)
+                    ])
+                    if existing:
+                        warnings.append(f"⚠ Backend '{wizard.backend_id.name}' is already configured for this template")
+
+                elif active_model == 'product.product' and active_ids:
+                    # Check for existing product bindings
+                    existing = wizard.env['magento.product.product'].search([
+                        ('odoo_id', 'in', active_ids),
+                        ('backend_id', '=', wizard.backend_id.id)
+                    ])
+                    if existing:
+                        warnings.append(f"⚠ Backend '{wizard.backend_id.name}' is already configured for this product")
+
+            wizard.warning_message = '\n'.join(warnings) if warnings else False
+
+    @api.constrains('product_type', 'product_links')
+    def _check_grouped_requirements(self):
+        """Ensure grouped products have at least one linked product."""
+        for wizard in self:
+            if wizard.product_type == 'grouped' and not wizard.product_links:
+                raise UserError(_("Grouped products require at least one linked product."))
+
+    # DEPRECATED: Use template.has_variant_attributes field instead
+    # def _is_configurable_template(self, template):
+    #     """Check if template has variant-creating attributes (configurable)
+    #
+    #     DEPRECATED: This method is deprecated. Use template.has_variant_attributes instead.
+    #     The has_variant_attributes field is a stored computed field on product.template
+    #     that provides the same functionality with better performance.
+    #     """
+    #     if not template.attribute_line_ids:
+    #         return False
+    #
+    #     # Check if any attribute creates variants
+    #     for line in template.attribute_line_ids:
+    #         if line.attribute_id.create_variant in ('always', 'dynamic'):
+    #             return True
+    #     return False
 
     def _get_default_attribute_set(self):
         """Safely get default attribute set"""
@@ -130,7 +243,7 @@ class WizardModel(models.TransientModel):
         templates = self.env['product.template'].browse(active_ids)
 
         for template in templates:
-            if self._is_configurable_template(template):
+            if template.has_variant_attributes:
                 # Configurable: create template binding
                 self._create_template_binding(template)
             else:
@@ -146,12 +259,60 @@ class WizardModel(models.TransientModel):
         for product in products:
             template = product.product_tmpl_id
 
-            if self._is_configurable_template(template):
+            if template.has_variant_attributes:
                 # Configurable: create template binding (not product binding)
                 self._create_template_binding(template)
             else:
                 # Simple: create product binding
                 self._create_product_binding(product)
+
+    def _process_grouped_product_binding(self):
+        """Process grouped product bindings with linked products."""
+        active_ids = self.env.context.get('active_ids', [])
+        products = self.env['product.product'].browse(active_ids)
+
+        for product in products:
+            template = product.product_tmpl_id
+
+            # Validate product is not from configurable template
+            if template.has_variant_attributes:
+                raise UserError(_(
+                    "Cannot create grouped product from '%s' because it belongs to "
+                    "a configurable template. Grouped products can only be created "
+                    "from simple products."
+                ) % product.display_name)
+
+            # Check if binding already exists
+            existing_binding = self.env['magento.product.product'].search([
+                ('odoo_id', '=', product.id),
+                ('backend_id', '=', self.backend_id.id)
+            ])
+
+            if existing_binding:
+                # Update existing binding with grouped type and links
+                existing_binding.write({
+                    'product_type': 'grouped',
+                    'product_links': [(6, 0, self.product_links.ids)]
+                })
+                binding = existing_binding
+            else:
+                # Create new grouped product binding
+                vals = {
+                    'odoo_id': product.id,
+                    'backend_id': self.backend_id.id,
+                    'product_type': 'grouped',
+                    'product_links': [(6, 0, self.product_links.ids)],
+                    'attribute_set_id': self._get_default_attribute_set().id,
+                }
+                binding = self.env['magento.product.product'].create(vals)
+
+            # Only sync if action is explicitly 'export'
+            if self.action == 'export':
+                if getattr(binding, 'sync_to_magento', False):
+                    binding.sync_to_magento()
+            elif self.action == 'import':
+                if getattr(binding, 'sync_from_magento', False):
+                    binding.sync_from_magento()
 
     def _create_template_binding(self, template):
         """Create magento.product.template binding for configurable products"""
@@ -219,19 +380,67 @@ class WizardModel(models.TransientModel):
         # ('bundle', 'Bundle Product'),
         # ('virtual', 'Virtual Product'),
         # ('downloadable', 'Downloadable Product'),
-    ], default='simple', required=True)
-    product_links = fields.Many2many('magento.product.product',
-                                     'magento_product_product_grouped_rel',
-                                        string='Linked Products')
+    ], string='Product Type',
+        compute='_compute_product_type',
+        readonly=True,
+        store=False,
+        help="Automatically detected product type based on context and product configuration")
+    product_links = fields.Many2many(
+        comodel_name='product.product',
+        relation='wizard_magento_product_grouped_links',
+        column1='wizard_id',
+        column2='product_id',
+        string='Linked Products',
+        help="Select products to link for grouped product type"
+    )
+    detected_template_type = fields.Char(
+        string='Detected Type',
+        compute='_compute_product_type',
+        readonly=True,
+        store=False,
+        help="User-friendly description of detected product type"
+    )
+    warning_message = fields.Text(
+        string='Warnings',
+        compute='_compute_warnings',
+        readonly=True,
+        store=False,
+        help="Validation warnings before creating binding"
+    )
     backend_id = fields.Many2one(comodel_name='magento.backend', required=True, default=get_default_backend)
     model_id = fields.Many2one('ir.model', default=get_default_model)
     action = fields.Selection([
         ('only_create', 'Only create binding'),
         ('import', 'Import'),
         ('export', 'Export'),
-    ], default='export', required=True)
+    ], default='only_create', required=True, help="Action to perform after creating binding")
 
 
     def action_accept(self):
+        """Process wizard and create bindings with validation."""
         self.ensure_one()
-        self.check_backend_binding()
+
+        # Validate no ERROR in warnings
+        if self.warning_message and 'ERROR' in self.warning_message:
+            raise UserError(self.warning_message)
+
+        # Validate backend is ready
+        self._validate_backend_ready()
+
+        # Route to appropriate processing based on product_type
+        active_model = self.env.context.get('active_model')
+
+        if self.product_type == 'grouped':
+            # Grouped products: use special processing
+            self._process_grouped_product_binding()
+        elif active_model == 'product.template':
+            # Template context: process template bindings
+            self._process_template_bindings()
+        elif active_model == 'product.product':
+            # Product context: process product bindings
+            self._process_product_bindings()
+        else:
+            # Fallback to old check_backend_binding for other models
+            self.check_backend_binding()
+
+        return {'type': 'ir.actions.act_window_close'}

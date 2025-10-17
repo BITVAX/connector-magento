@@ -240,6 +240,123 @@ class ProductProduct(models.Model):
         inverse_name='odoo_id',
         string='Magento Bindings',
     )
+    magento_bindings_count = fields.Integer(
+        string='Magento Bindings',
+        compute='_compute_magento_sync_info',
+        store=True,
+        help="Number of Magento backend bindings for this product"
+    )
+    magento_sync_state = fields.Selection([
+        ('none', 'Not Configured'),
+        ('unpublished', 'Unpublished'),
+        ('partial', 'Partially Published'),
+        ('published', 'Published'),
+    ], string='Magento Sync State',
+        compute='_compute_magento_sync_info',
+        store=True,
+        help="Synchronization state with Magento backends"
+    )
+
+    @api.depends('magento_bind_ids', 'magento_bind_ids.external_id')
+    def _compute_magento_sync_info(self):
+        """Compute binding count and sync state for smart button display."""
+        for product in self:
+            bindings = product.magento_bind_ids
+
+            # Count bindings
+            product.magento_bindings_count = len(bindings)
+
+            # Calculate sync state based on external_id
+            if not bindings:
+                product.magento_sync_state = 'none'
+            else:
+                published = bindings.filtered(lambda b: b.external_id)
+                unpublished = bindings.filtered(lambda b: not b.external_id)
+
+                if published and not unpublished:
+                    product.magento_sync_state = 'published'
+                elif unpublished and not published:
+                    product.magento_sync_state = 'unpublished'
+                else:
+                    product.magento_sync_state = 'partial'
+
+    def action_view_magento_bindings(self):
+        """Smart button action to view, create, or sync Magento bindings.
+
+        Behavior based on sync state:
+        - No bindings (none): Open wizard to create binding
+        - Unpublished: Execute sync_to_magento() on all bindings
+        - Partial: Execute sync_to_magento() only on unpublished bindings (no external_id)
+        - Published: Open binding form/tree view
+        """
+        self.ensure_one()
+        bindings = self.magento_bind_ids
+
+        # Determine action based on sync state
+        if not bindings:
+            # No bindings: open wizard to create
+            return self.action_add_magento_backend()
+
+        # Check sync state: unpublished or partial means needs export
+        if self.magento_sync_state in ('unpublished', 'partial'):
+            # Filter bindings that need sync (those without external_id)
+            bindings_to_sync = bindings.filtered(lambda b: not b.external_id)
+
+            if bindings_to_sync:
+                # Sync only unpublished bindings
+                for binding in bindings_to_sync:
+                    binding.sync_to_magento()
+
+                # Return notification action
+                return {
+                    'type': 'ir.actions.client',
+                    'tag': 'display_notification',
+                    'params': {
+                        'title': 'Magento Sync',
+                        'message': f'Exporting {len(bindings_to_sync)} of {len(bindings)} binding(s) to Magento...',
+                        'type': 'info',
+                        'sticky': False,
+                    }
+                }
+
+        # Published state (or partial with all synced): open binding view
+        if len(bindings) == 1:
+            # Single binding: open form view
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Magento Binding',
+                'res_model': 'magento.product.product',
+                'res_id': bindings.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
+        else:
+            # Multiple bindings: open tree view
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Magento Bindings',
+                'res_model': 'magento.product.product',
+                'view_mode': 'tree,form',
+                'domain': [('id', 'in', bindings.ids)],
+                'target': 'current',
+            }
+
+    def action_add_magento_backend(self):
+        """Open wizard to add a new Magento backend binding."""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Magento Backend',
+            'res_model': 'connector_magento.add_backend.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'active_model': 'product.product',
+                'active_id': self.id,
+                'active_ids': self.ids,
+            }
+        }
+
     #
     # variant_url_key = fields.Char(
     #     compute='_compute_variant_url_key',

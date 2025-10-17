@@ -14,9 +14,6 @@
              'product_multi_image',
              'product_variant_default_code'
              ],
- 'external_dependencies': {
-     'python': ['magento'],
- },
  'author': "Camptocamp,Akretion,Sodexis,Odoo Community Association (OCA)",
  'license': 'AGPL-3',
  'website': 'http://www.odoo-magento-connector.com',
@@ -44,6 +41,11 @@
           'wizards/magento_binding_backend_read.xml',
           'wizards/add_backend.xml',
           ],
+ 'assets': {
+     'web.assets_backend': [
+         'connector_magento/static/src/scss/magento_smart_button.scss',
+     ],
+ },
  'installable': True,
  'application': False,
  }
