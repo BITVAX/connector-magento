@@ -71,10 +71,9 @@ class ProductTemplateDefinitionExporter(Component):
         if self.binding.code_prefix:
             return self.binding.code_prefix
         # Fallback: si el template tiene variantes, usar los 5 primeros caracteres del default_code de la primera variante que lo tenga
-        if self.binding.product_variant_count > 1:
-            for variant in self.binding.product_variant_ids:
-                if variant.default_code:
-                    return variant.default_code[:5]
+        for variant in self.binding.product_variant_ids:
+            if variant.default_code:
+                return variant.default_code[:5]
         # Fallback del fallback: lógica previa
         if self.binding.magento_default_code:
             sku = self.binding.magento_default_code[0:64]
@@ -243,10 +242,7 @@ class ProductTemplateExportMapper(Component):
 
     @mapping
     def product_type(self, record):
-        product_type = 'simple'
-        if record.product_variant_count > 1:
-            product_type = 'configurable'
-        return {'typeId': product_type}
+        return {'typeId': 'configurable'}
 
     @mapping
     def default_code(self, record):
