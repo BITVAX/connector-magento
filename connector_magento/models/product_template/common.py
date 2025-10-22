@@ -276,7 +276,8 @@ class ProductTemplate(models.Model):
             )
 
     @api.depends('has_variant_attributes', 'magento_bind_ids', 'magento_bind_ids.external_id',
-                 'product_variant_ids.magento_bind_ids', 'product_variant_ids.magento_bind_ids.external_id')
+                 'product_variant_ids', 'product_variant_ids.magento_bind_ids',
+                 'product_variant_ids.magento_bind_ids.external_id')
     def _compute_magento_sync_info(self):
         """Compute binding count and sync state for smart button display."""
         for template in self:
@@ -284,26 +285,59 @@ class ProductTemplate(models.Model):
             if template.has_variant_attributes:
                 # Configurable product: use template bindings
                 bindings = template.magento_bind_ids
+                # Also get all variant bindings for state calculation
+                variant_bindings = template.product_variant_ids.mapped('magento_bind_ids')
             else:
                 # Simple product: use first product variant bindings
                 bindings = template.product_variant_ids[:1].magento_bind_ids if template.product_variant_ids else self.env['magento.product.product'].browse()
+                variant_bindings = self.env['magento.product.product'].browse()
 
-            # Count bindings
+            # Count bindings (only template bindings for configurables, variant for simples)
             template.magento_bindings_count = len(bindings)
 
             # Calculate sync state based on external_id
             if not bindings:
                 template.magento_sync_state = 'none'
             else:
-                published = bindings.filtered(lambda b: b.external_id)
-                unpublished = bindings.filtered(lambda b: not b.external_id)
+                # Check template bindings state
+                template_published = bindings.filtered(lambda b: b.external_id)
+                template_unpublished = bindings.filtered(lambda b: not b.external_id)
 
-                if published and not unpublished:
-                    template.magento_sync_state = 'published'
-                elif unpublished and not published:
-                    template.magento_sync_state = 'unpublished'
+                # For configurable products, also check variant bindings state
+                if template.has_variant_attributes:
+                    # Check if all variants have bindings
+                    variants_with_bindings = template.product_variant_ids.filtered(lambda v: v.magento_bind_ids)
+                    variants_without_bindings = template.product_variant_ids - variants_with_bindings
+
+                    # If there are variants without bindings, it's partial
+                    if variants_without_bindings:
+                        template.magento_sync_state = 'partial'
+                    elif variant_bindings:
+                        # All variants have bindings, check their publication state
+                        variant_published = variant_bindings.filtered(lambda b: b.external_id)
+                        variant_unpublished = variant_bindings.filtered(lambda b: not b.external_id)
+
+                        # Combine states: partial if any combination of published/unpublished exists
+                        all_published = template_published and not template_unpublished and variant_published and not variant_unpublished
+                        all_unpublished = template_unpublished and not template_published and variant_unpublished and not variant_published
+
+                        if all_published:
+                            template.magento_sync_state = 'published'
+                        elif all_unpublished:
+                            template.magento_sync_state = 'unpublished'
+                        else:
+                            template.magento_sync_state = 'partial'
+                    else:
+                        # No variant bindings at all but template has bindings
+                        template.magento_sync_state = 'partial'
                 else:
-                    template.magento_sync_state = 'partial'
+                    # Simple product or configurable without variant bindings: only check template/variant bindings
+                    if template_published and not template_unpublished:
+                        template.magento_sync_state = 'published'
+                    elif template_unpublished and not template_published:
+                        template.magento_sync_state = 'unpublished'
+                    else:
+                        template.magento_sync_state = 'partial'
 
     def _compute_magento_variant_bind_ids(self):
         for rec in self:
