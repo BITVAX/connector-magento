@@ -263,4 +263,36 @@
         </field>
     </record>
 
+    <!-- Add Magento sync state column to product.product tree view -->
+    <record id="view_product_product_tree_magento_state" model="ir.ui.view">
+        <field name="name">product.product.tree.magento.state</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="magento_sync_state" widget="badge"
+                       decoration-success="magento_sync_state == 'published'"
+                       decoration-warning="magento_sync_state == 'partial'"
+                       decoration-danger="magento_sync_state == 'unpublished'"
+                       optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add Magento sync state column to product.template tree view -->
+    <record id="view_product_template_tree_magento_state" model="ir.ui.view">
+        <field name="name">product.template.tree.magento.state</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="magento_sync_state" widget="badge"
+                       decoration-success="magento_sync_state == 'published'"
+                       decoration-warning="magento_sync_state == 'partial'"
+                       decoration-danger="magento_sync_state == 'unpublished'"
+                       optional="show"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>
