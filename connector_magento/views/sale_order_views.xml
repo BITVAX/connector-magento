@@ -11,7 +11,7 @@
             </page>
             <page name="connector" position="inside">
                 <group string="Magento Bindings">
-                    <field name="magento_bind_ids" nolabel="1"/>
+                    <field name="magento_bind_ids" nolabel="1" colspan="2"/>
                 </group>
             </page>
         </field>
