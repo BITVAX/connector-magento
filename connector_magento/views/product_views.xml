@@ -14,8 +14,8 @@
                 <field name="website_ids" widget="many2many_tags"/>
             </field>
             <page name="connector" position="inside">
-                <group string="Magento Bindings" col="6">
-                    <field name="magento_bind_ids" nolabel="1" colspan="5">
+                <group string="Magento Bindings">
+                    <field name="magento_bind_ids" nolabel="1" colspan="2">
                         <tree>
                             <field name="backend_id"/>
                             <field name="product_type"/>
@@ -28,21 +28,7 @@
                         </tree>
                     </field>
                 </group>
-                <separator string="Queue Jobs" attrs="{'invisible': [('job_ids','=',False)]}"/>
-                <field name="job_ids" readonly="1" attrs="{'invisible': [('job_ids','=',False)]}">
-                    <tree decoration-danger="state=='failed'"
-                          decoration-warning="state in ('pending','enqueued')"
-                          decoration-success="state=='done'"
-                          decoration-muted="state in ('cancelled')">
-                        <field name="name"/>
-                        <field name="state"/>
-                        <field name="priority"/>
-                        <field name="date_created"/>
-                        <field name="date_started"/>
-                        <field name="date_done"/>
-                        <field name="exc_info"/>
-                    </tree>
-                </field>
+
             </page>
             <!-- Smart button for Magento sync status -->
             <xpath expr="//div[@name='button_box']/button[1]" position="before">
