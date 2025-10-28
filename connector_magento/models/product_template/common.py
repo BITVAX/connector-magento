@@ -251,7 +251,6 @@ class ProductTemplate(models.Model):
     magento_bindings_count = fields.Integer(
         string='Magento Bindings',
         compute='_compute_magento_sync_info',
-        store=True,
         help="Number of Magento backend bindings for this product"
     )
     magento_sync_state = fields.Selection([
@@ -345,7 +344,7 @@ class ProductTemplate(models.Model):
 
     def action_view_magento_bindings(self):
         """Smart button action to view, create, or sync Magento bindings.
-        
+
         Behavior based on sync state:
         - No bindings (none): Open wizard to create binding
         - Unpublished: Execute sync_to_magento() on all bindings
@@ -368,17 +367,17 @@ class ProductTemplate(models.Model):
         if not bindings:
             # No bindings: open wizard to create
             return self.action_add_magento_backend()
-        
+
         # Check sync state: unpublished or partial means needs export
         if self.magento_sync_state in ('unpublished', 'partial'):
             # Filter bindings that need sync (those without external_id)
             bindings_to_sync = bindings.filtered(lambda b: not b.external_id)
-            
+
             if bindings_to_sync:
                 # Sync only unpublished bindings
                 for binding in bindings_to_sync:
                     binding.sync_to_magento()
-                
+
                 # Return notification action
                 return {
                     'type': 'ir.actions.client',
@@ -390,7 +389,7 @@ class ProductTemplate(models.Model):
                         'sticky': False,
                     }
                 }
-        
+
         # Published state (or partial with all synced): open binding view
         if len(bindings) == 1:
             # Single binding: open form view

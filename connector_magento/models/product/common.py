@@ -243,7 +243,6 @@ class ProductProduct(models.Model):
     magento_bindings_count = fields.Integer(
         string='Magento Bindings',
         compute='_compute_magento_sync_info',
-        store=True,
         help="Number of Magento backend bindings for this product"
     )
     magento_sync_state = fields.Selection([
