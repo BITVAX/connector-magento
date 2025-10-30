@@ -71,16 +71,16 @@ class ProductProductExporter(Component):
 
     def _clear_existing_images_before_update(self, record):
         """Clear all existing images from Magento before updating product.
-        
+
         This prevents image duplication when syncing products.
         Called during update operations, before sending new image data.
-        
+
         :param record: Product data dictionary to be sent to Magento
         :return: None
         """
         new_image_count = len(record.get('media_gallery_entries', []))
         entity_type = "Product" if self._apply_on == ['magento.product.product'] else "Template"
-        
+
         _logger.debug("%s %s: clearing existing images before update (%d new)",
                      entity_type, self.external_id, new_image_count)
         try:
@@ -89,7 +89,7 @@ class ProductProductExporter(Component):
                 _logger.warning("%s %s: failed to delete %d images",
                               entity_type, self.external_id, failed)
         except Exception as e:
-            _logger.error("%s %s: error clearing images: %s", 
+            _logger.error("%s %s: error clearing images: %s",
                          entity_type, self.external_id, e)
 
     def _sku_inuse(self, sku):
@@ -286,7 +286,7 @@ class ProductProductExporter(Component):
                     m_att_values.append((4, m_value_id.id))
             if needs_sync:
                 # Write the values - then update the attribute
-                m_att_id.sudo().with_context(connector_no_export=True).magento_attribute_value_ids = m_att_values
+                m_att_id.sudo().with_context(connector_no_export=True).write({'magento_attribute_value_ids': m_att_values})
                 # We only do sync if a new attribute arrived
                 for m_att_id in exported_attribute_ids:
                     att_exporter.run(m_att_id)
