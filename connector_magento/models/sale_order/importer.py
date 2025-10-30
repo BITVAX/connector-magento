@@ -504,6 +504,7 @@ class SaleOrderImporter(Component):
         return binding
 
     def _after_import(self, binding, **kwargs):
+        super()._after_import(binding, **kwargs)
         self._link_parent_orders(binding)
 
     def _get_storeview(self, record):

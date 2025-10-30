@@ -31,6 +31,7 @@ class AttributeImporter(Component):
     _magento_id_field = 'attribute_id'
 
     def _after_import(self, binding, **kwargs):
+        super()._after_import(binding, **kwargs)
         record = self.magento_record
         importer = self.component(
             usage='record.importer',

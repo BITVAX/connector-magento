@@ -59,6 +59,7 @@ class AttributeSet(Component):
 
     def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
+        super()._after_import(binding, **kwargs)
         adapter = self.component(usage='backend.adapter', model_name='magento.product.attribute.set')
         importer = self.component(usage='record.importer', model_name='magento.product.attribute')
 

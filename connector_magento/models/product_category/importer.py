@@ -77,6 +77,7 @@ class ProductCategoryImporter(Component):
 
     def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
+        super()._after_import(binding, **kwargs)
         translation_importer = self.component(usage='translation.importer')
         translation_importer.run(self.external_id, binding)
 

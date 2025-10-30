@@ -567,6 +567,7 @@ class ProductImporter(Component):
 
     def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
+        super()._after_import(binding, **kwargs)
         if not 'binding_template_id' in kwargs:
             self._after_import_attributes(binding)
         # translation_importer = self.component(

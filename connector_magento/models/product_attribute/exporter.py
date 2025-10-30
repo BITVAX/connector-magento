@@ -60,6 +60,7 @@ class ProductAttributeExporter(Component):
                     })
 
     def _after_export(self):
+        super()._after_export()
         # Here we do export the attribute values
         for value in self.binding.magento_attribute_value_ids:
             self._export_dependency(value, 'magento.product.attribute.value', binding_extra_vals={

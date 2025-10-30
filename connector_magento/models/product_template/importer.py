@@ -131,6 +131,7 @@ class ProductTemplateImporter(Component):
                 })
 
     def _after_import(self, binding):
+        super()._after_import(binding)
         def sort_by_position(elem):
             return elem.position
 

@@ -152,6 +152,7 @@ class PartnerImporter(Component):
 
     def _after_import(self, partner_binding, **kwargs):
         """ Import the addresses """
+        super()._after_import(partner_binding, **kwargs)
         book = self.component(usage='address.book',
                               model_name='magento.address')
         book.import_addresses(self.external_id, partner_binding.id)
