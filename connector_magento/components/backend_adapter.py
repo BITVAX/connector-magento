@@ -1,10 +1,11 @@
 # Copyright 2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+import copy
 import logging
 import socket
 import xmlrpc.client
-from datetime import datetime
+from datetime import datetime, date
 from urllib.parse import quote_plus
 
 import requests
@@ -22,6 +23,26 @@ except ImportError:
 
 
 MAGENTO_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
+
+def serialize_for_json(obj):
+    """
+    Serializa recursivamente objetos Python date/datetime para JSON.
+    Corrige el error: "Object of type date is not JSON serializable"
+    
+    :param obj: Objeto a serializar (dict, list, o valor primitivo)
+    :return: Objeto serializable en JSON
+    """
+    if isinstance(obj, dict):
+        return {key: serialize_for_json(value) for key, value in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [serialize_for_json(item) for item in obj]
+    elif isinstance(obj, datetime):
+        return obj.strftime(MAGENTO_DATETIME_FORMAT)
+    elif isinstance(obj, date):
+        return obj.strftime('%Y-%m-%d')
+    else:
+        return obj
 
 
 class MagentoLocation(object):
@@ -78,7 +99,8 @@ class Magento2Client(object):
         if http_method == 'get':
             kwargs['params'] = arguments
         elif arguments is not None:
-            kwargs['json'] = arguments
+            # Serializar copia para no mutar los argumentos originales
+            kwargs['json'] = serialize_for_json(copy.deepcopy(arguments))
         res = function(url, **kwargs)
         if res.status_code != 200:
             message=res.text
