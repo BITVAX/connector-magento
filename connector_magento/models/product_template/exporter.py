@@ -14,7 +14,13 @@ from odoo import _
 
 _logger = logging.getLogger(__name__)
 
-import odoo.addons.connector_magento.models.get_exported_value
+# import odoo.addons.connector_magento.models.get_exported_value
+
+def get_exported_value(matt_id, record):
+    if matt_id.field_id.ttype == 'boolean':
+        return int(record[matt_id.field_id.sudo().name])
+
+    return record[matt_id.field_id.sudo().name]
 
 class ProductTemplateDefinitionExporter(Component):
     _name = 'magento.product.template.exporter'

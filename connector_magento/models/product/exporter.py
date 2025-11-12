@@ -14,7 +14,13 @@ from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector_magento.components.backend_adapter import MAGENTO_DATETIME_FORMAT
-import odoo.addons.connector_magento.models.get_exported_value
+# import odoo.addons.connector_magento.models.get_exported_value
+
+def get_exported_value(matt_id, record):
+    if matt_id.field_id.ttype == 'boolean':
+        return int(record[matt_id.field_id.sudo().name])
+
+    return record[matt_id.field_id.sudo().name]
 
 
 _logger = logging.getLogger(__name__)
