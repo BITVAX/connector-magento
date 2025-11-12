@@ -14,6 +14,8 @@ from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector_magento.components.backend_adapter import MAGENTO_DATETIME_FORMAT
+import odoo.addons.connector_magento.models.get_exported_value
+
 
 _logger = logging.getLogger(__name__)
 
@@ -507,7 +509,7 @@ class ProductProductExportMapper(Component):
                     if record[matt_id.field_id.sudo().name]:
                         custom_attributes.append({
                             'attribute_code': matt_id.attribute_code,
-                            'value': record[matt_id.field_id.sudo().name]
+                            'value': get_exported_value(matt_id, record)
                         })
             custom_attributes.append(self.category_ids(record))
             if record.magento_url_key:

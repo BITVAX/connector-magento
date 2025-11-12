@@ -14,6 +14,7 @@ from odoo import _
 
 _logger = logging.getLogger(__name__)
 
+import odoo.addons.connector_magento.models.get_exported_value
 
 class ProductTemplateDefinitionExporter(Component):
     _name = 'magento.product.template.exporter'
@@ -417,7 +418,7 @@ class ProductTemplateExportMapper(Component):
                 if record[matt_id.field_id.sudo().name]:
                     custom_attributes.append({
                         'attribute_code': matt_id.attribute_code,
-                        'value': record[matt_id.field_id.sudo().name]
+                        'value': get_exported_value(matt_id,record)
                     })
         if record.magento_url_key:
             custom_attributes.append({

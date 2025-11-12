@@ -21,3 +21,9 @@ from . import product_attribute_value
 from . import product_template
 from . import product_template_attribute_line
 
+
+def get_exported_value(matt_id, record):
+    if matt_id.field_id.ttype == 'boolean':
+        return int(record[matt_id.field_id.sudo().name])
+
+    return record[matt_id.field_id.sudo().name]
