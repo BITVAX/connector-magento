@@ -1,5 +1,12 @@
 from . import magento_binding  # should be loaded first for inheritance
 
+from . import stock_picking
+from . import magento_taxclass
+from . import magento_attribute_set
+from . import product_attribute
+from . import product_attribute_value
+from . import product_template
+from . import product_template_attribute_line
 from . import account_invoice
 from . import account_payment_mode
 from . import delivery
@@ -13,11 +20,4 @@ from . import product
 from . import product_category
 from . import queue_job
 from . import sale_order
-from . import stock_picking
-from . import magento_taxclass
-from . import magento_attribute_set
-from . import product_attribute
-from . import product_attribute_value
-from . import product_template
-from . import product_template_attribute_line
 

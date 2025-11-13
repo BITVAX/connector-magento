@@ -99,7 +99,7 @@ class MagentoProductProduct(models.Model):
         comodel_name='magento.product.attribute.set',
         string='Attribute Set',
         required=True,
-        default=lambda self: self.env['magento.product.attribute.set'].search([])[0],
+        default=lambda self: self.env['magento.product.attribute.set'].search([])[0] if self.env['magento.product.attribute.set'].search([]) else False,
     )
     magento_status = fields.Selection([
         ('2', 'Disabled'),
