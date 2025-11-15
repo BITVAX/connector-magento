@@ -187,10 +187,6 @@ class PartnerAdapter(Component):
         if magento_website_ids is not None:
             filters['website_id'] = {'in': magento_website_ids}
 
-        if self.collection.version == '1.7':
-            # the search method is on ol_customer instead of customer
-            return self._call('ol_customer.search',
-                              [filters] if filters else [{}])
         return super(PartnerAdapter, self).search(filters=filters)
 
 

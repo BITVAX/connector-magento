@@ -74,40 +74,16 @@ class MagentoPickingExporter(Component):
         if binding.external_id:
             return _('Already exported')
 
-        if self.collection.version == '1.7':
-            picking_method = binding.picking_method
-            if picking_method == 'complete':
-                args = self._get_args(binding)
-            elif picking_method == 'partial':
-                lines_info = get_lines_info()
-                args = self._get_args(binding, lines_info)
-            else:
-                raise ValueError("Wrong value for picking_method, authorized "
-                                 "values are 'partial' or 'complete', "
-                                 "found: %s" % picking_method)
-            try:
-                external_id = self.backend_adapter.create(*args)
-            except Exception as err:
-                # When the shipping is already created on Magento, it returns:
-                # <Fault 102: u"Impossible de faire
-                # l\'exp\xe9dition de la commande.">
-                if err.faultCode == 102:
-                    raise NothingToDoJob(
-                        'Canceled: the delivery order already '
-                        'exists on Magento (fault 102).')
-                raise
-
-        else:  # Magento 2.x
-            arguments = {
-                'items': [{
-                    'order_item_id': key,
-                    'qty': val,
-                } for key, val in get_lines_info().items()]
-            }
-            external_id = self.backend_adapter._call(
-                'order/%s/ship' %
-                str(binding.sale_id.magento_bind_ids[0].magento_order_id),
-                arguments, http_method='post')
+        arguments = {
+            'items': [{
+                'order_item_id': key,
+                'qty': val,
+            } for key, val in get_lines_info().items()]
+        }
+        external_id = self.backend_adapter._call(
+            'order/%s/ship' %
+            str(binding.sale_id.magento_bind_ids[0].magento_order_id),
+            arguments, http_method='post')
 
         self.binder.bind(external_id, binding)
         # ensure that we store the external ID

@@ -50,8 +50,4 @@ class PartnerCategoryAdapter(Component):
 
         :rtype: list
         """
-        if self.collection.version == '1.7':
-            return [int(row['customer_group_id']) for row
-                    in self._call('%s.list' % self._magento_model,
-                                  [filters] if filters else [{}])]
         return super(PartnerCategoryAdapter, self).search(filters=filters)

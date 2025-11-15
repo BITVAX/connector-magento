@@ -652,15 +652,12 @@ class SaleOrderImporter(Component):
 
         shipping_id = None
 
-        if self.collection.version == '1.7':
-            shipping_address = record['shipping_address']
-        else:
-            # Magento 2.x allows for a different shipping address per line.
-            # For now, we just take the first
-            shippings = self.magento_record[
-                'extension_attributes']['shipping_assignments']
-            shipping_address = shippings[0]['shipping'].get(
-                'address') if shippings else None
+        # Magento 2.x allows for a different shipping address per line.
+        # For now, we just take the first
+        shippings = self.magento_record[
+            'extension_attributes']['shipping_assignments']
+        shipping_address = shippings[0]['shipping'].get(
+            'address') if shippings else None
         if shipping_address:
             shipping_id = create_address(shipping_address)
 
@@ -711,10 +708,7 @@ class SaleOrderImporter(Component):
         for line in record.get('items', []):
             _logger.debug('line: %s', line)
             if 'product_id' in line:
-                if self.collection.version == '1.7':
-                    key = 'product_id'
-                else:
-                    key = 'sku'
+                key = 'sku'
                 self._import_dependency(line[key],
                                         'magento.product.product')
 
@@ -739,20 +733,14 @@ class SaleOrderLineImportMapper(Component):
             row_total = float(record.get('row_total') or 0)
         discount = 0
         if discount_value > 0 and row_total > 0:
-            if self.collection.version == '1.7':
-                discount = 100 * discount_value / row_total
-            else:
-                discount = 100 * discount_value / (row_total + discount_value)
+            discount = 100 * discount_value / (row_total + discount_value)
         result = {'discount': discount}
         return result
 
     @mapping
     def product_id(self, record):
         binder = self.binder_for('magento.product.product')
-        if self.collection.version == '1.7':
-            key = 'product_id'
-        else:
-            key = 'sku'
+        key = 'sku'
         product = binder.to_internal(record[key], unwrap=True)
         assert product, (
             "product_id %s should have been imported in "
@@ -801,20 +789,7 @@ class SaleOrderLineImportMapper(Component):
     def price(self, record):
         """ In Magento 2, base_row_total_incl_tax may not be present
         if no taxes apply """
-        if self.collection.version == '1.7':
-            discount_amount = float(record['base_discount_amount'] or 0)
-            base_row_total = float(record['base_row_total'] or 0.)
-            base_row_total_incl_tax = (
-                float(record['base_row_total_incl_tax'] or 0)
-                if 'base_row_total_incl_tax' in record else base_row_total)
-            qty_ordered = float(record['qty_ordered'])
-            if self.options.tax_include:
-                total = base_row_total_incl_tax
-            else:
-                total = base_row_total
-            return {'price_unit': total / qty_ordered}
+        if self.options.tax_include:
+            return {'price_unit': record.get('base_price_incl_tax', 0.0)}
         else:
-            if self.options.tax_include:
-                return {'price_unit': record.get('base_price_incl_tax', 0.0)}
-            else:
-                return {'price_unit': record.get('base_price', 0.0)}
+            return {'price_unit': record.get('base_price', 0.0)}

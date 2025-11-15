@@ -276,14 +276,7 @@ class SaleOrderAdapter(Component):
         if magento_storeview_ids is not None:
             filters['store_id'] = {'in': magento_storeview_ids}
 
-        if self.collection.version == '1.7':
-            arguments = {
-                'imported': False,
-                # 'limit': 200,
-                'filters': filters,
-            }
-        else:
-            arguments = filters
+        arguments = filters
         return super(SaleOrderAdapter, self).search(arguments)
 
     def read(self, external_id, attributes=None):
@@ -292,9 +285,6 @@ class SaleOrderAdapter(Component):
         :rtype: dict
         """
         # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            return self._call('%s.info' % self._magento_model,
-                              [external_id, attributes])
         return super(SaleOrderAdapter, self).read(
             external_id, attributes=attributes)
 

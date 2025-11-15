@@ -83,11 +83,6 @@ class AccountInvoiceAdapter(Component):
                include_comment):
         """ Create a record on the external system """
         # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            return self._call('%s.create' % self._magento_model,
-                              [order_increment_id, items, comment,
-                               email, include_comment])
-
         # Compose payload for Magento 2.x
         arguments = {
             'capture': False,
