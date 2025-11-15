@@ -1,7 +1,6 @@
 # Copyright 2013-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import xmlrpc.client
 
 import odoo
 from odoo import _
@@ -88,7 +87,7 @@ class MagentoPickingExporter(Component):
                                  "found: %s" % picking_method)
             try:
                 external_id = self.backend_adapter.create(*args)
-            except xmlrpc.client.Fault as err:
+            except Exception as err:
                 # When the shipping is already created on Magento, it returns:
                 # <Fault 102: u"Impossible de faire
                 # l\'exp\xe9dition de la commande.">

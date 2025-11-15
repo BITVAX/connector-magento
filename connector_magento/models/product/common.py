@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 
 from collections import defaultdict
 
@@ -403,7 +402,7 @@ class ProductProductAdapter(Component):
             return super(ProductProductAdapter, self)._call(
                 method, arguments, http_method=http_method,
                 storeview=storeview)
-        except xmlrpc.client.Fault as err:
+        except Exception as err:
             # this is the error in the Magento API
             # when the product does not exist
             if err.faultCode == 101:

@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 from odoo import models, fields, api
 # from odoo.addons.queue_job.job import job3
 from odoo.addons.component.core import Component
@@ -159,7 +158,7 @@ class PartnerAdapter(Component):
             return super(PartnerAdapter, self)._call(
                 method, arguments, http_method=http_method,
                 storeview=storeview)
-        except xmlrpc.client.Fault as err:
+        except Exception as err:
             # this is the error in the Magento API
             # when the customer does not exist
             if err.faultCode == 102:

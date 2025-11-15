@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 
 import odoo.addons.decimal_precision as dp
 
@@ -250,7 +249,7 @@ class SaleOrderAdapter(Component):
             return super(SaleOrderAdapter, self)._call(
                 method, arguments, http_method=http_method,
                 storeview=storeview)
-        except xmlrpc.client.Fault as err:
+        except Exception as err:
             # this is the error in the Magento API
             # when the sales order does not exist
             if err.faultCode == 100:

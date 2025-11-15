@@ -10,35 +10,26 @@ _logger = logging.getLogger(__name__)
 
 class MagentoProductAdapter(Component):
     """
-    Base adapter for product operations in Magento
+    Base adapter for product operations in Magento 2.0+
 
     Provides methods for product management including image deletion,
     inventory updates, and product read operations.
     This is an abstract component inherited by both product.product
     and product.template adapters.
-
-    IMPORTANT: Image deletion only supports Magento 2.x. Magento 1.7 will raise NotImplementedError.
     """
     _name = 'magento.product.adapter'
     _inherit = 'magento.adapter'
     # No _apply_on: this is an abstract base component
 
     def get_media(self, external_id):
-        """Get media gallery entries for a product (Magento 2.x only)
+        """Get media gallery entries for a product
 
         Retrieves the list of media entries (images) for a product.
         API: GET /V1/products/{sku}/media
 
         :param external_id: Product SKU
         :return: List of media gallery entry dicts with 'id', 'file', 'types', etc.
-        :raises NotImplementedError: If Magento version is 1.7
         """
-        if self.collection.version == '1.7':
-            raise NotImplementedError(
-                "get_media is not supported for Magento 1.7. "
-                "Only Magento 2.x is supported."
-            )
-
         # Magento 2: GET /V1/products/{sku}/media
         media_entries = self._call(
             'products/%s/media' % self.escape(external_id),
@@ -47,18 +38,12 @@ class MagentoProductAdapter(Component):
         return media_entries if isinstance(media_entries, list) else []
 
     def delete_product_image(self, external_id, entry_id):
-        """Delete a single media gallery entry (Magento 2.x only)
+        """Delete a single media gallery entry
 
         :param external_id: Product SKU
         :param entry_id: Media entry ID from Magento
         :return: True if deleted successfully, False otherwise
         """
-        if self.collection.version == '1.7':
-            raise NotImplementedError(
-                "Image deletion is not supported for Magento 1.7. "
-                "Only Magento 2.x is supported."
-            )
-
         # Magento 2: DELETE /V1/products/{sku}/media/{entryId}
         try:
             self._call(
@@ -73,21 +58,14 @@ class MagentoProductAdapter(Component):
             return False
 
     def clear_product_images(self, external_id):
-        """Delete all media gallery entries for a product (Magento 2.x only)
+        """Delete all media gallery entries for a product
 
         Called BEFORE updating a product to prevent image duplication.
         Retrieves current images and deletes them one by one.
 
         :param external_id: Product SKU
         :return: Tuple (deleted_count, failed_count)
-        :raises NotImplementedError: If Magento version is 1.7
         """
-        if self.collection.version == '1.7':
-            raise NotImplementedError(
-                "Image clearing is not supported for Magento 1.7. "
-                "Only Magento 2.x is supported."
-            )
-
         # Get current media entries using get_media()
         try:
             media_entries = self.get_media(external_id)
@@ -123,10 +101,6 @@ class MagentoProductAdapter(Component):
         :rtype: dict
         """
         # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            return self._call(
-                'ol_catalog_product.info',
-                [int(external_id), storeview, attributes, 'id'])
         res = super(MagentoProductAdapter, self).read(
             external_id, attributes=attributes, storeview=storeview)
         if res:
@@ -135,12 +109,7 @@ class MagentoProductAdapter(Component):
         return res
 
     def get_images(self, external_id, storeview_id=None, data=None):
-        """ Fetch image metadata either by querying Magento 1.x, or extracting
-        it from the product data for Magento 2.x """
-        if self.collection.version == '1.7':
-            return self._call('product_media.list',
-                              [int(external_id), storeview_id, 'id'])
-
+        """ Fetch image metadata from product data (Magento 2.x) """
         res = []
         # Fetch base media url from storeview
         storeview = (
@@ -159,14 +128,8 @@ class MagentoProductAdapter(Component):
         return res
 
     def update_inventory(self, external_id, data):
-        """ Update the default stock. For Magento2, first retrieve the stock
+        """ Update the default stock. Retrieve the stock
         item that applies to this stock for the product. """
-        if self.collection.version == '1.7':
-            # product_stock.update is too slow
-            return self._call('oerp_cataloginventory_stock_item.update',
-                              [int(external_id), data])
-
-        # Magento2
         data = {'stockItem': data}
         res = self._call('stockItems/%s' % self.escape(external_id), None)
         if isinstance(res, dict):

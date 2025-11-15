@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 from odoo import models, fields, api, _
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.component.core import Component
@@ -126,7 +125,7 @@ class ProductCategoryAdapter(Component):
             return super(ProductCategoryAdapter, self)._call(
                 method, arguments, http_method=http_method,
                 storeview=storeview)
-        except xmlrpc.client.Fault as err:
+        except Exception as err:
             # 101 is the error in the Magento API
             # when the category does not exist
             if err.faultCode == 102:
