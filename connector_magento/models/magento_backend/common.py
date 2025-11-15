@@ -40,7 +40,7 @@ class MagentoBackend(models.Model):
         to add a version from an ``_inherit`` does not constrain
         to redefine the ``version`` field in the ``_inherit`` model.
         """
-        return [('1.7', '1.7+'), ('2.0', '2.0+')]
+        return [('2.0', '2.0+')]
 
     @api.model
     def _get_stock_field_id(self):
@@ -60,21 +60,15 @@ class MagentoBackend(models.Model):
     admin_location = fields.Char(string='Admin Location')
     use_custom_api_path = fields.Boolean(
         string='Custom Api Path',
-        help="The default API path is '/index.php/api/xmlrpc'. "
+        help="The default API path is '/index.php/rest/V1'. "
              "Check this box if you use a custom API path, in that case, "
              "the location has to be completed with the custom API path ",
     )
-    username = fields.Char(
-        string='Username',
-        help="Webservice user",
-    )
-    password = fields.Char(
-        string='Password',
-        help="Webservice password",
-    )
     token = fields.Char(
+        string='API Token',
+        required=True,
         help=('Authentication token for Magento 2.0+. See https://devdocs.'
-              ' magento.com/guides/v2.3/get-started/authentication'
+              'magento.com/guides/v2.3/get-started/authentication'
               '/gs-authentication-token.html'))
     use_auth_basic = fields.Boolean(
         string='Use HTTP Auth Basic',
@@ -94,7 +88,7 @@ class MagentoBackend(models.Model):
     verify_ssl = fields.Boolean(
         string='Verify SSL certificate',
         default=True,
-        help="Only for Magento 2.0+")
+        help="Verify SSL certificate when connecting to Magento")
     sale_prefix = fields.Char(
         string='Sale Prefix',
         help="A prefix put before the name of imported sales orders.\n"
@@ -261,10 +255,7 @@ class MagentoBackend(models.Model):
             self = self.with_context(lang=lang.code)
         magento_location = MagentoLocation(
             self.location,
-            self.username,
-            self.password,
             self.token,
-            self.version,
             self.verify_ssl,
             use_custom_api_path=self.use_custom_api_path
         )

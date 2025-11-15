@@ -4,9 +4,9 @@
 Odoo Connector Magento Modules
 ==============================
 
-*Odoo Magento Connector (also known as MagentoERPconnect) is a bi-directional connector, 100% compatible with the last OpenERP 12.0 and latest Magento versions (1.x).*
+*Odoo Magento Connector (also known as MagentoERPconnect) is a bi-directional connector for Odoo 16.0 and Magento 2.0+.*
 
-This new release of MagentoERPconnect is based on the [OpenERP Connector framework](https://github.com/OCA/connector).
+This connector is based on the [OCA Connector framework](https://github.com/OCA/connector).
 
 The mailing list for this project is named 'Connectors' and is on https://odoo-community.org/groups
 
