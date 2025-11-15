@@ -9,7 +9,6 @@
 Helpers usable in the tests
 """
 
-import xmlrpc.client
 import logging
 import urllib
 
@@ -83,7 +82,7 @@ class MagentoTestCase(SavepointComponentCase):
     """ Base class - Test the imports from a Magento Mock.
 
     The data returned by Magento are those created for the
-    demo version of Magento on a standard 1.9 version.
+    demo version of Magento 2.0+.
     """
 
     def setUp(self):
@@ -96,11 +95,10 @@ class MagentoTestCase(SavepointComponentCase):
         warehouse = self.env.ref('stock.warehouse0')
         self.backend = self.backend_model.create(
             {'name': 'Test Magento',
-             'version': '1.7',
+             'version': '2.0',
              'location': 'http://magento',
-             'username': 'odoo',
-             'warehouse_id': warehouse.id,
-             'password': 'odoo42'}
+             'token': 'test_token_12345',
+             'warehouse_id': warehouse.id}
         )
         # payment method needed to import a sale order
         self.workflow = self.env.ref(
@@ -150,9 +148,8 @@ class MagentoTestCase(SavepointComponentCase):
             yield delayable_cls, delayable
 
     def parse_cassette_request(self, body):
-        args, __ = xmlrpc.client.loads(body)
-        # the first argument is a hash, we don't mind
-        return args[1:]
+        # For REST API, body is already parsed JSON
+        return body
 
     def _import_record(self, model_name, magento_id, cassette=True):
         assert model_name.startswith('magento.')
@@ -165,9 +162,6 @@ class MagentoTestCase(SavepointComponentCase):
                     'odoo.addons.mail.models.mail_mail',
                     'odoo.models.unlink',
                     'odoo.tests'):
-                if self.backend.version != '1.7':
-                    return self.env[model_name].import_record(
-                        self.backend, magento_id)
                 with mock_urlopen_image():
                     self.env[model_name].import_record(
                         self.backend, magento_id)
