@@ -149,6 +149,43 @@ class ProductProductExporter(Component):
             '''
         return super(ProductProductExporter, self)._create_data(map_record, **kwargs)
 
+    def _search_existing(self, data):
+        """ Search for existing product in Magento by SKU (idempotency).
+
+        Before creating a product, search if it already exists in Magento.
+        This handles retry scenarios where the product was created in Magento
+        but the Odoo commit failed, leaving an orphaned product.
+
+        :param data: dict with product data including 'sku'
+        :return: SKU (external_id) if found, None otherwise
+        """
+        sku = data.get('sku')
+        if not sku:
+            return None
+
+        try:
+            # Try to read the product from Magento by SKU
+            existing = self.backend_adapter.read(sku)
+            if existing and existing.get('sku'):
+                _logger.info(
+                    "Found existing product in Magento with SKU %s "
+                    "(likely from previous failed commit), linking binding",
+                    sku
+                )
+                # Also save the internal ID if available
+                if existing.get('id'):
+                    self.binding.with_context(
+                        no_connector_export=True
+                    ).magento_internal_id = existing['id']
+                return existing['sku']
+        except Exception as e:
+            # Product doesn't exist, will create it
+            _logger.debug(
+                "Product with SKU %s not found in Magento (expected for new product): %s",
+                sku, str(e)
+            )
+            return None
+
     def _create(self, data, **kwargs):
         """ Create the Magento record """
         # special check on data before export

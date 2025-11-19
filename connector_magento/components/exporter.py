@@ -101,10 +101,18 @@ class MagentoBaseExporter(AbstractComponent):
             return result
 
         self.binder.bind(self.external_id, self.binding)
-        # Commit so we keep the external ID when there are several
-        # exports (due to dependencies) and one of them fails.
-        # The commit will also release the lock acquired on the binding
-        # record
+        # COMMIT is ESSENTIAL for job-based transactionality:
+        # With independent jobs using on_done() dependencies, each job runs in
+        # its own transaction. The explicit commit ensures that when this job
+        # completes successfully, its changes (Magento data + Odoo binding) are
+        # persisted immediately. If a LATER job fails, only that job's transaction
+        # rolls back - this job's commit is already done and safe.
+        #
+        # Without this commit: if job B depends on job A, and job B fails, BOTH
+        # transactions could rollback, losing job A's work. With this commit: job A's
+        # work is safely persisted before job B even starts.
+        #
+        # The lock on the binding record will be released on commit or rollback.
         if not odoo.tools.config['test_enable']:
             # pylint: disable=invalid-commit
             self.env.cr.commit()  # noqa
@@ -215,20 +223,19 @@ class MagentoExporter(AbstractComponent):
                            binding_field='magento_bind_ids',
                            binding_extra_vals=None,
                            force_update=False,
+                           as_job=False,
                            **kwargs):
         """
         Export a dependency. The exporter class is a subclass of
         ``MagentoExporter``. If a more precise class need to be defined,
         it can be passed to the ``exporter_class`` keyword argument.
 
-        .. warning:: a commit is done at the end of the export of each
-                     dependency. The reason for that is that we pushed a record
-                     on the backend and we absolutely have to keep its ID.
-
-                     So you *must* take care not to modify the Odoo
-                     database during an export, excepted when writing
-                     back the external ID or eventually to store
-                     external data that we have to keep on this side.
+        .. warning:: With job-based transactionality, each job commits only
+                     at the end (in run()). No intermediate commits within a
+                     job to preserve atomicity. Dependencies exported as jobs
+                     (as_job=True) get their own transaction and commit.
+                     Dependencies exported synchronously (as_job=False) share
+                     the parent job's transaction.
 
                      You should call this method only at the beginning
                      of the exporter synchronization,
@@ -250,9 +257,12 @@ class MagentoExporter(AbstractComponent):
         :binding_extra_vals:  In case we want to create a new binding
                               pass extra values for this binding
         :type binding_extra_vals: dict
+        :param as_job: if True, return a delayable job instead of executing
+        :type as_job: bool
+        :return: delayable job if as_job=True, None otherwise
         """
         if not relation:
-            return
+            return None
         rel_binder = self.binder_for(binding_model)
         # wrap is typically True if the relation is for instance a
         # 'product.product' record but the binding model is
@@ -286,14 +296,16 @@ class MagentoExporter(AbstractComponent):
                                .with_context(connector_no_export=True)
                                .sudo()
                                .create(bind_values))
-                    # Eager commit to avoid having 2 jobs
-                    # exporting at the same time. The constraint
-                    # will pop if an other job already created
-                    # the same binding. It will be caught and
-                    # raise a RetryableJobError.
-                    if not odoo.tools.config['test_enable']:
-                        # pylint: disable=invalid-commit
-                        self.env.cr.commit()  # noqa
+                    # NO commit here (correct behavior):
+                    # This binding creation happens within a job's transaction.
+                    # - If as_job=True: binding created, delayable returned, actual
+                    #   export happens in separate job which will commit on success
+                    # - If as_job=False: binding created, export happens synchronously
+                    #   in same job, everything commits together at job end
+                    #
+                    # Committing here would break atomicity within a job. The binding
+                    # and export must succeed/fail together within the job's transaction.
+                    # The unique constraint still catches concurrent job conflicts.
         else:
             # If magento_bind_ids does not exist we are typically in a
             # "direct" binding (the binding record is the same record).
@@ -301,9 +313,15 @@ class MagentoExporter(AbstractComponent):
             binding = relation
 
         if not rel_binder.to_external(binding) or force_update:
-            exporter = self.component(usage=component_usage,
-                                      model_name=binding_model)
-            exporter.run(binding, **kwargs)
+            if as_job:
+                # Return a delayable job for dependency graph
+                return binding.delayable(priority=20).export_record()
+            else:
+                # Execute synchronously (legacy behavior)
+                exporter = self.component(usage=component_usage,
+                                          model_name=binding_model)
+                exporter.run(binding, **kwargs)
+        return None
 
     def _get_binding(self, model, _id):
         return self.env[model].search([
@@ -346,10 +364,52 @@ class MagentoExporter(AbstractComponent):
         """ Get the data to pass to :py:meth:`_create` """
         return map_record.values(for_create=True, fields=fields, **kwargs)
 
+    def _search_existing(self, data):
+        """ Search if the record already exists in Magento.
+
+        This implements idempotency: before creating a record in Magento,
+        we search if it already exists (e.g., from a previous failed retry).
+        If found, we link the existing Magento record instead of creating
+        a duplicate.
+
+        Each exporter can override this to implement their own search logic:
+        - Products: search by SKU
+        - Categories: search by URL key or name
+        - Attributes: search by attribute_code
+
+        :param data: dict with the data to be created
+        :return: external_id if found, None otherwise
+        """
+        # Base implementation: no search, always create
+        # Subclasses should override this method
+        return None
+
     def _create(self, data, **kwargs):
-        """ Create the Magento record """
+        """ Create the Magento record - with idempotency support.
+
+        Before creating, searches if the record already exists in Magento
+        (via _search_existing()). This handles retry scenarios where:
+        1. Record was created in Magento
+        2. Commit to Odoo failed
+        3. Job retries → without this, would create duplicate
+
+        With idempotency: retry finds existing record and links it.
+        """
         # special check on data before export
         self._validate_create_data(data)
+
+        # Try to find existing record in Magento (idempotency)
+        existing_id = self._search_existing(data)
+        if existing_id:
+            _logger.info(
+                "Record already exists in Magento with ID %s, "
+                "linking to binding instead of creating duplicate",
+                existing_id
+            )
+            return existing_id
+
+        # Not found, create new record
+        _logger.info("Creating new record in Magento")
         return self.backend_adapter.create(data, **kwargs)
 
     def _update_data(self, map_record, fields=None, **kwargs):

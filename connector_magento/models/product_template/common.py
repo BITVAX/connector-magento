@@ -156,6 +156,141 @@ class MagentoProductTemplate(models.Model):
             exporter = work.component(usage='product.inventory.exporter')
             return exporter.run(self, fields)
 
+    def export_record_with_dependencies(self):
+        """Export product template with dependency graph using on_done().
+
+        This method creates a hierarchical job graph with explicit dependencies:
+        1. Categories/attributes/values are exported FIRST (dependencies)
+        2. Template waits for ALL dependencies via on_done()
+        3. Variants wait for template via on_done()
+
+        Job execution flow:
+        [Categories, Attrs, Values] → Template → [Variants]
+              (parallel)               ↓        (parallel)
+
+        Each job has its own transaction. If a job fails, only that
+        transaction rolls back. Dependent jobs wait in 'wait_dependencies'
+        state until their parent succeeds.
+
+        Returns:
+            delayed: The root job that starts the dependency chain
+        """
+        self.ensure_one()
+        dependency_jobs = []
+
+        # 1. Create category export jobs
+        for extra_category in self.product_category_public_ids:
+            magento_categ = extra_category.magento_bind_ids.filtered(
+                lambda bc: bc.backend_id == self.backend_id
+            )
+            if not magento_categ:
+                magento_categ = self.env['magento.product.category'].with_context(
+                    connector_no_export=True
+                ).create({
+                    'backend_id': self.backend_id.id,
+                    'odoo_id': extra_category.id,
+                })
+
+            if not magento_categ.external_id:
+                cat_job = magento_categ.delayable(priority=20).export_record()
+                dependency_jobs.append(cat_job)
+                _logger.info("Added category job for: %s", extra_category.name)
+
+        # 2. Create attribute and value export jobs
+        for att_line in self.attribute_line_ids:
+            m_att = att_line.attribute_id.magento_bind_ids.filtered(
+                lambda m: m.backend_id == self.backend_id
+            )
+            # Only create if doesn't exist and needs export
+            if not m_att or not m_att.external_id:
+                if not m_att:
+                    m_att = self.env['magento.product.attribute'].with_context(
+                        connector_no_export=True
+                    ).create({
+                        'backend_id': self.backend_id.id,
+                        'odoo_id': att_line.attribute_id.id,
+                        'attribute_set_ids': [(4, self.attribute_set_id.id, 0)]
+                        if self.attribute_set_id else False,
+                        'attribute_code': att_line.attribute_id.name.lower(),
+                    })
+
+                if not m_att.external_id:
+                    attr_job = m_att.delayable(priority=20).export_record()
+                    dependency_jobs.append(attr_job)
+                    _logger.info("Added attribute job for: %s", att_line.attribute_id.name)
+
+                # Export attribute values
+                for value in att_line.value_ids:
+                    m_value = value.magento_bind_ids.filtered(
+                        lambda m: m.magento_attribute_id == m_att
+                    )
+                    if not m_value or not m_value.external_id:
+                        if not m_value:
+                            m_value = self.env['magento.product.attribute.value'].with_context(
+                                connector_no_export=True
+                            ).create({
+                                'odoo_id': value.id,
+                                'magento_attribute_id': m_att.id,
+                            })
+
+                        if not m_value.external_id:
+                            value_job = m_value.delayable(priority=20).export_record()
+                            dependency_jobs.append(value_job)
+                            _logger.info("Added value job for: %s", value.name)
+
+        # 3. Create template export job (with light_sync to avoid re-exporting variants)
+        template_job = self.delayable(priority=10).export_record(light_sync=True)
+        _logger.info("Created template job for: %s", self.name)
+
+        # 4. Chain all dependencies to template: dependencies → template
+        # All dependency jobs must complete before template starts
+        if dependency_jobs:
+            for dep_job in dependency_jobs:
+                dep_job.on_done(template_job)
+            _logger.info("Chained %d dependency jobs to template", len(dependency_jobs))
+
+        # 5. Create variant export jobs that depend on template
+        variant_jobs = []
+        for variant in self.product_variant_ids:
+            m_prod = variant.magento_bind_ids.filtered(
+                lambda m: m.backend_id == self.backend_id
+            )
+            if not m_prod:
+                m_prod = self.env['magento.product.product'].with_context(
+                    connector_no_export=True
+                ).create({
+                    'backend_id': self.backend_id.id,
+                    'odoo_id': variant.id,
+                    'attribute_set_id': self.attribute_set_id.id,
+                    'magento_visibility': '1',
+                })
+
+            if not m_prod.external_id:
+                variant_job = m_prod.delayable(priority=5).export_record()
+                variant_jobs.append(variant_job)
+                # Chain: template → variant (each variant waits for template)
+                template_job.on_done(variant_job)
+                _logger.info("Added variant job for: %s", variant.display_name)
+
+        _logger.info("Created job graph: %d deps → 1 template → %d variants",
+                    len(dependency_jobs), len(variant_jobs))
+
+        # 6. Delay ONLY the first job in the graph to start execution
+        # The rest will be triggered automatically via on_done() chains
+        if dependency_jobs:
+            root_job = dependency_jobs[0]
+        else:
+            root_job = template_job
+
+        delayed = root_job.delay()
+        _logger.info("Started job graph execution from root job")
+
+        # Track the root job
+        job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
+        self.odoo_id.with_context(connector_no_export=True).job_ids += job
+
+        return delayed
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 

@@ -88,6 +88,43 @@ class ProductTemplateDefinitionExporter(Component):
             sku = slugify(self.binding.display_name, to_lower=True)[0:64]
         return sku
 
+    def _search_existing(self, data):
+        """ Search for existing product template in Magento by SKU (idempotency).
+
+        Before creating a product template, search if it already exists in Magento.
+        This handles retry scenarios where the template was created in Magento
+        but the Odoo commit failed, leaving an orphaned product.
+
+        :param data: dict with product data including 'sku'
+        :return: SKU (external_id) if found, None otherwise
+        """
+        sku = data.get('sku')
+        if not sku:
+            return None
+
+        try:
+            # Try to read the product from Magento by SKU
+            existing = self.backend_adapter.read(sku)
+            if existing and existing.get('sku'):
+                _logger.info(
+                    "Found existing product template in Magento with SKU %s "
+                    "(likely from previous failed commit), linking binding",
+                    sku
+                )
+                # Also save the internal ID if available
+                if existing.get('id'):
+                    self.binding.with_context(
+                        connector_no_export=True
+                    ).magento_id = existing['id']
+                return existing['sku']
+        except Exception as e:
+            # Product doesn't exist, will create it
+            _logger.debug(
+                "Product template with SKU %s not found in Magento (expected for new product): %s",
+                sku, str(e)
+            )
+            return None
+
     def _create_data(self, map_record, **kwargs):
         # Here we do generate a new default code is none exists for now
         if not self.binding.external_id:
@@ -154,11 +191,16 @@ class ProductTemplateDefinitionExporter(Component):
         return True
 
     def _export_variants(self):
+        """Export product variants as independent delayed jobs.
+
+        Each variant export is now a separate job with its own transaction.
+        This ensures atomic transactionality: if a variant export fails,
+        only that specific job is rolled back, not all previous variants.
+        This prevents orphaned data in Magento without Odoo bindings.
+        """
         record = self.binding
-        variant_exporter = self.component(usage='record.exporter', model_name='magento.product.product')
         for p in record.product_variant_ids:
             m_prod = p.magento_bind_ids.filtered(lambda m: m.backend_id == record.backend_id)
-            created = False
             if not m_prod:
                 m_prod = self.env['magento.product.product'].with_context(connector_no_export=True).create({
                     'backend_id': self.backend_record.id,
@@ -167,16 +209,17 @@ class ProductTemplateDefinitionExporter(Component):
                     # 'magento_configurable_id': record.id,
                     'magento_visibility': '1',
                 })
-                created = True
-            if self._must_update_variants() or created or not m_prod.external_id:
-                if created or not m_prod.external_id:
-                    _logger.info("Do export variant: %s", m_prod)
-                    variant_exporter.run(m_prod)
-                else:
-                    _logger.info("Do queue export variant: %s", m_prod)
-                    delayed = m_prod.with_delay(identity_key=('magento_product_product_%s' % m_prod.id), priority=5).export_record()
-                    job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
-                    self.binding.odoo_id.with_context(connector_no_export=True).job_ids += job
+
+            # Always use delayed jobs for all variants (new or existing)
+            # to ensure each variant has its own independent transaction
+            if self._must_update_variants() or not m_prod.external_id:
+                _logger.info("Queueing export for variant: %s", m_prod)
+                delayed = m_prod.with_delay(
+                    identity_key=('magento_product_product_%s' % m_prod.id),
+                    priority=5
+                ).export_record()
+                job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
+                self.binding.odoo_id.with_context(connector_no_export=True).job_ids += job
 
     def _create_attribute_lines(self):
         record = self.binding
@@ -197,8 +240,44 @@ class ProductTemplateDefinitionExporter(Component):
                     'position': m_att_id.sequence,
                 })
 
+    def get_or_create_dependency_job(self, odoo_record, binding_model, binding_extra_vals=None):
+        """Create or get binding and return a delayable export job.
+
+        This method ensures the binding is created within the CALLER's transaction,
+        then returns a job that will export it. The export happens in the job's
+        own transaction with its own commit.
+
+        :param odoo_record: the Odoo record (e.g., product.category)
+        :param binding_model: binding model name (e.g., 'magento.product.category')
+        :param binding_extra_vals: extra values for binding creation
+        :return: delayable job or None if already exported
+        """
+        # Check if binding exists
+        binding = odoo_record.magento_bind_ids.filtered(
+            lambda m: m.backend_id == self.backend_record
+        )
+
+        # Create binding if doesn't exist (in caller's transaction)
+        if not binding:
+            bind_values = {
+                'backend_id': self.backend_record.id,
+                'odoo_id': odoo_record.id,
+            }
+            if binding_extra_vals:
+                bind_values.update(binding_extra_vals)
+
+            binding = self.env[binding_model].with_context(
+                connector_no_export=True
+            ).create(bind_values)
+
+        # Only create job if needs export
+        if not binding.external_id:
+            return binding.delayable(priority=20).export_record()
+
+        return None
+
     def _export_dependencies(self):
-        """ Export the dependencies for the record"""
+        """ Export the dependencies for the record (synchronous legacy method)"""
         super(ProductTemplateDefinitionExporter, self)._export_dependencies()
         self._create_attribute_lines()
         if not hasattr(self, 'light_sync') or not self.light_sync:

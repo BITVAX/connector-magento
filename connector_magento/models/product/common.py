@@ -145,6 +145,119 @@ class MagentoProductProduct(models.Model):
             exporter = work.component(usage='product.inventory.exporter')
             return exporter.run(self, fields)
 
+    def export_record_with_dependencies(self):
+        """Export product with dependency graph using on_done().
+
+        This method creates a hierarchical job graph with explicit dependencies:
+        1. Categories/attributes/values are exported FIRST (dependencies)
+        2. Product waits for ALL dependencies via on_done()
+
+        Job execution flow:
+        [Categories, Attrs, Values] → Product
+              (parallel)               ↓
+
+        Each job has its own transaction. If a job fails, only that
+        transaction rolls back. Dependent jobs wait in 'wait_dependencies'
+        state until their parent succeeds.
+
+        This is used for simple products (product.product) without variants.
+
+        Returns:
+            delayed: The root job that starts the dependency chain
+        """
+        self.ensure_one()
+        dependency_jobs = []
+
+        # 1. Create category export jobs
+        for extra_category in self.product_category_public_ids:
+            magento_categ = extra_category.magento_bind_ids.filtered(
+                lambda bc: bc.backend_id == self.backend_id
+            )
+            if not magento_categ:
+                magento_categ = self.env['magento.product.category'].with_context(
+                    connector_no_export=True
+                ).create({
+                    'backend_id': self.backend_id.id,
+                    'odoo_id': extra_category.id,
+                })
+
+            if not magento_categ.external_id:
+                cat_job = magento_categ.delayable(priority=20).export_record()
+                dependency_jobs.append(cat_job)
+                _logger.info("Added category job for product: %s", extra_category.name)
+
+        # 2. Create attribute and value export jobs
+        for att_line in self.attribute_line_ids:
+            m_att = att_line.attribute_id.magento_bind_ids.filtered(
+                lambda m: m.backend_id == self.backend_id
+            )
+            # Only create if doesn't exist and needs export
+            if not m_att or not m_att.external_id:
+                if not m_att:
+                    m_att = self.env['magento.product.attribute'].with_context(
+                        connector_no_export=True
+                    ).create({
+                        'backend_id': self.backend_id.id,
+                        'odoo_id': att_line.attribute_id.id,
+                        'attribute_set_ids': [(4, self.attribute_set_id.id, 0)]
+                        if self.attribute_set_id else False,
+                        'attribute_code': att_line.attribute_id.name.lower(),
+                    })
+
+                if not m_att.external_id:
+                    attr_job = m_att.delayable(priority=20).export_record()
+                    dependency_jobs.append(attr_job)
+                    _logger.info("Added attribute job for product: %s", att_line.attribute_id.name)
+
+                # Export attribute values
+                for value in att_line.value_ids:
+                    m_value = value.magento_bind_ids.filtered(
+                        lambda m: m.magento_attribute_id == m_att
+                    )
+                    if not m_value or not m_value.external_id:
+                        if not m_value:
+                            m_value = self.env['magento.product.attribute.value'].with_context(
+                                connector_no_export=True
+                            ).create({
+                                'odoo_id': value.id,
+                                'magento_attribute_id': m_att.id,
+                            })
+
+                        if not m_value.external_id:
+                            value_job = m_value.delayable(priority=20).export_record()
+                            dependency_jobs.append(value_job)
+                            _logger.info("Added value job for product: %s", value.name)
+
+        # 3. Create product export job
+        product_job = self.delayable(priority=10).export_record()
+        _logger.info("Created product job for: %s", self.name)
+
+        # 4. Chain all dependencies to product: dependencies → product
+        # All dependency jobs must complete before product starts
+        if dependency_jobs:
+            for dep_job in dependency_jobs:
+                dep_job.on_done(product_job)
+            _logger.info("Chained %d dependency jobs to product", len(dependency_jobs))
+
+        _logger.info("Created job graph: %d deps → 1 product",
+                    len(dependency_jobs))
+
+        # 5. Delay ONLY the first job in the graph to start execution
+        # The rest will be triggered automatically via on_done() chains
+        if dependency_jobs:
+            root_job = dependency_jobs[0]
+        else:
+            root_job = product_job
+
+        delayed = root_job.delay()
+        _logger.info("Started product job graph execution from root job")
+
+        # Track the root job
+        job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
+        self.odoo_id.with_context(connector_no_export=True).job_ids += job
+
+        return delayed
+
     # @api.multi
     def recompute_magento_qty(self):
         """ Check if the quantity in the stock location configured
