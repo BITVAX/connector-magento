@@ -331,9 +331,17 @@ class TranslationImporter(Component):
     def run(self, external_id, binding, mapper=None):
         self.external_id = external_id
         default_lang = self.backend_record.default_lang_id
-        storeviews = self.env['magento.storeview'].search(
-            [('backend_id', '=', self.backend_record.id),
-             ('lang_id', '!=', False), ('lang_id', '!=', default_lang.id)])
+
+        # Build search domain for storeviews
+        domain = [('backend_id', '=', self.backend_record.id),
+                  ('lang_id', '!=', False)]
+
+        # Only exclude default_lang if it's configured
+        if default_lang:
+            domain.append(('lang_id', '!=', default_lang.id))
+
+        storeviews = self.env['magento.storeview'].search(domain)
+
         if not storeviews:
             return
         lang2storeview = dict(
@@ -357,5 +365,5 @@ class TranslationImporter(Component):
             data = dict((field, value) for field, value in list(record.items())
                         if field in translatable_fields)
 
-            binding.with_context(connector_no_export=True,
-                                 lang=storeview.lang_id.code).write(data)
+            binding.odoo_id.with_context(connector_no_export=True,
+                                         lang=storeview.lang_id.code).write(data)
