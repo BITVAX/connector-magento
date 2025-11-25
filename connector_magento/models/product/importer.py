@@ -519,13 +519,16 @@ class ProductImporter(Component):
             data['product_tmpl_id'] = template_id.id
 
             # data['magento_configurable_id'] = kwargs['_binding_template_id'].id
-            # Name is set on product template on configurables
-            if 'name' in data:
-                del data['name']
-            if 'standard_price' in data:
-                del data['standard_price']
-            if 'lst_price' in data:
-                del data['lst_price']
+            # Name and translatable fields are set on product template for configurables
+            # Variants should not write these fields to avoid overwriting template translations
+            filtered_fields = []
+            for field in ['name', 'description', 'meta_title', 'meta_description',
+                          'standard_price', 'lst_price']:
+                if field in data:
+                    filtered_fields.append(field)
+                    del data[field]
+            if filtered_fields:
+                _logger.info('ProductImporter._create: Filtered fields for variant: %s', filtered_fields)
         binding = super()._create(data, **kwargs)
         if not binding.active:
             # Disable reordering rules that has been created automatically
@@ -540,13 +543,17 @@ class ProductImporter(Component):
         if 'binding_template_id' in kwargs:
             data['product_tmpl_id'] = kwargs['binding_template_id'].odoo_id.id
             # data['magento_configurable_id'] = kwargs['_binding_template_id'].id
-            # Name is set on product template on configurables
-            if 'name' in data:
-                del data['name']
-            if 'standard_price' in data:
-                del data['standard_price']
-            if 'lst_price' in data:
-                del data['lst_price']
+            # Name and translatable fields are set on product template for configurables
+            # Variants should not write these fields to avoid overwriting template translations
+            filtered_fields = []
+            for field in ['name', 'description', 'meta_title', 'meta_description',
+                          'standard_price', 'lst_price']:
+                if field in data:
+                    filtered_fields.append(field)
+                    del data[field]
+            if filtered_fields:
+                _logger.info('ProductImporter._update: Filtered fields for variant %s: %s',
+                           binding.external_id, filtered_fields)
         if 'active' in data and not data.get('active'):
             binding.mapped('orderpoint_ids').write({'active': False})
         res = super()._update(binding, data, **kwargs)
@@ -576,14 +583,16 @@ class ProductImporter(Component):
         super()._after_import(binding, **kwargs)
         if not 'binding_template_id' in kwargs:
             self._after_import_attributes(binding)
-        # translation_importer = self.component(
-        #     usage='translation.importer',
-        # )
-        # translation_importer.run(
-        #     self.external_id,
-        #     binding,
-        #     mapper='magento.product.product.import.mapper'
-        # )
+            # Only import translations for standalone simple products,
+            # not for variants of configurable products (template handles translations)
+            translation_importer = self.component(
+                usage='translation.importer',
+            )
+            translation_importer.run(
+                self.external_id,
+                binding,
+                mapper='magento.product.product.import.mapper'
+            )
         image_importer = self.component(usage='product.image.importer')
         image_importer.run(self.external_id, binding, data=self.magento_record)
 
