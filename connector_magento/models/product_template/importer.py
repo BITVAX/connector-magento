@@ -182,14 +182,14 @@ class ProductTemplateImporter(Component):
             templates_delete[template_delete].unlink()
         # self._update_price(binding, price)
         # Do also import translations
-        # translation_importer = self.component(
-        #     usage='translation.importer',
-        # )
-        # translation_importer.run(
-        #     self.external_id,
-        #     binding,
-        #     mapper='magento.product.template.import.mapper'
-        # )
+        translation_importer = self.component(
+            usage='translation.importer',
+        )
+        translation_importer.run(
+            self.external_id,
+            binding,
+            mapper='magento.product.template.import.mapper'
+        )
 
 
     def _import_stock(self, binding):
