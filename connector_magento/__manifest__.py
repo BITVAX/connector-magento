@@ -14,7 +14,7 @@
              'product_multi_image',
              'product_variant_default_code'
              ],
- 'author': "Camptocamp,Akretion,Sodexis,Odoo Community Association (OCA)",
+ 'author': "Camptocamp,Akretion,Sodexis,TRIVAX INNOVA SL,Wolfgang Pichler,Odoo Community Association (OCA)",
  'license': 'AGPL-3',
  'website': 'http://www.odoo-magento-connector.com',
  'images': ['images/magento_backend.png',

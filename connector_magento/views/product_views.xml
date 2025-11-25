@@ -94,6 +94,62 @@
         </field>
     </record>
 
+    <!-- Server Actions for magento.product.product -->
+    <record id="action_magento_product_import_from_magento" model="ir.actions.server">
+        <field name="name">Import from Magento</field>
+        <field name="model_id" ref="model_magento_product_product"/>
+        <field name="binding_model_id" ref="model_magento_product_product"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.sync_from_magento()</field>
+    </record>
+
+    <record id="action_magento_product_export_to_magento" model="ir.actions.server">
+        <field name="name">Export to Magento</field>
+        <field name="model_id" ref="model_magento_product_product"/>
+        <field name="binding_model_id" ref="model_magento_product_product"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.sync_to_magento()</field>
+    </record>
+
+    <record id="action_magento_product_delete_from_magento" model="ir.actions.server">
+        <field name="name">Delete from Magento</field>
+        <field name="model_id" ref="model_magento_product_product"/>
+        <field name="binding_model_id" ref="model_magento_product_product"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.delete_from_magento()</field>
+    </record>
+
+    <!-- Server Actions for magento.product.template -->
+    <record id="action_magento_product_template_import_from_magento" model="ir.actions.server">
+        <field name="name">Import from Magento</field>
+        <field name="model_id" ref="model_magento_product_template"/>
+        <field name="binding_model_id" ref="model_magento_product_template"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.sync_from_magento()</field>
+    </record>
+
+    <record id="action_magento_product_template_export_to_magento" model="ir.actions.server">
+        <field name="name">Export to Magento</field>
+        <field name="model_id" ref="model_magento_product_template"/>
+        <field name="binding_model_id" ref="model_magento_product_template"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.sync_to_magento()</field>
+    </record>
+
+    <record id="action_magento_product_template_delete_from_magento" model="ir.actions.server">
+        <field name="name">Delete from Magento</field>
+        <field name="model_id" ref="model_magento_product_template"/>
+        <field name="binding_model_id" ref="model_magento_product_template"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">records.delete_from_magento()</field>
+    </record>
+
     <record id="view_magento_product_search" model="ir.ui.view">
         <field name="name">magento.product.search</field>
         <field name="model">magento.product.product</field>
@@ -181,6 +237,21 @@
                         class="oe_highlight"/>
                 <button name="delete_from_magento" string="Delete from Magento" type="object"
                         class="oe_highlight"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_magento_product_template_tree" model="ir.ui.view">
+        <field name="name">magento.product.template.tree</field>
+        <field name="model">magento.product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Magento Product Template">
+                <field name="external_id"/>
+                <field name="odoo_id"/>
+                <field name="backend_id"/>
+                <button name="sync_to_magento" string="To Magento" type="object"/>
+                <button name="sync_from_magento" string="From Magento" type="object"/>
+                <button name="delete_from_magento" string="Delete" type="object"/>
             </tree>
         </field>
     </record>
