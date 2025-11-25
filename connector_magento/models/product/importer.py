@@ -360,7 +360,20 @@ class ProductImportMapper(Component):
                     'value_ids': [(6, 0, [mvalue.odoo_id.id])],
                 }))
                 value_ids.append(mvalue.odoo_id.id)
-        if binding:
+
+        # If updating a variant (not template), skip attribute_line_ids processing
+        # Variants should only update their product_template_attribute_value_ids
+        if self.options.get('binding_template_id') and len(value_ids):
+            binding_template_id = self.options['binding_template_id']
+            template_id = binding_template_id.odoo_id
+            ptav_ids = template_id.mapped('attribute_line_ids.product_template_value_ids').filtered(
+                lambda x: x.product_attribute_value_id.id in value_ids)
+            data['product_template_attribute_value_ids'] = [(6, 0, ptav_ids.ids)]
+            # Remove attribute_line_ids as variants don't manage template lines
+            if data.get('attribute_line_ids'):
+                del data['attribute_line_ids']
+        elif binding:
+            # Template update: process attribute_line_ids changes
             # data['attribute_line_ids'] = [(5,0,0)] + data['attribute_line_ids']
             lines = data['attribute_line_ids']
             data['attribute_line_ids'] = []
@@ -369,11 +382,13 @@ class ProductImportMapper(Component):
                     odoo_value_ids = binding.attribute_line_ids.filtered(
                         lambda l: l.attribute_id.id == line[2]['attribute_id']).mapped('value_ids').ids
                     if set(odoo_value_ids) != set(line[2]['value_ids'][0][2]):
+                        # Get attribute line, handle potential duplicates by taking first
+                        attr_line = binding.attribute_line_ids.filtered(
+                            lambda l: l.attribute_id.id == line[2]['attribute_id'])[:1]
                         changes[line[2]['attribute_id']] = {
                             'old': odoo_value_ids,
                             'new': line[2]['value_ids'][0][2],
-                            'line_id': odoo_value_ids and binding.attribute_line_ids.filtered(
-                                lambda l: l.attribute_id.id == line[2]['attribute_id']).id or False
+                            'line_id': attr_line.id if attr_line else False
                         }
                 if len(changes):
                     for key, value in changes.items():
@@ -386,15 +401,6 @@ class ProductImportMapper(Component):
                                 'attribute_id': key,
                                 'value_ids': [(6, 0, value['new'])]
                             }))
-
-        if self.options.get('binding_template_id') and len(value_ids):
-            if data.get('attribute_line_ids'):
-                del data['attribute_line_ids']
-            binding_template_id = self.options['binding_template_id']
-            template_id = binding_template_id.odoo_id
-            ptav_ids = template_id.mapped('attribute_line_ids.product_template_value_ids').filtered(
-                lambda x: x.product_attribute_value_id.id in value_ids)
-            data['product_template_attribute_value_ids'] = [(6, 0, ptav_ids.ids)]
 
         return data
 

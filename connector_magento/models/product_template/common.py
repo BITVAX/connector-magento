@@ -278,16 +278,25 @@ class ProductTemplate(models.Model):
                  'product_variant_ids', 'product_variant_ids.magento_bind_ids',
                  'product_variant_ids.magento_bind_ids.external_id')
     def _compute_magento_sync_info(self):
-        """Compute binding count and sync state for smart button display."""
+        """Compute binding count and sync state for smart button display.
+        
+        Logic:
+        - Configurable products (has_variant_attributes=True): Sync both template AND variant bindings
+        - Simple products (has_variant_attributes=False): Sync only variant bindings
+        
+        A product has variant attributes if it has at least one attribute with 
+        create_variant in ('always', 'dynamic'), regardless of how many attributes 
+        or whether it includes color.
+        """
         for template in self:
             # Determine which bindings to use based on product type
             if template.has_variant_attributes:
-                # Configurable product: use template bindings
+                # Configurable product: use template bindings AND variant bindings
                 bindings = template.magento_bind_ids
                 # Also get all variant bindings for state calculation
                 variant_bindings = template.product_variant_ids.mapped('magento_bind_ids')
             else:
-                # Simple product: use first product variant bindings
+                # Simple product: use first product variant bindings ONLY
                 bindings = template.product_variant_ids[:1].magento_bind_ids if template.product_variant_ids else self.env['magento.product.product'].browse()
                 variant_bindings = self.env['magento.product.product'].browse()
 
@@ -296,7 +305,13 @@ class ProductTemplate(models.Model):
 
             # Calculate sync state based on external_id
             if not bindings:
-                template.magento_sync_state = 'none'
+                # No template bindings - check if this is a problem for configurables
+                if template.has_variant_attributes and variant_bindings:
+                    # Configurable without template binding but WITH variant bindings = PARTIAL (inconsistent state)
+                    template.magento_sync_state = 'partial'
+                else:
+                    # No bindings at all = NONE
+                    template.magento_sync_state = 'none'
             else:
                 # Check template bindings state
                 template_published = bindings.filtered(lambda b: b.external_id)

@@ -298,7 +298,9 @@ class ProductTemplateImportMapper(Component):
         line_binder = self.binder_for('magento.product.template.attribute.line')
         product_options = record['extension_attributes']['configurable_product_options']
         linemapper = self.component(usage='import.mapper', model_name='magento.product.template.attribute.line')
+        binding = self.options.get('binding')
         odoo_options = []
+
         for product_option in product_options:
             # Check if it does already exists
             # Get internal attribute
@@ -307,13 +309,33 @@ class ProductTemplateImportMapper(Component):
                 raise MappingError("The product attribute with "
                                    "magento id %s is not imported." %
                                    product_option['attribute_id'])
+
+            # First, try to find existing magento binding
             line = line_binder.to_internal(product_option['id'], unwrap=False)
             map_record = linemapper.map_record(product_option, parent=record)
-            if not line:
-                # Create line
+
+            if not line and binding:
+                # If no magento binding exists but we're updating, check if there's
+                # an odoo line for this attribute without binding (auto-created by Odoo)
+                existing_odoo_line = binding.odoo_id.attribute_line_ids.filtered(
+                    lambda l: l.attribute_id.id == attribute.id and not l.magento_bind_ids
+                )
+                if existing_odoo_line:
+                    # Found an existing odoo line without magento binding
+                    # Create a magento binding for it by adding odoo_id to the values
+                    vals = map_record.values(for_create=True)
+                    vals['odoo_id'] = existing_odoo_line[0].id
+                    odoo_options.append((0, 0, vals))
+                    _logger.info("Linking existing odoo attribute line %s to new magento binding for %s",
+                                existing_odoo_line[0].id, product_option['id'])
+                else:
+                    # No existing line found, create new one
+                    odoo_options.append((0, 0, map_record.values(for_create=True)))
+            elif not line:
+                # Create line (first import)
                 odoo_options.append((0, 0, map_record.values(for_create=True)))
             else:
-                # Update line
+                # Update existing magento binding line
                 odoo_options.append((1, line.id, map_record.values(for_create=False)))
         return {'magento_template_attribute_line_ids': odoo_options}
     #
