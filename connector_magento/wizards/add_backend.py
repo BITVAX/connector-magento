@@ -137,11 +137,45 @@ class WizardModel(models.TransientModel):
                     if not link_bindings:
                         warnings.append(f"⚠ Linked product '{link.display_name}' is not configured for backend '{wizard.backend_id.name}'")
 
+            # Validate SKU based on product type
+            active_model = wizard.env.context.get('active_model')
+            active_ids = wizard.env.context.get('active_ids', [])
+
+            if active_model == 'product.template' and active_ids:
+                template = wizard.env['product.template'].browse(active_ids[0])
+                if template.has_variant_attributes:
+                    # Configurable: requires code_prefix
+                    if not template.code_prefix:
+                        warnings.append(
+                            "⚠️ Configurable template WITHOUT 'code_prefix': "
+                            "Required to export to Magento"
+                        )
+                else:
+                    # Simple: requires code_prefix or default_code in variant
+                    if not template.code_prefix and not template.product_variant_ids[0].default_code:
+                        warnings.append(
+                            "⚠️ Simple template without 'code_prefix' or 'default_code': "
+                            "SKU will be auto-generated (not recommended)"
+                        )
+
+            elif active_model == 'product.product' and active_ids:
+                product = wizard.env['product.product'].browse(active_ids[0])
+                template = product.product_tmpl_id
+
+                if template.has_variant_attributes:
+                    # Variant of configurable: cannot create binding directly
+                    warnings.append(
+                        "❌ ERROR: This variant belongs to a configurable template. "
+                        "Must create binding from the template, not from the variant."
+                    )
+                elif not product.default_code:
+                    warnings.append(
+                        "⚠️ Product without 'default_code': "
+                        "SKU will be auto-generated (not recommended)"
+                    )
+
             # Check for duplicate bindings
             if wizard.backend_id:
-                active_model = wizard.env.context.get('active_model')
-                active_ids = wizard.env.context.get('active_ids', [])
-
                 if active_model == 'product.template' and active_ids:
                     # Check for existing template bindings
                     existing = wizard.env['magento.product.template'].search([
@@ -345,6 +379,21 @@ class WizardModel(models.TransientModel):
 
     def _create_product_binding(self, product):
         """Create magento.product.product binding for simple products"""
+        # Validate that it's not a variant of a configurable template
+        if product.product_tmpl_id.has_variant_attributes:
+            raise UserError(_(
+                "Cannot create binding for variant '%s': it belongs to a configurable template.\n\n"
+                "Please create the binding from the template instead, which will automatically "
+                "create bindings for all variants."
+            ) % product.display_name)
+
+        # Validate that it has default_code
+        if not product.default_code:
+            raise UserError(_(
+                "Cannot create binding for product '%s': it requires a 'default_code' (SKU).\n\n"
+                "Please set the default_code before creating the Magento binding."
+            ) % product.display_name)
+
         # Check if binding already exists
         existing_binding = self.env['magento.product.product'].search([
             ('odoo_id', '=', product.id),

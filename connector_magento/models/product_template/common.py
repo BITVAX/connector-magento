@@ -8,6 +8,8 @@ from odoo import api, models, fields
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import identity_exact
 # from odoo.addons.queue_job.job import job, related_action
+from odoo.exceptions import ValidationError
+from odoo.tools.translate import _
 from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
 
 _logger = logging.getLogger(__name__)
@@ -120,6 +122,37 @@ class MagentoProductTemplate(models.Model):
          'Duplicate URL Key is not allowed - please set a new one !'
          ),
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Override to set external_id from code_prefix when creating binding."""
+        for vals in vals_list:
+            # Si no tiene external_id pero sí odoo_id, asignarlo desde code_prefix
+            if not vals.get('external_id') and vals.get('odoo_id'):
+                template = self.env['product.template'].browse(vals['odoo_id'])
+
+                if template.has_variant_attributes:
+                    # Template configurable: REQUIERE code_prefix
+                    if not template.code_prefix:
+                        raise ValidationError(_(
+                            "Cannot create Magento binding for configurable template '%s': "
+                            "it MUST have 'code_prefix' to use as SKU in Magento."
+                        ) % template.display_name)
+                    vals['external_id'] = template.code_prefix
+                else:
+                    # Template simple: usar code_prefix o default_code de variante
+                    if template.code_prefix:
+                        vals['external_id'] = template.code_prefix
+                    elif template.product_variant_ids and template.product_variant_ids[0].default_code:
+                        vals['external_id'] = template.product_variant_ids[0].default_code
+                    else:
+                        _logger.warning(
+                            "Creating binding for template '%s' without code_prefix or default_code. "
+                            "SKU will be generated during export.",
+                            template.display_name
+                        )
+
+        return super(MagentoProductTemplate, self).create(vals_list)
 
     # @api.multi
     # @job(default_channel='root.magento')

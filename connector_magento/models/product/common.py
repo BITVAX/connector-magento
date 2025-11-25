@@ -12,7 +12,7 @@ from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
 # # from odoo.addons.queue_job.job import job3, related_action
-from odoo.exceptions import UserError, MissingError
+from odoo.exceptions import UserError, MissingError, ValidationError
 from odoo.tools.translate import _
 from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
 
@@ -122,6 +122,33 @@ class MagentoProductProduct(models.Model):
         string='Related Products',
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Override to set external_id from default_code when creating binding."""
+        for vals in vals_list:
+            # Si no tiene external_id pero sí odoo_id, asignarlo desde default_code
+            if not vals.get('external_id') and vals.get('odoo_id'):
+                product = self.env['product.product'].browse(vals['odoo_id'])
+
+                # Validar que tenga default_code
+                if not product.default_code:
+                    # Si es variante de configurable, error estricto
+                    if product.product_tmpl_id.has_variant_attributes:
+                        raise ValidationError(_(
+                            "Cannot create Magento binding for variant '%s': "
+                            "it belongs to a configurable template and MUST have 'default_code'."
+                        ) % product.display_name)
+                    else:
+                        # Producto simple: permitir pero advertir
+                        _logger.warning(
+                            "Creating binding for product '%s' without default_code. "
+                            "SKU will be generated during export.",
+                            product.display_name
+                        )
+                else:
+                    vals['external_id'] = product.default_code
+
+        return super(MagentoProductProduct, self).create(vals_list)
 
      # @api.multi
     # @related_action(action='related_action_unwrap_binding')

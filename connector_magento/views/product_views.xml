@@ -214,6 +214,7 @@
                 <sheet>
                     <group>
                         <field name="backend_id"/>
+                        <field name="external_id"/>
                         <field name="magento_id"/>
                         <field name="odoo_id"/>
                         <field name="created_at" readonly="1"/>
@@ -242,6 +243,9 @@
                                     <field name="value_ids" widget="many2many_tags"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page name="data" string="JSON Data">
+                            <field name="data_str" nolabel="1" colspan="4"/>
                         </page>
                     </notebook>
                 </sheet>

@@ -10,15 +10,18 @@ import magic
 from slugify import slugify
 
 import odoo
-from odoo import _
+from odoo import _, fields
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector_magento.components.backend_adapter import MAGENTO_DATETIME_FORMAT
+from odoo.exceptions import ValidationError
 # import odoo.addons.connector_magento.models.get_exported_value
 
 def get_exported_value(matt_id, record):
     if matt_id.field_id.ttype == 'boolean':
         return int(record[matt_id.field_id.sudo().name])
+    if matt_id.field_id.ttype in ('char', 'text', 'selection', 'html'):
+        return str(record[matt_id.field_id.sudo().name]) if record[matt_id.field_id.sudo().name] else ''
 
     return record[matt_id.field_id.sudo().name]
 
@@ -118,17 +121,43 @@ class ProductProductExporter(Component):
         return search_count > 0
 
     def _get_sku_proposal(self):
-        if self.binding.default_code:
+        """Generate or validate SKU for product variant.
+
+        For variants of configurable templates: default_code MUST exist (never generated).
+        For variants of simple templates: default_code should exist, but can be generated as fallback.
+        """
+        # Check if this variant belongs to a configurable template
+        template = self.binding.odoo_id.product_tmpl_id
+        is_configurable_variant = template.has_variant_attributes
+
+        if is_configurable_variant:
+            # Configurable variant: default_code is REQUIRED, never generate
+            if not self.binding.default_code:
+                raise ValidationError(
+                    _("Cannot export variant '%s' (ID: %s): it belongs to a configurable "
+                      "template and MUST have a 'default_code' (SKU) defined. "
+                      "SKU cannot be auto-generated for configurable variants.") %
+                    (self.binding.display_name, self.binding.id)
+                )
             sku = self.binding.default_code[0:64]
         else:
-            name = self.binding.display_name
-            for value in sorted(self.binding.attribute_value_ids, key=lambda x: x.attribute_id.sequence):
-                # Check the attribute for the product template - it should have more than one value to be useful here
-                line = self.binding.odoo_id.product_tmpl_id.attribute_line_ids.filtered(
-                    lambda l: l.attribute_id == value.attribute_id)
-                if len(line.value_ids) > 1:
-                    name = "%s %s %s" % (name, value.attribute_id.name, value.name)
-            sku = slugify(name, lowercase=True)[0:64]
+            # Simple product: prefer default_code, generate as fallback
+            if self.binding.default_code:
+                sku = self.binding.default_code[0:64]
+            else:
+                _logger.warning(
+                    "Product '%s' (ID: %s) has no default_code, generating SKU from name. "
+                    "This is not recommended - please set default_code manually.",
+                    self.binding.display_name, self.binding.id
+                )
+                name = self.binding.display_name
+                for value in sorted(self.binding.attribute_value_ids, key=lambda x: x.attribute_id.sequence):
+                    # Check the attribute for the product template - it should have more than one value to be useful here
+                    line = self.binding.odoo_id.product_tmpl_id.attribute_line_ids.filtered(
+                        lambda l: l.attribute_id == value.attribute_id)
+                    if len(line.value_ids) > 1:
+                        name = "%s %s %s" % (name, value.attribute_id.name, value.name)
+                sku = slugify(name, lowercase=True)[0:64]
         return sku
 
     def _create_data(self, map_record, **kwargs):

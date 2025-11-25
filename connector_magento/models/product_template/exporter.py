@@ -8,19 +8,16 @@ import magic
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.connector.exception import MappingError
+from odoo.addons.connector_magento.models.product.exporter import get_exported_value
 from slugify import slugify
 import logging
 from odoo import _
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
 # import odoo.addons.connector_magento.models.get_exported_value
 
-def get_exported_value(matt_id, record):
-    if matt_id.field_id.ttype == 'boolean':
-        return int(record[matt_id.field_id.sudo().name])
-
-    return record[matt_id.field_id.sudo().name]
 
 class ProductTemplateDefinitionExporter(Component):
     _name = 'magento.product.template.exporter'
@@ -75,18 +72,44 @@ class ProductTemplateDefinitionExporter(Component):
         return _('Record exported with ID %s on Magento.') % self.external_id
 
     def _get_sku_proposal(self):
-        if self.binding.code_prefix:
+        """Generate or validate SKU for product template.
+
+        For configurable templates: code_prefix MUST exist.
+        For simple templates: use code_prefix or default_code from variant.
+        """
+        template = self.binding.odoo_id
+        is_configurable = template.has_variant_attributes
+
+        if is_configurable:
+            # Configurable template: code_prefix REQUIRED
+            if not self.binding.code_prefix:
+                raise ValidationError(
+                    _("Cannot export configurable template '%s' (ID: %s): "
+                      "it MUST have a 'code_prefix' to use as SKU in Magento.") %
+                    (self.binding.display_name, self.binding.id)
+                )
             return self.binding.code_prefix
-        # Fallback: si el template tiene variantes, usar los 5 primeros caracteres del default_code de la primera variante que lo tenga
-        for variant in self.binding.product_variant_ids:
-            if variant.default_code:
-                return variant.default_code[:5]
-        # Fallback del fallback: lógica previa
-        if self.binding.magento_default_code:
-            sku = self.binding.magento_default_code[0:64]
         else:
-            sku = slugify(self.binding.display_name, to_lower=True)[0:64]
-        return sku
+            # Simple template: prefer code_prefix, then variant's default_code
+            if self.binding.code_prefix:
+                return self.binding.code_prefix
+
+            # Try to get default_code from first variant
+            for variant in self.binding.product_variant_ids:
+                if variant.default_code:
+                    return variant.default_code[:5]
+
+            # Last resort: generate (with warning)
+            _logger.warning(
+                "Template '%s' (ID: %s) has no code_prefix or variant default_code. "
+                "Generating SKU - not recommended.",
+                self.binding.display_name, self.binding.id
+            )
+            if self.binding.magento_default_code:
+                sku = self.binding.magento_default_code[0:64]
+            else:
+                sku = slugify(self.binding.display_name, to_lower=True)[0:64]
+            return sku
 
     def _create_data(self, map_record, **kwargs):
         # Here we do generate a new default code is none exists for now
