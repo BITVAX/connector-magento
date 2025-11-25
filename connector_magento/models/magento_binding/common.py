@@ -1,8 +1,7 @@
 # © 2013-2019 Guewen Baconnier,Camptocamp SA,Akretion
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, models, fields
-# # from odoo.addons.queue_job.job import job3, related_action
+from odoo import api, models, fields, _
 from odoo.addons.queue_job.job import identity_exact
 
 
@@ -85,15 +84,47 @@ class MagentoBinding(models.AbstractModel):
 
     def sync_from_magento(self):
         for binding in self:
-            binding.with_delay(identity_key=identity_exact).import_record( binding.backend_id, binding.external_id,force=True)
+            binding.with_delay(identity_key=identity_exact).import_record(
+                binding.backend_id, binding.external_id, force=True)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Import from Magento'),
+                'message': _('%d record(s) queued for import from Magento') % len(self),
+                'type': 'info',
+                'sticky': False,
+            }
+        }
 
     def sync_to_magento(self):
         for binding in self:
             binding.with_delay(identity_key=identity_exact, priority=10).export_record()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Export to Magento'),
+                'message': _('%d record(s) queued for export to Magento') % len(self),
+                'type': 'info',
+                'sticky': False,
+            }
+        }
 
     def delete_from_magento(self):
         for binding in self:
-            binding.with_delay(identity_key=identity_exact).export_delete_record(binding.backend_id, binding.external_id)
+            binding.with_delay(identity_key=identity_exact).export_delete_record(
+                binding.backend_id, binding.external_id)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Delete from Magento'),
+                'message': _('%d record(s) queued for deletion from Magento') % len(self),
+                'type': 'warning',
+                'sticky': False,
+            }
+        }
 
 
 
