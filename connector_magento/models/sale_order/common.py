@@ -138,10 +138,20 @@ class SaleOrder(models.Model):
                 description=job_descr
             ).export_state_change()
 
-    # @api.multi
     def copy(self, default=None):
+        # Store original lines before copy to remap Magento bindings after
+        old_lines = self.order_line
         self_copy = self.with_context(__copy_from_quotation=True)
         new = super(SaleOrder, self_copy).copy(default=default)
+
+        # Remap line bindings from old to new lines (maintains order)
+        if self.state == 'cancel':
+            binding_model = self.env['magento.sale.order.line']
+            for old_line, new_line in zip(old_lines, new.order_line):
+                bindings = binding_model.search([('odoo_id', '=', old_line.id)])
+                if bindings:
+                    bindings.write({'odoo_id': new_line.id})
+
         self_copy._magento_link_binding_of_copy(new)
         return new
 
@@ -199,38 +209,8 @@ class SaleOrderLine(models.Model):
         string="Magento Bindings",
     )
 
-    @api.model
-    def create(self, vals):
-        old_line_id = None
-        if self.env.context.get('__copy_from_quotation'):
-            # when we are copying a sale.order from a canceled one,
-            # the id of the copied line is inserted in the vals
-            # in `copy_data`.
-            old_line_id = vals.pop('__copy_from_line_id', None)
-        new_line = super(SaleOrderLine, self).create(vals)
-        if old_line_id:
-            # link binding of the canceled order lines to the new order
-            # lines, happens when we are using the 'New Copy of
-            # Quotation' button on a canceled sales order
-            binding_model = self.env['magento.sale.order.line']
-            bindings = binding_model.search([('odoo_id', '=', old_line_id)])
-            if bindings:
-                bindings.write({'odoo_id': new_line.id})
-        return new_line
-
-    # @api.multi
-    def copy_data(self, default=None):
-        data = super(SaleOrderLine, self).copy_data(default=default)[0]
-        if self.env.context.get('__copy_from_quotation'):
-            # copy_data is called by `copy` of the sale.order which
-            # builds a dict for the full new sale order, so we lose the
-            # association between the old and the new line.
-            # Keep a trace of the old id in the vals that will be passed
-            # to `create`, from there, we'll be able to update the
-            # Magento bindings, modifying the relation from the old to
-            # the new line.
-            data['__copy_from_line_id'] = self.id
-        return [data]
+    # Note: create() and copy_data() overrides removed for Odoo 16 compatibility.
+    # Line binding remapping is now handled in SaleOrder.copy()
 
 
 class SaleOrderAdapter(Component):
