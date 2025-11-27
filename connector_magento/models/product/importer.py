@@ -110,26 +110,53 @@ class CatalogImageImporter(Component):
         image_ids = []
         data = {}
         if len(images):
-            # binding.image_ids.unlink()
-            # data['image_1920'] = base64.b64encode(self._get_binary_image(images[0]))
-        # if len(images) > 1:
-        #     images.pop(0)
             c = 0
-            for image_data in [ i for i in images if not i['disabled']]:
+            for image_data in [i for i in images if not i['disabled']]:
                 binary = self._get_binary_image(image_data)
                 if binary:
-                    if image_data.get('label','') == '':
-                        image_data['label'] = os.path.basename(image_data.get('file','image_{}'.format(c)))
+                    if image_data.get('label', '') == '':
+                        image_data['label'] = os.path.basename(image_data.get('file', 'image_{}'.format(c)))
                     image_ids.append({
                         'image_1920': base64.b64encode(binary),
-                        'name': image_data.get('label',''),
-                        'owner_model': binding.odoo_id._name,
-                        'owner_id': binding.odoo_id.id,
+                        'name': image_data.get('label', ''),
                         'sequence': image_data.get('position', c),
                     })
                 c = c + 1
-            data['image_ids'] = [(6, 0, 0)] + [(0, 0, x) for x in image_ids]
-        binding.with_context(connector_no_export=True).write(data)
+
+            if binding._name == 'magento.product.template':
+                # Templates: eliminar solo imágenes del configurable (sin variantes)
+                # y crear las nuevas. Las imágenes de variantes NO se tocan.
+                template = binding.odoo_id
+                configurable_images = template.image_ids.filtered(
+                    lambda img: not img.product_variant_ids
+                )
+                configurable_images.unlink()
+                # Crear nuevas imágenes del configurable
+                for img_vals in image_ids:
+                    self.env['base_multi_image.image'].create({
+                        **img_vals,
+                        'owner_model': 'product.template',
+                        'owner_id': template.id,
+                        # Sin product_variant_ids = imagen del configurable
+                    })
+            else:
+                # Variantes: eliminar imágenes de ESTA variante y crear nuevas
+                # SIN pasar por product.product.image_ids (evita el _inverse_image_ids)
+                template = binding.odoo_id.product_tmpl_id
+                variant = binding.odoo_id
+                # Eliminar imágenes existentes de esta variante específica
+                variant_images = template.image_ids.filtered(
+                    lambda img: img.product_variant_ids.ids == [variant.id]
+                )
+                variant_images.unlink()
+                # Crear nuevas imágenes para esta variante
+                for img_vals in image_ids:
+                    self.env['base_multi_image.image'].create({
+                        **img_vals,
+                        'owner_model': 'product.template',
+                        'owner_id': template.id,
+                        'product_variant_ids': [(6, 0, [variant.id])],
+                    })
 
 
 # TODO: not needed, use inheritance

@@ -130,6 +130,72 @@ class ProductTemplateImporter(Component):
                     'position': category_link['position'],
                 })
 
+    def _coalesce_template_images(self, template):
+        """
+        Coalesce duplicate images after importing template and variants.
+        Uses ir_attachment checksum to identify duplicates.
+
+        Two groups:
+        - Without variants (configurable): duplicates are simply deleted
+        - With variants: duplicates are merged, combining variant associations
+        """
+        template.invalidate_recordset(['image_ids'])
+        all_images = template.image_ids
+        if not all_images:
+            return
+
+        # Get checksums from ir_attachment
+        attachments = self.env['ir.attachment'].search([
+            ('res_model', '=', 'base_multi_image.image'),
+            ('res_id', 'in', all_images.ids),
+            ('res_field', '=', 'image_1920'),
+        ])
+        image_checksums = {att.res_id: att.checksum for att in attachments}
+
+        # Separate images by type
+        configurable_images = all_images.filtered(lambda img: not img.product_variant_ids)
+        variant_images = all_images.filtered(lambda img: img.product_variant_ids)
+
+        images_to_delete = self.env['base_multi_image.image']
+
+        # Group 1: Configurable images (no variants) - just delete duplicates
+        checksum_to_config_images = {}
+        for image in configurable_images:
+            checksum = image_checksums.get(image.id)
+            if checksum:
+                checksum_to_config_images.setdefault(checksum, []).append(image)
+
+        for checksum, images in checksum_to_config_images.items():
+            if len(images) > 1:
+                # Keep first, delete rest
+                for img in images[1:]:
+                    images_to_delete |= img
+
+        # Group 2: Variant images - merge duplicates, combine variants
+        checksum_to_variant_images = {}
+        for image in variant_images:
+            checksum = image_checksums.get(image.id)
+            if checksum:
+                checksum_to_variant_images.setdefault(checksum, []).append(image)
+
+        for checksum, images in checksum_to_variant_images.items():
+            if len(images) > 1:
+                keeper = images[0]
+                # Collect all variant IDs from duplicates
+                all_variant_ids = []
+                for img in images:
+                    all_variant_ids.extend(img.product_variant_ids.ids)
+                # Update keeper with all variants
+                keeper.product_variant_ids = [(6, 0, list(set(all_variant_ids)))]
+                # Mark others for deletion
+                for img in images[1:]:
+                    images_to_delete |= img
+
+        _logger.info("COALESCE: Template %s - deleting %s duplicate images",
+                     template.id, len(images_to_delete))
+        if images_to_delete:
+            images_to_delete.unlink()
+
     def _after_import(self, binding):
         super()._after_import(binding)
         def sort_by_position(elem):
@@ -180,6 +246,10 @@ class ProductTemplateImporter(Component):
 
         for template_delete in templates_delete:
             templates_delete[template_delete].unlink()
+
+        # Coalesce duplicate images after importing all variants
+        self._coalesce_template_images(binding.odoo_id)
+
         # self._update_price(binding, price)
         # Do also import translations
         translation_importer = self.component(
