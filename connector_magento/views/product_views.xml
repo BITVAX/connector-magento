@@ -356,4 +356,80 @@
         </field>
     </record>
 
+    <!-- ============================================== -->
+    <!-- KANBAN VIEWS - Magento Sync State Indicators   -->
+    <!-- ============================================== -->
+
+    <!-- Add Magento sync state badge to product.template kanban view -->
+    <record id="view_product_template_kanban_magento_state" model="ir.ui.view">
+        <field name="name">product.template.kanban.magento.state</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <!-- Add field declaration for magento_sync_state -->
+            <field name="id" position="after">
+                <field name="magento_sync_state"/>
+            </field>
+            <!-- Add Magento badge in the kanban card header -->
+            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="before">
+                <div class="magento_kanban_badge_container">
+                    <!-- Published badge (green) -->
+                    <t t-if="record.magento_sync_state.raw_value == 'published'">
+                        <span class="magento_kanban_badge magento_published" title="Magento: Publicado">
+                            <i class="fa fa-shopping-cart"/>
+                        </span>
+                    </t>
+                    <!-- Partial badge (orange) -->
+                    <t t-if="record.magento_sync_state.raw_value == 'partial'">
+                        <span class="magento_kanban_badge magento_partial" title="Magento: Parcial">
+                            <i class="fa fa-shopping-cart"/>
+                        </span>
+                    </t>
+                    <!-- Unpublished badge (red) -->
+                    <t t-if="record.magento_sync_state.raw_value == 'unpublished'">
+                        <span class="magento_kanban_badge magento_unpublished" title="Magento: Sin publicar">
+                            <i class="fa fa-shopping-cart"/>
+                        </span>
+                    </t>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Magento sync state badge to product.product kanban view -->
+    <record id="view_product_product_kanban_magento_state" model="ir.ui.view">
+        <field name="name">product.product.kanban.magento.state</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_kanban_view"/>
+        <field name="arch" type="xml">
+            <!-- Add field declaration for magento_sync_state -->
+            <field name="id" position="after">
+                <field name="magento_sync_state"/>
+            </field>
+            <!-- Add Magento badge in the kanban card -->
+            <xpath expr="//div[hasclass('oe_kanban_details')]" position="before">
+                <div class="magento_kanban_badge_container">
+                    <!-- Published badge (green) -->
+                    <t t-if="record.magento_sync_state.raw_value == 'published'">
+                        <span class="magento_kanban_badge magento_published" title="Magento: Publicado">
+                            <i class="fa fa-shopping-cart"/>
+                        </span>
+                    </t>
+                    <!-- Partial badge (orange) -->
+                    <t t-if="record.magento_sync_state.raw_value == 'partial'">
+                        <span class="magento_kanban_badge magento_partial" title="Magento: Parcial">
+                            <i class="fa fa-shopping-cart"/>
+                        </span>
+                    </t>
+                    <!-- Unpublished badge (red) -->
+                    <t t-if="record.magento_sync_state.raw_value == 'unpublished'">
+                        <span class="magento_kanban_badge magento_unpublished" title="Magento: Sin publicar">
+                            <i class="fa fa-shopping-cart"/>
+                        </span>
+                    </t>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

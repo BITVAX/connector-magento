@@ -41,3 +41,67 @@
 .oe_stat_button.magento_unpublished .o_stat_text {
     color: white !important;
 }
+
+/* ============================================== */
+/* KANBAN BADGES - Magento Sync State Indicators  */
+/* ============================================== */
+
+.magento_kanban_badge_container {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    z-index: 1;
+}
+
+.magento_kanban_badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 11px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.magento_kanban_badge:hover {
+    transform: scale(1.15);
+}
+
+/* Published badge (green) */
+.magento_kanban_badge.magento_published {
+    background-color: #28a745;
+    color: white;
+}
+
+.magento_kanban_badge.magento_published:hover {
+    background-color: #218838;
+}
+
+/* Partial badge (orange) */
+.magento_kanban_badge.magento_partial {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.magento_kanban_badge.magento_partial:hover {
+    background-color: #e0a800;
+}
+
+/* Unpublished badge (red) */
+.magento_kanban_badge.magento_unpublished {
+    background-color: #dc3545;
+    color: white;
+}
+
+.magento_kanban_badge.magento_unpublished:hover {
+    background-color: #c82333;
+}
+
+/* Ensure kanban card has relative positioning for badge placement */
+.o_kanban_product_template .oe_kanban_card,
+.o_kanban_view .oe_kanban_global_click {
+    position: relative;
+}
