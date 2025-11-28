@@ -161,6 +161,17 @@ class MagentoProductTemplate(models.Model):
             delayed = binding.with_delay(identity_key=identity_exact).run_sync_from_magento()
             job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
             binding.odoo_id.with_context(connector_no_export=True).job_ids += job
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Import from Magento'),
+                'message': _('%d record(s) queued for import from Magento') % len(self),
+                'type': 'info',
+                'sticky': False,
+            }
+        }
+
 
     # @api.multi
     # @job(default_channel='root.magento')
@@ -312,13 +323,13 @@ class ProductTemplate(models.Model):
                  'product_variant_ids.magento_bind_ids.external_id')
     def _compute_magento_sync_info(self):
         """Compute binding count and sync state for smart button display.
-        
+
         Logic:
         - Configurable products (has_variant_attributes=True): Sync both template AND variant bindings
         - Simple products (has_variant_attributes=False): Sync only variant bindings
-        
-        A product has variant attributes if it has at least one attribute with 
-        create_variant in ('always', 'dynamic'), regardless of how many attributes 
+
+        A product has variant attributes if it has at least one attribute with
+        create_variant in ('always', 'dynamic'), regardless of how many attributes
         or whether it includes color.
         """
         for template in self:
