@@ -21,9 +21,9 @@ def get_exported_value(matt_id, record):
     if matt_id.field_id.ttype == 'boolean':
         return int(record[matt_id.field_id.sudo().name])
     if matt_id.field_id.ttype in ('char', 'text', 'selection', 'html'):
-        return str(record[matt_id.field_id.sudo().name]) if record[matt_id.field_id.sudo().name] else ''
+        return str(record[matt_id.field_id.sudo().name]) if record[matt_id.field_id.sudo().name] else None
 
-    return record[matt_id.field_id.sudo().name]
+    return record[matt_id.field_id.sudo().name] if record[matt_id.field_id.sudo().name] else None
 
 
 _logger = logging.getLogger(__name__)
@@ -541,11 +541,10 @@ class ProductProductExportMapper(Component):
                 })
             if record.attribute_set_id:
                 for matt_id in record.attribute_set_id.attribute_ids.filtered(lambda a: a.field_id):
-                    if record[matt_id.field_id.sudo().name]:
-                        custom_attributes.append({
-                            'attribute_code': matt_id.attribute_code,
-                            'value': get_exported_value(matt_id, record)
-                        })
+                    custom_attributes.append({
+                        'attribute_code': matt_id.attribute_code,
+                        'value': get_exported_value(matt_id, record)
+                    })
             custom_attributes.append(self.category_ids(record))
             if record.magento_url_key:
                 custom_attributes.append({

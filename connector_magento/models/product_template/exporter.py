@@ -444,11 +444,10 @@ class ProductTemplateExportMapper(Component):
         custom_attributes.extend(self.get_non_configurable_attributes(record))
         if record.attribute_set_id:
             for matt_id in record.attribute_set_id.attribute_ids.filtered(lambda a: a.field_id):
-                if record[matt_id.field_id.sudo().name]:
-                    custom_attributes.append({
-                        'attribute_code': matt_id.attribute_code,
-                        'value': get_exported_value(matt_id,record)
-                    })
+                custom_attributes.append({
+                    'attribute_code': matt_id.attribute_code,
+                    'value': get_exported_value(matt_id,record)
+                })
         if record.magento_url_key:
             custom_attributes.append({
                 'attribute_code': 'url_key',
