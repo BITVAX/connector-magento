@@ -24,6 +24,9 @@ except ImportError:
 
 MAGENTO_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
+# Códigos HTTP 5XX que indican errores temporales del servidor (reintentables)
+RETRYABLE_HTTP_CODES = {500, 502, 503, 504, 520, 521, 522, 523, 524, 525, 526, 527, 528, 529}
+
 
 def serialize_for_json(obj):
     """
@@ -95,19 +98,33 @@ class Magento2Client(object):
             http_method = 'get'
         function = getattr(requests, http_method)
         headers = {'Authorization': 'Bearer %s' % self._token}
-        kwargs = {'headers': headers,'verify':self._verify_ssl}
+        kwargs = {'headers': headers, 'verify': self._verify_ssl, 'timeout': 30}
         if http_method == 'get':
             kwargs['params'] = arguments
         elif arguments is not None:
             # Serializar copia para no mutar los argumentos originales
             kwargs['json'] = serialize_for_json(copy.deepcopy(arguments))
-        res = function(url, **kwargs)
+
+        try:
+            res = function(url, **kwargs)
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                requests.exceptions.ChunkedEncodingError) as err:
+            raise NetworkRetryableError(
+                'Network error calling Magento API: %s' % err
+            )
+
         if res.status_code != 200:
-            message=res.text
+            message = res.text
             if res.status_code == 404:
                 raise IDMissingInBackend(message)
+            if res.status_code in RETRYABLE_HTTP_CODES:
+                raise NetworkRetryableError(
+                    'HTTP %d from Magento (retryable):\nURL: %s\nResponse: %s' %
+                    (res.status_code, url, message[:500])
+                )
             raise JobError(message)
-        res.raise_for_status()
+
         return res.json()
 
 
