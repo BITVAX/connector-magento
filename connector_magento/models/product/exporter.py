@@ -346,8 +346,8 @@ class ProductProductExporter(Component):
 
 
 class ProductProductExportMapper(Component):
-    _name = 'magento.product.export.mapper'
-    _inherit = 'magento.export.mapper'
+    _name = 'magento.product.product.export.mapper'
+    _inherit = 'magento.product.export.mapper'
     _apply_on = ['magento.product.product']
 
     direct = [
@@ -568,6 +568,14 @@ class ProductProductExportMapper(Component):
                 custom_attributes.append({
                     'attribute_code': 'meta_description',
                     'value': record.odoo_id.meta_description
+                })
+
+            # Export tax_class_id from product's taxes_id (inherited from template)
+            tax_class_value = self._get_tax_class_id(record)
+            if tax_class_value:
+                custom_attributes.append({
+                    'attribute_code': 'tax_class_id',
+                    'value': tax_class_value
                 })
 
             _logger.info("Do use custom attributes: %r", custom_attributes)
