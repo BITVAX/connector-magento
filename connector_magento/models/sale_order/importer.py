@@ -733,6 +733,14 @@ class SaleOrderLineImportMapper(Component):
     @mapping
     def discount_amount(self, record):
         discount_value = float(record.get('discount_amount') or 0)
+        discount_percent = float(record.get('discount_percent') or 0)
+
+        # Use discount_percent directly from Magento when available
+        # This handles edge cases like 100% discounts where row_total=0
+        if discount_percent > 0:
+            return {'discount': discount_percent}
+
+        # Fallback: calculate from discount_amount and row_total
         if self.options.tax_include:
             row_total = float(record.get('row_total_incl_tax') or 0)
         else:
@@ -743,8 +751,7 @@ class SaleOrderLineImportMapper(Component):
                 discount = 100 * discount_value / row_total
             else:
                 discount = 100 * discount_value / (row_total + discount_value)
-        result = {'discount': discount}
-        return result
+        return {'discount': discount}
 
     @mapping
     def product_id(self, record):
