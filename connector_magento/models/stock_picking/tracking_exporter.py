@@ -20,7 +20,7 @@ class MagentoTrackingExporter(Component):
         if self.collection.version == '2.0':
             return [{
                 "entity": {
-                    "order_id": picking.magento_order_id.external_id,
+                    "order_id": picking.magento_order_id.magento_order_id,
                     "parent_id": picking.external_id,
                     "weight": 0,
                     "qty": 1,
