@@ -347,6 +347,17 @@ class ProductTemplateImportMapper(Component):
 
     children = []
 
+    @mapping
+    def price(self, record):
+        """Override for templates: use list_price directly.
+
+        Templates don't have fix_price, so we write directly to list_price.
+        Variants use lst_price which triggers the fix_price inverse.
+        standard_price (cost) is stored per variant, not on template.
+        """
+        return {
+            'list_price': float(record.get('price') or 0.0),
+        }
 
     # @mapping
     # def custom_values(self, record):

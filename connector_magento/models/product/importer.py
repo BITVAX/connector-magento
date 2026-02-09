@@ -256,10 +256,16 @@ class ProductImportMapper(Component):
 
     @mapping
     def price(self, record):
+        """Import price from Magento.
+
+        Uses lst_price which has an inverse in product_variant_sale_price
+        that properly handles fix_price per variant.
+        """
         return {
-            'standard_price': float(record.get('cost', 0.0)),
-            'list_price': float(record.get('price', 0.0))
+            'standard_price': float(record.get('cost') or 0.0),
+            'lst_price': float(record.get('price') or 0.0),
         }
+
 
     @mapping
     def type(self, record):

@@ -578,9 +578,34 @@ class ProductProductExportMapper(Component):
                     'value': tax_class_value
                 })
 
+            # Export special_price from pricelist (if configured)
+            special_price_attrs = self._get_special_price_attributes(record)
+            if special_price_attrs:
+                custom_attributes.extend(special_price_attrs)
+
             _logger.info("Do use custom attributes: %r", custom_attributes)
 
         return {'custom_attributes': custom_attributes}
+
+    def _get_special_price_attributes(self, record):
+        """Get special_price custom attribute for export.
+
+        Returns empty list if no pricelist configured (respects Magento value).
+        """
+        backend = record.backend_id
+        pricelist = backend.special_price_pricelist_id
+
+        if not pricelist:
+            return []
+
+        price = pricelist._get_products_price(
+            record.odoo_id, quantity=1.0
+        ).get(record.odoo_id.id, 0.0)
+
+        if not price:
+            return [{'attribute_code': 'special_price', 'value': None}]
+
+        return [{'attribute_code': 'special_price', 'value': str(price)}]
 
     @mapping
     def price(self, record):
@@ -591,3 +616,4 @@ class ProductProductExportMapper(Component):
         return {
             'price': price,
         }
+

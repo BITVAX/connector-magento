@@ -12,7 +12,8 @@
              'sale_stock',
              'connector_ecommerce',
              'product_multi_image',
-             'product_variant_default_code'
+             'product_variant_default_code',
+             'product_variant_sale_price',
              ],
  'author': "Camptocamp,Akretion,Sodexis,TRIVAX INNOVA SL,Wolfgang Pichler,Odoo Community Association (OCA)",
  'license': 'AGPL-3',

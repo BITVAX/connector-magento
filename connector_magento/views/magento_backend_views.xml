@@ -189,6 +189,7 @@
                                 <field name="product_synchro_strategy"/>
                                 <field name="product_export_strategy"/>
                                 <field name="product_import_strategy"/>
+                                <field name="special_price_pricelist_id"/>
                             </group>
                         </page>
 
