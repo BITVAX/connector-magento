@@ -27,7 +27,7 @@ class MagentoTrackingExporter(Component):
                     "description": picking.name,
                     "track_number": picking.carrier_tracking_ref,
                     "title": picking.carrier_id.magento_tracking_title,
-                    "carrier_code": picking.carrier_id.magento_carrier_code,
+                    "carrier_code": "custom" #picking.carrier_id.magento_carrier_code,
                 }
             }]
         return (picking.carrier_id.magento_carrier_code,
