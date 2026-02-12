@@ -153,8 +153,7 @@ class MagentoBackend(models.Model):
     special_price_pricelist_id = fields.Many2one(
         comodel_name='product.pricelist',
         string='Special Price Pricelist',
-        help='Pricelist to calculate special_price on export. '
-             'If empty, uses binding magento_special_price directly.',
+        help='Pricelist to calculate special_price on export. ',
     )
     # TODO? add a field `auto_activate` -> activate a cron
     import_products_from_date = fields.Datetime(
