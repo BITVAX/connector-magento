@@ -4,7 +4,7 @@
 
 import logging
 import xmlrpc.client
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 from odoo.addons.component.core import Component
 # # from odoo.addons.queue_job.job import job3, related_action
 from odoo.addons.connector.exception import IDMissingInBackend
@@ -124,7 +124,9 @@ class MagentoBindingInvoiceListener(Component):
     _apply_on = ['magento.account.invoice']
 
     def on_record_create(self, record, fields=None):
-        record.with_delay().export_record()
+        record.with_delay(
+            description=_("Export invoice %s to Magento") % (record.odoo_id.name if record.odoo_id else ''),
+        ).export_record()
 
 
 class MagentoInvoiceListener(Component):

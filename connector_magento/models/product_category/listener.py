@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
 from odoo.addons.queue_job.job import identity_exact
+
+
+def _get_cat_name(record):
+    """Get category name from a binding or category record, safely."""
+    return (record.name
+            or (hasattr(record, 'odoo_id') and record.odoo_id and record.odoo_id.name)
+            or '')
 
 
 class MagentoProductCategoryBindingExportListener(Component):
@@ -15,13 +23,19 @@ class MagentoProductCategoryBindingExportListener(Component):
     def on_record_create(self, record, fields=None):
         if record.backend_id.product_synchro_strategy == 'magento_first':
                 return
-        record.with_delay(identity_key=identity_exact).export_record(record.backend_id)
+        record.with_delay(
+            identity_key=identity_exact,
+            description=_("Export category '%s' to Magento") % _get_cat_name(record),
+        ).export_record(record.backend_id)
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
         if record.backend_id.product_synchro_strategy == 'magento_first':
                 return
-        record.with_delay(identity_key=identity_exact).export_record(record.backend_id)
+        record.with_delay(
+            identity_key=identity_exact,
+            description=_("Export category '%s' to Magento") % _get_cat_name(record),
+        ).export_record(record.backend_id)
 
     def on_record_unlink(self, record):
         if record.backend_id.product_synchro_strategy == 'magento_first':
@@ -29,8 +43,10 @@ class MagentoProductCategoryBindingExportListener(Component):
         with record.backend_id.work_on(record._name) as work:
             external_id = work.component(usage='binder').to_external(record)
             if external_id:
-                record.with_delay(identity_key=identity_exact).export_delete_record(record.backend_id,
-                                                         external_id)
+                record.with_delay(
+                    identity_key=identity_exact,
+                    description=_("Delete category '%s' (ID: %s) from Magento") % (_get_cat_name(record), external_id),
+                ).export_delete_record(record.backend_id, external_id)
 
 
 class MagentoProductCategoryExportListener(Component):
@@ -43,21 +59,26 @@ class MagentoProductCategoryExportListener(Component):
         if not hasattr(record, "magento_bind_ids"):
             return
         for binding in record.magento_bind_ids:
-            if binding.backend_id.product_synchro_strategy == 'magento_first': 
+            if binding.backend_id.product_synchro_strategy == 'magento_first':
                 continue
-            binding.with_delay(identity_key=identity_exact).export_record(binding.backend_id)
+            binding.with_delay(
+                identity_key=identity_exact,
+                description=_("Export category '%s' to Magento") % _get_cat_name(binding),
+            ).export_record(binding.backend_id)
 
     def on_record_unlink(self, record):
         if not hasattr(record, "magento_bind_ids"):
             return
         for binding in record.magento_bind_ids:
-            if binding.backend_id.product_synchro_strategy == 'magento_first': 
+            if binding.backend_id.product_synchro_strategy == 'magento_first':
                 continue
             with binding.backend_id.work_on(binding._name) as work:
                 external_id = work.component(usage='binder').to_external(binding)
                 if external_id:
-                    binding.with_delay(identity_key=identity_exact).export_delete_record(binding.backend_id,
-                                                                                        external_id)
+                    binding.with_delay(
+                        identity_key=identity_exact,
+                        description=_("Delete category '%s' (ID: %s) from Magento") % (_get_cat_name(binding), external_id),
+                    ).export_delete_record(binding.backend_id, external_id)
 
 
 class MagentoProductCategoryPositionExportListener(Component):
@@ -67,4 +88,8 @@ class MagentoProductCategoryPositionExportListener(Component):
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
-        record.magento_product_category_id.with_delay(identity_key=('magento_product_category_position_%s'%record.magento_product_category_id.id)).update_positions()
+        cat_id = record.magento_product_category_id.id
+        record.magento_product_category_id.with_delay(
+            identity_key=('magento_product_category_position_%s' % cat_id),
+            description=_("Update positions for category #%s") % cat_id,
+        ).update_positions()

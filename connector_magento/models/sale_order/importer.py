@@ -25,6 +25,7 @@ class SaleOrderBatchImporter(Component):
         job_options = {
             'max_retries': 0,
             'priority': 5,
+            'description': _("Import order #%s from Magento") % external_id,
         }
         return super(SaleOrderBatchImporter, self)._import_record(
             external_id, job_options=job_options)

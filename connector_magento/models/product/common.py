@@ -7,7 +7,7 @@ import xmlrpc.client
 
 from collections import defaultdict
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
@@ -499,6 +499,9 @@ class MagentoBindingProductListener(Component):
             set(fields).intersection(self.INVENTORY_FIELDS)
         )
         if inventory_fields:
-            record.with_delay(priority=20).export_inventory(
-                fields=inventory_fields
-            )
+            sku = record.default_code or (
+                record.odoo_id and record.odoo_id.default_code) or ''
+            record.with_delay(
+                priority=20,
+                description=_("Export inventory for %s") % sku,
+            ).export_inventory(fields=inventory_fields)

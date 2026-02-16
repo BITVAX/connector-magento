@@ -84,7 +84,10 @@ class MagentoBinding(models.AbstractModel):
 
     def sync_from_magento(self):
         for binding in self:
-            binding.with_delay(identity_key=identity_exact).import_record(
+            binding.with_delay(
+                identity_key=identity_exact,
+                description=_("Import %s (ID: %s) from Magento") % (binding.display_name or '', binding.external_id or ''),
+            ).import_record(
                 binding.backend_id, binding.external_id, force=True)
         return {
             'type': 'ir.actions.client',
@@ -99,7 +102,10 @@ class MagentoBinding(models.AbstractModel):
 
     def sync_to_magento(self):
         for binding in self:
-            binding.with_delay(identity_key=identity_exact, priority=10).export_record()
+            binding.with_delay(
+                identity_key=identity_exact, priority=10,
+                description=_("Export %s to Magento") % (binding.display_name or ''),
+            ).export_record()
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -113,7 +119,10 @@ class MagentoBinding(models.AbstractModel):
 
     def delete_from_magento(self):
         for binding in self:
-            binding.with_delay(identity_key=identity_exact).export_delete_record(
+            binding.with_delay(
+                identity_key=identity_exact,
+                description=_("Delete %s (ID: %s) from Magento") % (binding.display_name or '', binding.external_id or ''),
+            ).export_delete_record(
                 binding.backend_id, binding.external_id)
         return {
             'type': 'ir.actions.client',

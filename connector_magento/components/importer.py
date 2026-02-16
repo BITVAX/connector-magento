@@ -293,8 +293,17 @@ class DelayedBatchImporter(AbstractComponent):
 
     def _import_record(self, external_id, job_options=None, **kwargs):
         """ Delay the import of the records"""
-        delayable = self.model.with_delay(**job_options or {})
+        if job_options is None:
+            job_options = {}
+        if 'description' not in job_options:
+            job_options['description'] = self._get_job_description(external_id)
+        delayable = self.model.with_delay(**job_options)
         delayable.import_record(self.backend_record, external_id, **kwargs)
+
+    def _get_job_description(self, external_id):
+        """Build a descriptive job name for the queue. Override in subclasses."""
+        model_desc = self.model._description or self.model._name
+        return _("Import %s #%s from Magento") % (model_desc, external_id)
 
 
 class SimpleRecordImporter(Component):

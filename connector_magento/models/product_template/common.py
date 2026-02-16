@@ -158,7 +158,11 @@ class MagentoProductTemplate(models.Model):
     # @job(default_channel='root.magento')
     def sync_from_magento(self):
         for binding in self:
-            delayed = binding.with_delay(identity_key=identity_exact).run_sync_from_magento()
+            sku = binding.odoo_id.default_code or binding.external_id or ''
+            delayed = binding.with_delay(
+                identity_key=identity_exact,
+                description=_("Sync template %s from Magento") % sku,
+            ).run_sync_from_magento()
             job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
             binding.odoo_id.with_context(connector_no_export=True).job_ids += job
         return {

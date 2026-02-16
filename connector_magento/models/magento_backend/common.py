@@ -337,9 +337,9 @@ class MagentoBackend(models.Model):
     def import_customer_groups(self):
         for backend in self:
             backend.check_magento_structure()
-            self.env['magento.res.partner.category'].with_delay().import_batch(
-                backend,
-            )
+            self.env['magento.res.partner.category'].with_delay(
+                description=_("Batch import customer groups"),
+            ).import_batch(backend)
         return True
 
     # @api.multi
@@ -352,7 +352,10 @@ class MagentoBackend(models.Model):
                 from_date = fields.Datetime.from_string(from_date)
             else:
                 from_date = None
-            self.env[model].with_delay().import_batch(
+            model_desc = self.env[model]._description or model
+            self.env[model].with_delay(
+                description=_("Batch import %s from Magento") % model_desc,
+            ).import_batch(
                 backend,
                 filters={'from_date': from_date,
                          'to_date': import_start_time}
@@ -396,7 +399,10 @@ class MagentoBackend(models.Model):
         """ Import attribute sets from backend """
         for backend in self:
             backend.check_magento_structure()
-            self.env['magento.product.attribute.set'].with_delay(identity_key=identity_exact).import_batch(backend)
+            self.env['magento.product.attribute.set'].with_delay(
+                identity_key=identity_exact,
+                description=_("Batch import attribute sets from Magento"),
+            ).import_batch(backend)
         return True
 
     # @api.multi

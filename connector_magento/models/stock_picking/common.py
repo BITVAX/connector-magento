@@ -4,7 +4,7 @@
 
 import logging
 import xmlrpc.client
-from odoo import api, models, fields
+from odoo import api, models, fields, _
 # # from odoo.addons.queue_job.job import job3, related_action
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.component.core import Component
@@ -54,7 +54,9 @@ class MagentoStockPicking(models.Model):
             exporter = work.component(usage='record.exporter')
             res = exporter.run(self)
             if with_tracking and self.carrier_tracking_ref:
-                self.with_delay().export_tracking_number()
+                self.with_delay(
+                    description=_("Export tracking for %s") % (self.name or ''),
+                ).export_tracking_number()
             return res
 
 
@@ -138,7 +140,9 @@ class MagentoBindingStockPickingListener(Component):
         # picking at the time of execution of the job, a tracking could
         # have been added and it would be exported twice.
         with_tracking = bool(record.carrier_tracking_ref)
-        record.with_delay().export_picking_done(with_tracking=with_tracking)
+        record.with_delay(
+            description=_("Export picking %s for %s") % (record.name or '', record.origin or record.name or ''),
+        ).export_picking_done(with_tracking=with_tracking)
 
 
 class MagentoStockPickingListener(Component):
@@ -150,7 +154,10 @@ class MagentoStockPickingListener(Component):
         for binding in record.magento_bind_ids:
             # Set the priority to 20 to have more chance that it would be
             # executed after the picking creation
-            binding.with_delay(priority=20).export_tracking_number()
+            binding.with_delay(
+                priority=20,
+                description=_("Export tracking for %s") % (binding.name or binding.origin or ''),
+            ).export_tracking_number()
 
     def on_picking_dropship_done(self, record, picking_method):
         return self.on_picking_out_done(record, picking_method)

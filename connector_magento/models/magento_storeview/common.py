@@ -5,7 +5,7 @@
 import logging
 
 from datetime import datetime, timedelta
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.addons.component.core import Component
 from ..magento_backend.common import IMPORT_DELTA_BUFFER
 
@@ -80,7 +80,9 @@ class MagentoStoreview(models.Model):
             else:
                 from_date = None
 
-            delayable = sale_binding_model.with_delay(priority=1)
+            delayable = sale_binding_model.with_delay(
+                priority=1,
+                description=_("Batch import orders from storeview %s") % storeview.name)
             filters = {
                 'magento_storeview_id': storeview.external_id,
                 'from_date': from_date,

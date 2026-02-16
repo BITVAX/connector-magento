@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
 from odoo.addons.queue_job.job import identity_exact
+
+
+def _get_attr_name(record):
+    """Get attribute name from a binding or attribute record, safely."""
+    return (record.name
+            or (hasattr(record, 'odoo_id') and record.odoo_id and record.odoo_id.name)
+            or '')
 
 
 class MagentoProductAttributeBindingExportListener(Component):
@@ -14,12 +22,18 @@ class MagentoProductAttributeBindingExportListener(Component):
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_create(self, record, fields=None):
         if record.backend_id.export_all_options:
-            record.with_delay(identity_key=identity_exact).export_record(record.backend_id)
+            record.with_delay(
+                identity_key=identity_exact,
+                description=_("Export attribute '%s' to Magento") % _get_attr_name(record),
+            ).export_record(record.backend_id)
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
         if record.backend_id.export_all_options:
-            record.with_delay(identity_key=identity_exact).export_record(record.backend_id)
+            record.with_delay(
+                identity_key=identity_exact,
+                description=_("Export attribute '%s' to Magento") % _get_attr_name(record),
+            ).export_record(record.backend_id)
 
     def on_record_unlink(self, record):
         if not record.backend_id.export_all_options:
@@ -27,8 +41,10 @@ class MagentoProductAttributeBindingExportListener(Component):
         with record.backend_id.work_on(record._name) as work:
             external_id = work.component(usage='binder').to_external(record)
             if external_id:
-                record.with_delay(identity_key=identity_exact).export_delete_record(record.backend_id,
-                                                         external_id)
+                record.with_delay(
+                    identity_key=identity_exact,
+                    description=_("Delete attribute '%s' (ID: %s) from Magento") % (_get_attr_name(record), external_id),
+                ).export_delete_record(record.backend_id, external_id)
 
 
 class MagentoProductAttributeExportListener(Component):
@@ -42,4 +58,7 @@ class MagentoProductAttributeExportListener(Component):
         for binding in record.magento_bind_ids:
             if not binding.backend_id.export_all_options:
                 return
-            binding.with_delay(identity_key=identity_exact).export_record(binding.backend_id)
+            binding.with_delay(
+                identity_key=identity_exact,
+                description=_("Export attribute '%s' to Magento") % _get_attr_name(binding),
+            ).export_record(binding.backend_id)

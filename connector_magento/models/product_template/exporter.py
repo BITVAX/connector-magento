@@ -197,7 +197,12 @@ class ProductTemplateDefinitionExporter(Component):
                     variant_exporter.run(m_prod)
                 else:
                     _logger.info("Do queue export variant: %s", m_prod)
-                    delayed = m_prod.with_delay(identity_key=('magento_product_product_%s' % m_prod.id), priority=5).export_record()
+                    sku = m_prod.default_code or m_prod.odoo_id.default_code or ''
+                    delayed = m_prod.with_delay(
+                        identity_key=('magento_product_product_%s' % m_prod.id),
+                        priority=5,
+                        description=_("Export variant %s to Magento") % sku,
+                    ).export_record()
                     job = self.env['queue.job'].search([('uuid', '=', delayed.uuid)])
                     self.binding.odoo_id.with_context(connector_no_export=True).job_ids += job
 

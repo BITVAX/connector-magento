@@ -53,9 +53,11 @@ class MagentoBaseExporter(AbstractComponent):
         # force is True because the sync_date will be more recent
         # so the import would be skipped
         assert self.external_id
-        self.binding.with_delay().import_record(self.backend_record,
-                                                self.external_id,
-                                                force=True)
+        model_desc = self.binding._description or self.binding._name
+        self.binding.with_delay(
+            description=_("Re-import %s #%s from Magento") % (model_desc, self.external_id),
+        ).import_record(
+            self.backend_record, self.external_id, force=True)
 
     def _should_import(self):
         """ Before the export, compare the update date

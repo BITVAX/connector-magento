@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.addons.component.core import Component
 # from odoo.addons.queue_job.job import job, related_action, identity_exact
 from odoo.addons.queue_job.job import identity_exact
@@ -72,14 +72,20 @@ class MagentoProductAttribute(models.Model):
     # @api.multi
     def export_product_attribute_button(self):
         self.ensure_one()
-        self.with_delay(priority=20,
-                        identity_key=identity_exact).export_product_attribute()
+        attr_name = self.name or (self.odoo_id and self.odoo_id.name) or ''
+        self.with_delay(
+            priority=20, identity_key=identity_exact,
+            description=_("Export attribute '%s' to Magento") % attr_name,
+        ).export_product_attribute()
 
     # @api.multi
     def import_product_attribute_button(self):
         self.ensure_one()
-        self.with_delay(priority=20,
-                        identity_key=identity_exact).import_product_attribute()
+        attr_name = self.name or (self.odoo_id and self.odoo_id.name) or ''
+        self.with_delay(
+            priority=20, identity_key=identity_exact,
+            description=_("Import attribute '%s' from Magento") % attr_name,
+        ).import_product_attribute()
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_unwrap_binding')
