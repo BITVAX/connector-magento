@@ -46,7 +46,7 @@ class MagentoProductExportMapper(AbstractComponent):
         if not sale_tax:
             return None
 
-        magento_tax = self.env['magento.account.tax'].search([
+        magento_tax = self.env['magento.account.tax'].sudo().search([
             ('odoo_id', '=', sale_tax.id),
             ('backend_id', '=', record.backend_id.id)
         ], limit=1)
