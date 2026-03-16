@@ -267,10 +267,6 @@ class ProductTemplateImporter(Component):
                                         model_name='magento.stock.item')
         stock_importer.run(self.magento_record['extension_attributes']['stock_item'])
 
-    def _is_uptodate(self, binding):
-        # TODO: Remove for production - only to test the update
-        return False
-
     def _get_binding(self):
         binding = super(ProductTemplateImporter, self)._get_binding()
         if not binding:
