@@ -5,6 +5,7 @@ from . import test_magento2_export_product_stock
 from . import test_magento2_import_metadata
 from . import test_magento2_import_partner
 from . import test_magento2_import_partner_category
+from . import test_magento2_import_attribute
 from . import test_magento2_import_product
 from . import test_magento2_import_product_category
 from . import test_magento2_import_template

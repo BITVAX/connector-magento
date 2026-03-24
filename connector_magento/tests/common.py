@@ -106,11 +106,10 @@ class MagentoTestCase(TransactionComponentCase):
         warehouse = self.env.ref('stock.warehouse0')
         self.backend = self.backend_model.create(
             {'name': 'Test Magento',
-             'version': '1.7',
+             'version': '2.0',
              'location': 'http://magento',
-             'username': 'odoo',
-             'warehouse_id': warehouse.id,
-             'password': 'odoo42'}
+             'token': 'test_token',
+             'warehouse_id': warehouse.id}
         )
         # payment method needed to import a sale order
         self.workflow = self.env.ref(

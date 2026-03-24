@@ -203,17 +203,7 @@ class PartnerAddressBook(Component):
             importer.run(address_id, address_infos=infos)
 
     def _read_addresses(self, magento_partner_id):
-        """ Provide addresses
-        - Magento 1.x: read the addresses from the address repository
-        - Magento 2.x: addresses are included in the partner record
-        """
-        if self.collection.version == '1.7':
-            adapter = self.component(usage='backend.adapter')
-            mag_address_ids = adapter.search({'customer_id':
-                                              {'eq': magento_partner_id}})
-            return [(address_id, adapter.read(address_id))
-                    for address_id in mag_address_ids]
-
+        """ Provide addresses from the partner record (Magento 2.x). """
         with self.collection.work_on('magento.res.partner') as partner:
             adapter = partner.component(usage='backend.adapter')
             record = adapter.read(magento_partner_id)

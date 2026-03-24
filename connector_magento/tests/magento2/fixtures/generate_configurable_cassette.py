@@ -353,17 +353,45 @@ def build_interactions():
     return interactions
 
 
-def main():
-    interactions = build_interactions()
+def build_attribute_set_interactions():
+    """Build interactions for attribute set import test."""
+    interactions = []
 
-    # Duplicate all interactions for VCR replay
+    def add(uri, data):
+        interactions.append(interaction(uri, json.dumps(data, separators=(',', ':'))))
+
+    # 1. Attribute set read
+    add(f'{BASE}/rest/V1/products/attribute-sets/4', ATTRIBUTE_SET)
+
+    # 2. Attribute set details (list of attributes)
+    add(f'{BASE}/rest/V1/products/attribute-sets/4/attributes', ATTRIBUTE_SET_ATTRS)
+
+    # 3. Each attribute by numeric ID (importer calls run(attribute_id))
+    for code, attr_data in ATTRIBUTES.items():
+        attr_id = attr_data["attribute_id"]
+        for prefix in ['/rest/V1', '/rest/all/V1']:
+            add(f'{BASE}{prefix}/products/attributes/{attr_id}', attr_data)
+
+    # 4. Each attribute by code (for binder lookups)
+    for code, attr_data in ATTRIBUTES.items():
+        for prefix in ['/rest/V1', '/rest/all/V1']:
+            add(f'{BASE}{prefix}/products/attributes/{code}', attr_data)
+
+    # 5. Tax classes (needed by metadata sync in setUp)
+    add(f'{BASE}/rest/V1/taxClasses/search?fields=items%5Bclass_id%5D&searchCriteria=', TAX_SEARCH)
+    for prefix in ['/rest/V1', '/rest/all/V1']:
+        add(f'{BASE}{prefix}/taxClasses/2', TAX_2)
+        add(f'{BASE}{prefix}/taxClasses/3', TAX_3)
+
+    return interactions
+
+
+def write_cassette(output_path, interactions):
+    """Write a VCR cassette file with duplicated interactions."""
     all_blocks = []
     for block in interactions:
         for _ in range(DUPLICATE_COUNT):
             all_blocks.append(block)
-
-    cassette_dir = os.path.join(os.path.dirname(__file__), 'cassettes')
-    output_path = os.path.join(cassette_dir, 'import_product_template_CONF-TEST.yaml')
 
     with open(output_path, 'w') as f:
         f.write('# __PATCHED_DUPLICATES__\n')
@@ -373,8 +401,22 @@ def main():
 
     total = len(all_blocks)
     unique = len(interactions)
-    print(f"Generated {output_path}")
-    print(f"  {unique} unique interactions, {total} total (x{DUPLICATE_COUNT} duplicates)")
+    print(f"  Generated {output_path}")
+    print(f"    {unique} unique interactions, {total} total (x{DUPLICATE_COUNT} duplicates)")
+
+
+def main():
+    cassette_dir = os.path.join(os.path.dirname(__file__), 'cassettes')
+
+    # Configurable template import cassette
+    write_cassette(
+        os.path.join(cassette_dir, 'import_product_template_CONF-TEST.yaml'),
+        build_interactions())
+
+    # Attribute set import cassette
+    write_cassette(
+        os.path.join(cassette_dir, 'import_product_attribute_set_4.yaml'),
+        build_attribute_set_interactions())
 
 
 if __name__ == '__main__':

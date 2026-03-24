@@ -45,13 +45,9 @@ class PartnerCategoryAdapter(Component):
     # _admin2_path = '/customer/group/edit/id/{id}'
 
     def search(self, filters=None):
-        """ Search records according to some criterias
+        """ Search records according to some criteria
         and returns a list of ids
 
         :rtype: list
         """
-        if self.collection.version == '1.7':
-            return [int(row['customer_group_id']) for row
-                    in self._call('%s.list' % self._magento_model,
-                                  [filters] if filters else [{}])]
         return super(PartnerCategoryAdapter, self).search(filters=filters)

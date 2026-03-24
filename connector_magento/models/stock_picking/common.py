@@ -3,10 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 from odoo import api, models, fields, _
 # # from odoo.addons.queue_job.job import job3, related_action
-from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
@@ -78,19 +76,6 @@ class StockPickingAdapter(Component):
     _magento_model = 'sales_order_shipment'
     _admin_path = 'sales_shipment/view/shipment_id/{id}'
 
-    def _call(self, method, arguments, http_method=None, storeview=None):
-        try:
-            return super(StockPickingAdapter, self)._call(
-                method, arguments, http_method=http_method,
-                storeview=storeview)
-        except xmlrpc.client.Fault as err:
-            # this is the error in the Magento API
-            # when the shipment does not exist
-            if err.faultCode == 100:
-                raise IDMissingInBackend
-            else:
-                raise
-
     def create(self, order_id, items, comment, email, include_comment):
         """ Create a record on the external system """
         # pylint: disable=method-required-super
@@ -100,20 +85,12 @@ class StockPickingAdapter(Component):
     def add_tracking_number(self, *arguments):
         """ Add new tracking number.
 
-        In the case of Magento 1.x, arguments is a list consisting of
-        * external_id: shipment increment id
-        * carrier_code: code of the carrier on Magento
-        * tracking_title: title displayed on Magento for the tracking
-        * tracking_number: tracking number
-
-        In the case of Magento 2.x its only member is a json dict
+        Arguments is a tuple of (external_id, json_data) where json_data
+        is the tracking payload for the Magento 2.x REST API.
         """
-        if self.collection.version == '2.0':
-            _external_id, json_data = arguments
-            return self._call(
-                'shipment/track', json_data, http_method='post')
-        return self._call('%s.addTrack' % self._magento_model,
-                          arguments)
+        _external_id, json_data = arguments
+        return self._call(
+            'shipment/track', json_data, http_method='post')
 
     def get_carriers(self, external_id):
         """ Get the list of carrier codes allowed for the shipping.

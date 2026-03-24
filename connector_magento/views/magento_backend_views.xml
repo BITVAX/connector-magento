@@ -27,12 +27,8 @@
                                 <field name="use_custom_api_path" colspan="2"/>
                                 <field name="verify_ssl" colspan="2"/>
                                 <field name="log_sync_to_chatter" colspan="2"/>
-                                <field name="username" colspan="2"
-                                       attrs="{'invisible': [('version', '!=', '1.7')], 'required': [('version', '=', '1.7')]}"/>
-                                <field name="password" password="1" colspan="2"
-                                       attrs="{'invisible': [('version', '!=', '1.7')], 'required': [('version', '=', '1.7')]}"/>
                                 <field name="token" password="1" colspan="2"
-                                       attrs="{'invisible': [('version', '=', '1.7')], 'required': [('version', '!=', '1.7')]}"/>
+                                       required="1"/>
                             </group>
                         </page>
                         <page string="HTTP Authentication" name="auth" colspan="4" col="4">

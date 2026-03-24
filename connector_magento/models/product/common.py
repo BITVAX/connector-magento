@@ -3,12 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 
 from collections import defaultdict
 
 from odoo import models, fields, api, _
-from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
 # # from odoo.addons.queue_job.job import job3, related_action
@@ -245,10 +243,8 @@ class MagentoProductProduct(models.Model):
 
     @api.model
     def _get_admin_path(self, backend, external_id):
-        """ In Magento2, we can only link to the product when we have already
+        """ We can only link to the product when we have already
         imported it """
-        if backend.version == '1.7':
-            return '/{model}/edit/id/{id}'
         magento_internal_id = self.search(
             [('backend_id', '=', backend.id),
              ('external_id', '=', external_id)],
@@ -425,19 +421,6 @@ class ProductProductAdapter(Component):
     _magento2_name = 'product'
 
 
-    def _call(self, method, arguments=None, http_method=None, storeview=None):
-        try:
-            return super(ProductProductAdapter, self)._call(
-                method, arguments, http_method=http_method,
-                storeview=storeview)
-        except xmlrpc.client.Fault as err:
-            # this is the error in the Magento API
-            # when the product does not exist
-            if err.faultCode == 101:
-                raise IDMissingInBackend
-            else:
-                raise
-
     def search(self, filters=None, from_date=None, to_date=None):
         """ Search records according to some criteria
         and returns a list of ids
@@ -453,29 +436,15 @@ class ProductProductAdapter(Component):
         if to_date is not None:
             filters.setdefault('updated_at', {})
             filters['updated_at']['to'] = to_date.strftime(dt_fmt)
-        if self.collection.version == '1.7':
-            # TODO add a search entry point on the Magento API
-            return [int(row['product_id']) for row
-                    in self._call('%s.list' % self._magento_model,
-                                  [filters] if filters else [{}])]
         return super(ProductProductAdapter, self).search(filters=filters)
 
     def write(self, external_id, data, storeview=None, **kwargs):
         """ Update records on the external system """
         # pylint: disable=method-required-super
-        # XXX actually only ol_catalog_product.update works
-        # the PHP connector maybe breaks the catalog_product.update
-        if self.collection.version == '1.7':
-            return self._call('ol_catalog_product.update',
-                              [int(external_id), data, storeview, 'id'])
         return super(ProductProductAdapter, self).write(
             external_id, data, storeview=storeview, **kwargs)
 
     def read_image(self, external_id, image_name, storeview_id=None):
-        if self.collection.version == '1.7':
-            return self._call(
-                'product_media.info',
-                [int(external_id), image_name, storeview_id, 'id'])
         raise NotImplementedError  # TODO
 
 

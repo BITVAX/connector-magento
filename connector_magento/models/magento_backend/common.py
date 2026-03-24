@@ -13,7 +13,7 @@ from odoo.exceptions import UserError
 from odoo.addons.queue_job.job import identity_exact
 
 # from odoo.addons.connector.models.checkpoint import add_checkpoint
-from ...components.backend_adapter import MagentoLocation, MagentoAPI
+from ...components.backend_adapter import MagentoLocation, Magento2Client
 
 _logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class MagentoBackend(models.Model):
         to add a version from an ``_inherit`` does not constrain
         to redefine the ``version`` field in the ``_inherit`` model.
         """
-        return [('1.7', '1.7+'), ('2.0', '2.0+')]
+        return [('2.0', '2.0+')]
 
     @api.model
     def _get_stock_field_id(self):
@@ -60,17 +60,9 @@ class MagentoBackend(models.Model):
     admin_location = fields.Char(string='Admin Location')
     use_custom_api_path = fields.Boolean(
         string='Custom Api Path',
-        help="The default API path is '/index.php/api/xmlrpc'. "
+        help="The default API path is '/index.php/rest/V1'. "
              "Check this box if you use a custom API path, in that case, "
-             "the location has to be completed with the custom API path ",
-    )
-    username = fields.Char(
-        string='Username',
-        help="Webservice user",
-    )
-    password = fields.Char(
-        string='Password',
-        help="Webservice password",
+             "the location has to be completed with the custom API path.",
     )
     token = fields.Char(
         help=('Authentication token for Magento 2.0+. See https://devdocs.'
@@ -271,27 +263,27 @@ class MagentoBackend(models.Model):
             self = self.with_context(lang=lang.code)
         magento_location = MagentoLocation(
             self.location,
-            self.username,
-            self.password,
             self.token,
             self.version,
             self.verify_ssl,
-            use_custom_api_path=self.use_custom_api_path
+            use_custom_api_path=self.use_custom_api_path,
         )
         if self.use_auth_basic:
             magento_location.use_auth_basic = True
             magento_location.auth_basic_username = self.auth_basic_username
             magento_location.auth_basic_password = self.auth_basic_password
-        # We create a Magento Client API here, so we can create the
-        # client once (lazily on the first use) and propagate it
-        # through all the sync session, instead of recreating a client
-        # in each backend adapter usage.
-        with MagentoAPI(magento_location) as magento_api:
-            _super = super(MagentoBackend, self)
-            # from the components we'll be able to do: self.work.magento_api
-            with _super.work_on(
-                    model_name, magento_api=magento_api, **kwargs) as work:
-                yield work
+        # Create the REST client once and propagate through the sync session
+        magento_api = Magento2Client(
+            magento_location.location,
+            magento_location.token,
+            magento_location.verify_ssl,
+            use_custom_api_path=magento_location.use_custom_api_path,
+        )
+        magento_api._location = magento_location
+        _super = super(MagentoBackend, self)
+        with _super.work_on(
+                model_name, magento_api=magento_api, **kwargs) as work:
+            yield work
 
     # @api.multi
     def add_checkpoint(self, record):

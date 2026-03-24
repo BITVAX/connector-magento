@@ -3,8 +3,6 @@
 
 import logging
 
-import xmlrpc.client
-
 from odoo import _
 from odoo.addons.component.core import Component
 
@@ -65,33 +63,14 @@ class MagentoInvoiceExporter(Component):
 
         lines_info = self._get_lines_info(binding)
         external_id = None
-        try:
-            # Magento 2 REST API uses entity_id (magento_order_id),
-            # not increment_id (external_id) in the URL
-            order_id = magento_order.magento_order_id or magento_order.external_id
-            external_id = self._export_invoice(order_id,
-                                               lines_info,
-                                               mail_notification)
-        except xmlrpc.client.Fault as err:
-            # When the invoice is already created on Magento, it returns:
-            # <Fault 102: 'Cannot do invoice for order.'>
-            # We'll search the Magento invoice ID to store it in Odoo
-            if err.faultCode == 102:
-                _logger.debug('Invoice already exists on Magento for '
-                              'sale order with magento id %s, trying to find '
-                              'the invoice id.',
-                              magento_order.external_id)
-                external_id = self._get_existing_invoice(magento_order)
-                if external_id is None:
-                    # In that case, we let the exception bubble up so
-                    # the user is informed of the 102 error.
-                    # We couldn't find the invoice supposedly existing
-                    # so an investigation may be necessary.
-                    raise
-            else:
-                raise
+        # Magento 2 REST API uses entity_id (magento_order_id),
+        # not increment_id (external_id) in the URL
+        order_id = magento_order.magento_order_id or magento_order.external_id
+        external_id = self._export_invoice(order_id,
+                                           lines_info,
+                                           mail_notification)
         # When the invoice already exists on Magento, it may return
-        # a 102 error (handled above) or return silently without ID
+        # silently without ID
         if not external_id:
             # If Magento returned no ID, try to find the Magento
             # invoice, but if we don't find it, let consider the job

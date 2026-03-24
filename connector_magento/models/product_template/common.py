@@ -563,25 +563,16 @@ class ProductTemplateAdapter(Component):
             filters['updated_at']['to'] = to_date.strftime(dt_fmt)
         filters.setdefault('type_id', {})
         filters['type_id']['eq'] = 'configurable'
-        if self.work.magento_api._location.version == '2.0':
-            return super(ProductTemplateAdapter, self).search(filters=filters)
-        # TODO add a search entry point on the Magento API
-        raise NotImplementedError
+        return super(ProductTemplateAdapter, self).search(filters=filters)
 
     def list_variants(self, sku):
-        if self.work.magento_api._location.version == '2.0':
-            res = self._call('configurable-products/%s/children' % (self.escape(sku)), None)
-            return res
-        raise NotImplementedError
+        res = self._call('configurable-products/%s/children' % (self.escape(sku)), None)
+        return res
     def write(self, id, data, storeview=None, **kwargs):
         """ Update records on the external system """
-        if self.work.magento_api._location.version == '2.0':
-            # Replace by the
-            id = data['sku']
-#            storeview_code = storeview.code if storeview else False
-            return super(ProductTemplateAdapter, self)._call(
-                'products/%s' % id, {
-                    'product': data
-                },
-                http_method='put', storeview=storeview)
-        raise NotImplementedError
+        id = data['sku']
+        return super(ProductTemplateAdapter, self)._call(
+            'products/%s' % id, {
+                'product': data
+            },
+            http_method='put', storeview=storeview)

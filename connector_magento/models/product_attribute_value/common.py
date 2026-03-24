@@ -70,41 +70,30 @@ class ProductAttributeValueAdapter(Component):
 
         :rtype: dict
         """
-        if self.work.magento_api._location.version == '2.0':
-            # TODO: storeview_code context in Magento 2.0
-            res_admin = super(ProductAttributeValueAdapter, self).read(
-                id, attributes=attributes, storeview='all',**kwargs)
-            if res_admin:
-                for attr in res_admin.get('custom_attributes', []):
-                    res_admin[attr['attribute_code']] = attr['value']
-            return res_admin
-        return super(ProductAttributeValueAdapter, self).read(id, attributes=None,storeview=None, **kwargs)
+        res_admin = super(ProductAttributeValueAdapter, self).read(
+            id, attributes=attributes, storeview='all',**kwargs)
+        if res_admin:
+            for attr in res_admin.get('custom_attributes', []):
+                res_admin[attr['attribute_code']] = attr['value']
+        return res_admin
 
     def delete(self, magento_value_id, magento_attribute_id):
         """ Delete a record on the external system """
-        if self.work.magento_api._location.version == '2.0':
-            res = self._call('%s/%s' % (self._magento2_model % {'attribute_code': magento_attribute_id}, self.escape(magento_value_id)), http_method="delete")
-            return res
-        return self._call('%s.delete' % self._magento_model, [int(id)])
+        res = self._call('%s/%s' % (self._magento2_model % {'attribute_code': magento_attribute_id}, self.escape(magento_value_id)), http_method="delete")
+        return res
 
     def write(self, id, data, **kwargs):
         """ Update a record on the external system """
-        if self.work.magento_api._location.version == '2.0':
-            # special check on data before export
-            if 'binding_attribute' in kwargs:
-                value = self._call(self._magento2_model % {'attribute_code': kwargs['binding_attribute'].attribute_code}, {"option": data}, http_method="post")
-                return "{}_{}".format(kwargs['binding_attribute'].attribute_id, value)
-            else:
-                raise JobError('Data error: binding or attribute_code not found in kwargs')
-        raise NotImplementedError('Method not implemented for Magento version 1.x')
+        if 'binding_attribute' in kwargs:
+            value = self._call(self._magento2_model % {'attribute_code': kwargs['binding_attribute'].attribute_code}, {"option": data}, http_method="post")
+            return "{}_{}".format(kwargs['binding_attribute'].attribute_id, value)
+        else:
+            raise JobError('Data error: binding or attribute_code not found in kwargs')
 
     def create(self, data, **kwargs):
         """ Create a record on the external system """
-        if self.work.magento_api._location.version == '2.0':
-            # special check on data before export
-            if 'binding_attribute' in kwargs:
-                value = self._call(self._magento2_model % {'attribute_code': kwargs['binding_attribute'].attribute_code},{"option": data}, http_method="post")
-                return "{}_{}".format(kwargs['binding_attribute'].attribute_id,value)
-            else:
-                raise JobError('Data error: binding or attribute_code not found in kwargs')
-        raise NotImplementedError('Method not implemented for Magento version 1.x')
+        if 'binding_attribute' in kwargs:
+            value = self._call(self._magento2_model % {'attribute_code': kwargs['binding_attribute'].attribute_code},{"option": data}, http_method="post")
+            return "{}_{}".format(kwargs['binding_attribute'].attribute_id,value)
+        else:
+            raise JobError('Data error: binding or attribute_code not found in kwargs')

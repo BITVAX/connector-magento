@@ -331,10 +331,8 @@ class TranslationImporter(Component):
         """ Return the raw Magento data for ``self.external_id`` """
         if storeview is None:
             storeview_id = None
-        elif self.collection.version == '2.0':
-            storeview_id = storeview.code
         else:
-            storeview_id = storeview.external_id
+            storeview_id = storeview.code
         return self.backend_adapter.read(self.external_id, storeview_id)
 
     def run(self, external_id, binding, mapper=None):

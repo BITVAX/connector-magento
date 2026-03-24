@@ -241,10 +241,9 @@ class ProductImportMapper(Component):
 
     @mapping
     def external_id(self, record):
-        """ Magento 2 to use sku as external id, because this is used as the
+        """ Use sku as external id, because this is used as the
         slug in the product REST API """
-        if self.collection.version == '2.0':
-            return {'external_id': record['sku']}
+        return {'external_id': record['sku']}
 
     # @mapping
     # def is_active(self, record):
@@ -452,20 +451,12 @@ class ProductImporter(Component):
 
     def _import_bundle_dependencies(self):
         """ Import the dependencies for a Bundle """
-        if self.collection.version == '1.7':
-            for dependency in [
-                selection for option in
-                self.magento_record['_bundle_data']['options']
-                for selection in option['selections']]:
-                self._import_dependency(dependency['product_id'],
-                                        'magento.product.product')
-        else:
-            for dependency in [
-                product_link for option in self.magento_record[
-                    'extension_attributes']['bundle_product_options']
-                for product_link in option['product_links']]:
-                self._import_dependency(dependency['sku'],
-                                        'magento.product.product')
+        for dependency in [
+            product_link for option in self.magento_record[
+                'extension_attributes']['bundle_product_options']
+            for product_link in option['product_links']]:
+            self._import_dependency(dependency['sku'],
+                                    'magento.product.product')
 
     def _import_dependencies(self, **kwargs):
         """ Import the dependencies for the record"""

@@ -4,7 +4,6 @@
 import copy
 import logging
 import socket
-import xmlrpc.client
 from datetime import datetime, date
 from urllib.parse import quote_plus
 
@@ -12,14 +11,8 @@ import requests
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import NetworkRetryableError, JobError, IDMissingInBackend
-from odoo.addons.queue_job.exception import RetryableJobError
 
 _logger = logging.getLogger(__name__)
-
-try:
-    import magento as magentolib
-except ImportError:
-    _logger.debug("Cannot import 'magento'")
 
 
 MAGENTO_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -50,14 +43,12 @@ def serialize_for_json(obj):
 
 class MagentoLocation(object):
 
-    def __init__(self, location, username, password, token, version,
-                 verify_ssl, use_custom_api_path=False):
+    def __init__(self, location, token, version, verify_ssl,
+                 use_custom_api_path=False):
         self._location = location
-        self.username = username
-        self.password = password
         self.token = token
-        self.verify_ssl = verify_ssl
         self.version = version
+        self.verify_ssl = verify_ssl
         self.use_custom_api_path = use_custom_api_path
 
         self.use_auth_basic = False
@@ -88,8 +79,14 @@ class Magento2Client(object):
 
     def call(self, resource_path, arguments, http_method=None, storeview=None):
         if resource_path is None:
-            _logger.exception('Magento2 REST API called without resource path')
+            _logger.exception('Magento REST API called without resource path')
             raise NotImplementedError
+
+        # Strip trailing None from list arguments
+        if isinstance(arguments, list):
+            while arguments and arguments[-1] is None:
+                arguments.pop()
+
         url = '%s/%s' % (self._url, resource_path)
         if storeview:
             # https://github.com/magento/magento2/issues/3864
@@ -102,9 +99,9 @@ class Magento2Client(object):
         if http_method == 'get':
             kwargs['params'] = arguments
         elif arguments is not None:
-            # Serializar copia para no mutar los argumentos originales
             kwargs['json'] = serialize_for_json(copy.deepcopy(arguments))
 
+        start = datetime.now()
         try:
             res = function(url, **kwargs)
         except (requests.exceptions.ConnectionError,
@@ -113,8 +110,14 @@ class Magento2Client(object):
             raise NetworkRetryableError(
                 'Network error calling Magento API: %s' % err
             )
+        except (socket.gaierror, socket.error, socket.timeout) as err:
+            raise NetworkRetryableError(
+                'A network error caused the failure of the job: %s' % err
+            )
 
         if res.status_code != 200:
+            _logger.error("api.call('%s', %s, http_method=%s, storeview=%s) failed",
+                          resource_path, arguments, http_method, storeview)
             message = res.text
             if res.status_code == 404:
                 raise IDMissingInBackend(message)
@@ -125,100 +128,11 @@ class Magento2Client(object):
                 )
             raise JobError(message)
 
-        return res.json()
-
-
-class MagentoAPI(object):
-
-    def __init__(self, location):
-        """
-        :param location: Magento location
-        :type location: :class:`MagentoLocation`
-        """
-        self._location = location
-        self._api = None
-
-    @property
-    def api(self):
-        if self._api is None:
-            if self._location.version == '1.7':
-                api = magentolib.API(
-                    self._location.location,
-                    self._location.username,
-                    self._location.password,
-                    full_url=self._location.use_custom_api_path
-                )
-                api.__enter__()
-            else:
-                api = Magento2Client(
-                    self._location.location,
-                    self._location.token,
-                    self._location.verify_ssl,
-                    use_custom_api_path=self._location.use_custom_api_path
-                )
-            self._api = api
-        return self._api
-
-    def api_call(self, method, arguments, http_method=None, storeview=None):
-        """ Adjust available arguments per API """
-        try:
-            if isinstance(self.api, magentolib.API):
-                return self.api.call(method, arguments)
-        except NameError:
-            pass
-        return self.api.call(method, arguments, http_method=http_method,
-                             storeview=storeview)
-
-    def __enter__(self):
-        # we do nothing, api is lazy
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        if self._api is not None and hasattr(self._api, '__exit__'):
-            self._api.__exit__(exc_type, exc_value, traceback)
-
-    def call(self, method, arguments, http_method=None, storeview=None):
-        try:
-            # When Magento is installed on PHP 5.4+, the API
-            # may return garble data if the arguments contain
-            # trailing None.
-            if isinstance(arguments, list):
-                while arguments and arguments[-1] is None:
-                    arguments.pop()
-            start = datetime.now()
-            try:
-                result = self.api_call(
-                    method, arguments, http_method=http_method,
-                    storeview=storeview)
-            except Exception as e:
-                _logger.error("api.call('%s', %s, http_method=%s, storeview=%s) failed",
-                              method, arguments, http_method, storeview)
-                # _logger.exception(e)
-                raise e
-            else:
-                _logger.debug("api.call('%s', %s, http_method=%s, storeview=%s) returned %s in %s seconds",
-                              method, arguments, http_method, storeview, result,
-                              (datetime.now() - start).seconds)
-            # Uncomment to record requests/responses in ``recorder``
-            # record(method, arguments, result)
-            return result
-        except (socket.gaierror, socket.error, socket.timeout) as err:
-            raise NetworkRetryableError(
-                'A network error caused the failure of the job: '
-                '%s' % err)
-        except xmlrpc.client.ProtocolError as err:
-            if err.errcode in [502,   # Bad gateway
-                               503,   # Service unavailable
-                               504]:  # Gateway timeout
-                raise RetryableJobError(
-                    'A protocol error caused the failure of the job:\n'
-                    'URL: %s\n'
-                    'HTTP/HTTPS headers: %s\n'
-                    'Error code: %d\n'
-                    'Error message: %s\n' %
-                    (err.url, err.headers, err.errcode, err.errmsg))
-            else:
-                raise
+        result = res.json()
+        _logger.debug("api.call('%s', %s, http_method=%s, storeview=%s) returned %s in %s seconds",
+                      resource_path, arguments, http_method, storeview, result,
+                      (datetime.now() - start).seconds)
+        return result
 
 
 class MagentoCRUDAdapter(AbstractComponent):
@@ -256,13 +170,13 @@ class MagentoCRUDAdapter(AbstractComponent):
         raise NotImplementedError
 
     def _call(self, method, arguments=None,
-              http_method=None, storeview=None, ):
+              http_method=None, storeview=None):
         try:
             magento_api = getattr(self.work, 'magento_api')
         except AttributeError:
             raise AttributeError(
                 'You must provide a magento_api attribute with a '
-                'MagentoAPI instance to be able to use the '
+                'Magento2Client instance to be able to use the '
                 'Backend Adapter.'
             )
         return magento_api.call(
@@ -318,22 +232,18 @@ class GenericAdapter(AbstractComponent):
         return res if res else {'searchCriteria': ''}
 
     def search(self, filters=None):
-        """ Search records according to some criterias
+        """ Search records according to some criteria
         and returns a list of unique identifiers
 
-        In the case of Magento 2.x: query the resource to return the key field
-        for all records. Filter out the 0, which designates a magic value,
-        such as the global scope for websites, store groups and store views, or
-        the category for customers that have not yet logged in.
+        Query the resource to return the key field for all records.
+        Filter out the 0, which designates a magic value, such as
+        the global scope for websites, store groups and store views.
 
         /search APIs return a dictionary with a top level 'items' key.
         Repository APIs return a list of items.
 
         :rtype: list
         """
-        if self.collection.version == '1.7':
-            return self._call('%s.search' % self._magento_model,
-                              [filters] if filters else [{}])
         key = self._magento2_key or 'id'
         params = {}
         if self._magento2_search:
@@ -361,23 +271,6 @@ class GenericAdapter(AbstractComponent):
 
         :rtype: dict
         """
-        if self.collection.version == '1.7':
-            arguments = [int(external_id)]
-            # Avoid to pass Null values in attributes. Workaround for
-            # https://bugs.launchpad.net/openerp-connector-magento/+bug/1210775
-            # When Magento is installed on PHP 5.4 and the compatibility patch
-            # http://magento.com/blog/magento-news/magento-now-supports-php-54
-            # is not installed, calling info() with None in attributes
-            # would return a wrong result (almost empty list of
-            # attributes). The right correction is to install the
-            # compatibility patch on Magento.
-            if attributes:
-                arguments.append(attributes)
-            return self._call('%s.info' % self._magento_model,
-                              arguments, storeview=storeview)
-
-        # if attributes:
-        #     raise NotImplementedError
         if self._magento2_key:
             path = '%s/%s' % (self._magento2_model, self.escape(external_id))
             if kwargs:
@@ -390,11 +283,9 @@ class GenericAdapter(AbstractComponent):
                 'Record %s not found in Magento response' % external_id)
         return match
 
-    def search_read(self, filters=None, ):
-        """ Search records according to some criterias
+    def search_read(self, filters=None):
+        """ Search records according to some criteria
         and returns their information"""
-        if self.collection.version == '1.7':
-            return self._call('%s.list' % self._magento_model, [filters])
         params = {}
         if self._magento2_search:
             params.update(self.get_searchCriteria(filters))
@@ -406,29 +297,24 @@ class GenericAdapter(AbstractComponent):
 
     def create(self, data, storeview=None, **kwargs):
         """ Create a record on the external system """
-        if self.work.magento_api._location.version == '2.0':
-            if self._magento2_name:
-                new_object = self._call(
-                    self._magento2_model % kwargs,
-                    {self._magento2_name: data,
-                     'saveOptions': True}, http_method='post')
-            else:
-                new_object = self._call(
-                    self._magento2_model % kwargs,
-                    data, http_method='post')
-            if isinstance(new_object, dict):
-                data.update(new_object)
-            return self._get_id_from_create(new_object, data)
-        return self._call('%s.create' % self._magento_model, [data])
+        if self._magento2_name:
+            new_object = self._call(
+                self._magento2_model % kwargs,
+                {self._magento2_name: data,
+                 'saveOptions': True}, http_method='post')
+        else:
+            new_object = self._call(
+                self._magento2_model % kwargs,
+                data, http_method='post')
+        if isinstance(new_object, dict):
+            data.update(new_object)
+        return self._get_id_from_create(new_object, data)
 
     def _get_id_from_create(self, result, data=None):
         return result['id']
 
     def write(self, id, data, storeview=None, **kwargs):
         """ Update records on the external system """
-        if self.collection.version == '1.7':
-            return self._call('%s.update' % self._magento_model,
-                              [int(id), data])
         if self._magento2_name:
             return self._call(
                 ('%s/%s' % (self._magento2_model, id)) % kwargs,
@@ -440,10 +326,7 @@ class GenericAdapter(AbstractComponent):
 
     def delete(self, external_id, **kwargs):
         """ Delete a record on the external system """
-        if self.collection.version == '1.7':
-            return self._call('%s.delete' % self._magento_model,
-                              [int(external_id)])
-        res = self._call('%s/%s' % (self._magento2_model, self.escape(external_id)) , None, http_method="delete")
+        res = self._call('%s/%s' % (self._magento2_model, self.escape(external_id)), None, http_method="delete")
         _logger.info("Record %s deleted on Magento", external_id)
         return res
 
@@ -457,8 +340,7 @@ class GenericAdapter(AbstractComponent):
             admin_path = getattr(self.model, '_get_admin_path')(
                 backend, external_id)
         else:
-            key = '_admin2_path' if backend.version == '2.0' else '_admin_path'
-            admin_path = getattr(self, key)
+            admin_path = self._admin2_path or self._admin_path
         if admin_path is None:
             raise ValueError('No admin path is defined for this record')
         path = admin_path.format(model=self._magento_model,

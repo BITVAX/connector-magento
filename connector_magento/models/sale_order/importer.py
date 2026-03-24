@@ -307,12 +307,9 @@ class SaleOrderImportMapper(Component):
 
     @mapping
     def shipping_method(self, record):
-        if self.collection.version == '2.0':
-            shippings = record['extension_attributes']['shipping_assignments']
-            ifield = shippings[0]['shipping'].get(
-                'method') if shippings else None
-        else:
-            ifield = record.get('shipping_method')
+        shippings = record['extension_attributes']['shipping_assignments']
+        ifield = shippings[0]['shipping'].get(
+            'method') if shippings else None
         if not ifield:
             return
 
@@ -474,10 +471,7 @@ class SaleOrderImporter(Component):
         Note that we have to walk through all the chain of parent sales orders
         in the case of multiple editions / cancellations.
         """
-        if self.collection.version == '2.0':
-            parent_id = self.magento_record.get('relation_parent_id')
-        else:
-            parent_id = self.magento_record.get('relation_parent_real_id')
+        parent_id = self.magento_record.get('relation_parent_id')
         if not parent_id:
             return
         all_parent_ids = []
@@ -653,15 +647,12 @@ class SaleOrderImporter(Component):
 
         shipping_id = None
 
-        if self.collection.version == '1.7':
-            shipping_address = record['shipping_address']
-        else:
-            # Magento 2.x allows for a different shipping address per line.
-            # For now, we just take the first
-            shippings = self.magento_record[
-                'extension_attributes']['shipping_assignments']
-            shipping_address = shippings[0]['shipping'].get(
-                'address') if shippings else None
+        # Magento 2.x allows for a different shipping address per line.
+        # For now, we just take the first
+        shippings = self.magento_record[
+            'extension_attributes']['shipping_assignments']
+        shipping_address = shippings[0]['shipping'].get(
+            'address') if shippings else None
         if shipping_address:
             shipping_id = create_address(shipping_address)
 
@@ -712,11 +703,7 @@ class SaleOrderImporter(Component):
         for line in record.get('items', []):
             _logger.debug('line: %s', line)
             if 'product_id' in line:
-                if self.collection.version == '1.7':
-                    key = 'product_id'
-                else:
-                    key = 'sku'
-                self._import_dependency(line[key],
+                self._import_dependency(line['sku'],
                                         'magento.product.product')
 
 
@@ -748,19 +735,13 @@ class SaleOrderLineImportMapper(Component):
             row_total = float(record.get('row_total') or 0)
         discount = 0
         if discount_value > 0 and row_total > 0:
-            if self.collection.version == '1.7':
-                discount = 100 * discount_value / row_total
-            else:
-                discount = 100 * discount_value / (row_total + discount_value)
+            discount = 100 * discount_value / (row_total + discount_value)
         return {'discount': discount}
 
     @mapping
     def product_id(self, record):
         binder = self.binder_for('magento.product.product')
-        if self.collection.version == '1.7':
-            key = 'product_id'
-        else:
-            key = 'sku'
+        key = 'sku'
         product = binder.to_internal(record[key], unwrap=True)
         assert product, (
             "product_id %s should have been imported in "
@@ -769,60 +750,31 @@ class SaleOrderLineImportMapper(Component):
 
     @mapping
     def product_options(self, record):
-        if self.collection.version == '2.0':
-            # Product options look like this in Magento 2.0, so we'd have to
-            # fetch the labels separately -> TODO
-            # 'product_option': {
-            #     'extension_attributes': {
-            #         'configurable_item_options': [
-            #             {'option_id': '152',
-            #              'option_value': 5593},
-            #             {'option_id': '93', 'option_value': 5477}
-            #         ]
-            #     }
-            # }
-            if record.get('product_option', {}).get(
-                'extension_attributes', {}).get(
-                'configurable_item_options'):
-                _logger.debug(
-                    'Magento order#%s contains a product with configurable '
-                    'options but their import is not supported yet for '
-                    'Magento2')
-            return
-        result = {}
-        ifield = record['product_options']
-        if ifield:
-            import re
-            options_label = []
-            clean = re.sub(r'\w:\w:|\w:\w+;', '', ifield)
-            for each in clean.split('{'):
-                if each.startswith('"label"'):
-                    split_info = each.split(';')
-                    options_label.append('%s: %s [%s]' % (split_info[1],
-                                                          split_info[3],
-                                                          record['sku']))
-            notes = "".join(options_label).replace('""', '\n').replace('"', '')
-            result = {'notes': notes}
-        return result
+        # Product options look like this in Magento 2.0, so we'd have to
+        # fetch the labels separately -> TODO
+        # 'product_option': {
+        #     'extension_attributes': {
+        #         'configurable_item_options': [
+        #             {'option_id': '152',
+        #              'option_value': 5593},
+        #             {'option_id': '93', 'option_value': 5477}
+        #         ]
+        #     }
+        # }
+        if record.get('product_option', {}).get(
+            'extension_attributes', {}).get(
+            'configurable_item_options'):
+            _logger.debug(
+                'Magento order#%s contains a product with configurable '
+                'options but their import is not supported yet for '
+                'Magento2')
+        return
 
     @mapping
     def price(self, record):
-        """ In Magento 2, base_row_total_incl_tax may not be present
+        """ base_row_total_incl_tax may not be present
         if no taxes apply """
-        if self.collection.version == '1.7':
-            discount_amount = float(record['base_discount_amount'] or 0)
-            base_row_total = float(record['base_row_total'] or 0.)
-            base_row_total_incl_tax = (
-                float(record['base_row_total_incl_tax'] or 0)
-                if 'base_row_total_incl_tax' in record else base_row_total)
-            qty_ordered = float(record['qty_ordered'])
-            if self.options.tax_include:
-                total = base_row_total_incl_tax
-            else:
-                total = base_row_total
-            return {'price_unit': total / qty_ordered}
+        if self.options.tax_include:
+            return {'price_unit': record.get('base_price_incl_tax', 0.0)}
         else:
-            if self.options.tax_include:
-                return {'price_unit': record.get('base_price_incl_tax', 0.0)}
-            else:
-                return {'price_unit': record.get('base_price', 0.0)}
+            return {'price_unit': record.get('base_price', 0.0)}

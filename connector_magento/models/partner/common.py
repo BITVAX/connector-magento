@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 from odoo import models, fields, api
 # from odoo.addons.queue_job.job import job3
 from odoo.addons.component.core import Component
@@ -154,19 +153,6 @@ class PartnerAdapter(Component):
     # Not valid without security key
     # _admin2_path = 'customer/index/edit/id/{id}'
 
-    def _call(self, method, arguments, http_method=None, storeview=None):
-        try:
-            return super(PartnerAdapter, self)._call(
-                method, arguments, http_method=http_method,
-                storeview=storeview)
-        except xmlrpc.client.Fault as err:
-            # this is the error in the Magento API
-            # when the customer does not exist
-            if err.faultCode == 102:
-                raise IDMissingInBackend
-            else:
-                raise
-
     def search(self, filters=None, from_date=None, to_date=None,
                magento_website_ids=None):
         """ Search records according to some criteria and return a
@@ -179,7 +165,6 @@ class PartnerAdapter(Component):
 
         dt_fmt = MAGENTO_DATETIME_FORMAT
         if from_date is not None:
-            # updated_at include the created records
             filters.setdefault('updated_at', {})
             filters['updated_at']['from'] = from_date.strftime(dt_fmt)
         if to_date is not None:
@@ -188,10 +173,6 @@ class PartnerAdapter(Component):
         if magento_website_ids is not None:
             filters['website_id'] = {'in': magento_website_ids}
 
-        if self.collection.version == '1.7':
-            # the search method is on ol_customer instead of customer
-            return self._call('ol_customer.search',
-                              [filters] if filters else [{}])
         return super(PartnerAdapter, self).search(filters=filters)
 
 

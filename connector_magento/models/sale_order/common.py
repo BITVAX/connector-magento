@@ -3,12 +3,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import xmlrpc.client
 
 import odoo.addons.decimal_precision as dp
 
 from odoo import models, fields, api, _
-from odoo.addons.connector.exception import IDMissingInBackend
 # from odoo.addons.queue_job.job import job3
 from odoo.addons.component.core import Component
 
@@ -225,19 +223,6 @@ class SaleOrderAdapter(Component):
     _admin_path = '{model}/view/order_id/{id}'
     _admin2_path = 'sales/order/view/order_id/{id}'
 
-    def _call(self, method, arguments, http_method=None, storeview=None):
-        try:
-            return super(SaleOrderAdapter, self)._call(
-                method, arguments, http_method=http_method,
-                storeview=storeview)
-        except xmlrpc.client.Fault as err:
-            # this is the error in the Magento API
-            # when the sales order does not exist
-            if err.faultCode == 100:
-                raise IDMissingInBackend
-            else:
-                raise
-
     def search(self, filters=None, from_date=None, to_date=None,
                magento_storeview_ids=None):
         """ Search records according to some criteria
@@ -257,15 +242,7 @@ class SaleOrderAdapter(Component):
         if magento_storeview_ids is not None:
             filters['store_id'] = {'in': magento_storeview_ids}
 
-        if self.collection.version == '1.7':
-            arguments = {
-                'imported': False,
-                # 'limit': 200,
-                'filters': filters,
-            }
-        else:
-            arguments = filters
-        return super(SaleOrderAdapter, self).search(arguments)
+        return super(SaleOrderAdapter, self).search(filters)
 
     def read(self, external_id, attributes=None):
         """ Returns the information of a record
@@ -273,18 +250,12 @@ class SaleOrderAdapter(Component):
         :rtype: dict
         """
         # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            return self._call('%s.info' % self._magento_model,
-                              [external_id, attributes])
         return super(SaleOrderAdapter, self).read(
             external_id, attributes=attributes)
 
     def get_parent(self, external_id):
-        if self.collection.version == '2.0':
-            res = self.read(external_id)
-            return res.get('relation_parent_id')
-        return self._call('%s.get_parent' % self._magento_model,
-                          [external_id])
+        res = self.read(external_id)
+        return res.get('relation_parent_id')
 
     def add_comment(self, external_id, status, comment=None, notify=False):
         return self._call('%s.addComment' % self._magento_model,

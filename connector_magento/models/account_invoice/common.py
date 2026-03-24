@@ -3,11 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
-import xmlrpc.client
 from odoo import api, models, fields, _
 from odoo.addons.component.core import Component
 # # from odoo.addons.queue_job.job import job3, related_action
-from odoo.addons.connector.exception import IDMissingInBackend
 
 _logger = logging.getLogger(__name__)
 
@@ -68,28 +66,10 @@ class AccountInvoiceAdapter(Component):
     # Not valid without security key
     # _admin2_path = 'sales/order_invoice/view/invoice_id/{id}'
 
-    def _call(self, method, arguments, http_method=None):
-        try:
-            return super(AccountInvoiceAdapter, self)._call(
-                method, arguments, http_method=http_method)
-        except xmlrpc.client.Fault as err:
-            # this is the error in the Magento API
-            # when the invoice does not exist
-            if err.faultCode == 100:
-                raise IDMissingInBackend
-            else:
-                raise
-
     def create(self, order_increment_id, items, comment, email,
                include_comment):
         """ Create a record on the external system """
         # pylint: disable=method-required-super
-        if self.collection.version == '1.7':
-            return self._call('%s.create' % self._magento_model,
-                              [order_increment_id, items, comment,
-                               email, include_comment])
-
-        # Compose payload for Magento 2.x
         arguments = {
             'capture': False,
             'items': [{'orderItemId': key, 'qty': value}
