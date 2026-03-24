@@ -8,7 +8,7 @@ import json
 import os
 
 BASE = 'http://magento/index.php'
-DUPLICATE_COUNT = 10
+DUPLICATE_COUNT = 2
 
 # ── Helpers ──────────────────────────────────────────────────────
 
@@ -405,6 +405,86 @@ def write_cassette(output_path, interactions):
     print(f"    {unique} unique interactions, {total} total (x{DUPLICATE_COUNT} duplicates)")
 
 
+def build_export_product_interactions():
+    """Build interactions for product export test (create new product)."""
+    interactions = []
+
+    def add(uri, data, method='GET'):
+        interactions.append(interaction(uri, json.dumps(data, separators=(',', ':')), method))
+
+    # POST /products — create new product, Magento returns the created product
+    created_product = {
+        "id": 5001,
+        "sku": "TEST-EXPORT-SIMPLE",
+        "name": "Test Export Product",
+        "attribute_set_id": 4,
+        "price": 49.99,
+        "status": 1,
+        "visibility": 4,
+        "type_id": "simple",
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2024-01-01 00:00:00",
+        "weight": 1,
+        "extension_attributes": {
+            "website_ids": [1],
+            "stock_item": {
+                "item_id": 5001, "product_id": 5001, "stock_id": 1,
+                "qty": 0, "is_in_stock": True, "manage_stock": True,
+            },
+        },
+        "product_links": [],
+        "options": [],
+        "media_gallery_entries": [],
+        "custom_attributes": [],
+    }
+    add(f'{BASE}/rest/V1/products', created_product, 'POST')
+
+    # GET /stockItems/{sku} — read stock item before update
+    add(f'{BASE}/rest/V1/stockItems/TEST-EXPORT-SIMPLE', {
+        "item_id": 5001, "product_id": 5001, "stock_id": 1,
+        "qty": 0, "is_in_stock": True,
+    })
+
+    # PUT /products/{sku}/stockItems/{id} — export inventory after create
+    add(f'{BASE}/rest/V1/products/TEST-EXPORT-SIMPLE/stockItems/5001',
+        5001, 'PUT')
+
+    return interactions
+
+
+def build_export_product_update_interactions():
+    """Build interactions for product export update test."""
+    interactions = []
+
+    def add(uri, data, method='GET'):
+        interactions.append(interaction(uri, json.dumps(data, separators=(',', ':')), method))
+
+    # DELETE images before update
+    add(f'{BASE}/rest/V1/products/TEST-EXPORT-UPDATE/media', [], 'GET')
+
+    # PUT /products/{sku} — update product
+    updated_product = {
+        "id": 5002,
+        "sku": "TEST-EXPORT-UPDATE",
+        "name": "Updated Export Product",
+        "attribute_set_id": 4,
+        "price": 59.99,
+        "status": 1,
+        "visibility": 4,
+        "type_id": "simple",
+        "created_at": "2024-01-01 00:00:00",
+        "updated_at": "2024-01-02 00:00:00",
+        "weight": 1,
+        "extension_attributes": {"website_ids": [1]},
+        "product_links": [],
+        "media_gallery_entries": [],
+        "custom_attributes": [],
+    }
+    add(f'{BASE}/rest/all/V1/products/TEST-EXPORT-UPDATE', updated_product, 'PUT')
+
+    return interactions
+
+
 def main():
     cassette_dir = os.path.join(os.path.dirname(__file__), 'cassettes')
 
@@ -417,6 +497,14 @@ def main():
     write_cassette(
         os.path.join(cassette_dir, 'import_product_attribute_set_4.yaml'),
         build_attribute_set_interactions())
+
+    # Export product cassettes
+    write_cassette(
+        os.path.join(cassette_dir, 'test_export_product_create.yaml'),
+        build_export_product_interactions())
+    write_cassette(
+        os.path.join(cassette_dir, 'test_export_product_update.yaml'),
+        build_export_product_update_interactions())
 
 
 if __name__ == '__main__':

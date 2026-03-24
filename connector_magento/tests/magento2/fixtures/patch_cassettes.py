@@ -266,7 +266,7 @@ def duplicate_consumed_interactions(raw_text):
     We add DUPLICATE_COUNT extra copies of each ORIGINAL interaction.
     This function is idempotent — already-duplicated interactions are skipped.
     """
-    DUPLICATE_COUNT = 10  # enough for import + translation per storeview
+    DUPLICATE_COUNT = 2  # import + translation per storeview
 
     # If already patched, skip duplication
     if PATCH_MARKER in raw_text:

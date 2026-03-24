@@ -14,6 +14,8 @@ import logging
 import urllib
 
 import mock
+
+_logger = logging.getLogger(__name__)
 import odoo
 
 from os.path import dirname, join
@@ -163,6 +165,16 @@ class MagentoTestCase(TransactionComponentCase):
         # the first argument is a hash, we don't mind
         return args[1:]
 
+    @staticmethod
+    def _log_cassette_usage(cassette, label=''):
+        """Log VCR cassette usage statistics."""
+        total = len(cassette)
+        used = cassette.play_count
+        pct = (100 * used / total) if total else 0
+        _logger.info(
+            "Cassette %s: %d/%d interactions used (%.0f%%)",
+            label, used, total, pct)
+
     def _import_record(self, model_name, magento_id, cassette=True):
         assert model_name.startswith('magento.')
         table_name = model_name.replace('.', '_')
@@ -179,8 +191,9 @@ class MagentoTestCase(TransactionComponentCase):
                         self.backend, magento_id)
 
         if cassette:
-            with self.recorder.use_cassette(filename):
+            with self.recorder.use_cassette(filename) as cass:
                 run_import()
+            self._log_cassette_usage(cass, filename)
         else:
             run_import()
 
