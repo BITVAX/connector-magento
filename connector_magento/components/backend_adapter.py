@@ -384,7 +384,11 @@ class GenericAdapter(AbstractComponent):
                 path = path % kwargs
             return self._call(path, None, storeview=storeview)
         res = self._call(self._magento2_model % kwargs, None)
-        return next(record for record in res if str(record['id']) == external_id)
+        match = next((record for record in res if str(record['id']) == external_id), None)
+        if match is None:
+            raise IDMissingInBackend(
+                'Record %s not found in Magento response' % external_id)
+        return match
 
     def search_read(self, filters=None, ):
         """ Search records according to some criterias
@@ -401,7 +405,6 @@ class GenericAdapter(AbstractComponent):
             self._magento2_search or self._magento2_model, params)
 
     def create(self, data, storeview=None, **kwargs):
-        """ Create a record on the external system """
         """ Create a record on the external system """
         if self.work.magento_api._location.version == '2.0':
             if self._magento2_name:
@@ -441,7 +444,7 @@ class GenericAdapter(AbstractComponent):
             return self._call('%s.delete' % self._magento_model,
                               [int(external_id)])
         res = self._call('%s/%s' % (self._magento2_model, self.escape(external_id)) , None, http_method="delete")
-        _logger.info("Record %s deleted on Magento", id)
+        _logger.info("Record %s deleted on Magento", external_id)
         return res
 
     def admin_url(self, external_id):
