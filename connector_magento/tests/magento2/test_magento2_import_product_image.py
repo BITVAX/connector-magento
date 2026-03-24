@@ -1,7 +1,7 @@
 # Copyright 2015-2019 Camptocamp SA
 # Copyright 2020 Opener B.V.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
-from ..test_import_product_image import TestImportProductImage
+from ..base_test_import_product_image import TestImportProductImage
 
 
 class TestImportProductImageMagento2(TestImportProductImage):

@@ -7,6 +7,7 @@ from . import test_magento2_import_partner
 from . import test_magento2_import_partner_category
 from . import test_magento2_import_product
 from . import test_magento2_import_product_category
+from . import test_magento2_import_template
 from . import test_magento2_import_product_image
 from . import test_magento2_related_action
 from . import test_magento2_sale_order

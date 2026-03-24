@@ -111,7 +111,7 @@ class CatalogImageImporter(Component):
         data = {}
         if len(images):
             c = 0
-            for image_data in [i for i in images if not i['disabled']]:
+            for image_data in [i for i in images if not int(i.get('disabled', i.get('exclude', 0)))]:
                 binary = self._get_binary_image(image_data)
                 if binary:
                     if image_data.get('label', '') == '':

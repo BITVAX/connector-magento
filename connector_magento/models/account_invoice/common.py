@@ -166,7 +166,15 @@ class MagentoInvoiceListener(Component):
                 else:
                     create_invoice = magento_store.create_invoice_on
 
-                if create_invoice == invoice.state:
+                # Odoo 16: 'open' maps to state='posted',
+                # 'paid' maps to payment_state='paid'
+                should_create = False
+                if create_invoice == 'open' and invoice.state == 'posted':
+                    should_create = True
+                elif create_invoice == 'paid' and invoice.payment_state == 'paid':
+                    should_create = True
+
+                if should_create:
                     self.env['magento.account.invoice'].create({
                         'backend_id': magento_sale.backend_id.id,
                         'odoo_id': invoice.id,

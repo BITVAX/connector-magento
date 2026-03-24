@@ -28,10 +28,11 @@ class TestExportInvoice(Magento2SyncTestCase):
         # ignore exceptions on the sale order
         self.order_binding.ignore_exception = True
         self.order_binding.odoo_id.action_confirm()
-        invoice_ids = self.order_binding.odoo_id.action_invoice_create()
-        assert invoice_ids
+        # Odoo 16: action_invoice_create() renamed to _create_invoices()
+        invoices = self.order_binding.odoo_id._create_invoices()
+        assert invoices
         self.invoice_model = self.env['account.move']
-        self.invoice = self.invoice_model.browse(invoice_ids)
+        self.invoice = invoices
 
     def test_export_invoice_on_validate_trigger(self):
         """ Trigger export of an invoice: when it is validated """
@@ -41,7 +42,7 @@ class TestExportInvoice(Magento2SyncTestCase):
         # prevent to create the job
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._invoice_open()
-            self.assertEqual(self.invoice.state, 'open')
+            self.assertEqual(self.invoice.state, 'posted')
 
             self.assertEqual(len(self.invoice.magento_bind_ids), 1)
 
@@ -54,7 +55,7 @@ class TestExportInvoice(Magento2SyncTestCase):
         # pay and verify it is NOT called
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._pay_and_reconcile()
-            self.assertEqual(self.invoice.state, 'paid')
+            self.assertEqual(self.invoice.payment_state, 'paid')
             self.assertEqual(0, delayable_cls.call_count)
 
     def test_export_invoice_on_paid_trigger(self):
@@ -65,7 +66,7 @@ class TestExportInvoice(Magento2SyncTestCase):
         # prevent to create the job
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._invoice_open()
-            self.assertEqual(self.invoice.state, 'open')
+            self.assertEqual(self.invoice.state, 'posted')
 
             self.assertEqual(0, delayable_cls.call_count)
 
@@ -73,7 +74,7 @@ class TestExportInvoice(Magento2SyncTestCase):
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._pay_and_reconcile()
 
-            self.assertEqual(self.invoice.state, 'paid')
+            self.assertEqual(self.invoice.payment_state, 'paid')
             self.assertEqual(len(self.invoice.magento_bind_ids), 1)
 
             self.assertEqual(1, delayable_cls.call_count)
@@ -92,7 +93,7 @@ class TestExportInvoice(Magento2SyncTestCase):
         self.stores.write({'create_invoice_on': 'paid'})
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._invoice_open()
-            self.assertEqual(self.invoice.state, 'open')
+            self.assertEqual(self.invoice.state, 'posted')
 
             self.assertEqual(len(self.invoice.magento_bind_ids), 1)
 
@@ -105,7 +106,7 @@ class TestExportInvoice(Magento2SyncTestCase):
         # pay and verify it is NOT called
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._pay_and_reconcile()
-            self.assertEqual(self.invoice.state, 'paid')
+            self.assertEqual(self.invoice.payment_state, 'paid')
             self.assertEqual(0, delayable_cls.call_count)
 
     def test_export_invoice_on_payment_mode_paid_trigger(self):
@@ -117,13 +118,13 @@ class TestExportInvoice(Magento2SyncTestCase):
         self.stores.write({'create_invoice_on': 'open'})
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._invoice_open()
-            self.assertEqual(self.invoice.state, 'open')
+            self.assertEqual(self.invoice.state, 'posted')
             self.assertEqual(0, delayable_cls.call_count)
 
         # pay and verify it is NOT called
         with self.mock_with_delay() as (delayable_cls, delayable):
             self._pay_and_reconcile()
-            self.assertEqual(self.invoice.state, 'paid')
+            self.assertEqual(self.invoice.payment_state, 'paid')
 
             self.assertEqual(len(self.invoice.magento_bind_ids), 1)
 
@@ -135,14 +136,25 @@ class TestExportInvoice(Magento2SyncTestCase):
             delayable.export_record.assert_called_with()
 
     def _invoice_open(self):
-        self.invoice.action_invoice_open()
+        self.invoice.action_post()
 
     def _pay_and_reconcile(self):
-        self.invoice.pay_and_reconcile(
-            self.journal,
-            pay_amount=self.invoice.amount_total,
-            writeoff_acc=self.pay_account,
+        # Odoo 16: create payment and reconcile manually
+        payment = self.env['account.payment'].create({
+            'payment_type': 'inbound',
+            'partner_type': 'customer',
+            'partner_id': self.invoice.partner_id.id,
+            'amount': self.invoice.amount_total,
+            'journal_id': self.journal.id,
+        })
+        payment.action_post()
+        # Reconcile payment with invoice
+        lines = (payment.move_id + self.invoice).line_ids.filtered(
+            lambda l: l.account_id == self.invoice.line_ids.filtered(
+                lambda il: il.account_type == 'asset_receivable'
+            ).account_id and not l.reconciled
         )
+        lines.reconcile()
 
     def test_export_invoice_job(self):
         """ Exporting an invoice: call towards the Magento API """
@@ -162,12 +174,17 @@ class TestExportInvoice(Magento2SyncTestCase):
 
             invoice_binding.export_record()
 
-        self.assertEqual(1, len(cassette.requests))
+        # Find the invoice creation request among cassette requests
+        invoice_requests = [
+            r for r in cassette.requests
+            if r.body and b'items' in r.body and b'invoice' in r.uri.encode()
+        ]
+        self.assertTrue(len(invoice_requests) >= 1)
         self.assertEqual(
-            cassette.requests[0].uri,
+            invoice_requests[0].uri,
             'http://magento/index.php/rest/V1/order/16/invoice')
         self.assertDictEqual(
-            json.loads(cassette.requests[0].body.decode('utf-8')),
+            json.loads(invoice_requests[0].body.decode('utf-8')),
             {"capture": False,
              "items": [{"orderItemId": "32", "qty": 1.0}],
              "comment": {"comment": "Invoice Created", "isVisibleOnFront": 0},

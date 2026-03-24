@@ -379,9 +379,10 @@ class GenericAdapter(AbstractComponent):
         # if attributes:
         #     raise NotImplementedError
         if self._magento2_key:
-            return self._call(
-                ('%s/%s' % (self._magento2_model, self.escape(external_id))) % kwargs,
-                None, storeview=storeview)
+            path = '%s/%s' % (self._magento2_model, self.escape(external_id))
+            if kwargs:
+                path = path % kwargs
+            return self._call(path, None, storeview=storeview)
         res = self._call(self._magento2_model % kwargs, None)
         return next(record for record in res if str(record['id']) == external_id)
 

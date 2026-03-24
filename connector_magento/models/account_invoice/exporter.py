@@ -66,7 +66,10 @@ class MagentoInvoiceExporter(Component):
         lines_info = self._get_lines_info(binding)
         external_id = None
         try:
-            external_id = self._export_invoice(magento_order.external_id,
+            # Magento 2 REST API uses entity_id (magento_order_id),
+            # not increment_id (external_id) in the URL
+            order_id = magento_order.magento_order_id or magento_order.external_id
+            external_id = self._export_invoice(order_id,
                                                lines_info,
                                                mail_notification)
         except xmlrpc.client.Fault as err:

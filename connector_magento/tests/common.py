@@ -19,7 +19,7 @@ import odoo
 from os.path import dirname, join
 from contextlib import contextmanager
 from odoo import models
-from odoo.addons.component.tests.common import SavepointComponentCase
+from odoo.addons.component.tests.common import TransactionComponentCase
 from odoo.tools import mute_logger
 
 from vcr import VCR
@@ -45,8 +45,10 @@ class MockResponseImage(object):
 
     def raise_for_status(self):
         if self.status_code != 200:
-            raise urllib.error.HTTPError(
-                '', self.status_code, str(self.status_code), None, None)
+            import requests as _req
+            response = _req.models.Response()
+            response.status_code = self.status_code
+            raise _req.exceptions.HTTPError(response=response)
 
     def read(self):
         # pylint: disable=method-required-super
@@ -58,8 +60,16 @@ class MockResponseImage(object):
 
 @contextmanager
 def mock_urlopen_image():
-    with mock.patch('requests.get') as requests_get:
-        requests_get.return_value = MockResponseImage('')
+    """Mock requests.get for image URLs only, pass through API calls."""
+    import requests as _requests
+    _original_get = _requests.get
+
+    def _patched_get(url, **kwargs):
+        if '/media/catalog/product/' in str(url):
+            return MockResponseImage('')
+        return _original_get(url, **kwargs)
+
+    with mock.patch('requests.get', side_effect=_patched_get):
         yield
 
 
@@ -79,7 +89,7 @@ class MagentoHelper(object):
             return 1
 
 
-class MagentoTestCase(SavepointComponentCase):
+class MagentoTestCase(TransactionComponentCase):
     """ Base class - Test the imports from a Magento Mock.
 
     The data returned by Magento are those created for the
@@ -165,11 +175,8 @@ class MagentoTestCase(SavepointComponentCase):
                     'odoo.addons.mail.models.mail_mail',
                     'odoo.models.unlink',
                     'odoo.tests'):
-                if self.backend.version != '1.7':
-                    return self.env[model_name].import_record(
-                        self.backend, magento_id)
                 with mock_urlopen_image():
-                    self.env[model_name].import_record(
+                    return self.env[model_name].import_record(
                         self.backend, magento_id)
 
         if cassette:
@@ -182,6 +189,14 @@ class MagentoTestCase(SavepointComponentCase):
             [('backend_id', '=', self.backend.id),
              ('external_id', '=', str(magento_id))]
         )
+        if not binding:
+            # For models where external_id differs from the import ID
+            # (e.g. sale.order uses increment_id as external_id, not entity_id)
+            # Search by the most recently created binding for this backend
+            binding = self.env[model_name].search(
+                [('backend_id', '=', self.backend.id)],
+                order='id desc', limit=1
+            )
         self.assertEqual(len(binding), 1)
         return binding
 

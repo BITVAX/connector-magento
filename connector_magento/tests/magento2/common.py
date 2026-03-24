@@ -22,7 +22,7 @@ recorder = VCR(
     decode_compressed_response=True,
     filter_headers=['Authorization'],
     path_transformer=VCR.ensure_suffix('.yaml'),
-    record_mode='once',
+    record_mode='none',
 )
 
 
@@ -45,3 +45,4 @@ class Magento2SyncTestCase(Magento2TestCase):
                 'odoo.tests'):
             with recorder.use_cassette('metadata'):
                 self.backend.synchronize_metadata()
+                self.backend.import_tax_classes()

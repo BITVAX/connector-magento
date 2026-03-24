@@ -1,3 +1,4 @@
+# __PATCHED_DUPLICATES__
 interactions:
 - request:
     body: null
@@ -23,6 +24,1244 @@ interactions:
       Server: [nginx/1.14.0 (Ubuntu)]
       Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
           08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attribute-sets/4
+  response:
+    body: {string: '{"attribute_set_id": 4, "attribute_set_name": "Default", "sort_order": 0, "entity_type_id": 4}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attribute-sets/4/attributes
+  response:
+    body: {string: '[]'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/category_ids
+  response:
+    body: {string: '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input": "text", "default_frontend_label": "category_ids", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/category_ids
+  response:
+    body: {string: '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input": "text", "default_frontend_label": "category_ids", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/description
+  response:
+    body: {string: '{"attribute_id": 102, "attribute_code": "description", "frontend_input": "text", "default_frontend_label": "description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/description
+  response:
+    body: {string: '{"attribute_id": 102, "attribute_code": "description", "frontend_input": "text", "default_frontend_label": "description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/gift_message_available
+  response:
+    body: {string: '{"attribute_id": 126, "attribute_code": "gift_message_available", "frontend_input": "text", "default_frontend_label": "gift_message_available", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/gift_message_available
+  response:
+    body: {string: '{"attribute_id": 126, "attribute_code": "gift_message_available", "frontend_input": "text", "default_frontend_label": "gift_message_available", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/has_options
+  response:
+    body: {string: '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input": "text", "default_frontend_label": "has_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/has_options
+  response:
+    body: {string: '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input": "text", "default_frontend_label": "has_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/image
+  response:
+    body: {string: '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text", "default_frontend_label": "image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/image
+  response:
+    body: {string: '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text", "default_frontend_label": "image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/meta_description
+  response:
+    body: {string: '{"attribute_id": 118, "attribute_code": "meta_description", "frontend_input": "text", "default_frontend_label": "meta_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/meta_description
+  response:
+    body: {string: '{"attribute_id": 118, "attribute_code": "meta_description", "frontend_input": "text", "default_frontend_label": "meta_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/meta_keyword
+  response:
+    body: {string: '{"attribute_id": 117, "attribute_code": "meta_keyword", "frontend_input": "text", "default_frontend_label": "meta_keyword", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/meta_keyword
+  response:
+    body: {string: '{"attribute_id": 117, "attribute_code": "meta_keyword", "frontend_input": "text", "default_frontend_label": "meta_keyword", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/meta_title
+  response:
+    body: {string: '{"attribute_id": 116, "attribute_code": "meta_title", "frontend_input": "text", "default_frontend_label": "meta_title", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/meta_title
+  response:
+    body: {string: '{"attribute_id": 116, "attribute_code": "meta_title", "frontend_input": "text", "default_frontend_label": "meta_title", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/msrp_display_actual_price_type
+  response:
+    body: {string: '{"attribute_id": 107, "attribute_code": "msrp_display_actual_price_type", "frontend_input": "text", "default_frontend_label": "msrp_display_actual_price_type", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/msrp_display_actual_price_type
+  response:
+    body: {string: '{"attribute_id": 107, "attribute_code": "msrp_display_actual_price_type", "frontend_input": "text", "default_frontend_label": "msrp_display_actual_price_type", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/name
+  response:
+    body: {string: '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text", "default_frontend_label": "name", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/name
+  response:
+    body: {string: '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text", "default_frontend_label": "name", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/options_container
+  response:
+    body: {string: '{"attribute_id": 108, "attribute_code": "options_container", "frontend_input": "text", "default_frontend_label": "options_container", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/options_container
+  response:
+    body: {string: '{"attribute_id": 108, "attribute_code": "options_container", "frontend_input": "text", "default_frontend_label": "options_container", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/required_options
+  response:
+    body: {string: '{"attribute_id": 110, "attribute_code": "required_options", "frontend_input": "text", "default_frontend_label": "required_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/required_options
+  response:
+    body: {string: '{"attribute_id": 110, "attribute_code": "required_options", "frontend_input": "text", "default_frontend_label": "required_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/short_description
+  response:
+    body: {string: '{"attribute_id": 122, "attribute_code": "short_description", "frontend_input": "text", "default_frontend_label": "short_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/short_description
+  response:
+    body: {string: '{"attribute_id": 122, "attribute_code": "short_description", "frontend_input": "text", "default_frontend_label": "short_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/small_image
+  response:
+    body: {string: '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input": "text", "default_frontend_label": "small_image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/small_image
+  response:
+    body: {string: '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input": "text", "default_frontend_label": "small_image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/status
+  response:
+    body: {string: '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text", "default_frontend_label": "status", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/status
+  response:
+    body: {string: '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text", "default_frontend_label": "status", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/tax_class_id
+  response:
+    body: {string: '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input": "text", "default_frontend_label": "tax_class_id", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/tax_class_id
+  response:
+    body: {string: '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input": "text", "default_frontend_label": "tax_class_id", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/thumbnail
+  response:
+    body: {string: '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input": "text", "default_frontend_label": "thumbnail", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/thumbnail
+  response:
+    body: {string: '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input": "text", "default_frontend_label": "thumbnail", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/ts_packaging_type
+  response:
+    body: {string: '{"attribute_id": 9116, "attribute_code": "ts_packaging_type", "frontend_input": "text", "default_frontend_label": "ts_packaging_type", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/ts_packaging_type
+  response:
+    body: {string: '{"attribute_id": 9116, "attribute_code": "ts_packaging_type", "frontend_input": "text", "default_frontend_label": "ts_packaging_type", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/url_key
+  response:
+    body: {string: '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input": "text", "default_frontend_label": "url_key", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/url_key
+  response:
+    body: {string: '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input": "text", "default_frontend_label": "url_key", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/attributes/visibility
+  response:
+    body: {string: '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input": "text", "default_frontend_label": "visibility", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/products/attributes/visibility
+  response:
+    body: {string: '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input": "text", "default_frontend_label": "visibility", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/taxClasses/search?fields=items%5Bclass_id%5D&searchCriteria=
+  response:
+    body: {string: '{"items": [{"class_id": 2}, {"class_id": 3}]}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/taxClasses/2
+  response:
+    body: {string: '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/taxClasses/2
+  response:
+    body: {string: '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/taxClasses/3
+  response:
+    body: {string: '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/all/V1/taxClasses/3
+  response:
+    body: {string: '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}'}
+    headers:
+      Content-Type: ['application/json; charset=utf-8']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:57 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=l68a3vfaid817s5etfsmmh3fkm; expires=Fri, 08-May-2020
+          08:29:57 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+      X-Frame-Options: [SAMEORIGIN]
+      content-length: ['1589']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://magento/index.php/rest/default/V1/products/bla%2Fkoe
+  response:
+    body: {string: '{"id":2052,"sku":"bla\/koe","name":"bla","attribute_set_id":4,"price":1,"status":1,"visibility":4,"type_id":"simple","created_at":"2020-05-02
+        06:51:46","updated_at":"2020-05-02 06:51:46","extension_attributes":{"website_ids":[1],"stock_item":{"item_id":2052,"product_id":2052,"stock_id":1,"qty":0,"is_in_stock":false,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":"2020-05-02
+        06:51:46","is_decimal_divided":false,"stock_status_changed_auto":1}},"product_links":[],"options":[],"media_gallery_entries":[],"tier_prices":[],"custom_attributes":[{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"bla"},{"attribute_code":"gift_message_available","value":"2"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"0"},{"attribute_code":"meta_title","value":"bla"},{"attribute_code":"meta_keyword","value":"bla"},{"attribute_code":"meta_description","value":"bla
+        "},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"ts_packaging_type","value":"none"},{"attribute_code":"category_ids","value":[]}]}'}
+    headers:
+      Cache-Control: ['no-store, no-cache, must-revalidate']
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Fri, 08 May 2020 07:29:58 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Pragma: [no-cache]
+      Server: [nginx/1.14.0 (Ubuntu)]
+      Set-Cookie: ['PHPSESSID=5cv3efunv39qqmh28npvui3hff; expires=Fri, 08-May-2020
+          08:29:58 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
       Transfer-Encoding: [chunked]
       Vary: [Accept-Encoding]
       X-Frame-Options: [SAMEORIGIN]

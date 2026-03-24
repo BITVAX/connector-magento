@@ -12,7 +12,7 @@ class TestImportProduct(Magento2SyncTestCase):
         super(TestImportProduct, self).setUp()
 
     def _create_category(self, name, external_id):
-        category_model = self.env['product.category']
+        category_model = self.env['product.category.public']
         category = category_model.create({'name': name})
         self.create_binding_no_export(
             'magento.product.category', category, external_id
@@ -86,11 +86,16 @@ class TestImportProduct(Magento2SyncTestCase):
 
     @recorder.use_cassette
     def test_import_product_grouped(self):
-        """ Grouped should fail: not yet supported """
-        with self.assertRaises(InvalidDataError):
-            self.env['magento.product.product'].import_record(
-                self.backend, '24-WG085_Group'
-            )
+        """ Grouped products are imported as service products """
+        backend_id = self.backend.id
+        self.env['magento.product.product'].import_record(
+            self.backend, '24-WG085_Group'
+        )
+        product_model = self.env['magento.product.product']
+        product = product_model.search([('backend_id', '=', backend_id),
+                                        ('external_id', '=', '24-WG085_Group')])
+        self.assertEqual(len(product), 1)
+        self.assertEqual(product.type, 'service')
 
     @recorder.use_cassette
     def test_import_product_virtual(self):
