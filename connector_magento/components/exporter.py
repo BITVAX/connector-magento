@@ -120,20 +120,21 @@ class MagentoBaseExporter(AbstractComponent):
 
     def _after_export(self):
         """ Can do several actions after exporting a record on magento """
-        # Publicar mensaje en el modelo base si hereda de mail.thread
-        if self.binding and hasattr(self.binding, 'odoo_id') and self.binding.odoo_id:
+        if (self.backend_record.log_sync_to_chatter
+                and self.binding and hasattr(self.binding, 'odoo_id')
+                and self.binding.odoo_id):
             base_record = self.binding.odoo_id
             if hasattr(base_record, 'message_post'):
                 try:
-                    backend_name = self.backend_record.name if self.backend_record else 'Magento'
-                    external_id = self.external_id or 'pendiente'
+                    backend_name = self.backend_record.name or 'Magento'
+                    external_id = self.external_id or 'pending'
                     base_record.message_post(
-                        body=f"Exportado a {backend_name} (ID: {external_id})",
-                        subject="Exportación Magento",
+                        body="Exported to %s (ID: %s)" % (backend_name, external_id),
+                        subject="Magento Export",
                         message_type='notification',
                     )
                 except Exception as e:
-                    _logger.debug('No se pudo publicar mensaje en chatter: %s', e)
+                    _logger.debug('Could not post chatter message: %s', e)
 
 
 class MagentoExporter(AbstractComponent):

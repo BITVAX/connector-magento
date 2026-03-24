@@ -95,6 +95,11 @@ class MagentoBackend(models.Model):
         string='Verify SSL certificate',
         default=True,
         help="Only for Magento 2.0+")
+    log_sync_to_chatter = fields.Boolean(
+        string='Log Sync to Chatter',
+        default=False,
+        help="When enabled, import/export operations will post a "
+             "notification message in the chatter of the related record.")
     sale_prefix = fields.Char(
         string='Sale Prefix',
         help="A prefix put before the name of imported sales orders.\n"

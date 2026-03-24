@@ -167,20 +167,20 @@ class MagentoImporter(AbstractComponent):
 
     def _after_import(self, binding, **kwargs):
         """ Hook called at the end of the import """
-        # Publicar mensaje en el modelo base si hereda de mail.thread
-        if binding and hasattr(binding, 'odoo_id') and binding.odoo_id:
+        if (self.backend_record.log_sync_to_chatter
+                and binding and hasattr(binding, 'odoo_id') and binding.odoo_id):
             base_record = binding.odoo_id
             if hasattr(base_record, 'message_post'):
                 try:
-                    backend_name = self.backend_record.name if self.backend_record else 'Magento'
-                    external_id = self.external_id or 'desconocido'
+                    backend_name = self.backend_record.name or 'Magento'
+                    external_id = self.external_id or 'unknown'
                     base_record.message_post(
-                        body=f"Importado desde {backend_name} (ID: {external_id})",
-                        subject="Importación Magento",
+                        body="Imported from %s (ID: %s)" % (backend_name, external_id),
+                        subject="Magento Import",
                         message_type='notification',
                     )
                 except Exception as e:
-                    _logger.debug('No se pudo publicar mensaje en chatter: %s', e)
+                    _logger.debug('Could not post chatter message: %s', e)
 
     def run(self, external_id, force=False, data=None, **kwargs):
         """ Run the synchronization
