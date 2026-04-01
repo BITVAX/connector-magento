@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {'name': 'Magento Connector',
- 'version': '16.0.0.0.0',
+ 'version': '18.0.1.0.0',
  'category': 'Connector',
  'depends': ['account',
              'base_technical_user',
