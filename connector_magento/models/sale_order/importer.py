@@ -344,11 +344,15 @@ class SaleOrderImportMapper(Component):
         if team:
             return {"team_id": team.id}
 
-    @mapping
-    def analytic_account_id(self, record):
-        analytic_account_id = self.options.storeview.account_analytic_id
-        if analytic_account_id:
-            return {"analytic_account_id": analytic_account_id.id}
+    # NOTE: In v18, analytic_distribution lives on sale.order.line, not
+    # sale.order.  The account_analytic_id from the storeview is applied to
+    # order lines via the sale_automatic_workflow or manually.  The old
+    # analytic_account_id mapping has been removed.
+    # @mapping
+    # def analytic_distribution(self, record):
+    #     analytic_account = self.options.storeview.account_analytic_id
+    #     if analytic_account:
+    #         return {"analytic_distribution": {str(analytic_account.id): 100.0}}
 
     @mapping
     def fiscal_position(self, record):

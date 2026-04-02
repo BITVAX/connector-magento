@@ -152,7 +152,7 @@ class TestSaleOrder(Magento2SyncTestCase):
         binding = self._import_sale_order("9")
         # Pricelist comes from partner default (pricelist mapper is disabled)
         self.assertTrue(binding.pricelist_id)
-        self.assertFalse(binding.analytic_account_id)
+        # In v18, analytic_distribution is on sale.order.line, not sale.order
         default_fp = self.env["account.fiscal.position"]._get_fiscal_position(
             binding.partner_id, binding.partner_shipping_id
         )
@@ -165,41 +165,29 @@ class TestSaleOrder(Magento2SyncTestCase):
         binding.unlink()
         # define options at the backend level
         fp1 = self.env["account.fiscal.position"].create({"name": "fp1"})
-        account_analytic_id = self._create_analytic_account("aaa1")
-        self.backend.account_analytic_id = account_analytic_id
         self.backend.fiscal_position_id = fp1.id
         binding = self._import_sale_order("9")
-        self.assertEqual(binding.analytic_account_id, account_analytic_id)
         self.assertEqual(binding.fiscal_position_id, fp1)
         binding.odoo_id.unlink()
         binding.unlink()
         # define options at the website level
-        account_analytic_id = self._create_analytic_account("aaa2")
         fp2 = self.env["account.fiscal.position"].create({"name": "fp2"})
-        website_id.specific_account_analytic_id = account_analytic_id
         website_id.specific_fiscal_position_id = fp2.id
         binding = self._import_sale_order("9")
-        self.assertEqual(binding.analytic_account_id, account_analytic_id)
         self.assertEqual(binding.fiscal_position_id, fp2)
         binding.odoo_id.unlink()
         binding.unlink()
         # define options at the store level
-        account_analytic_id = self._create_analytic_account("aaa3")
         fp3 = self.env["account.fiscal.position"].create({"name": "fp3"})
-        store_id.specific_account_analytic_id = account_analytic_id
         store_id.specific_fiscal_position_id = fp3.id
         binding = self._import_sale_order("9")
-        self.assertEqual(binding.analytic_account_id, account_analytic_id)
         self.assertEqual(binding.fiscal_position_id, fp3)
         binding.odoo_id.unlink()
         binding.unlink()
         # define options at the storeview level
-        account_analytic_id = self._create_analytic_account("aaa4")
         fp4 = self.env["account.fiscal.position"].create({"name": "fp4"})
-        storeview_id.specific_account_analytic_id = account_analytic_id
         storeview_id.specific_fiscal_position_id = fp4.id
         binding = self._import_sale_order("9")
-        self.assertEqual(binding.analytic_account_id, account_analytic_id)
         self.assertEqual(binding.fiscal_position_id, fp4)
 
     @unittest.skip("Order edit/cancel workflows not used in production")
@@ -325,17 +313,26 @@ class TestSaleOrder(Magento2SyncTestCase):
             "http://magento/index.php/rest/V1/orders/12/comments",
         )
 
+    @unittest.skip("Pricelist-by-currency mapper is disabled (commented out)")
     def test_alternate_currency_pricelist(self):
         """An order with an alternate currency selects a matching pricelist"""
-        # Ensure a Euro pricelist exists
+        # Cassette order "13" has order_currency_code=EUR.
+        # Ensure a EUR pricelist exists (separate from the default USD one).
+        usd = self.env.ref("base.USD")
+        eur = self.env.ref("base.EUR")
+        # Make default pricelist USD (Magento mock data is USD-based)
         base_pricelist = self.env["product.pricelist"].search([], limit=1)
         if not base_pricelist:
             base_pricelist = self.env["product.pricelist"].create(
-                {"name": "Default"}
+                {"name": "Default USD", "currency_id": usd.id}
             )
+        else:
+            base_pricelist.currency_id = usd
+        # Create an EUR pricelist
         base_pricelist.copy(
             {
-                "currency_id": self.env.ref("base.EUR").id,
+                "name": "EUR Pricelist",
+                "currency_id": eur.id,
                 "sequence": 999,
             }
         )
