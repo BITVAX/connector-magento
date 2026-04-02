@@ -35,10 +35,12 @@
                             <group col="4">
                                 <field name="use_auth_basic" colspan="4"/>
                                 <field name="auth_basic_username" colspan="2"
-                                       attrs="{'invisible': [('use_auth_basic', '=', False)], 'required': [('use_auth_basic', '=', True)]}"/>
+                                       invisible="not use_auth_basic"
+                                       required="use_auth_basic"/>
                                 <field name="auth_basic_password" colspan="2"
                                        password="1"
-                                       attrs="{'invisible': [('use_auth_basic', '=', False)], 'required': [('use_auth_basic', '=', True)]}"/>
+                                       invisible="not use_auth_basic"
+                                       required="use_auth_basic"/>
                             </group>
                         </page>
                     </notebook>
@@ -206,10 +208,10 @@
         <field name="name">magento.backend.tree</field>
         <field name="model">magento.backend</field>
         <field name="arch" type="xml">
-            <tree string="Magento Backend">
+            <list string="Magento Backend">
                 <field name="name"/>
                 <field name="location"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -241,9 +243,9 @@
                         <field name="specific_fiscal_position_id" class="oe_edit_only"/>
                         <field name="is_multi_company" invisible="1"/>
                         <field name="warehouse_id" class="oe_read_only"
-                               attrs="{'invisible': [('is_multi_company', '=', False)]}"/>
+                               invisible="not is_multi_company"/>
                         <field name="specific_warehouse_id" class="oe_edit_only"
-                               attrs="{'invisible': [('is_multi_company', '=', False)]}"/>
+                               invisible="not is_multi_company"/>
                     </group>
                     <notebook>
                         <page name="import" string="Imports">
@@ -279,13 +281,13 @@
         <field name="name">magento.website.tree</field>
         <field name="model">magento.website</field>
         <field name="arch" type="xml">
-            <tree string="Magento Website" create="false"
+            <list string="Magento Website" create="false"
                   delete="false">
                 <field name="name"/>
                 <field name="backend_id"/>
                 <field name="code"/>
                 <field name="sort_order"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -313,9 +315,9 @@
                         <field name="specific_fiscal_position_id" class="oe_edit_only"/>
                         <field name="is_multi_company" invisible="1"/>
                         <field name="warehouse_id" class="oe_read_only"
-                               attrs="{'invisible': [('is_multi_company', '=', False)]}"/>
+                               invisible="not is_multi_company"/>
                         <field name="specific_warehouse_id" class="oe_edit_only"
-                               attrs="{'invisible': [('is_multi_company', '=', False)]}"/>
+                               invisible="not is_multi_company"/>
                         <field name="send_picking_done_mail"/>
                         <field name="send_invoice_paid_mail"/>
                         <field name="create_invoice_on"/>
@@ -337,11 +339,11 @@
         <field name="name">magento.store.tree</field>
         <field name="model">magento.store</field>
         <field name="arch" type="xml">
-            <tree string="Magento Store" create="false"
+            <list string="Magento Store" create="false"
                   delete="false">
                 <field name="name"/>
                 <field name="website_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -373,14 +375,14 @@
                         <field name="specific_fiscal_position_id" class="oe_edit_only"/>
                         <field name="is_multi_company" invisible="1"/>
                         <field name="warehouse_id" class="oe_read_only"
-                               attrs="{'invisible': [('is_multi_company', '=', False)]}"/>
+                               invisible="not is_multi_company"/>
                         <field name="specific_warehouse_id" class="oe_edit_only"
-                               attrs="{'invisible': [('is_multi_company', '=', False)]}"/>
+                               invisible="not is_multi_company"/>
                         <field name="team_id" options="{'no_create': True}"/>
                         <field name="lang_id" widget="selection"/>
                         <field name="base_media_url"/>
                         <field name="catalog_price_tax_included"/>
-                        <p attrs="{'invisible': [('catalog_price_tax_included', '=', False)]}">
+                        <p invisible="not catalog_price_tax_included">
                             This option should respect the same
                             configuration as Magento. Pay
                             attention to the taxes on the products,
@@ -403,7 +405,7 @@
                                         type="object"
                                         class="oe_highlight"
                                         string="Import Sale Orders"
-                                        attrs="{'invisible': [('no_sales_order_sync', '=', True)]}"/>
+                                        invisible="no_sales_order_sync"/>
 
                             </group>
                         </page>
@@ -418,7 +420,7 @@
         <field name="name">magento.storeview.tree</field>
         <field name="model">magento.storeview</field>
         <field name="arch" type="xml">
-            <tree string="Magento Storeview" create="false"
+            <list string="Magento Storeview" create="false"
                   delete="false">
                 <field name="name"/>
                 <field name="code"/>
@@ -427,7 +429,7 @@
                 <field name="catalog_price_tax_included"/>
                 <field name="sort_order"/>
                 <field name="store_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 

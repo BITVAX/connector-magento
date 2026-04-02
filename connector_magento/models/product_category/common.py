@@ -57,26 +57,25 @@ class ProductCategoryPublic(models.Model):
             category.product_count = len(category.product_tmpl_ids)
         return
 
-    # @api.depends('name', 'parent_id.name')
+    @api.depends('name', 'parent_id.name')
     def _compute_display_name(self):
         for category in self:
-            category.display_name = category.name_get()[0][1]
+            category.display_name = "/".join(
+                category.parents_and_self.mapped(
+                    lambda x: x.name if x.parent_id else ''
+                )
+            )
 
     magento_bind_ids = fields.One2many(
         comodel_name='magento.product.category',
         inverse_name='odoo_id',
         string="Magento Bindings",
     )
+
     @api.constrains('parent_id')
     def check_parent_id(self):
         if not self._check_recursion():
             raise ValueError(_('Error ! You cannot create recursive categories.'))
-
-    def name_get(self):
-        res = []
-        for category in self:
-            res.append((category.id, "/".join(category.parents_and_self.mapped(lambda x: x.name if x.parent_id else ''))))
-        return res
 
     def _compute_parents_and_self(self):
         for category in self:

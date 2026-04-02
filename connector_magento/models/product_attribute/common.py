@@ -68,8 +68,6 @@ class MagentoProductAttribute(models.Model):
             vals['attribute_set_ids'] = [(4, backend.id)]
         '''
         return super(MagentoProductAttribute, self).create(vals)
-
-    # @api.multi
     def export_product_attribute_button(self):
         self.ensure_one()
         attr_name = self.name or (self.odoo_id and self.odoo_id.name) or ''
@@ -77,8 +75,6 @@ class MagentoProductAttribute(models.Model):
             priority=20, identity_key=identity_exact,
             description=_("Export attribute '%s' to Magento") % attr_name,
         ).export_product_attribute()
-
-    # @api.multi
     def import_product_attribute_button(self):
         self.ensure_one()
         attr_name = self.name or (self.odoo_id and self.odoo_id.name) or ''
@@ -89,7 +85,6 @@ class MagentoProductAttribute(models.Model):
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_unwrap_binding')
-    # @api.multi
     def export_product_attribute(self, fields=None):
         """ Export a simple attribute. """
         self.ensure_one()
@@ -99,7 +94,6 @@ class MagentoProductAttribute(models.Model):
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_unwrap_binding')
-    # @api.multi
     def import_product_attribute(self):
         """ Import a simple attribute. """
         self.ensure_one()

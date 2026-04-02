@@ -21,9 +21,9 @@
                 </field>
                 <notebook position="inside">
                     <page string="Magento Bindings">
-                        <field name="magento_bind_ids" attrs="{'invisible': [('magento_bind_ids','=',False)]}"/>
+                        <field name="magento_bind_ids" invisible="not magento_bind_ids"/>
                         <field name="magento_variant_bind_ids"
-                               attrs="{'invisible': [('magento_variant_bind_ids','=',False)]}"/>
+                               invisible="not magento_variant_bind_ids"/>
                     </page>
                 </notebook>
             </field>
@@ -36,9 +36,9 @@
             <field name="inherit_id" ref="connector_base_product.product_template_common_form"/>
             <field name="arch" type="xml">
                 <page name="connector" position="inside">
-                    <separator string="Queue Jobs" attrs="{'invisible': [('job_ids','=',False)]}"/>
-                    <field name="job_ids" readonly="1" attrs="{'invisible': [('job_ids','=',False)]}">
-                        <tree decoration-danger="state=='failed'"
+                    <separator string="Queue Jobs" invisible="not job_ids"/>
+                    <field name="job_ids" readonly="1" invisible="not job_ids">
+                        <list decoration-danger="state=='failed'"
                               decoration-warning="state in ('pending','enqueued')"
                               decoration-success="state=='done'"
                               decoration-muted="state in ('cancelled')">
@@ -49,7 +49,7 @@
                             <field name="date_started"/>
                             <field name="date_done"/>
                             <field name="exc_info" optional="hide"/>
-                        </tree>
+                        </list>
                     </field>
                 </page>
             </field>
@@ -70,7 +70,7 @@
                             type="object"
                             class="oe_stat_button magento_published"
                             icon="fa-shopping-cart"
-                            attrs="{'invisible': [('magento_sync_state', '!=', 'published')]}">
+                            invisible="magento_sync_state != 'published'">
                         <div class="o_stat_info">
                             <span class="o_stat_value">
                                 <field name="magento_bindings_count"/>
@@ -86,7 +86,7 @@
                             type="object"
                             class="oe_stat_button magento_partial"
                             icon="fa-shopping-cart"
-                            attrs="{'invisible': [('magento_sync_state', '!=', 'partial')]}">
+                            invisible="magento_sync_state != 'partial'">
                         <div class="o_stat_info">
                             <span class="o_stat_value">
                                 <field name="magento_bindings_count"/>
@@ -102,7 +102,7 @@
                             type="object"
                             class="oe_stat_button magento_unpublished"
                             icon="fa-shopping-cart"
-                            attrs="{'invisible': [('magento_sync_state', '!=', 'unpublished')]}">
+                            invisible="magento_sync_state != 'unpublished'">
                         <div class="o_stat_info">
                             <span class="o_stat_value">
                                 <field name="magento_bindings_count"/>
@@ -119,7 +119,7 @@
                             class="oe_stat_button"
                             icon="fa-plus-circle"
                             string="Add Magento"
-                            attrs="{'invisible': [('magento_sync_state', '!=', 'none')]}"/>
+                            invisible="magento_sync_state != 'none'"/>
                 </xpath>
             </field>
         </record>

@@ -16,7 +16,7 @@
             <page name="connector" position="inside">
                 <group string="Magento Bindings">
                     <field name="magento_bind_ids" nolabel="1" colspan="2">
-                        <tree>
+                        <list>
                             <field name="backend_id"/>
                             <field name="product_type"/>
                             <button name="sync_to_magento" string="To Magento" type="object"
@@ -25,7 +25,7 @@
                                     class="oe_highlight"/>
                             <button name="delete_from_magento" string="Delete from Magento" type="object"
                                     class="oe_highlight"/>
-                        </tree>
+                        </list>
                     </field>
                 </group>
 
@@ -40,7 +40,7 @@
                         type="object"
                         class="oe_stat_button magento_published"
                         icon="fa-shopping-cart"
-                        attrs="{'invisible': [('magento_sync_state', '!=', 'published')]}">
+                        invisible="magento_sync_state != 'published'">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="magento_bindings_count"/>
@@ -56,7 +56,7 @@
                         type="object"
                         class="oe_stat_button magento_partial"
                         icon="fa-shopping-cart"
-                        attrs="{'invisible': [('magento_sync_state', '!=', 'partial')]}">
+                        invisible="magento_sync_state != 'partial'">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="magento_bindings_count"/>
@@ -72,7 +72,7 @@
                         type="object"
                         class="oe_stat_button magento_unpublished"
                         icon="fa-shopping-cart"
-                        attrs="{'invisible': [('magento_sync_state', '!=', 'unpublished')]}">
+                        invisible="magento_sync_state != 'unpublished'">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="magento_bindings_count"/>
@@ -89,7 +89,7 @@
                         class="oe_stat_button"
                         icon="fa-plus-circle"
                         string="Add Magento"
-                        attrs="{'invisible': [('magento_sync_state', '!=', 'none')]}"/>
+                        invisible="magento_sync_state != 'none'"/>
             </xpath>
         </field>
     </record>
@@ -189,14 +189,14 @@
                     </group>
                     <notebook>
                         <page name="product_links" string="Products Links"
-                              attrs="{'invisible' :[('product_type','!=','grouped')]}">
+                              invisible="product_type != 'grouped'">
                             <field name="product_links" nolabel="1" colspan="4">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="name"/>
                                     <field name="default_code"/>
                                     <field name="backend_id"/>
                                     <field name="product_type"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page name="inventory" string="Inventory">
@@ -226,7 +226,7 @@
         <field name="name">magento.product.product.tree</field>
         <field name="model">magento.product.product</field>
         <field name="arch" type="xml">
-            <tree string="Magento Product">
+            <list string="Magento Product">
                 <field name="name"/>
                 <field name="default_code"/>
                 <field name="backend_id"/>
@@ -237,7 +237,7 @@
                         class="oe_highlight"/>
                 <button name="delete_from_magento" string="Delete from Magento" type="object"
                         class="oe_highlight"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -245,14 +245,14 @@
         <field name="name">magento.product.template.tree</field>
         <field name="model">magento.product.template</field>
         <field name="arch" type="xml">
-            <tree string="Magento Product Template">
+            <list string="Magento Product Template">
                 <field name="external_id"/>
                 <field name="odoo_id"/>
                 <field name="backend_id"/>
                 <button name="sync_to_magento" string="To Magento" type="object"/>
                 <button name="sync_from_magento" string="From Magento" type="object"/>
                 <button name="delete_from_magento" string="Delete" type="object"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -299,20 +299,20 @@
                     <notebook>
                         <page string="Variants">
                             <field name="magento_variant_bind_ids">
-                                <tree string="Magento Variants">
+                                <list string="Magento Variants">
                                     <field name="external_id"/>
                                     <field name="odoo_id"/>
                                     <field name="product_type"/>
                                     <field name="magento_status"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Attribute Lines">
                             <field name="magento_template_attribute_line_ids">
-                                <tree string="Attribute Lines">
+                                <list string="Attribute Lines">
                                     <field name="attribute_id"/>
                                     <field name="value_ids" widget="many2many_tags"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page name="data" string="JSON Data">

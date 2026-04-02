@@ -14,9 +14,9 @@
                     <!-- Auto-detected product type -->
                     <group>
                         <field name="detected_template_type" readonly="1"
-                               attrs="{'invisible': [('detected_template_type', '=', False)]}"/>
+                               invisible="not detected_template_type"/>
                         <field name="product_type" readonly="1"
-                               attrs="{'invisible': [('product_type', '=', False)]}"/>
+                               invisible="not product_type"/>
                     </group>
 
                     <!-- Configuration fields -->
@@ -28,14 +28,14 @@
                     <!-- Grouped product links -->
                     <group>
                         <field name="product_links"
-                               attrs="{'invisible': [('product_type', '!=', 'grouped')],
-                                       'required': [('product_type', '=', 'grouped')]}"/>
+                               invisible="product_type != 'grouped'"
+                               required="product_type == 'grouped'"/>
                     </group>
 
                     <!-- Validation warnings -->
                     <group>
                         <field name="warning_message" readonly="1" class="text-danger"
-                               attrs="{'invisible': [('warning_message', '=', False)]}"/>
+                               invisible="not warning_message"/>
                     </group>
 
                     <!-- Hidden fields -->
@@ -44,7 +44,7 @@
                     <footer>
                         <button name="action_accept" type="object" string="Create Binding"
                                 class="oe_highlight"
-                                attrs="{'invisible': ['|', ('product_type', '=', False), ('warning_message', 'ilike', 'ERROR')]}"/>
+                                invisible="not product_type or warning_message ilike 'ERROR'"/>
                         or
                         <button special="cancel" string="Cancel"/>
                     </footer>

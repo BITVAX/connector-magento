@@ -21,13 +21,6 @@ class MagentoProductAttributesSet(models.Model):
         for record in self:
             record.display_name = f'{record.name}-{record.backend_id.name}'
 
-    @api.model
-    def name_get(self):
-        res = []
-        for record in self:
-            res.append((record.id, f'{record.name}-{record.backend_id.name}'))
-        return res
-
 class ProductAttributeSetAdapter(Component):
     _name = 'magento.product.attribute.set.adapter'
     _inherit = 'magento.adapter'

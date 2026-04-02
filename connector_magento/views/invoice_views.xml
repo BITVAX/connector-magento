@@ -35,11 +35,11 @@
         <field name="name">magento.account.invoice.tree</field>
         <field name="model">magento.account.invoice</field>
         <field name="arch" type="xml">
-            <tree string="Magento Invoice"
+            <list string="Magento Invoice"
                     create="false" delete="false">
                 <field name="backend_id"/>
                 <field name="external_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 

@@ -153,8 +153,6 @@ class MagentoProductTemplate(models.Model):
                         )
 
         return super(MagentoProductTemplate, self).create(vals_list)
-
-    # @api.multi
     # @job(default_channel='root.magento')
     def sync_from_magento(self):
         for binding in self:
@@ -175,9 +173,6 @@ class MagentoProductTemplate(models.Model):
                 'sticky': False,
             }
         }
-
-
-    # @api.multi
     # @job(default_channel='root.magento')
     def run_sync_from_magento(self):
         self.ensure_one()
@@ -509,15 +504,11 @@ class ProductTemplate(models.Model):
         me = self.with_context(create_product_product=True)
 
         return super(ProductTemplate, me).create(vals)
-
-    # @api.multi
     def _create_variant_ids(self):
         for rec in self:
             if rec.auto_create_variants:
                 super(ProductTemplate, rec)._create_variant_ids()
         return True
-
-    # @api.multi
     def write(self, vals):
         res = False
         for tpl in self:

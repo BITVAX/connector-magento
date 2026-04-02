@@ -51,7 +51,6 @@ class MagentoSaleOrder(models.Model):
                                readonly=True)
 
     # @job(default_channel='root.magento')
-    # @api.multi
     def export_state_change(self, allowed_states=None,
                             comment=None, notify=None):
         """ Change state of a sales order on Magento """
@@ -112,8 +111,6 @@ class SaleOrder(models.Model):
                 binding.with_delay(
                     description=job_descr
                 ).export_state_change(allowed_states=['cancel'])
-
-    # @api.multi
     def write(self, vals):
         if vals.get('state') == 'cancel':
             self._magento_cancel()

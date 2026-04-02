@@ -7,8 +7,6 @@ from odoo import _, api, exceptions, models
 class QueueJob(models.Model):
 
     _inherit = 'queue.job'
-
-    # @api.multi
     def related_action_magento_link(self, backend_id_pos=0, external_id_pos=1):
         """ Open a Magento URL on the admin page to view/edit the record
         related to the job.

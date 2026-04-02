@@ -8,8 +8,6 @@ from odoo.exceptions import UserError
 
 class WizardModel(models.TransientModel):
     _name = "connector_magento.add_backend.wizard"
-
-    # @api.multi
     def get_default_object(self, model):
         domain = []
         active_ids = self.env.context.get('active_ids', False)
@@ -21,19 +19,13 @@ class WizardModel(models.TransientModel):
         export = self.env[active_model]
         if active_model == model:
             return export.search(domain)
-
-    # @api.multi
     def get_default_model(self):
         model = self.env.context.get('active_model', False)
         if model:
             return self.env['ir.model'].search([('model', '=', model)], limit=1).id
         return False
-
-    # @api.multi
     def get_default_backend(self):
         return self.env['magento.backend'].search([], limit=1)
-
-    # @api.multi
     def _get_ids_and_model(self):
         active_model = self.env.context.get('active_model', False)
         binding_field= 'magento_bind_ids'
@@ -231,8 +223,6 @@ class WizardModel(models.TransientModel):
                 "Please import attribute sets first using the backend form."
             ) % self.backend_id.name)
         return attribute_sets[0]
-
-    # @api.multi
     def check_backend_binding(self, to_export_ids=None, dest_model=None):
         """Main entry point - routes to appropriate processing based on context"""
         self._validate_backend_ready()

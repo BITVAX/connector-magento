@@ -40,8 +40,6 @@ class MagentoWebsite(models.Model):
         readonly=True,
     )
     is_multi_company = fields.Boolean(related="backend_id.is_multi_company")
-
-    # @api.multi
     def import_partners(self):
         import_start_time = datetime.now()
         for website in self:

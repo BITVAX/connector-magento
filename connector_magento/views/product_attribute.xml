@@ -51,7 +51,7 @@
             <field name="name">magento.product.attribute.tree</field>
             <field name="model">magento.product.attribute</field>
             <field name="arch" type="xml">
-                <tree string="Magento Product Attribute">
+                <list string="Magento Product Attribute">
                     <field name="name"/>
                     <field name="odoo_id"/>
                     <field name="attribute_code"/>
@@ -59,7 +59,7 @@
                     <field name="exclude"/>
                     <field name="field_id"/>
                     <field name="frontend_input"/>
-                </tree>
+                </list>
             </field>
         </record>
 
