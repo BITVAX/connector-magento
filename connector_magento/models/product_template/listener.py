@@ -3,14 +3,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.h
 
 from odoo.addons.component.core import Component
-from odoo.addons.component_event import skip_if
-from odoo.addons.queue_job.job import identity_exact
 
 
 class MagentoProductTemplateBindingExportListener(Component):
-    _name = 'magento.product.template.binding.export.listener'
-    _inherit = 'base.connector.listener'
-    _apply_on = ['magento.product.template']
+    _name = "magento.product.template.binding.export.listener"
+    _inherit = "base.connector.listener"
+    _apply_on = ["magento.product.template"]
     #
     # @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     # def on_record_create(self, record, fields=None):
@@ -28,10 +26,11 @@ class MagentoProductTemplateBindingExportListener(Component):
     #                                                      external_id)
     #
 
+
 class MagentoProductTemplateExportListener(Component):
-    _name = 'magento.product.template.export.listener'
-    _inherit = 'base.connector.listener'
-    _apply_on = ['product.template']
+    _name = "magento.product.template.export.listener"
+    _inherit = "base.connector.listener"
+    _apply_on = ["product.template"]
 
     # @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     # def on_record_write(self, record, fields=None):

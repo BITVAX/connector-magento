@@ -1,32 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="action_magento_backend" model="ir.actions.act_window">
         <field name="name">Magento Backends</field>
         <field name="res_model">magento.backend</field>
         <!--        <field name="view_type">form</field>-->
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_magento_backend_tree"/>
+        <field name="view_id" ref="view_magento_backend_tree" />
     </record>
     <record id="action_magento_store" model="ir.actions.act_window">
         <field name="name">Magento Stores</field>
         <field name="res_model">magento.store</field>
         <!--        <field name="view_type">form</field>-->
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_magento_store_tree"/>
+        <field name="view_id" ref="view_magento_store_tree" />
     </record>
     <record id="action_magento_website" model="ir.actions.act_window">
         <field name="name">Magento Websites</field>
         <field name="res_model">magento.website</field>
         <!--        <field name="view_type">form</field>-->
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_magento_website_tree"/>
+        <field name="view_id" ref="view_magento_website_tree" />
     </record>
 
     <record id="action_magento_storeview" model="ir.actions.act_window">
         <field name="name">Magento Storeviews</field>
         <field name="res_model">magento.storeview</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_magento_storeview_tree"/>
+        <field name="view_id" ref="view_magento_storeview_tree" />
     </record>
 
     <record id="action_magento_account_tax" model="ir.actions.act_window">
@@ -63,8 +63,10 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-
-    <record model="ir.actions.act_window" id="action_magento_product_template_attribute_line">
+    <record
+        model="ir.actions.act_window"
+        id="action_magento_product_template_attribute_line"
+    >
         <field name="name">Magento Product Template Attribute Line</field>
         <field name="res_model">magento.product.template.attribute.line</field>
         <field name="view_mode">tree,form</field>
@@ -77,86 +79,114 @@
     </record>
 
     <!-- Menu for magento.product.attribute -->
-    <menuitem id="menu_magento_root"
-              parent="connector.menu_connector_root"
-              name="Magento"
-              sequence="10"
-              groups="connector.group_connector_manager"/>
+    <menuitem
+        id="menu_magento_root"
+        parent="connector.menu_connector_root"
+        name="Magento"
+        sequence="10"
+        groups="connector.group_connector_manager"
+    />
 
-    <menuitem id="menu_magento_backend"
-              name="Backends"
-              parent="menu_magento_root"
-              action="action_magento_backend"/>
+    <menuitem
+        id="menu_magento_backend"
+        name="Backends"
+        parent="menu_magento_root"
+        action="action_magento_backend"
+    />
 
-    <menuitem id="menu_magento_website"
-              name="Websites"
-              parent="menu_magento_root"
-              sequence="20"
-              action="action_magento_website"/>
+    <menuitem
+        id="menu_magento_website"
+        name="Websites"
+        parent="menu_magento_root"
+        sequence="20"
+        action="action_magento_website"
+    />
 
-    <menuitem id="menu_magento_store"
-              name="Stores"
-              parent="menu_magento_root"
-              sequence="30"
-              action="action_magento_store"/>
+    <menuitem
+        id="menu_magento_store"
+        name="Stores"
+        parent="menu_magento_root"
+        sequence="30"
+        action="action_magento_store"
+    />
 
-    <menuitem id="menu_magento_storeview"
-              name="Storeviews"
-              parent="menu_magento_root"
-              sequence="40"
-              action="action_magento_storeview"/>
+    <menuitem
+        id="menu_magento_storeview"
+        name="Storeviews"
+        parent="menu_magento_root"
+        sequence="40"
+        action="action_magento_storeview"
+    />
 
-    <menuitem id="menu_magento_category"
-              name="Public Categories"
-              parent="menu_magento_root"
-              sequence="50"
-              action="action_product_category_public"/>
+    <menuitem
+        id="menu_magento_category"
+        name="Public Categories"
+        parent="menu_magento_root"
+        sequence="50"
+        action="action_product_category_public"
+    />
 
-    <menuitem id="menu_magento_account_tax" name="Magento Taxes"
-              parent="menu_magento_root"
-              sequence="60"
-              action="action_magento_account_tax"/>
+    <menuitem
+        id="menu_magento_account_tax"
+        name="Magento Taxes"
+        parent="menu_magento_root"
+        sequence="60"
+        action="action_magento_account_tax"
+    />
 
-    <menuitem id="menu_magento_attribute_set"
-              name="Magento Attribute Sets"
-              parent="menu_magento_root"
-              sequence="70"
-              action="action_magento_attribute_set"/>
+    <menuitem
+        id="menu_magento_attribute_set"
+        name="Magento Attribute Sets"
+        parent="menu_magento_root"
+        sequence="70"
+        action="action_magento_attribute_set"
+    />
 
-    <menuitem id="menu_magento_product_attribute"
-              name="Magento Product Attributes"
-              parent="connector_magento.menu_magento_root"
-              sequence="75"
-              action="action_magento_product_attribute"/>
+    <menuitem
+        id="menu_magento_product_attribute"
+        name="Magento Product Attributes"
+        parent="connector_magento.menu_magento_root"
+        sequence="75"
+        action="action_magento_product_attribute"
+    />
 
-    <menuitem id="menu_magento_product_product"
-              name="Magento Products"
-              parent="menu_magento_root"
-              sequence="80"
-              action="action_magento_product_product"/>
+    <menuitem
+        id="menu_magento_product_product"
+        name="Magento Products"
+        parent="menu_magento_root"
+        sequence="80"
+        action="action_magento_product_product"
+    />
 
-    <menuitem id="menu_magento_product_template"
-              name="Magento Product Templates"
-              parent="menu_magento_root"
-              sequence="90"
-              action="action_magento_product_template"/>
+    <menuitem
+        id="menu_magento_product_template"
+        name="Magento Product Templates"
+        parent="menu_magento_root"
+        sequence="90"
+        action="action_magento_product_template"
+    />
 
-    <menuitem id="menu_product_product_categories"
-                name="Public Categories"
-                parent="stock.menu_product_in_config_stock"
-                sequence="95"
-                action="action_product_category_public"/>
+    <menuitem
+        id="menu_product_product_categories"
+        name="Public Categories"
+        parent="stock.menu_product_in_config_stock"
+        sequence="95"
+        action="action_product_category_public"
+    />
 
-    <menuitem id="menu_magento_product_category"
-              name="Magento Product Categories"
-              parent="menu_magento_root"
-              sequence="100"
-              action="action_magento_product_category"/>
+    <menuitem
+        id="menu_magento_product_category"
+        name="Magento Product Categories"
+        parent="menu_magento_root"
+        sequence="100"
+        action="action_magento_product_category"
+    />
 
-    <menuitem id="menu_magento_product_template_attribute_line"
-              name="Magento Product Template Attribute Lines"
-              parent="menu_magento_root"
-              sequence="110"
-              action="action_magento_product_template_attribute_line"/>
-
+    <menuitem
+        id="menu_magento_product_template_attribute_line"
+        name="Magento Product Template Attribute Lines"
+        parent="menu_magento_root"
+        sequence="110"
+        action="action_magento_product_template_attribute_line"
+    />
 </odoo>

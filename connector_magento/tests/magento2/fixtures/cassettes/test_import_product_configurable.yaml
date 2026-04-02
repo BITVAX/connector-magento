@@ -1,1277 +1,1939 @@
 # __PATCHED_DUPLICATES__
 interactions:
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MH01
-  response:
-    body: {string: '{"id":68,"sku":"MH01","name":"Chaz Kangeroo Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
-        16:06:38","updated_at":"2020-03-27 16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
-        for cold-weather training or work outdoors, the Chaz Hoodie promises superior
-        warmth with every wear. Thick material blocks out the wind as ribbed cuffs
-        and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone gray heather hoodie.<br
-        \/>&bull; Drawstring-adjustable hood. <br \/>&bull; Machine wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 08 May 2020 06:38:33 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=4gh745n6sc26l9a9fasjrhtk5j; expires=Fri, 08-May-2020
-          07:38:33 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['4199']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attribute-sets/9
-  response:
-    body: {string: '{"attribute_set_id": 9, "attribute_set_name": "Top", "sort_order": 0, "entity_type_id": 4}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attribute-sets/9/attributes
-  response:
-    body: {string: '[]'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/category_ids
-  response:
-    body: {string: '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input": "text", "default_frontend_label": "category_ids", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/category_ids
-  response:
-    body: {string: '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input": "text", "default_frontend_label": "category_ids", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/climate
-  response:
-    body: {string: '{"attribute_id": 142, "attribute_code": "climate", "frontend_input": "text", "default_frontend_label": "climate", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/climate
-  response:
-    body: {string: '{"attribute_id": 142, "attribute_code": "climate", "frontend_input": "text", "default_frontend_label": "climate", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/description
-  response:
-    body: {string: '{"attribute_id": 102, "attribute_code": "description", "frontend_input": "text", "default_frontend_label": "description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/description
-  response:
-    body: {string: '{"attribute_id": 102, "attribute_code": "description", "frontend_input": "text", "default_frontend_label": "description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/eco_collection
-  response:
-    body: {string: '{"attribute_id": 143, "attribute_code": "eco_collection", "frontend_input": "text", "default_frontend_label": "eco_collection", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/eco_collection
-  response:
-    body: {string: '{"attribute_id": 143, "attribute_code": "eco_collection", "frontend_input": "text", "default_frontend_label": "eco_collection", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/erin_recommends
-  response:
-    body: {string: '{"attribute_id": 136, "attribute_code": "erin_recommends", "frontend_input": "text", "default_frontend_label": "erin_recommends", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/erin_recommends
-  response:
-    body: {string: '{"attribute_id": 136, "attribute_code": "erin_recommends", "frontend_input": "text", "default_frontend_label": "erin_recommends", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/has_options
-  response:
-    body: {string: '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input": "text", "default_frontend_label": "has_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/has_options
-  response:
-    body: {string: '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input": "text", "default_frontend_label": "has_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/image
-  response:
-    body: {string: '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text", "default_frontend_label": "image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/image
-  response:
-    body: {string: '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text", "default_frontend_label": "image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/material
-  response:
-    body: {string: '{"attribute_id": 134, "attribute_code": "material", "frontend_input": "text", "default_frontend_label": "material", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/material
-  response:
-    body: {string: '{"attribute_id": 134, "attribute_code": "material", "frontend_input": "text", "default_frontend_label": "material", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/msrp_display_actual_price_type
-  response:
-    body: {string: '{"attribute_id": 107, "attribute_code": "msrp_display_actual_price_type", "frontend_input": "text", "default_frontend_label": "msrp_display_actual_price_type", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/msrp_display_actual_price_type
-  response:
-    body: {string: '{"attribute_id": 107, "attribute_code": "msrp_display_actual_price_type", "frontend_input": "text", "default_frontend_label": "msrp_display_actual_price_type", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/name
-  response:
-    body: {string: '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text", "default_frontend_label": "name", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/name
-  response:
-    body: {string: '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text", "default_frontend_label": "name", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/new
-  response:
-    body: {string: '{"attribute_id": 144, "attribute_code": "new", "frontend_input": "text", "default_frontend_label": "new", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/new
-  response:
-    body: {string: '{"attribute_id": 144, "attribute_code": "new", "frontend_input": "text", "default_frontend_label": "new", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/options_container
-  response:
-    body: {string: '{"attribute_id": 108, "attribute_code": "options_container", "frontend_input": "text", "default_frontend_label": "options_container", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/options_container
-  response:
-    body: {string: '{"attribute_id": 108, "attribute_code": "options_container", "frontend_input": "text", "default_frontend_label": "options_container", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/pattern
-  response:
-    body: {string: '{"attribute_id": 141, "attribute_code": "pattern", "frontend_input": "text", "default_frontend_label": "pattern", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/pattern
-  response:
-    body: {string: '{"attribute_id": 141, "attribute_code": "pattern", "frontend_input": "text", "default_frontend_label": "pattern", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/performance_fabric
-  response:
-    body: {string: '{"attribute_id": 139, "attribute_code": "performance_fabric", "frontend_input": "text", "default_frontend_label": "performance_fabric", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/performance_fabric
-  response:
-    body: {string: '{"attribute_id": 139, "attribute_code": "performance_fabric", "frontend_input": "text", "default_frontend_label": "performance_fabric", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/required_options
-  response:
-    body: {string: '{"attribute_id": 110, "attribute_code": "required_options", "frontend_input": "text", "default_frontend_label": "required_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/required_options
-  response:
-    body: {string: '{"attribute_id": 110, "attribute_code": "required_options", "frontend_input": "text", "default_frontend_label": "required_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/sale
-  response:
-    body: {string: '{"attribute_id": 140, "attribute_code": "sale", "frontend_input": "text", "default_frontend_label": "sale", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/sale
-  response:
-    body: {string: '{"attribute_id": 140, "attribute_code": "sale", "frontend_input": "text", "default_frontend_label": "sale", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/short_description
-  response:
-    body: {string: '{"attribute_id": 122, "attribute_code": "short_description", "frontend_input": "text", "default_frontend_label": "short_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/short_description
-  response:
-    body: {string: '{"attribute_id": 122, "attribute_code": "short_description", "frontend_input": "text", "default_frontend_label": "short_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/small_image
-  response:
-    body: {string: '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input": "text", "default_frontend_label": "small_image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/small_image
-  response:
-    body: {string: '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input": "text", "default_frontend_label": "small_image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/status
-  response:
-    body: {string: '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text", "default_frontend_label": "status", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/status
-  response:
-    body: {string: '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text", "default_frontend_label": "status", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/tax_class_id
-  response:
-    body: {string: '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input": "text", "default_frontend_label": "tax_class_id", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/tax_class_id
-  response:
-    body: {string: '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input": "text", "default_frontend_label": "tax_class_id", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/thumbnail
-  response:
-    body: {string: '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input": "text", "default_frontend_label": "thumbnail", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/thumbnail
-  response:
-    body: {string: '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input": "text", "default_frontend_label": "thumbnail", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/url_key
-  response:
-    body: {string: '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input": "text", "default_frontend_label": "url_key", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/url_key
-  response:
-    body: {string: '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input": "text", "default_frontend_label": "url_key", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/visibility
-  response:
-    body: {string: '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input": "text", "default_frontend_label": "visibility", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/visibility
-  response:
-    body: {string: '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input": "text", "default_frontend_label": "visibility", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/24-UG06
-  response:
-    body: {string: '{"id": 4103, "sku": "24-UG06", "name": "Product 24-UG06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-ug06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/24-UG06
-  response:
-    body: {string: '{"id": 4103, "sku": "24-UG06", "name": "Product 24-UG06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-ug06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/24-UG06
-  response:
-    body: {string: '{"id": 4103, "sku": "24-UG06", "name": "Product 24-UG06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-ug06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/24-WG080
-  response:
-    body: {string: '{"id": 9616, "sku": "24-WG080", "name": "Product 24-WG080", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg080"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/24-WG080
-  response:
-    body: {string: '{"id": 9616, "sku": "24-WG080", "name": "Product 24-WG080", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg080"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/24-WG080
-  response:
-    body: {string: '{"id": 9616, "sku": "24-WG080", "name": "Product 24-WG080", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg080"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/24-WG081-gray
-  response:
-    body: {string: '{"id": 1900, "sku": "24-WG081-gray", "name": "Product 24-WG081-gray", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg081-gray"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/24-WG081-gray
-  response:
-    body: {string: '{"id": 1900, "sku": "24-WG081-gray", "name": "Product 24-WG081-gray", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg081-gray"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/24-WG081-gray
-  response:
-    body: {string: '{"id": 1900, "sku": "24-WG081-gray", "name": "Product 24-WG081-gray", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg081-gray"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/24-WG085_Group
-  response:
-    body: {string: '{"id": 4307, "sku": "24-WG085_Group", "name": "Product 24-WG085_Group", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg085_group"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/24-WG085_Group
-  response:
-    body: {string: '{"id": 4307, "sku": "24-WG085_Group", "name": "Product 24-WG085_Group", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg085_group"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/24-WG085_Group
-  response:
-    body: {string: '{"id": 4307, "sku": "24-WG085_Group", "name": "Product 24-WG085_Group", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "24-wg085_group"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MP06
-  response:
-    body: {string: '{"id": 6546, "sku": "MP06", "name": "Product MP06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "mp06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/MP06
-  response:
-    body: {string: '{"id": 6546, "sku": "MP06", "name": "Product MP06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "mp06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/MP06
-  response:
-    body: {string: '{"id": 6546, "sku": "MP06", "name": "Product MP06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "mp06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MP11
-  response:
-    body: {string: '{"id": 3372, "sku": "MP11", "name": "Product MP11", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "mp11"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/MP11
-  response:
-    body: {string: '{"id": 3372, "sku": "MP11", "name": "Product MP11", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "mp11"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/MP11
-  response:
-    body: {string: '{"id": 3372, "sku": "MP11", "name": "Product MP11", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "mp11"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MS06
-  response:
-    body: {string: '{"id": 6671, "sku": "MS06", "name": "Product MS06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "ms06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/MS06
-  response:
-    body: {string: '{"id": 6671, "sku": "MS06", "name": "Product MS06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "ms06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/MS06
-  response:
-    body: {string: '{"id": 6671, "sku": "MS06", "name": "Product MS06", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "ms06"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MS12
-  response:
-    body: {string: '{"id": 4776, "sku": "MS12", "name": "Product MS12", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "ms12"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/MS12
-  response:
-    body: {string: '{"id": 4776, "sku": "MS12", "name": "Product MS12", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "ms12"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/MS12
-  response:
-    body: {string: '{"id": 4776, "sku": "MS12", "name": "Product MS12", "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1], "category_links": []}, "product_links": [], "options": [], "media_gallery_entries": [], "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value": "ms12"}, {"attribute_code": "has_options", "value": "0"}, {"attribute_code": "required_options", "value": "0"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/default/V1/products/MH01
-  response:
-    body: {string: '{"id":68,"sku":"MH01","name":"Chaz Kangeroo Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
-        16:06:38","updated_at":"2020-03-27 16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
-        for cold-weather training or work outdoors, the Chaz Hoodie promises superior
-        warmth with every wear. Thick material blocks out the wind as ribbed cuffs
-        and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone gray heather hoodie.<br
-        \/>&bull; Drawstring-adjustable hood. <br \/>&bull; Machine wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/taxClasses/search?fields=items%5Bclass_id%5D&searchCriteria=
-  response:
-    body: {string: '{"items": [{"class_id": 2}, {"class_id": 3}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/taxClasses/2
-  response:
-    body: {string: '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/taxClasses/2
-  response:
-    body: {string: '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/taxClasses/3
-  response:
-    body: {string: '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/taxClasses/3
-  response:
-    body: {string: '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/media/catalog/product/m/h/mh01-gray_main_1.jpg
-  response:
-    body: {string: ''}
-    headers:
-      Content-Type: ['image/jpeg']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/media/catalog/product//m/h/mh01-gray_main_1.jpg
-  response:
-    body: {string: ''}
-    headers:
-      Content-Type: ['image/jpeg']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/media/catalog/product/m/h/mh01-gray_alt1_1.jpg
-  response:
-    body: {string: ''}
-    headers:
-      Content-Type: ['image/jpeg']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/media/catalog/product//m/h/mh01-gray_alt1_1.jpg
-  response:
-    body: {string: ''}
-    headers:
-      Content-Type: ['image/jpeg']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/media/catalog/product/m/h/mh01-gray_back_1.jpg
-  response:
-    body: {string: ''}
-    headers:
-      Content-Type: ['image/jpeg']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/media/catalog/product//m/h/mh01-gray_back_1.jpg
-  response:
-    body: {string: ''}
-    headers:
-      Content-Type: ['image/jpeg']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MH01
-  response:
-    body: {string: '{"id":68,"sku":"MH01","name":"Chaz Kangeroo Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
-        16:06:38","updated_at":"2020-03-27 16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
-        for cold-weather training or work outdoors, the Chaz Hoodie promises superior
-        warmth with every wear. Thick material blocks out the wind as ribbed cuffs
-        and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone gray heather hoodie.<br
-        \/>&bull; Drawstring-adjustable hood. <br \/>&bull; Machine wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 08 May 2020 06:38:33 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=4gh745n6sc26l9a9fasjrhtk5j; expires=Fri, 08-May-2020
-          07:38:33 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['4199']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/MH01
-  response:
-    body: {string: '{"id":68,"sku":"MH01","name":"Chaz Kangeroo Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
-        16:06:38","updated_at":"2020-03-27 16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
-        for cold-weather training or work outdoors, the Chaz Hoodie promises superior
-        warmth with every wear. Thick material blocks out the wind as ribbed cuffs
-        and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone gray heather hoodie.<br
-        \/>&bull; Drawstring-adjustable hood. <br \/>&bull; Machine wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 08 May 2020 06:38:33 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=4gh745n6sc26l9a9fasjrhtk5j; expires=Fri, 08-May-2020
-          07:38:33 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['4199']
-    status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MH01
+    response:
+      body:
+        {
+          string:
+            '{"id":68,"sku":"MH01","name":"Chaz Kangeroo
+            Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
+            16:06:38","updated_at":"2020-03-27
+            16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
+            for cold-weather training or work outdoors, the Chaz Hoodie promises
+            superior warmth with every wear. Thick material blocks out the wind as
+            ribbed cuffs and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone
+            gray heather hoodie.<br \/>&bull; Drawstring-adjustable hood. <br \/>&bull;
+            Machine
+            wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 08 May 2020 06:38:33 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=4gh745n6sc26l9a9fasjrhtk5j; expires=Fri, 08-May-2020 07:38:33
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["4199"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attribute-sets/9
+    response:
+      body:
+        {
+          string:
+            '{"attribute_set_id": 9, "attribute_set_name": "Top", "sort_order": 0,
+            "entity_type_id": 4}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attribute-sets/9/attributes
+    response:
+      body: {string: "[]"}
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/category_ids
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input":
+            "text", "default_frontend_label": "category_ids", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/category_ids
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input":
+            "text", "default_frontend_label": "category_ids", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/climate
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 142, "attribute_code": "climate", "frontend_input":
+            "text", "default_frontend_label": "climate", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/climate
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 142, "attribute_code": "climate", "frontend_input":
+            "text", "default_frontend_label": "climate", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 102, "attribute_code": "description", "frontend_input":
+            "text", "default_frontend_label": "description", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 102, "attribute_code": "description", "frontend_input":
+            "text", "default_frontend_label": "description", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/eco_collection
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 143, "attribute_code": "eco_collection", "frontend_input":
+            "text", "default_frontend_label": "eco_collection", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/eco_collection
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 143, "attribute_code": "eco_collection", "frontend_input":
+            "text", "default_frontend_label": "eco_collection", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/erin_recommends
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 136, "attribute_code": "erin_recommends",
+            "frontend_input": "text", "default_frontend_label": "erin_recommends",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/erin_recommends
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 136, "attribute_code": "erin_recommends",
+            "frontend_input": "text", "default_frontend_label": "erin_recommends",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/has_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input":
+            "text", "default_frontend_label": "has_options", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/has_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input":
+            "text", "default_frontend_label": "has_options", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text",
+            "default_frontend_label": "image", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text",
+            "default_frontend_label": "image", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/material
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 134, "attribute_code": "material", "frontend_input":
+            "text", "default_frontend_label": "material", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/material
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 134, "attribute_code": "material", "frontend_input":
+            "text", "default_frontend_label": "material", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/msrp_display_actual_price_type
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 107, "attribute_code": "msrp_display_actual_price_type",
+            "frontend_input": "text", "default_frontend_label":
+            "msrp_display_actual_price_type", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/msrp_display_actual_price_type
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 107, "attribute_code": "msrp_display_actual_price_type",
+            "frontend_input": "text", "default_frontend_label":
+            "msrp_display_actual_price_type", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/name
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text",
+            "default_frontend_label": "name", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/name
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text",
+            "default_frontend_label": "name", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/new
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 144, "attribute_code": "new", "frontend_input": "text",
+            "default_frontend_label": "new", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/new
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 144, "attribute_code": "new", "frontend_input": "text",
+            "default_frontend_label": "new", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/options_container
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 108, "attribute_code": "options_container",
+            "frontend_input": "text", "default_frontend_label": "options_container",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/options_container
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 108, "attribute_code": "options_container",
+            "frontend_input": "text", "default_frontend_label": "options_container",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/pattern
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 141, "attribute_code": "pattern", "frontend_input":
+            "text", "default_frontend_label": "pattern", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/pattern
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 141, "attribute_code": "pattern", "frontend_input":
+            "text", "default_frontend_label": "pattern", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/performance_fabric
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 139, "attribute_code": "performance_fabric",
+            "frontend_input": "text", "default_frontend_label": "performance_fabric",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/performance_fabric
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 139, "attribute_code": "performance_fabric",
+            "frontend_input": "text", "default_frontend_label": "performance_fabric",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/required_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 110, "attribute_code": "required_options",
+            "frontend_input": "text", "default_frontend_label": "required_options",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/required_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 110, "attribute_code": "required_options",
+            "frontend_input": "text", "default_frontend_label": "required_options",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/sale
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 140, "attribute_code": "sale", "frontend_input": "text",
+            "default_frontend_label": "sale", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/sale
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 140, "attribute_code": "sale", "frontend_input": "text",
+            "default_frontend_label": "sale", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/short_description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 122, "attribute_code": "short_description",
+            "frontend_input": "text", "default_frontend_label": "short_description",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/short_description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 122, "attribute_code": "short_description",
+            "frontend_input": "text", "default_frontend_label": "short_description",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/small_image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input":
+            "text", "default_frontend_label": "small_image", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/small_image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input":
+            "text", "default_frontend_label": "small_image", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/status
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text",
+            "default_frontend_label": "status", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/status
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text",
+            "default_frontend_label": "status", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/tax_class_id
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input":
+            "text", "default_frontend_label": "tax_class_id", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/tax_class_id
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input":
+            "text", "default_frontend_label": "tax_class_id", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/thumbnail
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input":
+            "text", "default_frontend_label": "thumbnail", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/thumbnail
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input":
+            "text", "default_frontend_label": "thumbnail", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/url_key
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input":
+            "text", "default_frontend_label": "url_key", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/url_key
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input":
+            "text", "default_frontend_label": "url_key", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/visibility
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input":
+            "text", "default_frontend_label": "visibility", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/visibility
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input":
+            "text", "default_frontend_label": "visibility", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/24-UG06
+    response:
+      body:
+        {
+          string:
+            '{"id": 4103, "sku": "24-UG06", "name": "Product 24-UG06",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-ug06"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/24-UG06
+    response:
+      body:
+        {
+          string:
+            '{"id": 4103, "sku": "24-UG06", "name": "Product 24-UG06",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-ug06"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/24-UG06
+    response:
+      body:
+        {
+          string:
+            '{"id": 4103, "sku": "24-UG06", "name": "Product 24-UG06",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-ug06"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/24-WG080
+    response:
+      body:
+        {
+          string:
+            '{"id": 9616, "sku": "24-WG080", "name": "Product 24-WG080",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg080"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/24-WG080
+    response:
+      body:
+        {
+          string:
+            '{"id": 9616, "sku": "24-WG080", "name": "Product 24-WG080",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg080"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/24-WG080
+    response:
+      body:
+        {
+          string:
+            '{"id": 9616, "sku": "24-WG080", "name": "Product 24-WG080",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg080"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/24-WG081-gray
+    response:
+      body:
+        {
+          string:
+            '{"id": 1900, "sku": "24-WG081-gray", "name": "Product 24-WG081-gray",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg081-gray"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/24-WG081-gray
+    response:
+      body:
+        {
+          string:
+            '{"id": 1900, "sku": "24-WG081-gray", "name": "Product 24-WG081-gray",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg081-gray"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/24-WG081-gray
+    response:
+      body:
+        {
+          string:
+            '{"id": 1900, "sku": "24-WG081-gray", "name": "Product 24-WG081-gray",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg081-gray"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/24-WG085_Group
+    response:
+      body:
+        {
+          string:
+            '{"id": 4307, "sku": "24-WG085_Group", "name": "Product 24-WG085_Group",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg085_group"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/24-WG085_Group
+    response:
+      body:
+        {
+          string:
+            '{"id": 4307, "sku": "24-WG085_Group", "name": "Product 24-WG085_Group",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg085_group"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/24-WG085_Group
+    response:
+      body:
+        {
+          string:
+            '{"id": 4307, "sku": "24-WG085_Group", "name": "Product 24-WG085_Group",
+            "attribute_set_id": 11, "price": 14.0, "status": 1, "visibility": 1,
+            "type_id": "simple", "created_at": "2020-03-27 16:06:29", "updated_at":
+            "2020-03-27 16:06:29", "extension_attributes": {"website_ids": [1],
+            "category_links": []}, "product_links": [], "options": [],
+            "media_gallery_entries": [], "custom_attributes": [{"attribute_code":
+            "tax_class_id", "value": "2"}, {"attribute_code": "url_key", "value":
+            "24-wg085_group"}, {"attribute_code": "has_options", "value": "0"},
+            {"attribute_code": "required_options", "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MP06
+    response:
+      body:
+        {
+          string:
+            '{"id": 6546, "sku": "MP06", "name": "Product MP06", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "mp06"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/MP06
+    response:
+      body:
+        {
+          string:
+            '{"id": 6546, "sku": "MP06", "name": "Product MP06", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "mp06"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/MP06
+    response:
+      body:
+        {
+          string:
+            '{"id": 6546, "sku": "MP06", "name": "Product MP06", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "mp06"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MP11
+    response:
+      body:
+        {
+          string:
+            '{"id": 3372, "sku": "MP11", "name": "Product MP11", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "mp11"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/MP11
+    response:
+      body:
+        {
+          string:
+            '{"id": 3372, "sku": "MP11", "name": "Product MP11", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "mp11"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/MP11
+    response:
+      body:
+        {
+          string:
+            '{"id": 3372, "sku": "MP11", "name": "Product MP11", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "mp11"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MS06
+    response:
+      body:
+        {
+          string:
+            '{"id": 6671, "sku": "MS06", "name": "Product MS06", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "ms06"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/MS06
+    response:
+      body:
+        {
+          string:
+            '{"id": 6671, "sku": "MS06", "name": "Product MS06", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "ms06"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/MS06
+    response:
+      body:
+        {
+          string:
+            '{"id": 6671, "sku": "MS06", "name": "Product MS06", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "ms06"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MS12
+    response:
+      body:
+        {
+          string:
+            '{"id": 4776, "sku": "MS12", "name": "Product MS12", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "ms12"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/MS12
+    response:
+      body:
+        {
+          string:
+            '{"id": 4776, "sku": "MS12", "name": "Product MS12", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "ms12"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/MS12
+    response:
+      body:
+        {
+          string:
+            '{"id": 4776, "sku": "MS12", "name": "Product MS12", "attribute_set_id": 11,
+            "price": 14.0, "status": 1, "visibility": 1, "type_id": "simple",
+            "created_at": "2020-03-27 16:06:29", "updated_at": "2020-03-27 16:06:29",
+            "extension_attributes": {"website_ids": [1], "category_links": []},
+            "product_links": [], "options": [], "media_gallery_entries": [],
+            "custom_attributes": [{"attribute_code": "tax_class_id", "value": "2"},
+            {"attribute_code": "url_key", "value": "ms12"}, {"attribute_code":
+            "has_options", "value": "0"}, {"attribute_code": "required_options",
+            "value": "0"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/default/V1/products/MH01
+    response:
+      body:
+        {
+          string:
+            '{"id":68,"sku":"MH01","name":"Chaz Kangeroo
+            Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
+            16:06:38","updated_at":"2020-03-27
+            16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
+            for cold-weather training or work outdoors, the Chaz Hoodie promises
+            superior warmth with every wear. Thick material blocks out the wind as
+            ribbed cuffs and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone
+            gray heather hoodie.<br \/>&bull; Drawstring-adjustable hood. <br \/>&bull;
+            Machine
+            wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/taxClasses/search?fields=items%5Bclass_id%5D&searchCriteria=
+    response:
+      body: {string: '{"items": [{"class_id": 2}, {"class_id": 3}]}'}
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/taxClasses/2
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/taxClasses/2
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/taxClasses/3
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/taxClasses/3
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/media/catalog/product/m/h/mh01-gray_main_1.jpg
+    response:
+      body: {string: ""}
+      headers:
+        Content-Type: ["image/jpeg"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/media/catalog/product//m/h/mh01-gray_main_1.jpg
+    response:
+      body: {string: ""}
+      headers:
+        Content-Type: ["image/jpeg"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/media/catalog/product/m/h/mh01-gray_alt1_1.jpg
+    response:
+      body: {string: ""}
+      headers:
+        Content-Type: ["image/jpeg"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/media/catalog/product//m/h/mh01-gray_alt1_1.jpg
+    response:
+      body: {string: ""}
+      headers:
+        Content-Type: ["image/jpeg"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/media/catalog/product/m/h/mh01-gray_back_1.jpg
+    response:
+      body: {string: ""}
+      headers:
+        Content-Type: ["image/jpeg"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/media/catalog/product//m/h/mh01-gray_back_1.jpg
+    response:
+      body: {string: ""}
+      headers:
+        Content-Type: ["image/jpeg"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MH01
+    response:
+      body:
+        {
+          string:
+            '{"id":68,"sku":"MH01","name":"Chaz Kangeroo
+            Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
+            16:06:38","updated_at":"2020-03-27
+            16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
+            for cold-weather training or work outdoors, the Chaz Hoodie promises
+            superior warmth with every wear. Thick material blocks out the wind as
+            ribbed cuffs and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone
+            gray heather hoodie.<br \/>&bull; Drawstring-adjustable hood. <br \/>&bull;
+            Machine
+            wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 08 May 2020 06:38:33 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=4gh745n6sc26l9a9fasjrhtk5j; expires=Fri, 08-May-2020 07:38:33
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["4199"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/MH01
+    response:
+      body:
+        {
+          string:
+            '{"id":68,"sku":"MH01","name":"Chaz Kangeroo
+            Hoodie","attribute_set_id":9,"price":0,"status":1,"visibility":4,"type_id":"configurable","created_at":"2020-03-27
+            16:06:38","updated_at":"2020-03-27
+            16:06:38","extension_attributes":{"website_ids":[1],"category_links":[{"position":0,"category_id":"15"},{"position":0,"category_id":"36"},{"position":0,"category_id":"2"}],"stock_item":{"item_id":68,"product_id":68,"stock_id":1,"qty":0,"is_in_stock":true,"is_qty_decimal":false,"show_default_notification_message":false,"use_config_min_qty":true,"min_qty":0,"use_config_min_sale_qty":1,"min_sale_qty":1,"use_config_max_sale_qty":true,"max_sale_qty":10000,"use_config_backorders":true,"backorders":0,"use_config_notify_stock_qty":true,"notify_stock_qty":1,"use_config_qty_increments":true,"qty_increments":0,"use_config_enable_qty_inc":true,"enable_qty_increments":false,"use_config_manage_stock":true,"manage_stock":true,"low_stock_date":null,"is_decimal_divided":false,"stock_status_changed_auto":0},"configurable_product_options":[{"id":3,"attribute_id":"93","label":"Color","position":1,"values":[{"value_index":5476},{"value_index":5479},{"value_index":5483}],"product_id":68},{"id":2,"attribute_id":"152","label":"Size","position":0,"values":[{"value_index":5593},{"value_index":5594},{"value_index":5595},{"value_index":5596},{"value_index":5597}],"product_id":68}],"configurable_product_links":[53,54,55,56,57,58,59,60,61,62,63,64,65,66,67]},"product_links":[{"sku":"MH01","link_type":"related","linked_product_sku":"MS12","linked_product_type":"configurable","position":4},{"sku":"MH01","link_type":"related","linked_product_sku":"MS06","linked_product_type":"configurable","position":3},{"sku":"MH01","link_type":"related","linked_product_sku":"MP06","linked_product_type":"configurable","position":1},{"sku":"MH01","link_type":"related","linked_product_sku":"MP11","linked_product_type":"configurable","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-UG06","linked_product_type":"simple","position":4},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG081-gray","linked_product_type":"simple","position":1},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG085_Group","linked_product_type":"grouped","position":2},{"sku":"MH01","link_type":"crosssell","linked_product_sku":"24-WG080","linked_product_type":"bundle","position":3}],"options":[],"media_gallery_entries":[{"id":84,"media_type":"image","label":"","position":1,"disabled":false,"types":["image","small_image","thumbnail"],"file":"\/m\/h\/mh01-gray_main_1.jpg"},{"id":85,"media_type":"image","label":"","position":2,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_alt1_1.jpg"},{"id":86,"media_type":"image","label":"","position":3,"disabled":false,"types":[],"file":"\/m\/h\/mh01-gray_back_1.jpg"}],"tier_prices":[],"custom_attributes":[{"attribute_code":"image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"small_image","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"thumbnail","value":"\/m\/h\/mh01-gray_main_1.jpg"},{"attribute_code":"options_container","value":"container2"},{"attribute_code":"msrp_display_actual_price_type","value":"0"},{"attribute_code":"url_key","value":"chaz-kangeroo-hoodie"},{"attribute_code":"required_options","value":"0"},{"attribute_code":"has_options","value":"1"},{"attribute_code":"tax_class_id","value":"2"},{"attribute_code":"category_ids","value":["15","36","2"]},{"attribute_code":"description","value":"<p>Ideal
+            for cold-weather training or work outdoors, the Chaz Hoodie promises
+            superior warmth with every wear. Thick material blocks out the wind as
+            ribbed cuffs and bottom band seal in body heat.<\/p>\n<p>&bull; Two-tone
+            gray heather hoodie.<br \/>&bull; Drawstring-adjustable hood. <br \/>&bull;
+            Machine
+            wash\/dry.<\/p>"},{"attribute_code":"material","value":"5585"},{"attribute_code":"pattern","value":"5621"},{"attribute_code":"climate","value":"5628,5630,5631,5634,5636"},{"attribute_code":"eco_collection","value":"1"},{"attribute_code":"performance_fabric","value":"0"},{"attribute_code":"erin_recommends","value":"0"},{"attribute_code":"new","value":"0"},{"attribute_code":"sale","value":"1"}]}',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 08 May 2020 06:38:33 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=4gh745n6sc26l9a9fasjrhtk5j; expires=Fri, 08-May-2020 07:38:33
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["4199"]
+      status: {code: 200, message: OK}
 version: 1

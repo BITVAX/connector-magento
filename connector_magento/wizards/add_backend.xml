@@ -1,9 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright <YEAR(S)> <AUTHOR(S)> License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
-
 <odoo>
     <data>
-
         <record id="wizard_add_backend_view_form" model="ir.ui.view">
             <field name="name">Bind an Object to a backend</field>
             <field name="model">connector_magento.add_backend.wizard</field>
@@ -13,62 +11,85 @@
 
                     <!-- Auto-detected product type -->
                     <group>
-                        <field name="detected_template_type" readonly="1"
-                               invisible="not detected_template_type"/>
-                        <field name="product_type" readonly="1"
-                               invisible="not product_type"/>
+                        <field
+                            name="detected_template_type"
+                            readonly="1"
+                            invisible="not detected_template_type"
+                        />
+                        <field
+                            name="product_type"
+                            readonly="1"
+                            invisible="not product_type"
+                        />
                     </group>
 
                     <!-- Configuration fields -->
                     <group>
-                        <field name="backend_id"/>
-                        <field name="action"/>
+                        <field name="backend_id" />
+                        <field name="action" />
                     </group>
 
                     <!-- Grouped product links -->
                     <group>
-                        <field name="product_links"
-                               invisible="product_type != 'grouped'"
-                               required="product_type == 'grouped'"/>
+                        <field
+                            name="product_links"
+                            invisible="product_type != 'grouped'"
+                            required="product_type == 'grouped'"
+                        />
                     </group>
 
                     <!-- Validation warnings -->
                     <group>
-                        <field name="warning_message" readonly="1" class="text-danger"
-                               invisible="not warning_message"/>
+                        <field
+                            name="warning_message"
+                            readonly="1"
+                            class="text-danger"
+                            invisible="not warning_message"
+                        />
                     </group>
 
                     <!-- Hidden fields -->
-                    <field name="model_id" invisible="1"/>
+                    <field name="model_id" invisible="1" />
 
                     <footer>
-                        <button name="action_accept" type="object" string="Create Binding"
-                                class="oe_highlight"
-                                invisible="not product_type or warning_message ilike 'ERROR'"/>
+                        <button
+                        name="action_accept"
+                        type="object"
+                        string="Create Binding"
+                        class="oe_highlight"
+                        invisible="not product_type or warning_message ilike 'ERROR'"
+                    />
                         or
-                        <button special="cancel" string="Cancel"/>
+                        <button special="cancel" string="Cancel" />
                     </footer>
                 </form>
             </field>
         </record>
 
-
         <record id="wizard_product_add_backend_action" model="ir.actions.act_window">
             <field name="name">Add product to Backend</field>
             <field name="res_model">connector_magento.add_backend.wizard</field>
-            <field name="binding_model_id" ref="product.model_product_product"/>
-            <field name="groups_id" eval="[(4, ref('connector.group_connector_manager'))]"/>
+            <field name="binding_model_id" ref="product.model_product_product" />
+            <field
+                name="groups_id"
+                eval="[(4, ref('connector.group_connector_manager'))]"
+            />
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-        <record id="wizard_product_template_add_backend_action" model="ir.actions.act_window">
+        <record
+            id="wizard_product_template_add_backend_action"
+            model="ir.actions.act_window"
+        >
             <field name="name">Add product to Backend</field>
             <field name="res_model">connector_magento.add_backend.wizard</field>
-            <field name="binding_model_id" ref="product.model_product_template"/>
-            <field name="groups_id" eval="[(4, ref('connector.group_connector_manager'))]"/>
+            <field name="binding_model_id" ref="product.model_product_template" />
+            <field
+                name="groups_id"
+                eval="[(4, ref('connector.group_connector_manager'))]"
+            />
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-
     </data>
 </odoo>

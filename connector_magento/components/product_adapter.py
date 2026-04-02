@@ -19,8 +19,9 @@ class MagentoProductAdapter(Component):
 
     IMPORTANT: Only Magento 2.x REST API is supported.
     """
-    _name = 'magento.product.adapter'
-    _inherit = 'magento.adapter'
+
+    _name = "magento.product.adapter"
+    _inherit = "magento.adapter"
     # No _apply_on: this is an abstract base component
 
     def get_media(self, external_id):
@@ -32,10 +33,7 @@ class MagentoProductAdapter(Component):
         :param external_id: Product SKU
         :return: List of media gallery entry dicts with 'id', 'file', 'types', etc.
         """
-        media_entries = self._call(
-            'products/%s/media' % self.escape(external_id),
-            None
-        )
+        media_entries = self._call("products/%s/media" % self.escape(external_id), None)
         return media_entries if isinstance(media_entries, list) else []
 
     def delete_product_image(self, external_id, entry_id):
@@ -47,14 +45,15 @@ class MagentoProductAdapter(Component):
         """
         try:
             self._call(
-                'products/%s/media/%s' % (self.escape(external_id), entry_id),
+                "products/%s/media/%s" % (self.escape(external_id), entry_id),
                 None,
-                http_method='delete'
+                http_method="delete",
             )
             return True
         except Exception as e:
-            _logger.error("Failed to delete image %s for product %s: %s",
-                        entry_id, external_id, e)
+            _logger.error(
+                "Failed to delete image %s for product %s: %s", entry_id, external_id, e
+            )
             return False
 
     def clear_product_images(self, external_id):
@@ -80,7 +79,7 @@ class MagentoProductAdapter(Component):
         failed = 0
 
         for entry in media_entries:
-            entry_id = entry.get('id')
+            entry_id = entry.get("id")
             if not entry_id:
                 continue
 
@@ -90,57 +89,65 @@ class MagentoProductAdapter(Component):
             else:
                 failed += 1
 
-        _logger.info("Product %s: deleted %d images, %d failed",
-                    external_id, deleted, failed)
+        _logger.info(
+            "Product %s: deleted %d images, %d failed", external_id, deleted, failed
+        )
         return (deleted, failed)
 
     def read(self, external_id, storeview=None, attributes=None, **kwargs):
-        """ Returns the information of a record
+        """Returns the information of a record
 
         :rtype: dict
         """
         # pylint: disable=method-required-super
         res = super(MagentoProductAdapter, self).read(
-            external_id, attributes=attributes, storeview=storeview)
+            external_id, attributes=attributes, storeview=storeview
+        )
         if res:
-            for attr in res.get('custom_attributes', []):
-                res[attr['attribute_code']] = attr['value']
+            for attr in res.get("custom_attributes", []):
+                res[attr["attribute_code"]] = attr["value"]
         return res
 
     def get_images(self, external_id, storeview_id=None, data=None):
-        """ Fetch image metadata from the product data """
+        """Fetch image metadata from the product data"""
         res = []
         # Fetch base media url from storeview
         storeview = (
-            self.env['magento.storeview'].browse(storeview_id) if storeview_id
-            else self.env['magento.storeview'].search(
-                [('backend_id', '=', self.collection.id),
-                 ('code', '=', 'default')]))
-        base_url = (storeview.base_media_url or
-                    '%s/media/' % self.backend_record.location)
+            self.env["magento.storeview"].browse(storeview_id)
+            if storeview_id
+            else self.env["magento.storeview"].search(
+                [("backend_id", "=", self.collection.id), ("code", "=", "default")]
+            )
+        )
+        base_url = (
+            storeview.base_media_url or "%s/media/" % self.backend_record.location
+        )
 
-        for entry in data.get('media_gallery_entries', []):
-            if entry['media_type'] == 'image':
-                entry['url'] = '%scatalog/product/%s' % (
-                    base_url, entry['file'])
+        for entry in data.get("media_gallery_entries", []):
+            if entry["media_type"] == "image":
+                entry["url"] = "%scatalog/product/%s" % (base_url, entry["file"])
                 res.append(entry)
         return res
 
     def update_inventory(self, external_id, data):
-        """ Update the default stock. First retrieve the stock
-        item that applies to this stock for the product. """
-        data = {'stockItem': data}
-        res = self._call('stockItems/%s' % self.escape(external_id), None)
+        """Update the default stock. First retrieve the stock
+        item that applies to this stock for the product."""
+        data = {"stockItem": data}
+        res = self._call("stockItems/%s" % self.escape(external_id), None)
         if isinstance(res, dict):
             res = [res]
         item_id = 0
         for item in res:
-            if item['stock_id'] == 1:
-                item_id = item['item_id']
+            if item["stock_id"] == 1:
+                item_id = item["item_id"]
                 break
         else:
             raise ValueError(
-                'No stock item found for product %s for default stock_id 1' %
-                external_id)
-        self._call('products/%s/stockItems/%s' % (
-            self.escape(external_id), item_id), data, http_method='put')
+                "No stock item found for product %s for default stock_id 1"
+                % external_id
+            )
+        self._call(
+            "products/%s/stockItems/%s" % (self.escape(external_id), item_id),
+            data,
+            http_method="put",
+        )

@@ -8,18 +8,23 @@ from odoo.addons.queue_job.exception import NothingToDoJob
 
 
 class MagentoPickingExporter(Component):
-    _name = 'magento.stock.picking.exporter'
-    _inherit = 'magento.exporter'
-    _apply_on = ['magento.stock.picking']
+    _name = "magento.stock.picking.exporter"
+    _inherit = "magento.exporter"
+    _apply_on = ["magento.stock.picking"]
 
     def _get_args(self, binding, lines_info=None):
         if lines_info is None:
             lines_info = {}
-        sale_binder = self.binder_for('magento.sale.order')
+        sale_binder = self.binder_for("magento.sale.order")
         magento_sale_id = sale_binder.to_external(binding.magento_order_id)
         mail_notification = self._get_picking_mail_option(binding)
-        return (magento_sale_id, lines_info,
-                _("Shipping Created"), mail_notification, True)
+        return (
+            magento_sale_id,
+            lines_info,
+            _("Shipping Created"),
+            mail_notification,
+            True,
+        )
 
     def _get_lines_info(self, binding):
         """
@@ -37,9 +42,12 @@ class MagentoPickingExporter(Component):
             if not sale_line.magento_bind_ids:
                 continue
             magento_sale_line = next(
-                (line for line in sale_line.magento_bind_ids
-                 if line.backend_id.id == binding.backend_id.id),
-                None
+                (
+                    line
+                    for line in sale_line.magento_bind_ids
+                    if line.backend_id.id == binding.backend_id.id
+                ),
+                None,
             )
             if not magento_sale_line:
                 continue
@@ -49,7 +57,7 @@ class MagentoPickingExporter(Component):
         return item_qty
 
     def _get_picking_mail_option(self, binding):
-        """ Indicates if Magento has to send an email
+        """Indicates if Magento has to send an email
 
         :param binding: magento.stock.picking record
         :returns: value of send_picking_done_mail chosen on magento shop
@@ -62,30 +70,38 @@ class MagentoPickingExporter(Component):
         """
         Export the picking to Magento
         """
+
         def get_lines_info():
             lines_info = self._get_lines_info(binding)
             if not lines_info:
                 raise NothingToDoJob(
-                    _('Canceled: the delivery order does not '
-                      'contain lines from the original sale order.'))
+                    _(
+                        "Canceled: the delivery order does not "
+                        "contain lines from the original sale order."
+                    )
+                )
             return lines_info
 
         if binding.external_id:
-            return _('Already exported')
+            return _("Already exported")
 
         arguments = {
-            'items': [{
-                'order_item_id': key,
-                'qty': val,
-            } for key, val in get_lines_info().items()]
+            "items": [
+                {
+                    "order_item_id": key,
+                    "qty": val,
+                }
+                for key, val in get_lines_info().items()
+            ]
         }
         external_id = self.backend_adapter._call(
-            'order/%s/ship' %
-            str(binding.sale_id.magento_bind_ids[0].magento_order_id),
-            arguments, http_method='post')
+            "order/%s/ship" % str(binding.sale_id.magento_bind_ids[0].magento_order_id),
+            arguments,
+            http_method="post",
+        )
 
         self.binder.bind(external_id, binding)
         # ensure that we store the external ID
-        if not odoo.tools.config['test_enable']:
+        if not odoo.tools.config["test_enable"]:
             # pylint: disable=invalid-commit
             self.env.cr.commit()  # noqa

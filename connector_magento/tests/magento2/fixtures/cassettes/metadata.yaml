@@ -1,1014 +1,1334 @@
 # __PATCHED_DUPLICATES__
 interactions:
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/websites?fields=id
-  response:
-    body: {string: '[{"id":1},{"id":0}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=4hhth2u2r5e5t21fk4c3idq2s2; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['19']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/websites
-  response:
-    body: {string: '[{"id":1,"code":"base","name":"Main Website","default_group_id":1},{"id":0,"code":"admin","name":"Admin","default_group_id":0}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=9235d5p8gvaf4jfkv3dnnun581; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['127']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeGroups?fields=id
-  response:
-    body: {string: '[{"id":0},{"id":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=65qd2k44nkg6vkhklim560muic; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['19']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeGroups
-  response:
-    body: {string: '[{"id":0,"website_id":0,"root_category_id":0,"default_store_id":0,"name":"Default","code":"default"},{"id":1,"website_id":1,"root_category_id":2,"default_store_id":1,"name":"Main
-        Website Store","code":"main_website_store"}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=vr1paqb90t55b364anm0932nrc; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['223']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeConfigs?fields=id
-  response:
-    body: {string: '[{"id":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=2pv2d5ulnpcpnv59e9ik7rgk4s; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['10']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeViews
-  response:
-    body: {string: '[{"id":1,"code":"default","name":"Default Store View","website_id":1,"store_group_id":1,"is_active":1},{"id":0,"code":"admin","name":"Admin","website_id":0,"store_group_id":0,"is_active":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=pnj8h0dsnpfeuufl2nkuvo5kn3; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['190']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeConfigs
-  response:
-    body: {string: '[{"id":1,"code":"default","website_id":1,"locale":"en_US","base_currency_code":"USD","default_display_currency_code":"USD","timezone":"Europe\/Amsterdam","weight_unit":"lbs","base_url":"http:\/\/magento\/","base_link_url":"http:\/\/magento\/index.php\/","base_static_url":"http:\/\/magento\/static\/version1585325535\/","base_media_url":"http:\/\/magento\/media\/","secure_base_url":"http:\/\/magento\/","secure_base_link_url":"http:\/\/magento\/index.php\/","secure_base_static_url":"http:\/\/magento\/static\/version1585325535\/","secure_base_media_url":"http:\/\/magento\/media\/"}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=bjodpjblut2cg3imtc9fck87in; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['657']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/category_ids
-  response:
-    body: {string: '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input": "text", "default_frontend_label": "category_ids", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/category_ids
-  response:
-    body: {string: '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input": "text", "default_frontend_label": "category_ids", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/description
-  response:
-    body: {string: '{"attribute_id": 102, "attribute_code": "description", "frontend_input": "text", "default_frontend_label": "description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/description
-  response:
-    body: {string: '{"attribute_id": 102, "attribute_code": "description", "frontend_input": "text", "default_frontend_label": "description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/has_options
-  response:
-    body: {string: '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input": "text", "default_frontend_label": "has_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/has_options
-  response:
-    body: {string: '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input": "text", "default_frontend_label": "has_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/image
-  response:
-    body: {string: '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text", "default_frontend_label": "image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/image
-  response:
-    body: {string: '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text", "default_frontend_label": "image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/name
-  response:
-    body: {string: '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text", "default_frontend_label": "name", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/name
-  response:
-    body: {string: '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text", "default_frontend_label": "name", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/options_container
-  response:
-    body: {string: '{"attribute_id": 108, "attribute_code": "options_container", "frontend_input": "text", "default_frontend_label": "options_container", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/options_container
-  response:
-    body: {string: '{"attribute_id": 108, "attribute_code": "options_container", "frontend_input": "text", "default_frontend_label": "options_container", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/required_options
-  response:
-    body: {string: '{"attribute_id": 110, "attribute_code": "required_options", "frontend_input": "text", "default_frontend_label": "required_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/required_options
-  response:
-    body: {string: '{"attribute_id": 110, "attribute_code": "required_options", "frontend_input": "text", "default_frontend_label": "required_options", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/short_description
-  response:
-    body: {string: '{"attribute_id": 122, "attribute_code": "short_description", "frontend_input": "text", "default_frontend_label": "short_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/short_description
-  response:
-    body: {string: '{"attribute_id": 122, "attribute_code": "short_description", "frontend_input": "text", "default_frontend_label": "short_description", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/small_image
-  response:
-    body: {string: '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input": "text", "default_frontend_label": "small_image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/small_image
-  response:
-    body: {string: '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input": "text", "default_frontend_label": "small_image", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/status
-  response:
-    body: {string: '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text", "default_frontend_label": "status", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/status
-  response:
-    body: {string: '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text", "default_frontend_label": "status", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/tax_class_id
-  response:
-    body: {string: '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input": "text", "default_frontend_label": "tax_class_id", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/tax_class_id
-  response:
-    body: {string: '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input": "text", "default_frontend_label": "tax_class_id", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/thumbnail
-  response:
-    body: {string: '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input": "text", "default_frontend_label": "thumbnail", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/thumbnail
-  response:
-    body: {string: '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input": "text", "default_frontend_label": "thumbnail", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/url_key
-  response:
-    body: {string: '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input": "text", "default_frontend_label": "url_key", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/url_key
-  response:
-    body: {string: '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input": "text", "default_frontend_label": "url_key", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/products/attributes/visibility
-  response:
-    body: {string: '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input": "text", "default_frontend_label": "visibility", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/products/attributes/visibility
-  response:
-    body: {string: '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input": "text", "default_frontend_label": "visibility", "is_required": false, "is_user_defined": false, "is_visible": true, "scope": "global", "options": []}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/taxClasses/search?fields=items%5Bclass_id%5D&searchCriteria=
-  response:
-    body: {string: '{"items": [{"class_id": 2}, {"class_id": 3}]}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/taxClasses/2
-  response:
-    body: {string: '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/taxClasses/2
-  response:
-    body: {string: '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/taxClasses/3
-  response:
-    body: {string: '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/all/V1/taxClasses/3
-  response:
-    body: {string: '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}'}
-    headers:
-      Content-Type: ['application/json; charset=utf-8']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/websites?fields=id
-  response:
-    body: {string: '[{"id":1},{"id":0}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=4hhth2u2r5e5t21fk4c3idq2s2; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['19']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/websites?fields=id
-  response:
-    body: {string: '[{"id":1},{"id":0}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=4hhth2u2r5e5t21fk4c3idq2s2; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['19']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/websites
-  response:
-    body: {string: '[{"id":1,"code":"base","name":"Main Website","default_group_id":1},{"id":0,"code":"admin","name":"Admin","default_group_id":0}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=9235d5p8gvaf4jfkv3dnnun581; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['127']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/websites
-  response:
-    body: {string: '[{"id":1,"code":"base","name":"Main Website","default_group_id":1},{"id":0,"code":"admin","name":"Admin","default_group_id":0}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=9235d5p8gvaf4jfkv3dnnun581; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['127']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeGroups?fields=id
-  response:
-    body: {string: '[{"id":0},{"id":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=65qd2k44nkg6vkhklim560muic; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['19']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeGroups?fields=id
-  response:
-    body: {string: '[{"id":0},{"id":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=65qd2k44nkg6vkhklim560muic; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['19']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeGroups
-  response:
-    body: {string: '[{"id":0,"website_id":0,"root_category_id":0,"default_store_id":0,"name":"Default","code":"default"},{"id":1,"website_id":1,"root_category_id":2,"default_store_id":1,"name":"Main
-        Website Store","code":"main_website_store"}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=vr1paqb90t55b364anm0932nrc; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['223']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeGroups
-  response:
-    body: {string: '[{"id":0,"website_id":0,"root_category_id":0,"default_store_id":0,"name":"Default","code":"default"},{"id":1,"website_id":1,"root_category_id":2,"default_store_id":1,"name":"Main
-        Website Store","code":"main_website_store"}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:08 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=vr1paqb90t55b364anm0932nrc; expires=Fri, 17-Apr-2020
-          18:31:08 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['223']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeConfigs?fields=id
-  response:
-    body: {string: '[{"id":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=2pv2d5ulnpcpnv59e9ik7rgk4s; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['10']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeConfigs?fields=id
-  response:
-    body: {string: '[{"id":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=2pv2d5ulnpcpnv59e9ik7rgk4s; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['10']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeViews
-  response:
-    body: {string: '[{"id":1,"code":"default","name":"Default Store View","website_id":1,"store_group_id":1,"is_active":1},{"id":0,"code":"admin","name":"Admin","website_id":0,"store_group_id":0,"is_active":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=pnj8h0dsnpfeuufl2nkuvo5kn3; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['190']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeViews
-  response:
-    body: {string: '[{"id":1,"code":"default","name":"Default Store View","website_id":1,"store_group_id":1,"is_active":1},{"id":0,"code":"admin","name":"Admin","website_id":0,"store_group_id":0,"is_active":1}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=pnj8h0dsnpfeuufl2nkuvo5kn3; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['190']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeConfigs
-  response:
-    body: {string: '[{"id":1,"code":"default","website_id":1,"locale":"en_US","base_currency_code":"USD","default_display_currency_code":"USD","timezone":"Europe\/Amsterdam","weight_unit":"lbs","base_url":"http:\/\/magento\/","base_link_url":"http:\/\/magento\/index.php\/","base_static_url":"http:\/\/magento\/static\/version1585325535\/","base_media_url":"http:\/\/magento\/media\/","secure_base_url":"http:\/\/magento\/","secure_base_link_url":"http:\/\/magento\/index.php\/","secure_base_static_url":"http:\/\/magento\/static\/version1585325535\/","secure_base_media_url":"http:\/\/magento\/media\/"}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=bjodpjblut2cg3imtc9fck87in; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['657']
-    status: {code: 200, message: OK}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [python-requests/2.19.1]
-    method: GET
-    uri: http://magento/index.php/rest/V1/store/storeConfigs
-  response:
-    body: {string: '[{"id":1,"code":"default","website_id":1,"locale":"en_US","base_currency_code":"USD","default_display_currency_code":"USD","timezone":"Europe\/Amsterdam","weight_unit":"lbs","base_url":"http:\/\/magento\/","base_link_url":"http:\/\/magento\/index.php\/","base_static_url":"http:\/\/magento\/static\/version1585325535\/","base_media_url":"http:\/\/magento\/media\/","secure_base_url":"http:\/\/magento\/","secure_base_link_url":"http:\/\/magento\/index.php\/","secure_base_static_url":"http:\/\/magento\/static\/version1585325535\/","secure_base_media_url":"http:\/\/magento\/media\/"}]'}
-    headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 17 Apr 2020 17:31:09 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [nginx/1.14.0 (Ubuntu)]
-      Set-Cookie: ['PHPSESSID=bjodpjblut2cg3imtc9fck87in; expires=Fri, 17-Apr-2020
-          18:31:09 GMT; Max-Age=3600; path=/; domain=magento; HttpOnly']
-      Transfer-Encoding: [chunked]
-      Vary: [Accept-Encoding]
-      X-Frame-Options: [SAMEORIGIN]
-      content-length: ['657']
-    status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/websites?fields=id
+    response:
+      body: {string: '[{"id":1},{"id":0}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=4hhth2u2r5e5t21fk4c3idq2s2; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["19"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/websites
+    response:
+      body:
+        {
+          string:
+            '[{"id":1,"code":"base","name":"Main
+            Website","default_group_id":1},{"id":0,"code":"admin","name":"Admin","default_group_id":0}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=9235d5p8gvaf4jfkv3dnnun581; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["127"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeGroups?fields=id
+    response:
+      body: {string: '[{"id":0},{"id":1}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=65qd2k44nkg6vkhklim560muic; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["19"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeGroups
+    response:
+      body:
+        {
+          string:
+            '[{"id":0,"website_id":0,"root_category_id":0,"default_store_id":0,"name":"Default","code":"default"},{"id":1,"website_id":1,"root_category_id":2,"default_store_id":1,"name":"Main
+            Website Store","code":"main_website_store"}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=vr1paqb90t55b364anm0932nrc; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["223"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeConfigs?fields=id
+    response:
+      body: {string: '[{"id":1}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=2pv2d5ulnpcpnv59e9ik7rgk4s; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["10"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeViews
+    response:
+      body:
+        {
+          string:
+            '[{"id":1,"code":"default","name":"Default Store
+            View","website_id":1,"store_group_id":1,"is_active":1},{"id":0,"code":"admin","name":"Admin","website_id":0,"store_group_id":0,"is_active":1}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=pnj8h0dsnpfeuufl2nkuvo5kn3; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["190"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeConfigs
+    response:
+      body:
+        {
+          string: '[{"id":1,"code":"default","website_id":1,"locale":"en_US","base_currency_code":"USD","default_display_currency_code":"USD","timezone":"Europe\/Amsterdam","weight_unit":"lbs","base_url":"http:\/\/magento\/","base_link_url":"http:\/\/magento\/index.php\/","base_static_url":"http:\/\/magento\/static\/version1585325535\/","base_media_url":"http:\/\/magento\/media\/","secure_base_url":"http:\/\/magento\/","secure_base_link_url":"http:\/\/magento\/index.php\/","secure_base_static_url":"http:\/\/magento\/static\/version1585325535\/","secure_base_media_url":"http:\/\/magento\/media\/"}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=bjodpjblut2cg3imtc9fck87in; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["657"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/category_ids
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input":
+            "text", "default_frontend_label": "category_ids", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/category_ids
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 100, "attribute_code": "category_ids", "frontend_input":
+            "text", "default_frontend_label": "category_ids", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 102, "attribute_code": "description", "frontend_input":
+            "text", "default_frontend_label": "description", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 102, "attribute_code": "description", "frontend_input":
+            "text", "default_frontend_label": "description", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/has_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input":
+            "text", "default_frontend_label": "has_options", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/has_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 104, "attribute_code": "has_options", "frontend_input":
+            "text", "default_frontend_label": "has_options", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text",
+            "default_frontend_label": "image", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 105, "attribute_code": "image", "frontend_input": "text",
+            "default_frontend_label": "image", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/name
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text",
+            "default_frontend_label": "name", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/name
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 73, "attribute_code": "name", "frontend_input": "text",
+            "default_frontend_label": "name", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/options_container
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 108, "attribute_code": "options_container",
+            "frontend_input": "text", "default_frontend_label": "options_container",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/options_container
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 108, "attribute_code": "options_container",
+            "frontend_input": "text", "default_frontend_label": "options_container",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/required_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 110, "attribute_code": "required_options",
+            "frontend_input": "text", "default_frontend_label": "required_options",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/required_options
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 110, "attribute_code": "required_options",
+            "frontend_input": "text", "default_frontend_label": "required_options",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/short_description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 122, "attribute_code": "short_description",
+            "frontend_input": "text", "default_frontend_label": "short_description",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/short_description
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 122, "attribute_code": "short_description",
+            "frontend_input": "text", "default_frontend_label": "short_description",
+            "is_required": false, "is_user_defined": false, "is_visible": true, "scope":
+            "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/small_image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input":
+            "text", "default_frontend_label": "small_image", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/small_image
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 111, "attribute_code": "small_image", "frontend_input":
+            "text", "default_frontend_label": "small_image", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/status
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text",
+            "default_frontend_label": "status", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/status
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 119, "attribute_code": "status", "frontend_input": "text",
+            "default_frontend_label": "status", "is_required": false, "is_user_defined":
+            false, "is_visible": true, "scope": "global", "options": []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/tax_class_id
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input":
+            "text", "default_frontend_label": "tax_class_id", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/tax_class_id
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 112, "attribute_code": "tax_class_id", "frontend_input":
+            "text", "default_frontend_label": "tax_class_id", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/thumbnail
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input":
+            "text", "default_frontend_label": "thumbnail", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/thumbnail
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 113, "attribute_code": "thumbnail", "frontend_input":
+            "text", "default_frontend_label": "thumbnail", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/url_key
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input":
+            "text", "default_frontend_label": "url_key", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/url_key
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 114, "attribute_code": "url_key", "frontend_input":
+            "text", "default_frontend_label": "url_key", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/products/attributes/visibility
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input":
+            "text", "default_frontend_label": "visibility", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/products/attributes/visibility
+    response:
+      body:
+        {
+          string:
+            '{"attribute_id": 120, "attribute_code": "visibility", "frontend_input":
+            "text", "default_frontend_label": "visibility", "is_required": false,
+            "is_user_defined": false, "is_visible": true, "scope": "global", "options":
+            []}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/taxClasses/search?fields=items%5Bclass_id%5D&searchCriteria=
+    response:
+      body: {string: '{"items": [{"class_id": 2}, {"class_id": 3}]}'}
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/taxClasses/2
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/taxClasses/2
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 2, "class_name": "Taxable Goods", "class_type": "PRODUCT"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/taxClasses/3
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/all/V1/taxClasses/3
+    response:
+      body:
+        {
+          string:
+            '{"class_id": 3, "class_name": "Retail Customer", "class_type": "CUSTOMER"}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/websites?fields=id
+    response:
+      body: {string: '[{"id":1},{"id":0}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=4hhth2u2r5e5t21fk4c3idq2s2; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["19"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/websites?fields=id
+    response:
+      body: {string: '[{"id":1},{"id":0}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=4hhth2u2r5e5t21fk4c3idq2s2; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["19"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/websites
+    response:
+      body:
+        {
+          string:
+            '[{"id":1,"code":"base","name":"Main
+            Website","default_group_id":1},{"id":0,"code":"admin","name":"Admin","default_group_id":0}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=9235d5p8gvaf4jfkv3dnnun581; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["127"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/websites
+    response:
+      body:
+        {
+          string:
+            '[{"id":1,"code":"base","name":"Main
+            Website","default_group_id":1},{"id":0,"code":"admin","name":"Admin","default_group_id":0}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=9235d5p8gvaf4jfkv3dnnun581; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["127"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeGroups?fields=id
+    response:
+      body: {string: '[{"id":0},{"id":1}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=65qd2k44nkg6vkhklim560muic; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["19"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeGroups?fields=id
+    response:
+      body: {string: '[{"id":0},{"id":1}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=65qd2k44nkg6vkhklim560muic; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["19"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeGroups
+    response:
+      body:
+        {
+          string:
+            '[{"id":0,"website_id":0,"root_category_id":0,"default_store_id":0,"name":"Default","code":"default"},{"id":1,"website_id":1,"root_category_id":2,"default_store_id":1,"name":"Main
+            Website Store","code":"main_website_store"}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=vr1paqb90t55b364anm0932nrc; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["223"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeGroups
+    response:
+      body:
+        {
+          string:
+            '[{"id":0,"website_id":0,"root_category_id":0,"default_store_id":0,"name":"Default","code":"default"},{"id":1,"website_id":1,"root_category_id":2,"default_store_id":1,"name":"Main
+            Website Store","code":"main_website_store"}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:08 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=vr1paqb90t55b364anm0932nrc; expires=Fri, 17-Apr-2020 18:31:08
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["223"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeConfigs?fields=id
+    response:
+      body: {string: '[{"id":1}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=2pv2d5ulnpcpnv59e9ik7rgk4s; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["10"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeConfigs?fields=id
+    response:
+      body: {string: '[{"id":1}]'}
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=2pv2d5ulnpcpnv59e9ik7rgk4s; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["10"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeViews
+    response:
+      body:
+        {
+          string:
+            '[{"id":1,"code":"default","name":"Default Store
+            View","website_id":1,"store_group_id":1,"is_active":1},{"id":0,"code":"admin","name":"Admin","website_id":0,"store_group_id":0,"is_active":1}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=pnj8h0dsnpfeuufl2nkuvo5kn3; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["190"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeViews
+    response:
+      body:
+        {
+          string:
+            '[{"id":1,"code":"default","name":"Default Store
+            View","website_id":1,"store_group_id":1,"is_active":1},{"id":0,"code":"admin","name":"Admin","website_id":0,"store_group_id":0,"is_active":1}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=pnj8h0dsnpfeuufl2nkuvo5kn3; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["190"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeConfigs
+    response:
+      body:
+        {
+          string: '[{"id":1,"code":"default","website_id":1,"locale":"en_US","base_currency_code":"USD","default_display_currency_code":"USD","timezone":"Europe\/Amsterdam","weight_unit":"lbs","base_url":"http:\/\/magento\/","base_link_url":"http:\/\/magento\/index.php\/","base_static_url":"http:\/\/magento\/static\/version1585325535\/","base_media_url":"http:\/\/magento\/media\/","secure_base_url":"http:\/\/magento\/","secure_base_link_url":"http:\/\/magento\/index.php\/","secure_base_static_url":"http:\/\/magento\/static\/version1585325535\/","secure_base_media_url":"http:\/\/magento\/media\/"}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=bjodpjblut2cg3imtc9fck87in; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["657"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        User-Agent: [python-requests/2.19.1]
+      method: GET
+      uri: http://magento/index.php/rest/V1/store/storeConfigs
+    response:
+      body:
+        {
+          string: '[{"id":1,"code":"default","website_id":1,"locale":"en_US","base_currency_code":"USD","default_display_currency_code":"USD","timezone":"Europe\/Amsterdam","weight_unit":"lbs","base_url":"http:\/\/magento\/","base_link_url":"http:\/\/magento\/index.php\/","base_static_url":"http:\/\/magento\/static\/version1585325535\/","base_media_url":"http:\/\/magento\/media\/","secure_base_url":"http:\/\/magento\/","secure_base_link_url":"http:\/\/magento\/index.php\/","secure_base_static_url":"http:\/\/magento\/static\/version1585325535\/","secure_base_media_url":"http:\/\/magento\/media\/"}]',
+        }
+      headers:
+        Cache-Control: ["no-store, no-cache, must-revalidate"]
+        Connection: [keep-alive]
+        Content-Type: [application/json; charset=utf-8]
+        Date: ["Fri, 17 Apr 2020 17:31:09 GMT"]
+        Expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        Pragma: [no-cache]
+        Server: [nginx/1.14.0 (Ubuntu)]
+        Set-Cookie:
+          [
+            "PHPSESSID=bjodpjblut2cg3imtc9fck87in; expires=Fri, 17-Apr-2020 18:31:09
+            GMT; Max-Age=3600; path=/; domain=magento; HttpOnly",
+          ]
+        Transfer-Encoding: [chunked]
+        Vary: [Accept-Encoding]
+        X-Frame-Options: [SAMEORIGIN]
+        content-length: ["657"]
+      status: {code: 200, message: OK}
 version: 1

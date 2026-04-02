@@ -1,49 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-
     <record id="product_normal_form_view" model="ir.ui.view">
         <field name="name">product.product.form</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="connector_base_product.product_normal_form_view"/>
+        <field
+            name="inherit_id"
+            ref="connector_base_product.product_normal_form_view"
+        />
         <field name="arch" type="xml">
             <page name="connector" position="attributes">
                 <attribute name="invisible">0</attribute>
             </page>
             <field name="categ_id" position="after">
-                <field name="product_category_public_ids" widget="many2many_tags"/>
-                <field name="website_ids" widget="many2many_tags"/>
+                <field name="product_category_public_ids" widget="many2many_tags" />
+                <field name="website_ids" widget="many2many_tags" />
             </field>
             <page name="connector" position="inside">
                 <group string="Magento Bindings">
                     <field name="magento_bind_ids" nolabel="1" colspan="2">
                         <list>
-                            <field name="backend_id"/>
-                            <field name="product_type"/>
-                            <button name="sync_to_magento" string="To Magento" type="object"
-                                    class="oe_highlight"/>
-                            <button name="sync_from_magento" string="From Magento" type="object"
-                                    class="oe_highlight"/>
-                            <button name="delete_from_magento" string="Delete from Magento" type="object"
-                                    class="oe_highlight"/>
+                            <field name="backend_id" />
+                            <field name="product_type" />
+                            <button
+                                name="sync_to_magento"
+                                string="To Magento"
+                                type="object"
+                                class="oe_highlight"
+                            />
+                            <button
+                                name="sync_from_magento"
+                                string="From Magento"
+                                type="object"
+                                class="oe_highlight"
+                            />
+                            <button
+                                name="delete_from_magento"
+                                string="Delete from Magento"
+                                type="object"
+                                class="oe_highlight"
+                            />
                         </list>
                     </field>
                 </group>
-
             </page>
             <!-- Smart button for Magento sync status -->
             <xpath expr="//div[@name='button_box']/button[1]" position="before">
                 <!-- Invisible field for state calculation -->
-                <field name="magento_sync_state" invisible="1"/>
+                <field name="magento_sync_state" invisible="1" />
 
                 <!-- Published button (green background) -->
-                <button name="action_view_magento_bindings"
-                        type="object"
-                        class="oe_stat_button magento_published"
-                        icon="fa-shopping-cart"
-                        invisible="magento_sync_state != 'published'">
+                <button
+                    name="action_view_magento_bindings"
+                    type="object"
+                    class="oe_stat_button magento_published"
+                    icon="fa-shopping-cart"
+                    invisible="magento_sync_state != 'published'"
+                >
                     <div class="o_stat_info">
                         <span class="o_stat_value">
-                            <field name="magento_bindings_count"/>
+                            <field name="magento_bindings_count" />
                         </span>
                         <span class="o_stat_text">
                             Magento Published
@@ -52,14 +67,16 @@
                 </button>
 
                 <!-- Partial button (orange background) -->
-                <button name="action_view_magento_bindings"
-                        type="object"
-                        class="oe_stat_button magento_partial"
-                        icon="fa-shopping-cart"
-                        invisible="magento_sync_state != 'partial'">
+                <button
+                    name="action_view_magento_bindings"
+                    type="object"
+                    class="oe_stat_button magento_partial"
+                    icon="fa-shopping-cart"
+                    invisible="magento_sync_state != 'partial'"
+                >
                     <div class="o_stat_info">
                         <span class="o_stat_value">
-                            <field name="magento_bindings_count"/>
+                            <field name="magento_bindings_count" />
                         </span>
                         <span class="o_stat_text">
                             Magento Partial
@@ -68,14 +85,16 @@
                 </button>
 
                 <!-- Unpublished button (red background) -->
-                <button name="action_view_magento_bindings"
-                        type="object"
-                        class="oe_stat_button magento_unpublished"
-                        icon="fa-shopping-cart"
-                        invisible="magento_sync_state != 'unpublished'">
+                <button
+                    name="action_view_magento_bindings"
+                    type="object"
+                    class="oe_stat_button magento_unpublished"
+                    icon="fa-shopping-cart"
+                    invisible="magento_sync_state != 'unpublished'"
+                >
                     <div class="o_stat_info">
                         <span class="o_stat_value">
-                            <field name="magento_bindings_count"/>
+                            <field name="magento_bindings_count" />
                         </span>
                         <span class="o_stat_text">
                             Magento Unpublished
@@ -84,12 +103,14 @@
                 </button>
 
                 <!-- Add Magento button (visible only when no bindings) -->
-                <button name="action_add_magento_backend"
-                        type="object"
-                        class="oe_stat_button"
-                        icon="fa-plus-circle"
-                        string="Add Magento"
-                        invisible="magento_sync_state != 'none'"/>
+                <button
+                    name="action_add_magento_backend"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-plus-circle"
+                    string="Add Magento"
+                    invisible="magento_sync_state != 'none'"
+                />
             </xpath>
         </field>
     </record>
@@ -97,8 +118,8 @@
     <!-- Server Actions for magento.product.product -->
     <record id="action_magento_product_import_from_magento" model="ir.actions.server">
         <field name="name">Import from Magento</field>
-        <field name="model_id" ref="model_magento_product_product"/>
-        <field name="binding_model_id" ref="model_magento_product_product"/>
+        <field name="model_id" ref="model_magento_product_product" />
+        <field name="binding_model_id" ref="model_magento_product_product" />
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.sync_from_magento()</field>
@@ -106,8 +127,8 @@
 
     <record id="action_magento_product_export_to_magento" model="ir.actions.server">
         <field name="name">Export to Magento</field>
-        <field name="model_id" ref="model_magento_product_product"/>
-        <field name="binding_model_id" ref="model_magento_product_product"/>
+        <field name="model_id" ref="model_magento_product_product" />
+        <field name="binding_model_id" ref="model_magento_product_product" />
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.sync_to_magento()</field>
@@ -115,36 +136,45 @@
 
     <record id="action_magento_product_delete_from_magento" model="ir.actions.server">
         <field name="name">Delete from Magento</field>
-        <field name="model_id" ref="model_magento_product_product"/>
-        <field name="binding_model_id" ref="model_magento_product_product"/>
+        <field name="model_id" ref="model_magento_product_product" />
+        <field name="binding_model_id" ref="model_magento_product_product" />
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.delete_from_magento()</field>
     </record>
 
     <!-- Server Actions for magento.product.template -->
-    <record id="action_magento_product_template_import_from_magento" model="ir.actions.server">
+    <record
+        id="action_magento_product_template_import_from_magento"
+        model="ir.actions.server"
+    >
         <field name="name">Import from Magento</field>
-        <field name="model_id" ref="model_magento_product_template"/>
-        <field name="binding_model_id" ref="model_magento_product_template"/>
+        <field name="model_id" ref="model_magento_product_template" />
+        <field name="binding_model_id" ref="model_magento_product_template" />
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.sync_from_magento()</field>
     </record>
 
-    <record id="action_magento_product_template_export_to_magento" model="ir.actions.server">
+    <record
+        id="action_magento_product_template_export_to_magento"
+        model="ir.actions.server"
+    >
         <field name="name">Export to Magento</field>
-        <field name="model_id" ref="model_magento_product_template"/>
-        <field name="binding_model_id" ref="model_magento_product_template"/>
+        <field name="model_id" ref="model_magento_product_template" />
+        <field name="binding_model_id" ref="model_magento_product_template" />
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.sync_to_magento()</field>
     </record>
 
-    <record id="action_magento_product_template_delete_from_magento" model="ir.actions.server">
+    <record
+        id="action_magento_product_template_delete_from_magento"
+        model="ir.actions.server"
+    >
         <field name="name">Delete from Magento</field>
-        <field name="model_id" ref="model_magento_product_template"/>
-        <field name="binding_model_id" ref="model_magento_product_template"/>
+        <field name="model_id" ref="model_magento_product_template" />
+        <field name="binding_model_id" ref="model_magento_product_template" />
         <field name="binding_view_types">list</field>
         <field name="state">code</field>
         <field name="code">records.delete_from_magento()</field>
@@ -155,8 +185,8 @@
         <field name="model">magento.product.product</field>
         <field name="arch" type="xml">
             <search string="">
-                <field name="default_code" string="Default Code"/>
-                <field name="backend_id" string="Backend"/>
+                <field name="default_code" string="Default Code" />
+                <field name="backend_id" string="Backend" />
             </search>
         </field>
     </record>
@@ -167,54 +197,77 @@
         <field name="arch" type="xml">
             <form string="Magento Product">
                 <header>
-                    <button name="sync_to_magento" string="To Magento" type="object"
-                            class="oe_highlight"/>
-                    <button name="sync_from_magento" string="From Magento" type="object"
-                            class="oe_highlight"/>
-                    <button name="delete_from_magento" string="Delete from Magento" type="object"
-                            class="oe_highlight"/>
+                    <button
+                        name="sync_to_magento"
+                        string="To Magento"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="sync_from_magento"
+                        string="From Magento"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="delete_from_magento"
+                        string="Delete from Magento"
+                        type="object"
+                        class="oe_highlight"
+                    />
                 </header>
                 <sheet>
                     <group>
-                        <field name="backend_id"/>
-                        <field name="external_id"/>
-                        <field name="odoo_id"/>
-                        <field name="created_at" readonly="1"/>
-                        <field name="updated_at" readonly="1"/>
-                        <field name="product_type"/>
-                        <field name="attribute_set_id"/>
-                        <field name="website_ids" widget="many2many_tags"/>
-                        <field name="magento_status"/>
-                        <field name="magento_visibility"/>
+                        <field name="backend_id" />
+                        <field name="external_id" />
+                        <field name="odoo_id" />
+                        <field name="created_at" readonly="1" />
+                        <field name="updated_at" readonly="1" />
+                        <field name="product_type" />
+                        <field name="attribute_set_id" />
+                        <field name="website_ids" widget="many2many_tags" />
+                        <field name="magento_status" />
+                        <field name="magento_visibility" />
                     </group>
                     <notebook>
-                        <page name="product_links" string="Products Links"
-                              invisible="product_type != 'grouped'">
+                        <page
+                            name="product_links"
+                            string="Products Links"
+                            invisible="product_type != 'grouped'"
+                        >
                             <field name="product_links" nolabel="1" colspan="4">
                                 <list editable="bottom">
-                                    <field name="name"/>
-                                    <field name="default_code"/>
-                                    <field name="backend_id"/>
-                                    <field name="product_type"/>
+                                    <field name="name" />
+                                    <field name="default_code" />
+                                    <field name="backend_id" />
+                                    <field name="product_type" />
                                 </list>
                             </field>
                         </page>
                         <page name="inventory" string="Inventory">
                             <group string="Inventory Options">
-                                <field name="no_stock_sync"/>
-                                <field name="manage_stock"/>
-                                <field name="backorders"/>
+                                <field name="no_stock_sync" />
+                                <field name="manage_stock" />
+                                <field name="backorders" />
                                 <div class="oe_inline">
-                                    <label for="magento_qty" class="oe_inline"/>
-                                    <field name="magento_qty" readonly="1" class="oe_inline"
-                                           nolabel="1"/>
-                                    <button name="recompute_magento_qty" string="(recompute)"
-                                            class="oe_link oe_inline" type="object"/>
+                                    <label for="magento_qty" class="oe_inline" />
+                                    <field
+                                        name="magento_qty"
+                                        readonly="1"
+                                        class="oe_inline"
+                                        nolabel="1"
+                                    />
+                                    <button
+                                        name="recompute_magento_qty"
+                                        string="(recompute)"
+                                        class="oe_link oe_inline"
+                                        type="object"
+                                    />
                                 </div>
                             </group>
                         </page>
                         <page name="data" string="JSON Data">
-                            <field name="data_str" nolabel="1" colspan="4"/>
+                            <field name="data_str" nolabel="1" colspan="4" />
                         </page>
                     </notebook>
                 </sheet>
@@ -227,16 +280,28 @@
         <field name="model">magento.product.product</field>
         <field name="arch" type="xml">
             <list string="Magento Product">
-                <field name="name"/>
-                <field name="default_code"/>
-                <field name="backend_id"/>
-                <field name="product_type"/>
-                <button name="sync_to_magento" string="To Magento" type="object"
-                        class="oe_highlight"/>
-                <button name="sync_from_magento" string="From Magento" type="object"
-                        class="oe_highlight"/>
-                <button name="delete_from_magento" string="Delete from Magento" type="object"
-                        class="oe_highlight"/>
+                <field name="name" />
+                <field name="default_code" />
+                <field name="backend_id" />
+                <field name="product_type" />
+                <button
+                    name="sync_to_magento"
+                    string="To Magento"
+                    type="object"
+                    class="oe_highlight"
+                />
+                <button
+                    name="sync_from_magento"
+                    string="From Magento"
+                    type="object"
+                    class="oe_highlight"
+                />
+                <button
+                    name="delete_from_magento"
+                    string="Delete from Magento"
+                    type="object"
+                    class="oe_highlight"
+                />
             </list>
         </field>
     </record>
@@ -246,12 +311,12 @@
         <field name="model">magento.product.template</field>
         <field name="arch" type="xml">
             <list string="Magento Product Template">
-                <field name="external_id"/>
-                <field name="odoo_id"/>
-                <field name="backend_id"/>
-                <button name="sync_to_magento" string="To Magento" type="object"/>
-                <button name="sync_from_magento" string="From Magento" type="object"/>
-                <button name="delete_from_magento" string="Delete" type="object"/>
+                <field name="external_id" />
+                <field name="odoo_id" />
+                <field name="backend_id" />
+                <button name="sync_to_magento" string="To Magento" type="object" />
+                <button name="sync_from_magento" string="From Magento" type="object" />
+                <button name="delete_from_magento" string="Delete" type="object" />
             </list>
         </field>
     </record>
@@ -261,13 +326,13 @@
         <field name="model">magento.product.template</field>
         <field name="arch" type="xml">
             <search string="Magento Product Template">
-                <field name="magento_id" string="Magento ID"/>
-                <field name="odoo_id" string="Product Template"/>
-                <field name="attribute_set_id" string="Attribute Set"/>
-                <field name="website_ids" string="Websites"/>
-                <field name="product_type" string="Product Type"/>
-                <field name="magento_status" string="Status"/>
-                <field name="magento_url_key" string="URL Key"/>
+                <field name="magento_id" string="Magento ID" />
+                <field name="odoo_id" string="Product Template" />
+                <field name="attribute_set_id" string="Attribute Set" />
+                <field name="website_ids" string="Websites" />
+                <field name="product_type" string="Product Type" />
+                <field name="magento_status" string="Status" />
+                <field name="magento_url_key" string="URL Key" />
             </search>
         </field>
     </record>
@@ -278,45 +343,60 @@
         <field name="arch" type="xml">
             <form string="Magento Product Template">
                 <header>
-                    <button name="sync_to_magento" string="To Magento" type="object" class="oe_highlight"/>
-                    <button name="sync_from_magento" string="From Magento" type="object" class="oe_highlight"/>
-                    <button name="delete_from_magento" string="Delete from Magento" type="object" class="oe_highlight"/>
+                    <button
+                        name="sync_to_magento"
+                        string="To Magento"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="sync_from_magento"
+                        string="From Magento"
+                        type="object"
+                        class="oe_highlight"
+                    />
+                    <button
+                        name="delete_from_magento"
+                        string="Delete from Magento"
+                        type="object"
+                        class="oe_highlight"
+                    />
                 </header>
                 <sheet>
                     <group>
-                        <field name="backend_id"/>
-                        <field name="external_id"/>
-                        <field name="magento_id"/>
-                        <field name="odoo_id"/>
-                        <field name="created_at" readonly="1"/>
-                        <field name="updated_at" readonly="1"/>
-                        <field name="product_type"/>
-                        <field name="attribute_set_id"/>
-                        <field name="website_ids" widget="many2many_tags"/>
-                        <field name="magento_status"/>
-                        <field name="magento_url_key"/>
+                        <field name="backend_id" />
+                        <field name="external_id" />
+                        <field name="magento_id" />
+                        <field name="odoo_id" />
+                        <field name="created_at" readonly="1" />
+                        <field name="updated_at" readonly="1" />
+                        <field name="product_type" />
+                        <field name="attribute_set_id" />
+                        <field name="website_ids" widget="many2many_tags" />
+                        <field name="magento_status" />
+                        <field name="magento_url_key" />
                     </group>
                     <notebook>
                         <page string="Variants">
                             <field name="magento_variant_bind_ids">
                                 <list string="Magento Variants">
-                                    <field name="external_id"/>
-                                    <field name="odoo_id"/>
-                                    <field name="product_type"/>
-                                    <field name="magento_status"/>
+                                    <field name="external_id" />
+                                    <field name="odoo_id" />
+                                    <field name="product_type" />
+                                    <field name="magento_status" />
                                 </list>
                             </field>
                         </page>
                         <page string="Attribute Lines">
                             <field name="magento_template_attribute_line_ids">
                                 <list string="Attribute Lines">
-                                    <field name="attribute_id"/>
-                                    <field name="value_ids" widget="many2many_tags"/>
+                                    <field name="attribute_id" />
+                                    <field name="value_ids" widget="many2many_tags" />
                                 </list>
                             </field>
                         </page>
                         <page name="data" string="JSON Data">
-                            <field name="data_str" nolabel="1" colspan="4"/>
+                            <field name="data_str" nolabel="1" colspan="4" />
                         </page>
                     </notebook>
                 </sheet>
@@ -328,14 +408,17 @@
     <record id="view_product_product_tree_magento_state" model="ir.ui.view">
         <field name="name">product.product.tree.magento.state</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="magento_sync_state" widget="badge"
-                       decoration-success="magento_sync_state == 'published'"
-                       decoration-warning="magento_sync_state == 'partial'"
-                       decoration-danger="magento_sync_state == 'unpublished'"
-                       optional="show"/>
+                <field
+                    name="magento_sync_state"
+                    widget="badge"
+                    decoration-success="magento_sync_state == 'published'"
+                    decoration-warning="magento_sync_state == 'partial'"
+                    decoration-danger="magento_sync_state == 'unpublished'"
+                    optional="show"
+                />
             </field>
         </field>
     </record>
@@ -344,14 +427,17 @@
     <record id="view_product_template_tree_magento_state" model="ir.ui.view">
         <field name="name">product.template.tree.magento.state</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="inherit_id" ref="product.product_template_tree_view" />
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="magento_sync_state" widget="badge"
-                       decoration-success="magento_sync_state == 'published'"
-                       decoration-warning="magento_sync_state == 'partial'"
-                       decoration-danger="magento_sync_state == 'unpublished'"
-                       optional="show"/>
+                <field
+                    name="magento_sync_state"
+                    widget="badge"
+                    decoration-success="magento_sync_state == 'published'"
+                    decoration-warning="magento_sync_state == 'partial'"
+                    decoration-danger="magento_sync_state == 'unpublished'"
+                    optional="show"
+                />
             </field>
         </field>
     </record>
@@ -364,31 +450,40 @@
     <record id="view_product_template_kanban_magento_state" model="ir.ui.view">
         <field name="name">product.template.kanban.magento.state</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="inherit_id" ref="product.product_template_kanban_view" />
         <field name="arch" type="xml">
             <!-- Add field declaration for magento_sync_state -->
             <field name="id" position="after">
-                <field name="magento_sync_state"/>
+                <field name="magento_sync_state" />
             </field>
             <!-- Add Magento badge in the kanban card header -->
             <xpath expr="//div[hasclass('o_kanban_record_top')]" position="before">
                 <div class="magento_kanban_badge_container">
                     <!-- Published badge (green) -->
                     <t t-if="record.magento_sync_state.raw_value == 'published'">
-                        <span class="magento_kanban_badge magento_published" title="Magento: Publicado">
-                            <i class="fa fa-shopping-cart"/>
+                        <span
+                            class="magento_kanban_badge magento_published"
+                            title="Magento: Publicado"
+                        >
+                            <i class="fa fa-shopping-cart" />
                         </span>
                     </t>
                     <!-- Partial badge (orange) -->
                     <t t-if="record.magento_sync_state.raw_value == 'partial'">
-                        <span class="magento_kanban_badge magento_partial" title="Magento: Parcial">
-                            <i class="fa fa-shopping-cart"/>
+                        <span
+                            class="magento_kanban_badge magento_partial"
+                            title="Magento: Parcial"
+                        >
+                            <i class="fa fa-shopping-cart" />
                         </span>
                     </t>
                     <!-- Unpublished badge (red) -->
                     <t t-if="record.magento_sync_state.raw_value == 'unpublished'">
-                        <span class="magento_kanban_badge magento_unpublished" title="Magento: Sin publicar">
-                            <i class="fa fa-shopping-cart"/>
+                        <span
+                            class="magento_kanban_badge magento_unpublished"
+                            title="Magento: Sin publicar"
+                        >
+                            <i class="fa fa-shopping-cart" />
                         </span>
                     </t>
                 </div>
@@ -400,36 +495,44 @@
     <record id="view_product_product_kanban_magento_state" model="ir.ui.view">
         <field name="name">product.product.kanban.magento.state</field>
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_kanban_view"/>
+        <field name="inherit_id" ref="product.product_kanban_view" />
         <field name="arch" type="xml">
             <!-- Add field declaration for magento_sync_state -->
             <field name="id" position="after">
-                <field name="magento_sync_state"/>
+                <field name="magento_sync_state" />
             </field>
             <!-- Add Magento badge in the kanban card -->
             <xpath expr="//div[hasclass('oe_kanban_details')]" position="before">
                 <div class="magento_kanban_badge_container">
                     <!-- Published badge (green) -->
                     <t t-if="record.magento_sync_state.raw_value == 'published'">
-                        <span class="magento_kanban_badge magento_published" title="Magento: Publicado">
-                            <i class="fa fa-shopping-cart"/>
+                        <span
+                            class="magento_kanban_badge magento_published"
+                            title="Magento: Publicado"
+                        >
+                            <i class="fa fa-shopping-cart" />
                         </span>
                     </t>
                     <!-- Partial badge (orange) -->
                     <t t-if="record.magento_sync_state.raw_value == 'partial'">
-                        <span class="magento_kanban_badge magento_partial" title="Magento: Parcial">
-                            <i class="fa fa-shopping-cart"/>
+                        <span
+                            class="magento_kanban_badge magento_partial"
+                            title="Magento: Parcial"
+                        >
+                            <i class="fa fa-shopping-cart" />
                         </span>
                     </t>
                     <!-- Unpublished badge (red) -->
                     <t t-if="record.magento_sync_state.raw_value == 'unpublished'">
-                        <span class="magento_kanban_badge magento_unpublished" title="Magento: Sin publicar">
-                            <i class="fa fa-shopping-cart"/>
+                        <span
+                            class="magento_kanban_badge magento_unpublished"
+                            title="Magento: Sin publicar"
+                        >
+                            <i class="fa fa-shopping-cart" />
                         </span>
                     </t>
                 </div>
             </xpath>
         </field>
     </record>
-
 </odoo>

@@ -10,19 +10,18 @@ _logger = logging.getLogger(__name__)
 
 
 class MagentoInvoiceExporter(Component):
-    """ Export invoices to Magento """
-    _name = 'magento.account.invoice.exporter'
-    _inherit = 'magento.exporter'
-    _apply_on = ['magento.account.invoice']
+    """Export invoices to Magento"""
+
+    _name = "magento.account.invoice.exporter"
+    _inherit = "magento.exporter"
+    _apply_on = ["magento.account.invoice"]
 
     def _export_invoice(self, external_id, lines_info, mail_notification):
         if not lines_info:  # invoice without any line for the sale order
             return
-        return self.backend_adapter.create(external_id,
-                                           lines_info,
-                                           _("Invoice Created"),
-                                           mail_notification,
-                                           False)
+        return self.backend_adapter.create(
+            external_id, lines_info, _("Invoice Created"), mail_notification, False
+        )
 
     def _get_lines_info(self, invoice):
         """
@@ -43,9 +42,14 @@ class MagentoInvoiceExporter(Component):
             # find the order line with the same product
             # and get the magento item_id (id of the line)
             # to invoice
-            order_line = next((line for line in order.magento_order_line_ids
-                               if line.product_id.id == product.id),
-                              None)
+            order_line = next(
+                (
+                    line
+                    for line in order.magento_order_line_ids
+                    if line.product_id.id == product.id
+                ),
+                None,
+            )
             if order_line is None:
                 continue
 
@@ -55,7 +59,7 @@ class MagentoInvoiceExporter(Component):
         return item_qty
 
     def run(self, binding):
-        """ Run the job to export the validated/paid invoice """
+        """Run the job to export the validated/paid invoice"""
 
         magento_order = binding.magento_order_id
         magento_store = magento_order.store_id
@@ -66,9 +70,7 @@ class MagentoInvoiceExporter(Component):
         # Magento 2 REST API uses entity_id (magento_order_id),
         # not increment_id (external_id) in the URL
         order_id = magento_order.magento_order_id or magento_order.external_id
-        external_id = self._export_invoice(order_id,
-                                           lines_info,
-                                           mail_notification)
+        external_id = self._export_invoice(order_id, lines_info, mail_notification)
         # When the invoice already exists on Magento, it may return
         # silently without ID
         if not external_id:
@@ -82,9 +84,10 @@ class MagentoInvoiceExporter(Component):
 
     def _get_existing_invoice(self, magento_order):
         invoices = self.backend_adapter.search_read(
-            order_id=magento_order.magento_order_id)
+            order_id=magento_order.magento_order_id
+        )
         if not invoices:
             return
         if len(invoices) > 1:
             return
-        return invoices[0]['increment_id']
+        return invoices[0]["increment_id"]

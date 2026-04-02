@@ -7,45 +7,46 @@ from odoo.addons.component.core import Component
 
 
 class ResPartnerCategory(models.Model):
-    _inherit = 'res.partner.category'
+    _inherit = "res.partner.category"
 
     magento_bind_ids = fields.One2many(
-        comodel_name='magento.res.partner.category',
-        inverse_name='odoo_id',
-        string='Magento Bindings',
+        comodel_name="magento.res.partner.category",
+        inverse_name="odoo_id",
+        string="Magento Bindings",
         readonly=True,
     )
 
 
 class MagentoResPartnerCategory(models.Model):
-    _name = 'magento.res.partner.category'
-    _inherit = 'magento.binding'
-    _inherits = {'res.partner.category': 'odoo_id'}
+    _name = "magento.res.partner.category"
+    _inherit = "magento.binding"
+    _inherits = {"res.partner.category": "odoo_id"}
 
-    odoo_id = fields.Many2one(comodel_name='res.partner.category',
-                              string='Partner Category',
-                              required=True,
-                              ondelete='cascade')
+    odoo_id = fields.Many2one(
+        comodel_name="res.partner.category",
+        string="Partner Category",
+        required=True,
+        ondelete="cascade",
+    )
     # TODO : replace by a m2o when tax class will be implemented
-    tax_class_id = fields.Integer(string='Tax Class ID')
+    tax_class_id = fields.Integer(string="Tax Class ID")
 
 
 class PartnerCategoryAdapter(Component):
+    _name = "magento.partner.category.adapter"
+    _inherit = "magento.adapter"
+    _apply_on = "magento.res.partner.category"
 
-    _name = 'magento.partner.category.adapter'
-    _inherit = 'magento.adapter'
-    _apply_on = 'magento.res.partner.category'
-
-    _magento_model = 'ol_customer_groups'
-    _magento2_model = 'customerGroups'
-    _magento2_search = 'customerGroups/search'
-    _magento2_key = 'id'
-    _admin_path = '/customer_group/edit/id/{id}'
+    _magento_model = "ol_customer_groups"
+    _magento2_model = "customerGroups"
+    _magento2_search = "customerGroups/search"
+    _magento2_key = "id"
+    _admin_path = "/customer_group/edit/id/{id}"
     # Not valid without security key
     # _admin2_path = '/customer/group/edit/id/{id}'
 
     def search(self, filters=None):
-        """ Search records according to some criteria
+        """Search records according to some criteria
         and returns a list of ids
 
         :rtype: list

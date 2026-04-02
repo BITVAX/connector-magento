@@ -18,11 +18,11 @@ from ..common import MagentoTestCase
 
 
 recorder = VCR(
-    cassette_library_dir=join(dirname(__file__), 'fixtures/cassettes'),
+    cassette_library_dir=join(dirname(__file__), "fixtures/cassettes"),
     decode_compressed_response=True,
-    filter_headers=['Authorization'],
-    path_transformer=VCR.ensure_suffix('.yaml'),
-    record_mode='none',
+    filter_headers=["Authorization"],
+    path_transformer=VCR.ensure_suffix(".yaml"),
+    record_mode="none",
 )
 
 
@@ -30,19 +30,20 @@ class Magento2TestCase(MagentoTestCase):
     def setUp(self):
         super(Magento2TestCase, self).setUp()
         self.recorder = recorder
-        self.backend.write({
-            'version': '2.0',
-            'token': 'm59qseoztake3xm1zcvkiv8qnuj09da0',
-        })
+        self.backend.write(
+            {
+                "version": "2.0",
+                "token": "m59qseoztake3xm1zcvkiv8qnuj09da0",
+            }
+        )
 
 
 class Magento2SyncTestCase(Magento2TestCase):
     def setUp(self):
         super(Magento2SyncTestCase, self).setUp()
         with mute_logger(
-                'odoo.addons.mail.models.mail_mail',
-                'odoo.models.unlink',
-                'odoo.tests'):
-            with recorder.use_cassette('metadata'):
+            "odoo.addons.mail.models.mail_mail", "odoo.models.unlink", "odoo.tests"
+        ):
+            with recorder.use_cassette("metadata"):
                 self.backend.synchronize_metadata()
                 self.backend.import_tax_classes()

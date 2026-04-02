@@ -5,15 +5,17 @@ from ..base_test_import_product_image import TestImportProductImage
 
 
 class TestImportProductImageMagento2(TestImportProductImage):
-    """ Test the imports of the image of the products. """
+    """Test the imports of the image of the products."""
 
     def setUp(self):
         super(TestImportProductImageMagento2, self).setUp()
-        warehouse = self.env.ref('stock.warehouse0')
+        warehouse = self.env.ref("stock.warehouse0")
         self.backend = self.backend_model.create(
-            {'name': 'Test Magento',
-             'version': '2.0',
-             'location': 'http://magento',
-             'warehouse_id': warehouse.id,
-             'token': 'odoo42'}
+            {
+                "name": "Test Magento",
+                "version": "2.0",
+                "location": "http://magento",
+                "warehouse_id": warehouse.id,
+                "token": "odoo42",
+            }
         )

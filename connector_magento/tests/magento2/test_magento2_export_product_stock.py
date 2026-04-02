@@ -3,31 +3,34 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
-import unittest
 from .common import Magento2SyncTestCase, recorder
 
 
 class TestUpdateStockQty(Magento2SyncTestCase):
-    """ Test the export of pickings to Magento """
+    """Test the export of pickings to Magento"""
 
     def _product_change_qty(self, product, new_qty, location_id=False):
         # Odoo 16: use stock.quant directly for location-specific qty changes
         if location_id:
-            location = self.env['stock.location'].browse(location_id)
-            self.env['stock.quant']._update_available_quantity(
-                product, location, new_qty)
+            location = self.env["stock.location"].browse(location_id)
+            self.env["stock.quant"]._update_available_quantity(
+                product, location, new_qty
+            )
         else:
-            wizard = self.env['stock.change.product.qty'].create({
-                'product_id': product.id,
-                'product_tmpl_id': product.product_tmpl_id.id,
-                'new_quantity': new_qty,
-            })
+            wizard = self.env["stock.change.product.qty"].create(
+                {
+                    "product_id": product.id,
+                    "product_tmpl_id": product.product_tmpl_id.id,
+                    "new_quantity": new_qty,
+                }
+            )
             wizard.change_product_qty()
 
     def setUp(self):
         super(TestUpdateStockQty, self).setUp()
         self.binding_product = self._import_record(
-            'magento.product.product', 'MH09-L-Blue',
+            "magento.product.product",
+            "MH09-L-Blue",
         )
 
     def test_compute_new_qty(self):
@@ -55,15 +58,14 @@ class TestUpdateStockQty(Magento2SyncTestCase):
             self.assertEqual(1, delayable_cls.call_count)
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual((binding,), delay_args)
-            self.assertEqual(20, delay_kwargs.get('priority'))
+            self.assertEqual(20, delay_kwargs.get("priority"))
 
             delayable.export_inventory.assert_called_with(
-                fields=['magento_qty'],
+                fields=["magento_qty"],
             )
 
     def test_compute_new_qty_different_field(self):
-        stock_field = self.env.ref(
-            'stock.field_product_product__qty_available')
+        stock_field = self.env.ref("stock.field_product_product__qty_available")
         self.backend.product_stock_field_id = stock_field
         product = self.binding_product.odoo_id
         binding = self.binding_product
@@ -82,15 +84,17 @@ class TestUpdateStockQty(Magento2SyncTestCase):
         self.assertEqual(binding.magento_qty, 0.0)
 
         # create an outgoing move
-        customer_location = self.env.ref('stock.stock_location_customers')
-        outgoing = self.env['stock.move'].create({
-            'name': product.name,
-            'product_id': product.id,
-            'product_uom_qty': 11,
-            'product_uom': product.uom_id.id,
-            'location_id': self.env.ref('stock.stock_location_stock').id,
-            'location_dest_id': customer_location.id,
-        })
+        customer_location = self.env.ref("stock.stock_location_customers")
+        outgoing = self.env["stock.move"].create(
+            {
+                "name": product.name,
+                "product_id": product.id,
+                "product_uom_qty": 11,
+                "product_uom": product.uom_id.id,
+                "location_id": self.env.ref("stock.stock_location_stock").id,
+                "location_dest_id": customer_location.id,
+            }
+        )
         outgoing._action_confirm()
         outgoing._action_assign()
 
@@ -111,10 +115,10 @@ class TestUpdateStockQty(Magento2SyncTestCase):
             self.assertEqual(1, delayable_cls.call_count)
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual((binding,), delay_args)
-            self.assertEqual(20, delay_kwargs.get('priority'))
+            self.assertEqual(20, delay_kwargs.get("priority"))
 
             delayable.export_inventory.assert_called_with(
-                fields=['magento_qty'],
+                fields=["magento_qty"],
             )
 
     def test_export_qty_api(self):
@@ -125,72 +129,77 @@ class TestUpdateStockQty(Magento2SyncTestCase):
         with self.mock_with_delay():  # disable job
             binding.recompute_magento_qty()
 
-        with recorder.use_cassette(
-                'test_product_export_qty') as cassette:
+        with recorder.use_cassette("test_product_export_qty") as cassette:
             # call the job directly
-            binding.export_inventory(fields=['magento_qty'])
+            binding.export_inventory(fields=["magento_qty"])
 
             # Verify the stock update request was sent (don't check exact count
             # due to cassette interaction duplication)
             stock_requests = [
-                r for r in cassette.requests
-                if r.body and b'stockItem' in r.body
+                r for r in cassette.requests if r.body and b"stockItem" in r.body
             ]
             self.assertTrue(len(stock_requests) >= 1)
             self.assertEqual(
-                json.loads(stock_requests[0].body.decode('utf-8')),
-                {"stockItem": {"qty": 30.0, "is_in_stock": 1}})
+                json.loads(stock_requests[0].body.decode("utf-8")),
+                {"stockItem": {"qty": 30.0, "is_in_stock": 1}},
+            )
 
     def test_export_product_inventory_write(self):
         with self.mock_with_delay() as (delayable_cls, delayable):
-            self.binding_product.write({
-                'magento_qty': 333,
-                'backorders': 'yes-and-notification',
-                'manage_stock': 'yes',
-            })
+            self.binding_product.write(
+                {
+                    "magento_qty": 333,
+                    "backorders": "yes-and-notification",
+                    "manage_stock": "yes",
+                }
+            )
 
             self.assertEqual(1, delayable_cls.call_count)
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual((self.binding_product,), delay_args)
-            self.assertEqual(20, delay_kwargs.get('priority'))
+            self.assertEqual(20, delay_kwargs.get("priority"))
 
             cargs, ckwargs = delayable.export_inventory.call_args
             self.assertFalse(cargs)
-            self.assertEqual(set(ckwargs.keys()), set(['fields']))
+            self.assertEqual(set(ckwargs.keys()), set(["fields"]))
             self.assertEqual(
-                set(ckwargs['fields']), set([
-                    'manage_stock', 'backorders', 'magento_qty']))
+                set(ckwargs["fields"]),
+                set(["manage_stock", "backorders", "magento_qty"]),
+            )
 
     def test_export_product_inventory_write_job(self):
         with self.mock_with_delay():
-            self.binding_product.write({
-                'magento_qty': 333,
-                'backorders': 'yes-and-notification',
-                'manage_stock': 'yes',
-            })
+            self.binding_product.write(
+                {
+                    "magento_qty": 333,
+                    "backorders": "yes-and-notification",
+                    "manage_stock": "yes",
+                }
+            )
 
-        with recorder.use_cassette(
-                'test_product_export_qty_config') as cassette:
+        with recorder.use_cassette("test_product_export_qty_config") as cassette:
             self.binding_product.export_inventory(
-                fields=['backorders', 'magento_qty', 'manage_stock']
+                fields=["backorders", "magento_qty", "manage_stock"]
             )
 
             # Verify the stock config update was sent
             stock_requests = [
-                r for r in cassette.requests
-                if r.body and b'stockItem' in r.body
+                r for r in cassette.requests if r.body and b"stockItem" in r.body
             ]
             self.assertTrue(len(stock_requests) >= 1)
             self.assertEqual(
-                json.loads(stock_requests[0].body.decode('utf-8')),
-                {"stockItem": {
-                    'qty': 333.,
-                    'is_in_stock': 1,
-                    'manage_stock': 1,
-                    'use_config_manage_stock': 0,
-                    'backorders': 2,
-                    'use_config_backorders': 0,
-                }})
+                json.loads(stock_requests[0].body.decode("utf-8")),
+                {
+                    "stockItem": {
+                        "qty": 333.0,
+                        "is_in_stock": 1,
+                        "manage_stock": 1,
+                        "use_config_manage_stock": 0,
+                        "backorders": 2,
+                        "use_config_backorders": 0,
+                    }
+                },
+            )
 
     def test_compute_new_qty_with_location(self):
         product = self.binding_product.odoo_id
@@ -200,12 +209,14 @@ class TestUpdateStockQty(Magento2SyncTestCase):
         self.assertEqual(binding.magento_qty, 0.0)
 
         # Create a sub-location for the test (demo data may not be available)
-        warehouse = self.env.ref('stock.warehouse0')
-        my_location = self.env['stock.location'].create({
-            'name': 'Test Components',
-            'usage': 'internal',
-            'location_id': warehouse.lot_stock_id.id,
-        })
+        warehouse = self.env.ref("stock.warehouse0")
+        my_location = self.env["stock.location"].create(
+            {
+                "name": "Test Components",
+                "usage": "internal",
+                "location_id": warehouse.lot_stock_id.id,
+            }
+        )
         my_location_id = my_location.id
         binding = binding.with_context(location=my_location_id)
 
@@ -228,8 +239,8 @@ class TestUpdateStockQty(Magento2SyncTestCase):
             self.assertEqual(1, delayable_cls.call_count)
             delay_args, delay_kwargs = delayable_cls.call_args
             self.assertEqual((binding,), delay_args)
-            self.assertEqual(20, delay_kwargs.get('priority'))
+            self.assertEqual(20, delay_kwargs.get("priority"))
 
             delayable.export_inventory.assert_called_with(
-                fields=['magento_qty'],
+                fields=["magento_qty"],
             )

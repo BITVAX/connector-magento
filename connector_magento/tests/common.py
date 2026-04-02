@@ -11,7 +11,6 @@ Helpers usable in the tests
 
 import xmlrpc.client
 import logging
-import urllib
 
 import mock
 
@@ -29,25 +28,25 @@ from vcr import VCR
 logging.getLogger("vcr").setLevel(logging.WARNING)
 
 recorder = VCR(
-    record_mode='once',
-    cassette_library_dir=join(dirname(__file__), 'fixtures/cassettes'),
-    path_transformer=VCR.ensure_suffix('.yaml'),
-    filter_headers=['Authorization'],
+    record_mode="once",
+    cassette_library_dir=join(dirname(__file__), "fixtures/cassettes"),
+    path_transformer=VCR.ensure_suffix(".yaml"),
+    filter_headers=["Authorization"],
 )
 
 
 class MockResponseImage(object):
-
-    def __init__(self, resp_data, code=200, msg='OK'):
+    def __init__(self, resp_data, code=200, msg="OK"):
         self.resp_data = resp_data
         self.content = resp_data
         self.status_code = code
         self.msg = msg
-        self.headers = {'content-type': 'image/jpeg'}
+        self.headers = {"content-type": "image/jpeg"}
 
     def raise_for_status(self):
         if self.status_code != 200:
             import requests as _req
+
             response = _req.models.Response()
             response.status_code = self.status_code
             raise _req.exceptions.HTTPError(response=response)
@@ -64,26 +63,25 @@ class MockResponseImage(object):
 def mock_urlopen_image():
     """Mock requests.get for image URLs only, pass through API calls."""
     import requests as _requests
+
     _original_get = _requests.get
 
     def _patched_get(url, **kwargs):
-        if '/media/catalog/product/' in str(url):
-            return MockResponseImage('')
+        if "/media/catalog/product/" in str(url):
+            return MockResponseImage("")
         return _original_get(url, **kwargs)
 
-    with mock.patch('requests.get', side_effect=_patched_get):
+    with mock.patch("requests.get", side_effect=_patched_get):
         yield
 
 
 class MagentoHelper(object):
-
     def __init__(self, cr, registry, model_name):
         self.cr = cr
         self.model = registry(model_name)
 
     def get_next_id(self):
-        self.cr.execute("SELECT max(external_id::int) FROM %s " %
-                        self.model._table)
+        self.cr.execute("SELECT max(external_id::int) FROM %s " % self.model._table)
         result = self.cr.fetchone()
         if result:
             return int(result[0] or 0) + 1
@@ -92,7 +90,7 @@ class MagentoHelper(object):
 
 
 class MagentoTestCase(TransactionComponentCase):
-    """ Base class - Test the imports from a Magento Mock.
+    """Base class - Test the imports from a Magento Mock.
 
     The data returned by Magento are those created for the
     demo version of Magento on a standard 1.9 version.
@@ -102,61 +100,64 @@ class MagentoTestCase(TransactionComponentCase):
         super(MagentoTestCase, self).setUp()
         self.recorder = recorder
         # disable commits when run from pytest/nosetest
-        odoo.tools.config['test_enable'] = True
+        odoo.tools.config["test_enable"] = True
 
-        self.backend_model = self.env['magento.backend']
-        warehouse = self.env.ref('stock.warehouse0')
+        self.backend_model = self.env["magento.backend"]
+        warehouse = self.env.ref("stock.warehouse0")
         self.backend = self.backend_model.create(
-            {'name': 'Test Magento',
-             'version': '2.0',
-             'location': 'http://magento',
-             'token': 'test_token',
-             'warehouse_id': warehouse.id}
+            {
+                "name": "Test Magento",
+                "version": "2.0",
+                "location": "http://magento",
+                "token": "test_token",
+                "warehouse_id": warehouse.id,
+            }
         )
         # payment method needed to import a sale order
-        self.workflow = self.env.ref(
-            'sale_automatic_workflow.manual_validation')
-        self.journal = self.env['account.journal'].create(
-            {'name': 'Check', 'type': 'cash', 'code': 'Check'}
+        self.workflow = self.env.ref("sale_automatic_workflow.manual_validation")
+        self.journal = self.env["account.journal"].create(
+            {"name": "Check", "type": "cash", "code": "Check"}
         )
-        payment_method = self.env.ref(
-            'account.account_payment_method_manual_in'
-        )
-        for name in ['checkmo', 'ccsave', 'cashondelivery']:
-            self.env['account.payment.mode'].create(
-                {'name': name,
-                 'workflow_process_id': self.workflow.id,
-                 'import_rule': 'always',
-                 'days_before_cancel': 0,
-                 'bank_account_link': 'fixed',
-                 'payment_method_id': payment_method.id,
-                 'fixed_journal_id': self.journal.id})
+        payment_method = self.env.ref("account.account_payment_method_manual_in")
+        for name in ["checkmo", "ccsave", "cashondelivery"]:
+            self.env["account.payment.mode"].create(
+                {
+                    "name": name,
+                    "workflow_process_id": self.workflow.id,
+                    "import_rule": "always",
+                    "days_before_cancel": 0,
+                    "bank_account_link": "fixed",
+                    "payment_method_id": payment_method.id,
+                    "fixed_journal_id": self.journal.id,
+                }
+            )
 
     def get_magento_helper(self, model_name):
         return MagentoHelper(self.cr, self.registry, model_name)
 
-    def create_binding_no_export(self, model_name, odoo_id, external_id=None,
-                                 **cols):
+    def create_binding_no_export(self, model_name, odoo_id, external_id=None, **cols):
         if isinstance(odoo_id, models.BaseModel):
             odoo_id = odoo_id.id
         values = {
-            'backend_id': self.backend.id,
-            'odoo_id': odoo_id,
-            'external_id': external_id,
+            "backend_id": self.backend.id,
+            "odoo_id": odoo_id,
+            "external_id": external_id,
         }
         if cols:
             values.update(cols)
-        return self.env[model_name].with_context(
-            connector_no_export=True
-        ).create(values)
+        return (
+            self.env[model_name].with_context(connector_no_export=True).create(values)
+        )
 
     @contextmanager
     def mock_with_delay(self):
-        with mock.patch('odoo.addons.queue_job.models.base.DelayableRecordset',
-                        name='DelayableRecordset', spec=True
-                        ) as delayable_cls:
+        with mock.patch(
+            "odoo.addons.queue_job.models.base.DelayableRecordset",
+            name="DelayableRecordset",
+            spec=True,
+        ) as delayable_cls:
             # prepare the mocks
-            delayable = mock.MagicMock(name='DelayableBinding')
+            delayable = mock.MagicMock(name="DelayableBinding")
             delayable_cls.return_value = delayable
             yield delayable_cls, delayable
 
@@ -166,29 +167,27 @@ class MagentoTestCase(TransactionComponentCase):
         return args[1:]
 
     @staticmethod
-    def _log_cassette_usage(cassette, label=''):
+    def _log_cassette_usage(cassette, label=""):
         """Log VCR cassette usage statistics."""
         total = len(cassette)
         used = cassette.play_count
         pct = (100 * used / total) if total else 0
         _logger.info(
-            "Cassette %s: %d/%d interactions used (%.0f%%)",
-            label, used, total, pct)
+            "Cassette %s: %d/%d interactions used (%.0f%%)", label, used, total, pct
+        )
 
     def _import_record(self, model_name, magento_id, cassette=True):
-        assert model_name.startswith('magento.')
-        table_name = model_name.replace('.', '_')
+        assert model_name.startswith("magento.")
+        table_name = model_name.replace(".", "_")
         # strip 'magento_' from the model_name to shorted the filename
-        filename = 'import_%s_%s' % (table_name[8:], str(magento_id))
+        filename = "import_%s_%s" % (table_name[8:], str(magento_id))
 
         def run_import():
             with mute_logger(
-                    'odoo.addons.mail.models.mail_mail',
-                    'odoo.models.unlink',
-                    'odoo.tests'):
+                "odoo.addons.mail.models.mail_mail", "odoo.models.unlink", "odoo.tests"
+            ):
                 with mock_urlopen_image():
-                    return self.env[model_name].import_record(
-                        self.backend, magento_id)
+                    return self.env[model_name].import_record(self.backend, magento_id)
 
         if cassette:
             with self.recorder.use_cassette(filename) as cass:
@@ -198,22 +197,23 @@ class MagentoTestCase(TransactionComponentCase):
             run_import()
 
         binding = self.env[model_name].search(
-            [('backend_id', '=', self.backend.id),
-             ('external_id', '=', str(magento_id))]
+            [
+                ("backend_id", "=", self.backend.id),
+                ("external_id", "=", str(magento_id)),
+            ]
         )
         if not binding:
             # For models where external_id differs from the import ID
             # (e.g. sale.order uses increment_id as external_id, not entity_id)
             # Search by the most recently created binding for this backend
             binding = self.env[model_name].search(
-                [('backend_id', '=', self.backend.id)],
-                order='id desc', limit=1
+                [("backend_id", "=", self.backend.id)], order="id desc", limit=1
             )
         self.assertEqual(len(binding), 1)
         return binding
 
     def assert_records(self, expected_records, records):
-        """ Assert that a recordset matches with expected values.
+        """Assert that a recordset matches with expected values.
 
         The expected records are a list of nametuple, the fields of the
         namedtuple must have the same name than the recordset's fields.
@@ -270,44 +270,45 @@ class MagentoTestCase(TransactionComponentCase):
         for record in equals:
             # same records
             message.append(
-                ' ✓ {}({})'.format(
+                " ✓ {}({})".format(
                     model_name,
-                    ', '.join('%s: %s' % (field, getattr(record, field)) for
-                              field in fields)
+                    ", ".join(
+                        "%s: %s" % (field, getattr(record, field)) for field in fields
+                    ),
                 )
             )
         for expected in not_found:
             # missing records
             message.append(
-                ' - {}({})'.format(
+                " - {}({})".format(
                     model_name,
-                    ', '.join('%s: %s' % (k, v) for
-                              k, v in list(expected._asdict().items()))
+                    ", ".join(
+                        "%s: %s" % (k, v) for k, v in list(expected._asdict().items())
+                    ),
                 )
             )
         for record in records:
             # extra records
             message.append(
-                ' + {}({})'.format(
+                " + {}({})".format(
                     model_name,
-                    ', '.join('%s: %s' % (field, getattr(record, field)) for
-                              field in fields)
+                    ", ".join(
+                        "%s: %s" % (field, getattr(record, field)) for field in fields
+                    ),
                 )
             )
         if not_found or records:
-            raise AssertionError('Records do not match:\n\n{}'.format(
-                '\n'.join(message)
-            ))
+            raise AssertionError(
+                "Records do not match:\n\n{}".format("\n".join(message))
+            )
 
 
 class MagentoSyncTestCase(MagentoTestCase):
-
     def setUp(self):
         super(MagentoSyncTestCase, self).setUp()
         # Mute logging of notifications about new checkpoints
         with mute_logger(
-                'odoo.addons.mail.models.mail_mail',
-                'odoo.models.unlink',
-                'odoo.tests'):
-            with recorder.use_cassette('metadata'):
+            "odoo.addons.mail.models.mail_mail", "odoo.models.unlink", "odoo.tests"
+        ):
+            with recorder.use_cassette("metadata"):
                 self.backend.synchronize_metadata()

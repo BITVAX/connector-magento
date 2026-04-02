@@ -5,18 +5,16 @@
 
 import logging
 from odoo.addons.component.core import Component
-from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector.components.mapper import mapping, only_create
-from odoo import tools
+from odoo.addons.connector.components.mapper import mapping
 
 _logger = logging.getLogger(__name__)
 
 
 class AttributeValueImporter(Component):
-    _name = 'magento.product.attribute.value.import'
-    _inherit = ['magento.importer']
-    _apply_on = ['magento.product.attribute.value']
-    _magento_id_field = 'external_id'
+    _name = "magento.product.attribute.value.import"
+    _inherit = ["magento.importer"]
+    _apply_on = ["magento.product.attribute.value"]
+    _magento_id_field = "external_id"
 
     # def _create_data(self, map_record, **kwargs):
     #     return map_record.values(for_create=True, **kwargs)
@@ -26,51 +24,58 @@ class AttributeValueImporter(Component):
 
     def run(self, external_id, **kwargs):
         self.magento_attribute = kwargs.get("magento_attribute", None)
-        return super(AttributeValueImporter, self).run(external_id, False, None, **kwargs)
+        return super(AttributeValueImporter, self).run(
+            external_id, False, None, **kwargs
+        )
 
 
 class AttributeValueImportMapper(Component):
-    _name = 'magento.product.attribute.value.import.mapper'
-    _inherit = 'magento.import.mapper'
-    _apply_on = ['magento.product.attribute.value']
+    _name = "magento.product.attribute.value.import.mapper"
+    _inherit = "magento.import.mapper"
+    _apply_on = ["magento.product.attribute.value"]
 
     direct = [
-        ('label', 'label'), # Was name
+        ("label", "label"),  # Was name
     ]
 
     @mapping
     def code_and_default_values(self, record):
-        return {
-            'code': record['value'],
-            'main_text_code': record['value']
-        }
+        return {"code": record["value"], "main_text_code": record["value"]}
 
     @mapping
     def external_id(self, record):
-        return {'external_id': '{}_{}'.format(self.options.magento_attribute.attribute_id,record.get('value'))}
+        return {
+            "external_id": "{}_{}".format(
+                self.options.magento_attribute.attribute_id, record.get("value")
+            )
+        }
 
     @mapping
     def backend_id(self, record):
-        return {'backend_id': self.backend_record.id}
+        return {"backend_id": self.backend_record.id}
 
     @mapping
     def odoo_id(self, record):
-        odoo_value = self.env['product.attribute.value'].search([
-            ('name', '=', record.get('label')),
-            ('attribute_id', '=', self.options.magento_attribute.odoo_id.id)
-        ])
+        odoo_value = self.env["product.attribute.value"].search(
+            [
+                ("name", "=", record.get("label")),
+                ("attribute_id", "=", self.options.magento_attribute.odoo_id.id),
+            ]
+        )
         if not odoo_value:
-            odoo_value = self.env['product.attribute.value'].create({
-                'name': record.get('label'),
-                'attribute_id': self.options.magento_attribute.odoo_id.id,
-            })
+            odoo_value = self.env["product.attribute.value"].create(
+                {
+                    "name": record.get("label"),
+                    "attribute_id": self.options.magento_attribute.odoo_id.id,
+                }
+            )
 
         return {
-            'odoo_id': odoo_value.id if odoo_value and len(odoo_value) == 1 else None,
-            'magento_attribute_id': self.options.magento_attribute.id,
+            "odoo_id": odoo_value.id if odoo_value and len(odoo_value) == 1 else None,
+            "magento_attribute_id": self.options.magento_attribute.id,
         }
 
-    '''
+    """
     def finalize(self, map_record, values):
         if map_record.parent:
             # Generate external_id as attribute_id and code
@@ -100,4 +105,4 @@ class AttributeValueImportMapper(Component):
                 # By passing the odoo id it will not try to create a new odoo value !
                 values.update({'odoo_id': odoo_value.id})
         return values
-    '''
+    """
