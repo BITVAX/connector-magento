@@ -90,8 +90,11 @@ class MagentoBinding(models.AbstractModel):
         for binding in self:
             binding.with_delay(
                 identity_key=identity_exact,
-                description=_("Import %s (ID: %s) from Magento")
-                % (binding.display_name or "", binding.external_id or ""),
+                description=_("Import %(name)s (ID: %(ext_id)s) from Magento")
+                % {
+                    "name": binding.display_name or "",
+                    "ext_id": binding.external_id or "",
+                },
             ).import_record(binding.backend_id, binding.external_id, force=True)
         return {
             "type": "ir.actions.client",
@@ -126,8 +129,11 @@ class MagentoBinding(models.AbstractModel):
         for binding in self:
             binding.with_delay(
                 identity_key=identity_exact,
-                description=_("Delete %s (ID: %s) from Magento")
-                % (binding.display_name or "", binding.external_id or ""),
+                description=_("Delete %(name)s (ID: %(ext_id)s) from Magento")
+                % {
+                    "name": binding.display_name or "",
+                    "ext_id": binding.external_id or "",
+                },
             ).export_delete_record(binding.backend_id, binding.external_id)
         return {
             "type": "ir.actions.client",

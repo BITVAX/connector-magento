@@ -14,7 +14,8 @@ from odoo.exceptions import ValidationError
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector.exception import MappingError
-from odoo.addons.connector_magento.models.product.exporter import get_exported_value
+
+from ..product.exporter import get_exported_value
 
 _logger = logging.getLogger(__name__)
 
@@ -70,9 +71,12 @@ class ProductTemplateDefinitionExporter(Component):
             data = self._create(record)
             if not data:
                 raise UserWarning(
-                    "Create did not returned anything on %s with binding id %s",
-                    self._name,
-                    self.binding.id,
+                    _(
+                        "Create did not returned anything on %(name)s"
+                        " with binding id %(binding_id)s",
+                        name=self._name,
+                        binding_id=self.binding.id,
+                    )
                 )
             self._update_binding_record_after_create(record)
         return _("Record exported with ID %s on Magento.") % self.external_id
@@ -91,10 +95,10 @@ class ProductTemplateDefinitionExporter(Component):
             if not self.binding.code_prefix:
                 raise ValidationError(
                     _(
-                        "Cannot export configurable template '%s' (ID: %s): "
+                        "Cannot export configurable template '%(name)s' (ID: %(id)s): "
                         "it MUST have a 'code_prefix' to use as SKU in Magento."
                     )
-                    % (self.binding.display_name, self.binding.id)
+                    % {"name": self.binding.display_name, "id": self.binding.id}
                 )
             return self.binding.code_prefix
         else:
@@ -272,10 +276,12 @@ class ProductTemplateDefinitionExporter(Component):
             # We are already in the storeview specific export
             return
         # TODO Fix and enable again
-        """
-        for storeview_id in self.env['magento.storeview'].search([('backend_id', '=', self.backend_record.id)]):
-            self.binding.export_product_template_for_storeview(storeview_id=storeview_id)
-        """
+        # for storeview_id in self.env['magento.storeview'].search(
+        #     [('backend_id', '=', self.backend_record.id)]
+        # ):
+        #     self.binding.export_product_template_for_storeview(
+        #         storeview_id=storeview_id
+        #     )
 
 
 class ProductTemplateExportMapper(Component):
@@ -315,7 +321,7 @@ class ProductTemplateExportMapper(Component):
 
     @mapping
     def price(self, record):
-        if record.backend_id.pricelist_id.discount_policy == "with_discount":
+        if record.backend_id.pricelist_id:
             price = record.with_context(
                 pricelist=record.backend_id.pricelist_id.id
             ).price

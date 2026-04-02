@@ -473,7 +473,6 @@ class WizardModel(models.TransientModel):
             # ('virtual', 'Virtual Product'),
             # ('downloadable', 'Downloadable Product'),
         ],
-        string="Product Type",
         compute="_compute_product_type",
         readonly=True,
         store=False,

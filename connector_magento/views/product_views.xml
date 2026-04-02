@@ -453,11 +453,11 @@
         <field name="inherit_id" ref="product.product_template_kanban_view" />
         <field name="arch" type="xml">
             <!-- Add field declaration for magento_sync_state -->
-            <field name="id" position="after">
+            <field name="currency_id" position="after">
                 <field name="magento_sync_state" />
             </field>
             <!-- Add Magento badge in the kanban card header -->
-            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="before">
+            <xpath expr="//main" position="before">
                 <div class="magento_kanban_badge_container">
                     <!-- Published badge (green) -->
                     <t t-if="record.magento_sync_state.raw_value == 'published'">
@@ -498,11 +498,11 @@
         <field name="inherit_id" ref="product.product_kanban_view" />
         <field name="arch" type="xml">
             <!-- Add field declaration for magento_sync_state -->
-            <field name="id" position="after">
+            <field name="activity_state" position="after">
                 <field name="magento_sync_state" />
             </field>
             <!-- Add Magento badge in the kanban card -->
-            <xpath expr="//div[hasclass('oe_kanban_details')]" position="before">
+            <xpath expr="//main" position="before">
                 <div class="magento_kanban_badge_container">
                     <!-- Published badge (green) -->
                     <t t-if="record.magento_sync_state.raw_value == 'published'">

@@ -5,7 +5,7 @@ import odoo
 from odoo import _
 
 from odoo.addons.component.core import Component
-from odoo.addons.queue_job.exception import NothingToDoJob
+from ...exception import NothingToDoJob
 
 
 class MagentoPickingExporter(Component):

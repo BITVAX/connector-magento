@@ -73,34 +73,32 @@ class AttributeValueImportMapper(Component):
             "magento_attribute_id": self.options.magento_attribute.id,
         }
 
-    """
-    def finalize(self, map_record, values):
-        if map_record.parent:
-            # Generate external_id as attribute_id and code
-            values.update({
-                'external_id': "%s_%s" % (str(map_record.parent.source.get('attribute_id')), tools.ustr(values.get('code'))),
-            })
-            # Fetch odoo attribute id - is required
-            attribute_binder = self.binder_for(model='magento.product.attribute')
-            magento_attribute = attribute_binder.to_internal(map_record.parent.source.get('attribute_id'), unwrap=False)
-            if magento_attribute:
-                # Set odoo attribute id if it does already exists
-                values.update({
-                    'attribute_id': magento_attribute.odoo_id.id
-                })
-            # Search for existing entry
-            binder = self.binder_for(model='magento.product.attribute.value')
-            magento_value = binder.to_internal(values['external_id'], unwrap=False)
-            if magento_value:
-                values.update({'id': magento_value.id})
-                return values
-            # Do also search for an existing odoo value with the same name
-            odoo_value = self.env['product.attribute.value'].search([
-                ('name', '=', values.get('name')),
-                ('attribute_id', '=', magento_attribute.odoo_id.id)
-            ])
-            if odoo_value:
-                # By passing the odoo id it will not try to create a new odoo value !
-                values.update({'odoo_id': odoo_value.id})
-        return values
-    """
+    # def finalize(self, map_record, values):
+    #     if map_record.parent:
+    #         # Generate external_id as attribute_id and code
+    #         values.update({
+    #             'external_id': "%s_%s" % (str(map_record.parent.source.get('attribute_id')), tools.ustr(values.get('code'))),
+    #         })
+    #         # Fetch odoo attribute id - is required
+    #         attribute_binder = self.binder_for(model='magento.product.attribute')
+    #         magento_attribute = attribute_binder.to_internal(map_record.parent.source.get('attribute_id'), unwrap=False)
+    #         if magento_attribute:
+    #             # Set odoo attribute id if it does already exists
+    #             values.update({
+    #                 'attribute_id': magento_attribute.odoo_id.id
+    #             })
+    #         # Search for existing entry
+    #         binder = self.binder_for(model='magento.product.attribute.value')
+    #         magento_value = binder.to_internal(values['external_id'], unwrap=False)
+    #         if magento_value:
+    #             values.update({'id': magento_value.id})
+    #             return values
+    #         # Do also search for an existing odoo value with the same name
+    #         odoo_value = self.env['product.attribute.value'].search([
+    #             ('name', '=', values.get('name')),
+    #             ('attribute_id', '=', magento_attribute.odoo_id.id)
+    #         ])
+    #         if odoo_value:
+    #             # By passing the odoo id it will not try to create a new odoo value !
+    #             values.update({'odoo_id': odoo_value.id})
+    #     return values

@@ -27,7 +27,7 @@ class ResPartner(models.Model):
         inverse_name="odoo_id",
         string="Magento Address Bindings",
     )
-    birthday = fields.Date(string="Birthday")
+    birthday = fields.Date()
     company = fields.Char(string="Company name (in Magento)")
 
     @api.model
@@ -82,8 +82,8 @@ class MagentoResPartner(models.Model):
     updated_at = fields.Datetime(string="Updated At (on Magento)", readonly=True)
     emailid = fields.Char(string="E-mail address")
     taxvat = fields.Char(string="Magento VAT")
-    newsletter = fields.Boolean(string="Newsletter")
-    guest_customer = fields.Boolean(string="Guest Customer")
+    newsletter = fields.Boolean()
+    guest_customer = fields.Boolean()
     consider_as_company = fields.Boolean(
         string="Considered as company",
         help="An account imported with a 'company' in "
@@ -110,7 +110,6 @@ class MagentoAddress(models.Model):
     is_default_shipping = fields.Boolean(string="Default Shipping")
     magento_partner_id = fields.Many2one(
         comodel_name="magento.res.partner",
-        string="Magento Partner",
         required=True,
         ondelete="cascade",
     )

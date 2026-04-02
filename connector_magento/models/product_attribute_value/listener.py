@@ -19,6 +19,8 @@ class MagentoProductAttributeValueBindingExportListener(Component):
             if external_id:
                 record.with_delay(
                     identity_key=identity_exact,
-                    description=_("Delete attribute value '%s' (ID: %s) from Magento")
-                    % (record.name or "", external_id),
+                    description=_(
+                        "Delete attribute value '%(name)s' (ID: %(ext_id)s) from Magento"
+                    )
+                    % {"name": record.name or "", "ext_id": external_id},
                 ).export_delete_record(record.backend_id, external_id)

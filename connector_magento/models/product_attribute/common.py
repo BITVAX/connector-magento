@@ -55,7 +55,6 @@ class MagentoProductAttribute(models.Model):
             ("hidden", "Hidden"),
             ("None", "None"),
         ],
-        "Frontend Input",
         default="select",
     )
 
@@ -173,7 +172,7 @@ class ProductAttributeAdapter(Component):
         # We do need the complete result after the create function - to work on the options...
         return result.get("attribute_id")
 
-    def create(self, data, storeview_code=None, **kwargs):
+    def create(self, data, storeview_code=None, **kwargs):  # pylint: disable=method-required-super
         """Create a record on the external system"""
         if self.work.magento_api._location.version == "2.0":
             if self._magento2_name:

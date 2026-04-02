@@ -13,7 +13,7 @@ class AccountTaxBatchImporter(Component):
 
     def _import_record(self, external_id, job_options=None):
         """Delay a job for the import"""
-        super()._import_record(external_id, job_options=job_options)
+        return super()._import_record(external_id, job_options=job_options)
 
     def run(self, filters=None):
         """Run the synchronization"""
@@ -52,8 +52,26 @@ class AccountTaxImportMapper(Component):
     @mapping
     def odoo_id(self, record):
         # Just use the first tax class - user has to rework it in checkpoint !
+        tax = self.env["account.tax"].search([], limit=1)
+        if tax:
+            return {"odoo_id": tax.id}
+        # No tax exists yet: provide required defaults for account.tax (v18+)
+        tax_group = self.env["account.tax.group"].search([], limit=1)
+        if not tax_group:
+            tax_group = self.env["account.tax.group"].create(
+                {"name": "Magento Taxes"}
+            )
+        company = self.backend_record.company_id or self.env.company
+        country = (
+            company.account_fiscal_country_id
+            or company.country_id
+            or self.env.ref("base.us", raise_if_not_found=False)
+        )
         return {
-            "odoo_id": self.env["account.tax"].search([], limit=1).id,
+            "name": "{}-{}".format(record["class_name"], record["class_type"]),
+            "amount": 0.0,
+            "tax_group_id": tax_group.id,
+            "country_id": country.id if country else False,
         }
 
     @mapping

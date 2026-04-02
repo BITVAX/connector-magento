@@ -89,7 +89,7 @@ class ProductAttributeValueAdapter(Component):
         )
         return res
 
-    def write(self, id, data, **kwargs):
+    def write(self, id, data, **kwargs):  # pylint: disable=method-required-super
         """Update a record on the external system"""
         if "binding_attribute" in kwargs:
             value = self._call(
@@ -102,7 +102,7 @@ class ProductAttributeValueAdapter(Component):
         else:
             raise JobError("Data error: binding or attribute_code not found in kwargs")
 
-    def create(self, data, **kwargs):
+    def create(self, data, **kwargs):  # pylint: disable=method-required-super
         """Create a record on the external system"""
         if "binding_attribute" in kwargs:
             value = self._call(

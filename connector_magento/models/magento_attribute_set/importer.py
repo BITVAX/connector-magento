@@ -72,6 +72,7 @@ class AttributeSet(Component):
                 attributebinder.to_internal(record.get("attribute_id")).id
             )
         binding.write({"attribute_ids": [(6, 0, attributes)]})
+        return
         # Batch Import attribute groups
         # importer = self.component(usage='batch.importer', model_name='magento.product.attributes.group')
         # importer.run()

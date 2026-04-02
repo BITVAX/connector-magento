@@ -90,7 +90,7 @@ class MagentoBindingBackendRead(models.TransientModel):
     magento_binding_model = fields.Selection(
         "_get_magento_binding_model", required=True
     )
-    magento_id = fields.Char("Magento Id", required=True)
+    magento_id = fields.Char(required=True)
 
     def action_get_info(self):
         self.ensure_one()

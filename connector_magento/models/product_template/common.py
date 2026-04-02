@@ -294,7 +294,7 @@ class ProductTemplate(models.Model):
         compute="_compute_magento_variant_bind_ids",
         string="Magento Variant Bindings",
     )
-    auto_create_variants = fields.Boolean("Auto Create Variants", default=True)
+    auto_create_variants = fields.Boolean(default=True)
     magento_default_code = fields.Char(string="Default code used for magento")
     job_ids = fields.Many2many("queue.job", string="Jobs")
     open_job_count = fields.Integer(
@@ -324,7 +324,6 @@ class ProductTemplate(models.Model):
     )
 
     has_variant_attributes = fields.Boolean(
-        string="Has Variant Attributes",
         compute="_compute_has_variant_attributes",
         store=True,
         help="Technical field: True if template has attributes that create variants (create_variant='always' or 'dynamic')",
@@ -341,7 +340,6 @@ class ProductTemplate(models.Model):
             ("partial", "Partially Published"),
             ("published", "Published"),
         ],
-        string="Magento Sync State",
         compute="_compute_magento_sync_info",
         store=True,
         help="Synchronization state with Magento backends",

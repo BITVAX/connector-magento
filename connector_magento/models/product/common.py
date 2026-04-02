@@ -9,7 +9,6 @@ from odoo import _, api, fields, models
 
 # # from odoo.addons.queue_job.job import job3, related_action
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.translate import _
 
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
@@ -101,7 +100,6 @@ class MagentoProductProduct(models.Model):
     magento_url_key = fields.Char(string="URL Key", store=True, readonly=False)
     attribute_set_id = fields.Many2one(
         comodel_name="magento.product.attribute.set",
-        string="Attribute Set",
         required=True,
         default=lambda self: (
             self.env["magento.product.attribute.set"].search([], limit=1) or False
@@ -288,7 +286,6 @@ class ProductProduct(models.Model):
             ("partial", "Partially Published"),
             ("published", "Published"),
         ],
-        string="Magento Sync State",
         compute="_compute_magento_sync_info",
         store=True,
         help="Synchronization state with Magento backends",

@@ -78,7 +78,7 @@ class TestImportProductTemplate(Magento2SyncTestCase):
         v1 = variants.filtered(lambda v: v.external_id == "CONF-TEST-S-Red")
         self.assertEqual(len(v1), 1)
         self.assertEqual(
-            v1.odoo_id.type, "product", "Simple variant should be storable product"
+            v1.odoo_id.type, "consu", "Simple variant should be storable product"
         )
 
         # Variant 2: CONF-TEST-M-Blue

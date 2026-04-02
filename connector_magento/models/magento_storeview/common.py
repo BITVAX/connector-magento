@@ -24,10 +24,10 @@ class MagentoStoreview(models.Model):
 
     name = fields.Char(required=True, readonly=True)
     code = fields.Char(readonly=True)
-    enabled = fields.Boolean(string="Enabled", readonly=True)
-    sort_order = fields.Integer(string="Sort Order", readonly=True)
+    enabled = fields.Boolean(readonly=True)
+    sort_order = fields.Integer(readonly=True)
     store_id = fields.Many2one(
-        comodel_name="magento.store", string="Store", ondelete="cascade", readonly=True
+        comodel_name="magento.store", ondelete="cascade", readonly=True
     )
     lang_id = fields.Many2one(comodel_name="res.lang", string="Language")
     team_id = fields.Many2one(comodel_name="crm.team", string="Sales Team")
@@ -121,7 +121,7 @@ class StoreviewAdapter(Component):
     _magento2_model = "store/storeConfigs"
     _admin_path = "system_store/editStore/store_id/{id}"
 
-    def read(self, external_id, attributes=None):
+    def read(self, external_id, attributes=None):  # pylint: disable=method-required-super
         """Conveniently split into two separate APIs
         :rtype: dict
         """

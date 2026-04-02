@@ -36,10 +36,10 @@ class TestExportPicking(Magento2SyncTestCase):
         magento_shop.send_picking_done_mail = True
 
     def _validate_picking(self):
-        """Validate picking — Odoo 16 compatible."""
+        """Validate picking — Odoo 18 compatible."""
         self.picking.action_assign()
         for move in self.picking.move_ids:
-            move.quantity_done = move.product_uom_qty
+            move.quantity = move.product_uom_qty
         self.picking.button_validate()
 
     def test_export_complete_picking_trigger(self):
@@ -102,8 +102,8 @@ class TestExportPicking(Magento2SyncTestCase):
         # Prepare a partial picking
         # The sale order contains 2 lines with 1 product each
         self.picking.action_assign()
-        self.picking.move_ids[0].quantity_done = 1
-        self.picking.move_ids[1].quantity_done = 0
+        self.picking.move_ids[0].quantity = 1
+        self.picking.move_ids[1].quantity = 0
         # Remove reservation for line index 1
         self.picking.move_ids[1].move_line_ids.unlink()
 
@@ -142,8 +142,8 @@ class TestExportPicking(Magento2SyncTestCase):
     def test_export_partial_picking_job(self):
         """Exporting a partial picking"""
         self.picking.action_assign()
-        self.picking.move_ids[0].quantity_done = 1
-        self.picking.move_ids[1].quantity_done = 0
+        self.picking.move_ids[0].quantity = 1
+        self.picking.move_ids[1].quantity = 0
 
         with self.mock_with_delay():
             backorder_action = self.picking.button_validate()

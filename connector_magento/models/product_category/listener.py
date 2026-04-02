@@ -47,8 +47,10 @@ class MagentoProductCategoryBindingExportListener(Component):
             if external_id:
                 record.with_delay(
                     identity_key=identity_exact,
-                    description=_("Delete category '%s' (ID: %s) from Magento")
-                    % (_get_cat_name(record), external_id),
+                    description=_(
+                        "Delete category '%(name)s' (ID: %(ext_id)s) from Magento"
+                    )
+                    % {"name": _get_cat_name(record), "ext_id": external_id},
                 ).export_delete_record(record.backend_id, external_id)
 
 
@@ -81,8 +83,10 @@ class MagentoProductCategoryExportListener(Component):
                 if external_id:
                     binding.with_delay(
                         identity_key=identity_exact,
-                        description=_("Delete category '%s' (ID: %s) from Magento")
-                        % (_get_cat_name(binding), external_id),
+                        description=_(
+                            "Delete category '%(name)s' (ID: %(ext_id)s) from Magento"
+                        )
+                        % {"name": _get_cat_name(binding), "ext_id": external_id},
                     ).export_delete_record(binding.backend_id, external_id)
 
 

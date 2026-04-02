@@ -56,7 +56,7 @@
                     type="object"
                     string="Create Binding"
                     class="oe_highlight"
-                    invisible="not product_type or warning_message ilike 'ERROR'"
+                    invisible="not product_type or 'ERROR' in (warning_message or '')"
                 />
                         or
                         <button special="cancel" string="Cancel" />

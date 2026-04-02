@@ -20,7 +20,7 @@ from odoo import _, fields
 
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.connector.exception import IDMissingInBackend
-from odoo.addons.queue_job.exception import NothingToDoJob
+from ..exception import NothingToDoJob
 
 _logger = logging.getLogger(__name__)
 
@@ -190,12 +190,12 @@ class MagentoImporter(AbstractComponent):
                     backend_name = self.backend_record.name or "Magento"
                     external_id = self.external_id or "unknown"
                     base_record.message_post(
-                        body=self.env._(
+                        body=_(
                             "Imported from %(backend)s (ID: %(ext_id)s)",
                             backend=backend_name,
                             ext_id=external_id,
                         ),
-                        subject=self.env._("Magento Import"),
+                        subject=_("Magento Import"),
                         message_type="notification",
                     )
                 except Exception as e:
@@ -318,7 +318,10 @@ class DelayedBatchImporter(AbstractComponent):
     def _get_job_description(self, external_id):
         """Build a descriptive job name for the queue. Override in subclasses."""
         model_desc = self.model._description or self.model._name
-        return _("Import %s #%s from Magento") % (model_desc, external_id)
+        return _("Import %(model)s #%(ext_id)s from Magento") % {
+            "model": model_desc,
+            "ext_id": external_id,
+        }
 
 
 class SimpleRecordImporter(Component):

@@ -215,8 +215,8 @@ class ProductTemplateImporter(Component):
         if images_to_delete:
             images_to_delete.unlink()
 
-    def _after_import(self, binding):
-        super()._after_import(binding)
+    def _after_import(self, binding, **kwargs):
+        super()._after_import(binding, **kwargs)
 
         def sort_by_position(elem):
             return elem.position
@@ -285,6 +285,7 @@ class ProductTemplateImporter(Component):
         translation_importer.run(
             self.external_id, binding, mapper="magento.product.template.import.mapper"
         )
+        return
 
     def _import_stock(self, binding):
         stock_importer = self.component(
@@ -557,7 +558,7 @@ class ProductTemplateImportMapper(Component):
 
     @mapping
     def type(self, record):
-        return {"detailed_type": "product"}
+        return {"type": "consu", "is_storable": True}
 
     @mapping
     def attributes_no_variant(self, record):

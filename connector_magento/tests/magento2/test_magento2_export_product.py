@@ -27,7 +27,8 @@ class TestExportProduct(Magento2SyncTestCase):
             {
                 "name": name,
                 "default_code": default_code,
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
                 "list_price": extra.pop("list_price", 49.99),
                 "weight": extra.pop("weight", 1.0),
             }
@@ -187,7 +188,7 @@ class TestExportProductTemplate(Magento2SyncTestCase):
         template = self.env["product.template"].create(
             {
                 "name": "Configurable Export Test",
-                "type": "product",
+                "type": "consu",
                 "list_price": 99.0,
                 "code_prefix": "CONF-EXPORT",
                 "attribute_line_ids": [

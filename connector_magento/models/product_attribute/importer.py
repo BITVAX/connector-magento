@@ -56,6 +56,7 @@ class AttributeImporter(Component):
                 magento_attribute=binding,
                 attribute_code=record["attribute_code"],
             )
+        return
 
     def _before_import(self):
         record = self.magento_record
@@ -95,20 +96,18 @@ class AttributeImporter(Component):
         binding.with_context(connector_no_export=True).write(data)
         _logger.debug("%d updated from magento %s", binding, self.external_id)
         # Disabled for now - should be configurable using backend option
-        """
-        record = self.magento_record
-        values = [r['value'] for r in record['options']]
-        _logger.info("Got values from magento: %s", values)
-        odoo_magento_values = self.env['magento.product.attribute.value'].search([
-            ('magento_attribute_id', '=', binding.id),
-            ('code', 'not in', values),
-        ])
-        _logger.info("Got following odoo magento values %s to delete: %r", [
-            ('magento_attribute_id', '=', binding.id),
-            ('code', 'not in', values),
-        ], odoo_magento_values)
-        odoo_magento_values.with_context(connector_no_export=True).unlink()
-        """
+        # record = self.magento_record
+        # values = [r['value'] for r in record['options']]
+        # _logger.info("Got values from magento: %s", values)
+        # odoo_magento_values = self.env['magento.product.attribute.value'].search([
+        #     ('magento_attribute_id', '=', binding.id),
+        #     ('code', 'not in', values),
+        # ])
+        # _logger.info("Got following odoo magento values %s to delete: %r", [
+        #     ('magento_attribute_id', '=', binding.id),
+        #     ('code', 'not in', values),
+        # ], odoo_magento_values)
+        # odoo_magento_values.with_context(connector_no_export=True).unlink()
         return
 
 

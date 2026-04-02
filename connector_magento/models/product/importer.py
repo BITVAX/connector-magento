@@ -14,7 +14,8 @@ from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import convert, mapping, only_create
 from odoo.addons.connector.exception import InvalidDataError, MappingError
-from odoo.addons.connector_magento.components.mapper import normalize_datetime
+
+from ...components.mapper import normalize_datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -134,7 +135,7 @@ class CatalogImageImporter(Component):
                         )
                     image_ids.append(
                         {
-                            "image_1920": base64.b64encode(binary),
+                            "attachment_image": base64.b64encode(binary),
                             "name": image_data.get("label", ""),
                             "sequence": image_data.get("position", c),
                         }
@@ -142,43 +143,23 @@ class CatalogImageImporter(Component):
                 c = c + 1
 
             if binding._name == "magento.product.template":
-                # Templates: eliminar solo imágenes del configurable (sin variantes)
-                # y crear las nuevas. Las imágenes de variantes NO se tocan.
                 template = binding.odoo_id
-                configurable_images = template.image_ids.filtered(
-                    lambda img: not img.product_variant_ids
-                )
-                configurable_images.unlink()
-                # Crear nuevas imágenes del configurable
-                for img_vals in image_ids:
-                    self.env["base_multi_image.image"].create(
-                        {
-                            **img_vals,
-                            "owner_model": "product.template",
-                            "owner_id": template.id,
-                            # Sin product_variant_ids = imagen del configurable
-                        }
-                    )
             else:
-                # Variantes: eliminar imágenes de ESTA variante y crear nuevas
-                # SIN pasar por product.product.image_ids (evita el _inverse_image_ids)
                 template = binding.odoo_id.product_tmpl_id
-                variant = binding.odoo_id
-                # Eliminar imágenes existentes de esta variante específica
-                variant_images = template.image_ids.filtered(
-                    lambda img: img.product_variant_ids.ids == [variant.id]
+
+            ctx = {"connector_no_export": True}
+            tmpl = template.with_context(**ctx)
+            # Clear existing images
+            tmpl.image_ids.unlink()
+            # Set main image via template (triggers _inverse)
+            if image_ids:
+                tmpl.image_1920 = image_ids[0]["attachment_image"]
+            # Additional images
+            for img_vals in image_ids[1:]:
+                tmpl._set_multi_image(
+                    image=img_vals["attachment_image"],
+                    name=img_vals.get("name", ""),
                 )
-                variant_images.unlink()
-                # Crear nuevas imágenes para esta variante
-                for img_vals in image_ids:
-                    self.env["base_multi_image.image"].create(
-                        {
-                            **img_vals,
-                            "owner_model": "product.template",
-                            "owner_id": template.id,
-                            "product_variant_ids": [(6, 0, [variant.id])],
-                        }
-                    )
 
 
 # TODO: not needed, use inheritance
@@ -292,10 +273,10 @@ class ProductImportMapper(Component):
 
     @mapping
     def type(self, record):
-        if record["type_id"] in ("simple"):
-            return {"detailed_type": "product"}
+        if record["type_id"] in ("simple",):
+            return {"type": "consu", "is_storable": True}
         elif record["type_id"] in ("virtual", "downloadable", "giftcard", "grouped"):
-            return {"detailed_type": "service"}
+            return {"type": "service"}
         return
 
     @mapping
@@ -747,6 +728,7 @@ class ProductImporter(Component):
         if self.magento_record["type_id"] == "bundle":
             bundle_importer = self.component(usage="product.bundle.importer")
             bundle_importer.run(binding, self.magento_record)
+        return
 
     def _preprocess_magento_record(self):
         for attr in self.magento_record.get("custom_attributes", []):

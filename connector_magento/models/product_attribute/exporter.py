@@ -85,10 +85,9 @@ class ProductAttributeExporter(Component):
                 binding_extra_vals={"magento_attribute_id": self.binding.id},
                 binding_attribute=self.binding,
             )
+        return
 
-    """
-    We do overwrite the _create - because we need to analyze the result
-    """
+    # We do overwrite the _create - because we need to analyze the result
 
     def _create(self, data):
         """Create the Magento record"""
@@ -107,17 +106,16 @@ class ProductAttributeExporter(Component):
         self._update_attribute_with_result(result)
         return result
 
-    """
-    Does not work as expected - because we don't get back the value from magento on option add call !
-    def _after_export(self):
-        # Here we do check for not exported attribute values - and we do export them
-        exported_ids = [mvalue.odoo_id.id for mvalue in self.binding.magento_attribute_value_ids]
-        export_values = self.binding.value_ids.filtered(lambda v: v.id not in exported_ids)
-        for value in export_values:
-            self._export_dependency(value, 'magento.product.attribute.value', binding_extra_vals={
-                'magento_attribute_id': self.binding.id
-            })
-    """
+    # Does not work as expected - because we don't get back the value
+    # from magento on option add call !
+    # def _after_export(self):
+    #     # Here we do check for not exported attribute values - and we do export them
+    #     exported_ids = [mvalue.odoo_id.id for mvalue in self.binding.magento_attribute_value_ids]
+    #     export_values = self.binding.value_ids.filtered(lambda v: v.id not in exported_ids)
+    #     for value in export_values:
+    #         self._export_dependency(value, 'magento.product.attribute.value', binding_extra_vals={
+    #             'magento_attribute_id': self.binding.id
+    #         })
 
 
 class ProductAttributeExportMapper(Component):
@@ -125,12 +123,10 @@ class ProductAttributeExportMapper(Component):
     _inherit = "magento.export.mapper"
     _apply_on = ["magento.product.attribute"]
 
-    """
-    No Support for translatable currently on export !
-    translatable = [
-        ('name', 'default_frontend_label')
-    ]
-    """
+    # No Support for translatable currently on export !
+    # translatable = [
+    #     ('name', 'default_frontend_label')
+    # ]
 
     direct = [
         ("name", "default_frontend_label"),

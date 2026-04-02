@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=print-used
 """Generate VCR cassette for configurable product template import test.
 
 Usage: python3 generate_configurable_cassette.py

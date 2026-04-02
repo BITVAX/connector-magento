@@ -100,6 +100,7 @@ class SaleOrder(models.Model):
             magento_order = order.magento_bind_ids[0]
             if magento_order.magento_parent_id:
                 self.parent_id = magento_order.magento_parent_id.odoo_id
+        return
 
     def _magento_cancel(self):
         """Cancel sales order on Magento
@@ -182,7 +183,7 @@ class MagentoSaleOrderLine(models.Model):
         # override 'magento.binding', can't be INSERTed if True:
         required=False,
     )
-    tax_rate = fields.Float(string="Tax Rate", digits=dp.get_precision("Account"))
+    tax_rate = fields.Float(digits=dp.get_precision("Account"))
     notes = fields.Char()
 
     @api.model

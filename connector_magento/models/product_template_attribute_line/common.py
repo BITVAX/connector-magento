@@ -40,8 +40,8 @@ class MagentoTemplateAttributeline(models.Model):
         ondelete="cascade",
         index=True,
     )
-    label = fields.Char("Label")
-    position = fields.Integer("Position")
+    label = fields.Char()
+    position = fields.Integer()
 
     backend_id = fields.Many2one(
         related="magento_attribute_id.backend_id",

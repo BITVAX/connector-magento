@@ -49,14 +49,13 @@ class MagentoBackend(models.Model):
         )
         return field
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(required=True)
     version = fields.Selection(selection="select_versions", required=True)
     location = fields.Char(
-        string="Location",
         required=True,
         help="Url to magento application",
     )
-    admin_location = fields.Char(string="Admin Location")
+    admin_location = fields.Char()
     use_custom_api_path = fields.Boolean(
         string="Custom Api Path",
         help="The default API path is '/index.php/rest/V1'. "
@@ -95,7 +94,6 @@ class MagentoBackend(models.Model):
         "notification message in the chatter of the related record.",
     )
     sale_prefix = fields.Char(
-        string="Sale Prefix",
         help="A prefix put before the name of imported sales orders.\n"
         "For instance, if the prefix is 'mag-', the sales "
         "order 100000692 in Magento, will be named 'mag-100000692' "
@@ -103,7 +101,6 @@ class MagentoBackend(models.Model):
     )
     warehouse_id = fields.Many2one(
         comodel_name="stock.warehouse",
-        string="Warehouse",
         required=True,
         help="Warehouse used to compute the stock quantities.",
     )
@@ -116,7 +113,6 @@ class MagentoBackend(models.Model):
     website_ids = fields.One2many(
         comodel_name="magento.website",
         inverse_name="backend_id",
-        string="Website",
         readonly=True,
     )
     default_lang_id = fields.Many2one(
@@ -136,7 +132,6 @@ class MagentoBackend(models.Model):
 
     default_attribute_set_id = fields.Many2one(
         comodel_name="magento.product.attribute.set",
-        string="Default Attribute Set",
         help="If a default attribute set is selected, products exported "
         "without a attribute set will be linked to it.",
     )
@@ -150,7 +145,6 @@ class MagentoBackend(models.Model):
     )
     special_price_pricelist_id = fields.Many2one(
         comodel_name="product.pricelist",
-        string="Special Price Pricelist",
         help="Pricelist to calculate special_price on export. ",
     )
     # TODO? add a field `auto_activate` -> activate a cron
@@ -224,7 +218,6 @@ class MagentoBackend(models.Model):
             ("create", "Create New Products"),
             ("update", "Update Existing Products"),
         ],
-        string="Product Import Strategy",
         help="Precise which strategy you want to use for the product import",
         default="always",
     )
@@ -235,7 +228,6 @@ class MagentoBackend(models.Model):
             ("create", "Create New Products"),
             ("update", "Update Existing Products"),
         ],
-        string="Product Export Strategy",
         help="Precise which strategy you want to use for the product export",
         default="always",
     )

@@ -2,9 +2,6 @@
 # Copyright 2020 Opener B.V.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-# pylint: disable=missing-manifest-dependency
-# disable warning on 'vcr' missing in manifest: this is only a dependency for
-# dev/tests
 
 """
 Magento2 version of the helpers from tests/common.py

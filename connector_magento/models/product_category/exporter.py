@@ -2,6 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 
+from odoo import _
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 
@@ -72,7 +74,7 @@ class ProductCategoryExporter(Component):
             mag_cat_id, source_mag_cat_id, target_mag_cat_id
         )
         if not res:
-            raise UserWarning("Failed to move category")
+            raise UserWarning(_("Failed to move category"))
         binding.magento_parent_id = parent_binding
 
     def _export_dependencies(self):

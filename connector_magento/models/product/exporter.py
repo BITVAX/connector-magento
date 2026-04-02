@@ -80,9 +80,12 @@ class ProductProductExporter(Component):
             data = self._create(record)
             if not data:
                 raise UserWarning(
-                    "Create did not returned anything on %s with binding id %s",
-                    self._name,
-                    self.binding.id,
+                    _(
+                        "Create did not returned anything on %(name)s"
+                        " with binding id %(binding_id)s",
+                        name=self._name,
+                        binding_id=self.binding.id,
+                    )
                 )
             self._update_binding_record_after_create(record)
             self.external_id = record.get("sku")
@@ -162,11 +165,11 @@ class ProductProductExporter(Component):
             if not self.binding.default_code:
                 raise ValidationError(
                     _(
-                        "Cannot export variant '%s' (ID: %s): it belongs to a configurable "
+                        "Cannot export variant '%(name)s' (ID: %(id)s): it belongs to a configurable "
                         "template and MUST have a 'default_code' (SKU) defined. "
                         "SKU cannot be auto-generated for configurable variants."
                     )
-                    % (self.binding.display_name, self.binding.id)
+                    % {"name": self.binding.display_name, "id": self.binding.id}
                 )
             sku = self.binding.default_code[0:64]
         else:
@@ -206,10 +209,8 @@ class ProductProductExporter(Component):
                 _logger.info("Try next sku: %s", sku)
             self.binding.with_context(connector_no_export=True).external_id = sku
             # TODO: Add backend option to enable / disable this !
-            """
-            if not self.binding.default_code:
-                self.binding.with_context(connector_no_export=True).default_code = sku
-            """
+            # if not self.binding.default_code:
+            #     self.binding.with_context(connector_no_export=True).default_code = sku
         return super()._create_data(map_record, **kwargs)
 
     def _create(self, data, **kwargs):
@@ -592,7 +593,7 @@ class ProductProductExportMapper(Component):
         custom_attributes = []
         if record.product_type in ["simple", "grouped"]:
             for line in record.attribute_line_ids:
-                """ Deal with Attributes in the 'variant' part of Odoo"""
+                # Deal with Attributes in the 'variant' part of Odoo
                 matt_id = line.attribute_id.magento_bind_ids.filtered(
                     lambda m: m.backend_id == record.backend_id
                 )
@@ -616,7 +617,7 @@ class ProductProductExportMapper(Component):
                         }
                     )
             for value_id in record.product_template_attribute_value_ids:
-                """ Deal with Attributes in the 'template' part of Odoo"""
+                # Deal with Attributes in the 'template' part of Odoo
                 if value_id.attribute_id.create_variant != "always":
                     continue
                 matt_id = value_id.attribute_id.magento_bind_ids.filtered(

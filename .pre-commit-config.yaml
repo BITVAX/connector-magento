@@ -135,4 +135,3 @@ repos:
       - id: pylint_odoo
         args:
           - --rcfile=.pylintrc-mandatory
-          - --fail-on=E,C

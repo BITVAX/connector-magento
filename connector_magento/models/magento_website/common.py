@@ -22,10 +22,9 @@ class MagentoWebsite(models.Model):
 
     name = fields.Char(required=True, readonly=True)
     code = fields.Char(readonly=True)
-    sort_order = fields.Integer(string="Sort Order", readonly=True)
+    sort_order = fields.Integer(readonly=True)
     root_category_id = fields.Many2one(
         comodel_name="magento.product.category",
-        string="Root Category",
     )
 
     store_ids = fields.One2many(

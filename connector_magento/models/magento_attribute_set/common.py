@@ -14,7 +14,7 @@ class MagentoProductAttributesSet(models.Model):
     _parent_name = "backend_id"
 
     name = fields.Char(string="Set Name")
-    display_name = fields.Char(string="Display Name", compute="_compute_display_name")
+    display_name = fields.Char(compute="_compute_display_name")
     attribute_ids = fields.Many2many("magento.product.attribute", string="Attribute(s)")
     # attribute_group_ids = fields.One2many('magento.product.attributes.group', 'attribute_set_id', string="Groups")
 

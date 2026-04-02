@@ -328,7 +328,12 @@ class TestSaleOrder(Magento2SyncTestCase):
     def test_alternate_currency_pricelist(self):
         """An order with an alternate currency selects a matching pricelist"""
         # Ensure a Euro pricelist exists
-        self.env.ref("product.list0").copy(
+        base_pricelist = self.env["product.pricelist"].search([], limit=1)
+        if not base_pricelist:
+            base_pricelist = self.env["product.pricelist"].create(
+                {"name": "Default"}
+            )
+        base_pricelist.copy(
             {
                 "currency_id": self.env.ref("base.EUR").id,
                 "sequence": 999,

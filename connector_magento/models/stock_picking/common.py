@@ -31,7 +31,6 @@ class MagentoStockPicking(models.Model):
     )
     picking_method = fields.Selection(
         selection=[("complete", "Complete"), ("partial", "Partial")],
-        string="Picking Method",
         required=True,
     )
 
@@ -123,8 +122,11 @@ class MagentoBindingStockPickingListener(Component):
         # have been added and it would be exported twice.
         with_tracking = bool(record.carrier_tracking_ref)
         record.with_delay(
-            description=_("Export picking %s for %s")
-            % (record.name or "", record.origin or record.name or ""),
+            description=_("Export picking %(picking)s for %(order)s")
+            % {
+                "picking": record.name or "",
+                "order": record.origin or record.name or "",
+            },
         ).export_picking_done(with_tracking=with_tracking)
 
 

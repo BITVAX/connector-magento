@@ -51,8 +51,8 @@ class MagentoBaseExporter(AbstractComponent):
         assert self.external_id
         model_desc = self.binding._description or self.binding._name
         self.binding.with_delay(
-            description=_("Re-import %s #%s from Magento")
-            % (model_desc, self.external_id),
+            description=_("Re-import %(model)s #%(ext_id)s from Magento")
+            % {"model": model_desc, "ext_id": self.external_id},
         ).import_record(self.backend_record, self.external_id, force=True)
 
     def _should_import(self):
@@ -126,12 +126,12 @@ class MagentoBaseExporter(AbstractComponent):
                     backend_name = self.backend_record.name or "Magento"
                     external_id = self.external_id or "pending"
                     base_record.message_post(
-                        body=self.env._(
+                        body=_(
                             "Exported to %(backend)s (ID: %(ext_id)s)",
                             backend=backend_name,
                             ext_id=external_id,
                         ),
-                        subject=self.env._("Magento Export"),
+                        subject=_("Magento Export"),
                         message_type="notification",
                     )
                 except Exception as e:

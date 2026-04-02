@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=print-used
 """
 Patch VCR cassettes with missing Magento 2 API responses.
 

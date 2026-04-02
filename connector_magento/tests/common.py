@@ -1,9 +1,7 @@
 # Copyright 2013-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-# pylint: disable=missing-manifest-dependency,sql-injection
-# disable warning on 'vcr' missing in manifest: this is only a dependency for
-# dev/tests
+# pylint: disable=sql-injection
 
 """
 Helpers usable in the tests
@@ -59,6 +57,21 @@ class MockResponseImage:
         return self.code
 
 
+def _make_pixel_jpeg():
+    """Generate a valid 1x1 red pixel JPEG using PIL."""
+    from io import BytesIO
+
+    from PIL import Image as PILImage
+
+    img = PILImage.new("RGB", (1, 1), color="red")
+    buf = BytesIO()
+    img.save(buf, format="JPEG")
+    return buf.getvalue()
+
+
+_PIXEL_JPEG = _make_pixel_jpeg()
+
+
 @contextmanager
 def mock_urlopen_image():
     """Mock requests.get for image URLs only, pass through API calls."""
@@ -68,7 +81,7 @@ def mock_urlopen_image():
 
     def _patched_get(url, **kwargs):
         if "/media/catalog/product/" in str(url):
-            return MockResponseImage("")
+            return MockResponseImage(_PIXEL_JPEG)
         return _original_get(url, **kwargs)
 
     with mock.patch("requests.get", side_effect=_patched_get):
@@ -101,11 +114,30 @@ class MagentoTestCase(TransactionComponentCase):
     demo version of Magento on a standard 1.9 version.
     """
 
+    @classmethod
+    def _request_handler(cls, s, r, /, **kw):
+        """Allow external requests so VCR cassettes can intercept them."""
+        from odoo.tests.common import _super_send
+
+        return _super_send(s, r, **kw)
+
     def setUp(self):
         super().setUp()
         self.recorder = recorder
         # disable commits when run from pytest/nosetest
         odoo.tools.config["test_enable"] = True
+
+        # Ensure a sale journal exists (v18 requires it for invoice creation)
+        if not self.env["account.journal"].search(
+            [("type", "=", "sale"), ("company_id", "=", self.env.company.id)], limit=1
+        ):
+            self.env["account.journal"].create(
+                {"name": "Sales Journal", "type": "sale", "code": "SAL"}
+            )
+
+        # Ensure a default pricelist exists (v18 has no demo pricelist)
+        if not self.env["product.pricelist"].search([], limit=1):
+            self.env["product.pricelist"].create({"name": "Default USD"})
 
         self.backend_model = self.env["magento.backend"]
         warehouse = self.env.ref("stock.warehouse0")
