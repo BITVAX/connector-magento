@@ -16,7 +16,6 @@ import json
 import os
 import re
 
-
 # ── Magento 2 entity definitions ─────────────────────────────────
 
 ATTRIBUTE_SETS = {
@@ -373,7 +372,7 @@ def duplicate_consumed_interactions(raw_text):
 
 def patch_cassette(fpath, dry_run=False):
     """Patch a single cassette file. Returns list of added interaction descriptions."""
-    with open(fpath, "r") as f:
+    with open(fpath) as f:
         raw_text = f.read()
 
     needed = collect_needed_interactions(raw_text)

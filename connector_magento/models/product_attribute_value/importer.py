@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # © 2016 Sodexis
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 
@@ -24,9 +24,7 @@ class AttributeValueImporter(Component):
 
     def run(self, external_id, **kwargs):
         self.magento_attribute = kwargs.get("magento_attribute", None)
-        return super(AttributeValueImporter, self).run(
-            external_id, False, None, **kwargs
-        )
+        return super().run(external_id, False, None, **kwargs)
 
 
 class AttributeValueImportMapper(Component):

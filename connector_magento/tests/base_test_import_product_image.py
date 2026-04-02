@@ -1,22 +1,23 @@
 # Copyright 2015-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import mock
-from base64 import b64encode
-
-from odoo import models
-from odoo.addons.component.core import WorkContext, Component
-from odoo.addons.component.tests.common import (
-    TransactionComponentRegistryCase,
-)
-from .. import components
-from ..models.product.importer import CatalogImageImporter
-from .common import MockResponseImage
-
 # simple square of 4 px filled with green in png, used for the product
 # Valid minimal 1x1 PNG image (proper binary, no UTF-8 encoding issues)
 import struct
 import zlib
+from base64 import b64encode
+from unittest import mock
+
+from odoo import models
+
+from odoo.addons.component.core import Component, WorkContext
+from odoo.addons.component.tests.common import (
+    TransactionComponentRegistryCase,
+)
+
+from .. import components
+from ..models.product.importer import CatalogImageImporter
+from .common import MockResponseImage
 
 
 def _make_minimal_png():
@@ -46,7 +47,7 @@ class TestImportProductImage(TransactionComponentRegistryCase):
     """Test the imports of the image of the products."""
 
     def setUp(self):
-        super(TestImportProductImage, self).setUp()
+        super().setUp()
         self._setup_registry(self)
         self.addCleanup(self._teardown_registry, self)
         self.backend_model = self.env["magento.backend"]

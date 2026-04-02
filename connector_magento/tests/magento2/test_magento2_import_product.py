@@ -3,12 +3,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo.addons.connector.exception import InvalidDataError
+
 from .common import Magento2SyncTestCase, recorder
 
 
 class TestImportProduct(Magento2SyncTestCase):
     def setUp(self):
-        super(TestImportProduct, self).setUp()
+        super().setUp()
 
     def _create_category(self, name, external_id):
         category_model = self.env["product.category.public"]

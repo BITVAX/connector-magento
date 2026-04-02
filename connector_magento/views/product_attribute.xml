@@ -1,66 +1,64 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <!-- Form view for magento.product.attribute with notebook -->
-        <record id="view_magento_product_attribute_form" model="ir.ui.view">
-            <field name="name">magento.product.attribute.form</field>
-            <field name="model">magento.product.attribute</field>
-            <field name="arch" type="xml">
-                <form string="Magento Product Attribute">
-                    <sheet>
-                        <notebook>
-                            <!-- First page for magento.product.attribute fields -->
-                            <page string="Magento Fields">
-                                <group>
-                                    <field name="name" />
-                                    <field name="backend_id" />
-                                    <field name="external_id" />
-                                    <field name="odoo_id" />
-                                    <field name="field_id" />
-                                    <field name="attribute_id" />
-                                    <field name="attribute_code" />
-                                    <field name="is_user_defined" />
-                                    <field name="exclude" />
-                                    <field name="nl2br" />
-                                    <field name="frontend_input" />
-                                    <field name="attribute_set_ids" />
-                                    <field name="is_pivot_attribute" />
-                                    <field name="data_str" />
-                                </group>
-                            </page>
-                            <!-- Second page for inherited product.attribute fields -->
-                            <page string="Inherited Fields">
-                                <group>
-                                    <field name="value_ids" />
-                                    <field name="sequence" />
-                                    <field name="attribute_line_ids" />
-                                    <field name="create_variant" />
-                                    <field name="number_related_products" />
-                                    <field name="product_tmpl_ids" />
-                                    <field name="display_type" />
-                                </group>
-                            </page>
-                        </notebook>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+    <!-- Form view for magento.product.attribute with notebook -->
+    <record id="view_magento_product_attribute_form" model="ir.ui.view">
+        <field name="name">magento.product.attribute.form</field>
+        <field name="model">magento.product.attribute</field>
+        <field name="arch" type="xml">
+            <form string="Magento Product Attribute">
+                <sheet>
+                    <notebook>
+                        <!-- First page for magento.product.attribute fields -->
+                        <page string="Magento Fields">
+                            <group>
+                                <field name="name" />
+                                <field name="backend_id" />
+                                <field name="external_id" />
+                                <field name="odoo_id" />
+                                <field name="field_id" />
+                                <field name="attribute_id" />
+                                <field name="attribute_code" />
+                                <field name="is_user_defined" />
+                                <field name="exclude" />
+                                <field name="nl2br" />
+                                <field name="frontend_input" />
+                                <field name="attribute_set_ids" />
+                                <field name="is_pivot_attribute" />
+                                <field name="data_str" />
+                            </group>
+                        </page>
+                        <!-- Second page for inherited product.attribute fields -->
+                        <page string="Inherited Fields">
+                            <group>
+                                <field name="value_ids" />
+                                <field name="sequence" />
+                                <field name="attribute_line_ids" />
+                                <field name="create_variant" />
+                                <field name="number_related_products" />
+                                <field name="product_tmpl_ids" />
+                                <field name="display_type" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <!-- Tree view for magento.product.attribute -->
-        <record id="view_magento_product_attribute_tree" model="ir.ui.view">
-            <field name="name">magento.product.attribute.tree</field>
-            <field name="model">magento.product.attribute</field>
-            <field name="arch" type="xml">
-                <list string="Magento Product Attribute">
-                    <field name="name" />
-                    <field name="odoo_id" />
-                    <field name="attribute_code" />
-                    <field name="is_user_defined" />
-                    <field name="exclude" />
-                    <field name="field_id" />
-                    <field name="frontend_input" />
-                </list>
-            </field>
-        </record>
-    </data>
+    <!-- Tree view for magento.product.attribute -->
+    <record id="view_magento_product_attribute_tree" model="ir.ui.view">
+        <field name="name">magento.product.attribute.tree</field>
+        <field name="model">magento.product.attribute</field>
+        <field name="arch" type="xml">
+            <list string="Magento Product Attribute">
+                <field name="name" />
+                <field name="odoo_id" />
+                <field name="attribute_code" />
+                <field name="is_user_defined" />
+                <field name="exclude" />
+                <field name="field_id" />
+                <field name="frontend_input" />
+            </list>
+        </field>
+    </record>
 </odoo>

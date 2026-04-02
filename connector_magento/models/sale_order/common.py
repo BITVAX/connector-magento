@@ -4,9 +4,9 @@
 
 import logging
 
-import odoo.addons.decimal_precision as dp
+from odoo import _, api, fields, models
 
-from odoo import models, fields, api, _
+import odoo.addons.decimal_precision as dp
 
 # from odoo.addons.queue_job.job import job3
 from odoo.addons.component.core import Component
@@ -71,7 +71,7 @@ class MagentoSaleOrder(models.Model):
         assert "magento_storeview_id" in filters, (
             "Missing information about Magento Storeview"
         )
-        _super = super(MagentoSaleOrder, self)
+        _super = super()
         return _super.import_batch(backend, filters=filters)
 
 
@@ -91,7 +91,7 @@ class SaleOrder(models.Model):
         For Magento sales orders, the magento parent order is stored
         in the binding, get it from there.
         """
-        super(SaleOrder, self).get_parent_id()
+        super().get_parent_id()
         for order in self:
             if not order.magento_bind_ids:
                 continue
@@ -120,7 +120,7 @@ class SaleOrder(models.Model):
     def write(self, vals):
         if vals.get("state") == "cancel":
             self._magento_cancel()
-        return super(SaleOrder, self).write(vals)
+        return super().write(vals)
 
     def _magento_link_binding_of_copy(self, new):
         # link binding of the canceled order to the new order, so the
@@ -146,7 +146,7 @@ class SaleOrder(models.Model):
         # Remap line bindings from old to new lines (maintains order)
         if self.state == "cancel":
             binding_model = self.env["magento.sale.order.line"]
-            for old_line, new_line in zip(old_lines, new.order_line):
+            for old_line, new_line in zip(old_lines, new.order_line, strict=False):
                 bindings = binding_model.search([("odoo_id", "=", old_line.id)])
                 if bindings:
                     bindings.write({"odoo_id": new_line.id})
@@ -190,7 +190,7 @@ class MagentoSaleOrderLine(models.Model):
         magento_order_id = vals["magento_order_id"]
         binding = self.env["magento.sale.order"].browse(magento_order_id)
         vals["order_id"] = binding.odoo_id.id
-        binding = super(MagentoSaleOrderLine, self).create(vals)
+        binding = super().create(vals)
         # FIXME triggers function field
         # The amounts (amount_total, ...) computed fields on 'sale.order' are
         # not triggered when magento.sale.order.line are created.
@@ -247,7 +247,7 @@ class SaleOrderAdapter(Component):
         if magento_storeview_ids is not None:
             filters["store_id"] = {"in": magento_storeview_ids}
 
-        return super(SaleOrderAdapter, self).search(filters)
+        return super().search(filters)
 
     def read(self, external_id, attributes=None):
         """Returns the information of a record
@@ -255,7 +255,7 @@ class SaleOrderAdapter(Component):
         :rtype: dict
         """
         # pylint: disable=method-required-super
-        return super(SaleOrderAdapter, self).read(external_id, attributes=attributes)
+        return super().read(external_id, attributes=attributes)
 
     def get_parent(self, external_id):
         res = self.read(external_id)

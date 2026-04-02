@@ -4,8 +4,11 @@
 
 
 from datetime import datetime, timedelta
-from odoo import models, fields
+
+from odoo import fields, models
+
 from odoo.addons.component.core import Component
+
 from ..magento_backend.common import IMPORT_DELTA_BUFFER
 
 

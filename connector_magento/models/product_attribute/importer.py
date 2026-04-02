@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # © 2016 Sodexis
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
+import uuid
+
+from odoo import tools
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
-import uuid
-from odoo import tools
 
 _logger = logging.getLogger(__name__)
 

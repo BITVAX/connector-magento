@@ -1,18 +1,20 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # Copyright 2019 Callino
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import base64
+import logging
+
 import magic
+from slugify import slugify
+
+from odoo import _
+from odoo.exceptions import ValidationError
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector.exception import MappingError
 from odoo.addons.connector_magento.models.product.exporter import get_exported_value
-from slugify import slugify
-import logging
-from odoo import _
-from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -27,7 +29,7 @@ class ProductTemplateDefinitionExporter(Component):
     def run(self, binding, *args, **kwargs):
         self.light_sync = kwargs.get("light_sync", False)
         _logger.info("Set light_sync=%s", self.light_sync)
-        return super(ProductTemplateDefinitionExporter, self).run(binding)
+        return super().run(binding)
 
     def _run(self, fields=None):
         """Flow of the synchronization, implemented in inherited classes"""
@@ -129,9 +131,7 @@ class ProductTemplateDefinitionExporter(Component):
                 i += 1
                 _logger.info("Try next sku: %s", sku)
             self.binding.with_context(connector_no_export=True).external_id = sku
-        return super(ProductTemplateDefinitionExporter, self)._create_data(
-            map_record, **kwargs
-        )
+        return super()._create_data(map_record, **kwargs)
 
     def _update_binding_record_after_create(self, data):
         """
@@ -256,7 +256,7 @@ class ProductTemplateDefinitionExporter(Component):
 
     def _export_dependencies(self):
         """Export the dependencies for the record"""
-        super(ProductTemplateDefinitionExporter, self)._export_dependencies()
+        super()._export_dependencies()
         self._create_attribute_lines()
         if not hasattr(self, "light_sync") or not self.light_sync:
             self._export_variants()
@@ -264,7 +264,7 @@ class ProductTemplateDefinitionExporter(Component):
 
     def _after_export(self):
         _logger.info("AFTEREXPORT: In _after_export at %s", __name__)
-        super(ProductTemplateDefinitionExporter, self)._after_export()
+        super()._after_export()
         storeview_id = (
             self.work.storeview_id if hasattr(self.work, "storeview_id") else False
         )

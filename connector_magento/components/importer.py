@@ -15,7 +15,9 @@ are already bound, to update the last sync date.
 """
 
 import logging
-from odoo import fields, _
+
+from odoo import _, fields
+
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import NothingToDoJob
@@ -31,7 +33,7 @@ class MagentoImporter(AbstractComponent):
     _usage = "record.importer"
 
     def __init__(self, work_context):
-        super(MagentoImporter, self).__init__(work_context)
+        super().__init__(work_context)
         self.external_id = None
         self.magento_record = None
 
@@ -210,12 +212,7 @@ class MagentoImporter(AbstractComponent):
             self.external_id = external_id
         if not isinstance(self.external_id, str):
             self.external_id = str(self.external_id)
-        lock_name = "import({}, {}, {}, {})".format(
-            self.backend_record._name,
-            self.backend_record.id,
-            self.work.model_name,
-            external_id,
-        )
+        lock_name = f"import({self.backend_record._name}, {self.backend_record.id}, {self.work.model_name}, {external_id})"
 
         if not isinstance(external_id, dict):
             try:

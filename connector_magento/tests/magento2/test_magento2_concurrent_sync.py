@@ -1,21 +1,21 @@
 # Copyright 2015-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import mock
+from unittest import mock
 
 from odoo import api
-from odoo.tests import common
 from odoo.modules.registry import Registry
+from odoo.tests import common
 
-from odoo.addons.queue_job.exception import RetryableJobError
 from odoo.addons.component.core import WorkContext
+from odoo.addons.queue_job.exception import RetryableJobError
 
 from .common import Magento2TestCase
 
 
 class TestConcurrentSync(Magento2TestCase):
     def setUp(self):
-        super(TestConcurrentSync, self).setUp()
+        super().setUp()
         self.registry2 = Registry.registries.get(common.get_db_name())
         self.cr2 = self.registry2.cursor()
         self.env2 = api.Environment(self.cr2, self.env.uid, {})

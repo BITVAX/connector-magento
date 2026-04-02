@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
+
 from .common import Magento2SyncTestCase, recorder
 
 
@@ -10,7 +11,7 @@ class TestExportPicking(Magento2SyncTestCase):
     """Test the export of pickings to Magento"""
 
     def setUp(self):
-        super(TestExportPicking, self).setUp()
+        super().setUp()
         # import a sales order
         self.order_binding = self._import_record(
             "magento.sale.order",

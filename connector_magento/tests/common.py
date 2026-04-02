@@ -9,21 +9,21 @@
 Helpers usable in the tests
 """
 
-import xmlrpc.client
 import logging
-
-import mock
+import xmlrpc.client
+from unittest import mock
 
 _logger = logging.getLogger(__name__)
-import odoo
-
-from os.path import dirname, join
 from contextlib import contextmanager
-from odoo import models
-from odoo.addons.component.tests.common import TransactionComponentCase
-from odoo.tools import mute_logger
+from os.path import dirname, join
 
 from vcr import VCR
+
+import odoo
+from odoo import models
+from odoo.tools import mute_logger
+
+from odoo.addons.component.tests.common import TransactionComponentCase
 
 logging.getLogger("vcr").setLevel(logging.WARNING)
 
@@ -35,7 +35,7 @@ recorder = VCR(
 )
 
 
-class MockResponseImage(object):
+class MockResponseImage:
     def __init__(self, resp_data, code=200, msg="OK"):
         self.resp_data = resp_data
         self.content = resp_data
@@ -75,7 +75,7 @@ def mock_urlopen_image():
         yield
 
 
-class MagentoHelper(object):
+class MagentoHelper:
     def __init__(self, cr, registry, model_name):
         self.cr = cr
         self.model = registry(model_name)
@@ -97,7 +97,7 @@ class MagentoTestCase(TransactionComponentCase):
     """
 
     def setUp(self):
-        super(MagentoTestCase, self).setUp()
+        super().setUp()
         self.recorder = recorder
         # disable commits when run from pytest/nosetest
         odoo.tools.config["test_enable"] = True
@@ -305,7 +305,7 @@ class MagentoTestCase(TransactionComponentCase):
 
 class MagentoSyncTestCase(MagentoTestCase):
     def setUp(self):
-        super(MagentoSyncTestCase, self).setUp()
+        super().setUp()
         # Mute logging of notifications about new checkpoints
         with mute_logger(
             "odoo.addons.mail.models.mail_mail", "odoo.models.unlink", "odoo.tests"

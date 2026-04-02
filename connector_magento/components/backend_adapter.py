@@ -4,16 +4,16 @@
 import copy
 import logging
 import socket
-from datetime import datetime, date
+from datetime import date, datetime
 from urllib.parse import quote_plus
 
 import requests
 
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import (
-    NetworkRetryableError,
-    JobError,
     IDMissingInBackend,
+    JobError,
+    NetworkRetryableError,
 )
 
 _logger = logging.getLogger(__name__)
@@ -60,7 +60,7 @@ def serialize_for_json(obj):
         return obj
 
 
-class MagentoLocation(object):
+class MagentoLocation:
     def __init__(self, location, token, version, verify_ssl, use_custom_api_path=False):
         self._location = location
         self.token = token
@@ -83,7 +83,7 @@ class MagentoLocation(object):
         return location
 
 
-class Magento2Client(object):
+class Magento2Client:
     def __init__(self, url, token, verify_ssl=True, use_custom_api_path=False):
         if not use_custom_api_path:
             url += "/" if not url.endswith("/") else ""
@@ -124,11 +124,13 @@ class Magento2Client(object):
             requests.exceptions.Timeout,
             requests.exceptions.ChunkedEncodingError,
         ) as err:
-            raise NetworkRetryableError("Network error calling Magento API: %s" % err)
-        except (socket.gaierror, socket.error, socket.timeout) as err:
+            raise NetworkRetryableError(
+                "Network error calling Magento API: %s" % err
+            ) from err
+        except (TimeoutError, OSError, socket.gaierror) as err:
             raise NetworkRetryableError(
                 "A network error caused the failure of the job: %s" % err
-            )
+            ) from err
 
         if res.status_code != 200:
             _logger.error(
@@ -198,13 +200,13 @@ class MagentoCRUDAdapter(AbstractComponent):
 
     def _call(self, method, arguments=None, http_method=None, storeview=None):
         try:
-            magento_api = getattr(self.work, "magento_api")
-        except AttributeError:
+            magento_api = self.work.magento_api
+        except AttributeError as err:
             raise AttributeError(
                 "You must provide a magento_api attribute with a "
                 "Magento2Client instance to be able to use the "
                 "Backend Adapter."
-            )
+            ) from err
         return magento_api.call(
             method, arguments, http_method=http_method, storeview=storeview
         )
@@ -391,7 +393,7 @@ class GenericAdapter(AbstractComponent):
         if not url:
             raise ValueError("No admin URL configured on the backend.")
         if hasattr(self.model, "_get_admin_path"):
-            admin_path = getattr(self.model, "_get_admin_path")(backend, external_id)
+            admin_path = self.model._get_admin_path(backend, external_id)
         else:
             admin_path = self._admin2_path or self._admin_path
         if admin_path is None:

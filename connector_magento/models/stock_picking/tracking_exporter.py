@@ -3,9 +3,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+
 from odoo import _
-from odoo.addons.queue_job.exception import FailedJobError
+
 from odoo.addons.component.core import Component
+from odoo.addons.queue_job.exception import FailedJobError
 
 _logger = logging.getLogger(__name__)
 

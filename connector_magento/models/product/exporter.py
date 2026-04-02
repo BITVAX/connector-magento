@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -9,9 +8,11 @@ import magic
 from slugify import slugify
 
 from odoo import _
+from odoo.exceptions import ValidationError
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
-from odoo.exceptions import ValidationError
+
 # import odoo.addons.connector_magento.models.get_exported_value
 
 
@@ -209,12 +210,12 @@ class ProductProductExporter(Component):
             if not self.binding.default_code:
                 self.binding.with_context(connector_no_export=True).default_code = sku
             """
-        return super(ProductProductExporter, self)._create_data(map_record, **kwargs)
+        return super()._create_data(map_record, **kwargs)
 
     def _create(self, data, **kwargs):
         """Create the Magento record"""
         # special check on data before export
-        res = super(ProductProductExporter, self)._create(data, **kwargs)
+        res = super()._create(data, **kwargs)
         self.binding.with_context(no_connector_export=True).magento_internal_id = res
         return res
 

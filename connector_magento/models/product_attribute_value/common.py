@@ -1,7 +1,8 @@
 import logging
-from odoo import models, fields
-from odoo.addons.component.core import Component
 
+from odoo import fields, models
+
+from odoo.addons.component.core import Component
 from odoo.addons.queue_job.exception import JobError
 
 _logger = logging.getLogger(__name__)
@@ -70,9 +71,7 @@ class ProductAttributeValueAdapter(Component):
 
         :rtype: dict
         """
-        res_admin = super(ProductAttributeValueAdapter, self).read(
-            id, attributes=attributes, storeview="all", **kwargs
-        )
+        res_admin = super().read(id, attributes=attributes, storeview="all", **kwargs)
         if res_admin:
             for attr in res_admin.get("custom_attributes", []):
                 res_admin[attr["attribute_code"]] = attr["value"]

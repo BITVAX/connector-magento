@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # Connectors documentation build configuration file, created by
 # sphinx-quickstart on Mon Feb  4 11:35:44 2013.
@@ -14,8 +13,9 @@
 
 
 import ast
-import sys
 import os
+import sys
+
 import sphinx_bootstrap_theme
 
 sys.path.append(os.path.abspath("_themes"))

@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # © 2016 Sodexis
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
 from odoo.addons.connector.exception import MappingError
@@ -297,7 +297,7 @@ class ProductTemplateImporter(Component):
         return False
 
     def _get_binding(self):
-        binding = super(ProductTemplateImporter, self)._get_binding()
+        binding = super()._get_binding()
         if not binding:
             # Do search using the magento_id - maybe the sku did changed !
             binding = self.env["magento.product.template"].search(

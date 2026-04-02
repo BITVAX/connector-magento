@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Callino
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo.tools.translate import _
+
 from odoo.addons.component.core import Component
 
 

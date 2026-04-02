@@ -1,5 +1,6 @@
 import logging
-from odoo import models, fields, api
+
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -57,7 +58,7 @@ class MagentoTemplateAttributeline(models.Model):
             vals["magento_attribute_id"]
         )
         vals["attribute_id"] = binding.odoo_id.id
-        line = super(MagentoTemplateAttributeline, self).write(vals)
+        line = super().write(vals)
         return line
 
     @api.model

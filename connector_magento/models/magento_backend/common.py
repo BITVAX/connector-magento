@@ -3,17 +3,17 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-
 from contextlib import contextmanager
-
 from datetime import datetime, timedelta
-from odoo import models, fields, api, _
-from odoo.tools import ustr
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import ustr
+
 from odoo.addons.queue_job.job import identity_exact
 
 # from odoo.addons.connector.models.checkpoint import add_checkpoint
-from ...components.backend_adapter import MagentoLocation, Magento2Client
+from ...components.backend_adapter import Magento2Client, MagentoLocation
 
 _logger = logging.getLogger(__name__)
 
@@ -284,7 +284,7 @@ class MagentoBackend(models.Model):
             use_custom_api_path=magento_location.use_custom_api_path,
         )
         magento_api._location = magento_location
-        _super = super(MagentoBackend, self)
+        _super = super()
         with _super.work_on(model_name, magento_api=magento_api, **kwargs) as work:
             yield work
 
@@ -316,7 +316,7 @@ class MagentoBackend(models.Model):
                     "Here is the error:\n%s"
                 )
                 % ustr(e)
-            )
+            ) from e
 
     def import_partners(self):
         """Import partners from all websites"""

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright 2025
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
+
 from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
@@ -100,9 +100,7 @@ class MagentoProductAdapter(Component):
         :rtype: dict
         """
         # pylint: disable=method-required-super
-        res = super(MagentoProductAdapter, self).read(
-            external_id, attributes=attributes, storeview=storeview
-        )
+        res = super().read(external_id, attributes=attributes, storeview=storeview)
         if res:
             for attr in res.get("custom_attributes", []):
                 res[attr["attribute_code"]] = attr["value"]

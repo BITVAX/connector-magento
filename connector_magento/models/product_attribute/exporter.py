@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 # Copyright 2013-2017 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
+import logging
+
 from odoo import fields, tools
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
-import logging
 
 _logger = logging.getLogger(__name__)
 
@@ -102,9 +103,7 @@ class ProductAttributeExporter(Component):
             del data["attribute_group_id"]
         if data.get("attribute_set_id"):  # we don't want to update this
             del data["attribute_set_id"]
-        result = super(ProductAttributeExporter, self)._update(
-            data, storeview=storeview_code, **kwargs
-        )
+        result = super()._update(data, storeview=storeview_code, **kwargs)
         self._update_attribute_with_result(result)
         return result
 
@@ -159,9 +158,7 @@ class ProductAttributeExportMapper(Component):
         mvalue_mapper = self.component(
             usage="export.mapper", model_name="magento.product.attribute.value"
         )
-        self.component(
-            usage="export.mapper", model_name="product.attribute.value"
-        )
+        self.component(usage="export.mapper", model_name="product.attribute.value")
 
         for mvalue in record.magento_attribute_value_ids:
             map_record = mvalue_mapper.map_record(mvalue, parent=record)

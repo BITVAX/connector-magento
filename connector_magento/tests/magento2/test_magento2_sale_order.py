@@ -4,6 +4,7 @@
 
 import unittest
 from collections import namedtuple
+
 from .common import Magento2SyncTestCase, recorder
 
 ExpectedOrderLine = namedtuple(
@@ -13,7 +14,7 @@ ExpectedOrderLine = namedtuple(
 
 class TestSaleOrder(Magento2SyncTestCase):
     def setUp(self):
-        super(TestSaleOrder, self).setUp()
+        super().setUp()
 
     def _import_sale_order(self, increment_id, cassette=True):
         return self._import_record(

@@ -3,7 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from odoo import models, fields, api
+
+from odoo import api, fields, models
 
 # from odoo.addons.queue_job.job import job3
 from odoo.addons.component.core import Component
@@ -35,7 +36,7 @@ class ResPartner(models.Model):
         parent.
 
         """
-        fields = super(ResPartner, self)._address_fields()
+        fields = super()._address_fields()
         fields.append("company")
         return fields
 
@@ -45,7 +46,7 @@ class ResPartner(models.Model):
         assert "magento_website_id" in filters, (
             "Missing information about Magento Website"
         )
-        return super(ResPartner, self).import_batch(backend, filters=filters)
+        return super().import_batch(backend, filters=filters)
 
 
 class MagentoResPartner(models.Model):
@@ -176,7 +177,7 @@ class PartnerAdapter(Component):
         if magento_website_ids is not None:
             filters["website_id"] = {"in": magento_website_ids}
 
-        return super(PartnerAdapter, self).search(filters=filters)
+        return super().search(filters=filters)
 
 
 class AddressAdapter(Component):

@@ -3,10 +3,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
-
 from datetime import datetime, timedelta
-from odoo import models, fields, _
+
+from odoo import _, fields, models
+
 from odoo.addons.component.core import Component
+
 from ..magento_backend.common import IMPORT_DELTA_BUFFER
 
 _logger = logging.getLogger(__name__)

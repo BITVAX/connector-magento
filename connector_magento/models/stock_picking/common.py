@@ -3,7 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from odoo import models, fields, _
+
+from odoo import _, fields, models
 
 # # from odoo.addons.queue_job.job import job3, related_action
 from odoo.addons.component.core import Component

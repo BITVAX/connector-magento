@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Copyright <YEAR(S)> <AUTHOR(S)>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import api, models, fields, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 

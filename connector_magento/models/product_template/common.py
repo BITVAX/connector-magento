@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 Callino
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
 
-from odoo import api, models, fields
-from odoo.addons.component.core import Component
-from odoo.addons.queue_job.job import identity_exact
+from odoo import api, fields, models
 
 # from odoo.addons.queue_job.job import job, related_action
 from odoo.exceptions import ValidationError
 from odoo.tools.translate import _
+
+from odoo.addons.component.core import Component
+from odoo.addons.queue_job.job import identity_exact
+
 from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
 
 _logger = logging.getLogger(__name__)
@@ -168,7 +169,7 @@ class MagentoProductTemplate(models.Model):
                             template.display_name,
                         )
 
-        return super(MagentoProductTemplate, self).create(vals_list)
+        return super().create(vals_list)
 
     # @job(default_channel='root.magento')
     def sync_from_magento(self):
@@ -577,7 +578,7 @@ class ProductTemplate(models.Model):
         # Avoid to create variants
         if vals.get("auto_create_variants", True):
             # If auto create is true - then create the normal way
-            return super(ProductTemplate, self).create(vals)
+            return super().create(vals)
         # Else avoid creating the variants
         me = self.with_context(create_product_product=True)
 
@@ -634,7 +635,7 @@ class ProductTemplateAdapter(Component):
             filters["updated_at"]["to"] = to_date.strftime(dt_fmt)
         filters.setdefault("type_id", {})
         filters["type_id"]["eq"] = "configurable"
-        return super(ProductTemplateAdapter, self).search(filters=filters)
+        return super().search(filters=filters)
 
     def list_variants(self, sku):
         res = self._call("configurable-products/%s/children" % (self.escape(sku)), None)
@@ -643,7 +644,7 @@ class ProductTemplateAdapter(Component):
     def write(self, id, data, storeview=None, **kwargs):
         """Update records on the external system"""
         id = data["sku"]
-        return super(ProductTemplateAdapter, self)._call(
+        return super()._call(
             "products/%s" % id,
             {"product": data},
             http_method="put",

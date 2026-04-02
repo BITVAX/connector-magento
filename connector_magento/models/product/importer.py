@@ -4,15 +4,16 @@
 
 import base64
 import logging
-import sys
 import os
+import sys
 
 import requests
 
 from odoo import _
+
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping, only_create, convert
-from odoo.addons.connector.exception import MappingError, InvalidDataError
+from odoo.addons.connector.components.mapper import convert, mapping, only_create
+from odoo.addons.connector.exception import InvalidDataError, MappingError
 from odoo.addons.connector_magento.components.mapper import normalize_datetime
 
 _logger = logging.getLogger(__name__)
@@ -129,7 +130,7 @@ class CatalogImageImporter(Component):
                 if binary:
                     if image_data.get("label", "") == "":
                         image_data["label"] = os.path.basename(
-                            image_data.get("file", "image_{}".format(c))
+                            image_data.get("file", f"image_{c}")
                         )
                     image_ids.append(
                         {

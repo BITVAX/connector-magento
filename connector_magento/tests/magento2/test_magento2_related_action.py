@@ -2,15 +2,16 @@
 # Copyright 2020 Opener B.V.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-from .common import Magento2SyncTestCase
 from odoo import exceptions
+
+from .common import Magento2SyncTestCase
 
 
 class TestRelatedActionStorage(Magento2SyncTestCase):
     """Test related actions on stored jobs"""
 
     def setUp(self):
-        super(TestRelatedActionStorage, self).setUp()
+        super().setUp()
         self.MagentoProduct = self.env["magento.product.product"]
         self.QueueJob = self.env["queue.job"]
         self.test_product = self.env["product.product"].create(

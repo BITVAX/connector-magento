@@ -19,13 +19,13 @@ class QueueJob(models.Model):
             adapter = work.component(usage="backend.adapter")
             try:
                 url = adapter.admin_url(external_id)
-            except ValueError:
+            except ValueError as err:
                 raise exceptions.UserError(
                     _(
                         "No admin URL configured on the backend or "
                         "no admin path is defined for this record."
                     )
-                )
+                ) from err
 
         action = {
             "type": "ir.actions.act_url",

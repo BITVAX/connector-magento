@@ -1,6 +1,7 @@
 import logging
 
-from odoo import models, fields, api, _
+from odoo import _, api, fields, models
+
 from odoo.addons.component.core import Component
 
 # from odoo.addons.queue_job.job import job, related_action, identity_exact
@@ -79,7 +80,7 @@ class MagentoProductAttribute(models.Model):
             backend = self.env['magento.backend'].browse(vals['backend_id'])
             vals['attribute_set_ids'] = [(4, backend.id)]
         """
-        return super(MagentoProductAttribute, self).create(vals)
+        return super().create(vals)
 
     def export_product_attribute_button(self):
         self.ensure_one()
@@ -164,13 +165,9 @@ class ProductAttributeAdapter(Component):
         if self.work.magento_api._location.version == "2.0":
             # Force the read on all storeviews so that the admin value is returned
             # https://github.com/magento/magento2/issues/3430
-            res = super(ProductAttributeAdapter, self).read(
-                id, attributes=attributes, storeview="all", **kwargs
-            )
+            res = super().read(id, attributes=attributes, storeview="all", **kwargs)
             return res
-        return super(ProductAttributeAdapter, self).read(
-            id, attributes=None, storeview=None, **kwargs
-        )
+        return super().read(id, attributes=None, storeview=None, **kwargs)
 
     def _get_id_from_create(self, result, data=None):
         # We do need the complete result after the create function - to work on the options...

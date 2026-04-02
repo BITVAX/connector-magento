@@ -3,10 +3,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from odoo import models, fields, api, _
-from odoo.addons.component.core import Component
-from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
+
+from odoo import _, api, fields, models
 from odoo.tools.translate import html_translate
+
+from odoo.addons.component.core import Component
+
+from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
 
 _logger = logging.getLogger(__name__)
 
@@ -155,14 +158,14 @@ class ProductCategoryAdapter(Component):
         if to_date is not None:
             filters.setdefault("updated_at", {})
             filters["updated_at"]["to"] = to_date.strftime(dt_fmt)
-        return super(ProductCategoryAdapter, self).search(filters=filters)
+        return super().search(filters=filters)
 
     def read(self, external_id, attributes=None, storeview=None, **kwargs):
         """Returns the information of a record
 
         :rtype: dict
         """
-        return super(ProductCategoryAdapter, self).read(
+        return super().read(
             external_id, attributes=attributes, storeview=storeview, **kwargs
         )
 
@@ -171,7 +174,7 @@ class ProductCategoryAdapter(Component):
 
         :rtype: dict
         """
-        ret = self._call("{}/list".format(self._magento2_model), {"searchCriteria": ""})
+        ret = self._call(f"{self._magento2_model}/list", {"searchCriteria": ""})
         return {c["id"]: c["children"] for c in ret.get("items", [])}
 
     def move(self, categ_id, parent_id, after_categ_id=None):

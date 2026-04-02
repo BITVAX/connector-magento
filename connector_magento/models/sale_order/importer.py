@@ -2,14 +2,15 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import logging
-
-from re import search as re_search
 from datetime import datetime, timedelta
+from re import search as re_search
 
 from odoo import _
+
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
-from odoo.addons.queue_job.exception import NothingToDoJob, FailedJobError
+from odoo.addons.queue_job.exception import FailedJobError, NothingToDoJob
+
 from ...components.mapper import normalize_datetime
 from ...exception import OrderImportRuleRetry
 
@@ -27,9 +28,7 @@ class SaleOrderBatchImporter(Component):
             "priority": 5,
             "description": _("Import order #%s from Magento") % external_id,
         }
-        return super(SaleOrderBatchImporter, self)._import_record(
-            external_id, job_options=job_options
-        )
+        return super()._import_record(external_id, job_options=job_options)
 
     def run(self, filters=None):
         """Run the synchronization"""
@@ -500,7 +499,7 @@ class SaleOrderImporter(Component):
             current_binding = parent_binding
 
     def _create(self, data):
-        binding = super(SaleOrderImporter, self)._create(data)
+        binding = super()._create(data)
         if binding.fiscal_position_id:
             binding.odoo_id._recompute_taxes()
         return binding
@@ -518,7 +517,7 @@ class SaleOrderImporter(Component):
 
     def _get_magento_data(self):
         """Return the raw Magento data for ``self.external_id``"""
-        record = super(SaleOrderImporter, self)._get_magento_data()
+        record = super()._get_magento_data()
         # sometimes we don't have website_id...
         # we fix the record!
         if not record.get("website_id"):
@@ -691,7 +690,7 @@ class SaleOrderImporter(Component):
     def _create_data(self, map_record, **kwargs):
         storeview = self._get_storeview(map_record.source)
         self._check_special_fields()
-        return super(SaleOrderImporter, self)._create_data(
+        return super()._create_data(
             map_record,
             tax_include=storeview.catalog_price_tax_included,
             partner_id=self.partner_id,
@@ -704,7 +703,7 @@ class SaleOrderImporter(Component):
     def _update_data(self, map_record, **kwargs):
         storeview = self._get_storeview(map_record.source)
         self._check_special_fields()
-        return super(SaleOrderImporter, self)._update_data(
+        return super()._update_data(
             map_record,
             tax_include=storeview.catalog_price_tax_included,
             partner_id=self.partner_id,

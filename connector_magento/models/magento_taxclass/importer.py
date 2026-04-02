@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 from odoo.addons.component.core import Component
@@ -14,9 +13,7 @@ class AccountTaxBatchImporter(Component):
 
     def _import_record(self, external_id, job_options=None):
         """Delay a job for the import"""
-        super(AccountTaxBatchImporter, self)._import_record(
-            external_id, job_options=job_options
-        )
+        super()._import_record(external_id, job_options=job_options)
 
     def run(self, filters=None):
         """Run the synchronization"""
@@ -33,12 +30,12 @@ class AccountTaxImporter(Component):
     _apply_on = ["magento.account.tax"]
 
     def _create(self, data):
-        binding = super(AccountTaxImporter, self)._create(data)
+        binding = super()._create(data)
         self.backend_record.add_checkpoint(binding)
         return binding
 
     def run(self, external_id, force=False, **kwargs):
-        return super(AccountTaxImporter, self).run(external_id, force=force, **kwargs)
+        return super().run(external_id, force=force, **kwargs)
 
 
 class AccountTaxImportMapper(Component):

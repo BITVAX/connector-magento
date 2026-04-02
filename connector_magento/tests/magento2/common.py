@@ -11,11 +11,12 @@ Magento2 version of the helpers from tests/common.py
 """
 
 from os.path import dirname, join
+
 from vcr import VCR
 
 from odoo.tools import mute_logger
-from ..common import MagentoTestCase
 
+from ..common import MagentoTestCase
 
 recorder = VCR(
     cassette_library_dir=join(dirname(__file__), "fixtures/cassettes"),
@@ -28,7 +29,7 @@ recorder = VCR(
 
 class Magento2TestCase(MagentoTestCase):
     def setUp(self):
-        super(Magento2TestCase, self).setUp()
+        super().setUp()
         self.recorder = recorder
         self.backend.write(
             {
@@ -40,7 +41,7 @@ class Magento2TestCase(MagentoTestCase):
 
 class Magento2SyncTestCase(Magento2TestCase):
     def setUp(self):
-        super(Magento2SyncTestCase, self).setUp()
+        super().setUp()
         with mute_logger(
             "odoo.addons.mail.models.mail_mail", "odoo.models.unlink", "odoo.tests"
         ):

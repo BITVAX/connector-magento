@@ -1,160 +1,155 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <data>
-        <record id="product_template_form_view" model="ir.ui.view">
-            <field name="name">product.template.common.form</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_form_view" />
-            <field name="priority" eval="8" />
-            <field name="arch" type="xml">
-                <field name="uom_po_id" position="after">
-                    <separator string="Magento" />
-                    <field name="root_category_ids" invisible="1" />
-                    <field
-                        name="product_category_public_ids"
-                        widget="many2many_tags"
-                        domain="[('id','child_of',root_category_ids)]"
-                    />
-                    <field name="website_ids" widget="many2many_tags" />
-                    <separator string="SEO" />
-                    <field
-                        name="url_key"
-                        placeholder="Ejemplo: camiseta-roja-deportiva-entrenamiento"
-                    />
-                    <field
-                        name="meta_title"
-                        placeholder="Ejemplo: Camiseta roja deportiva para entrenamiento"
-                    />
-                    <field
-                        name="meta_keyword"
-                        placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"
-                    />
-                    <field
-                        name="meta_description"
-                        placeholder="Descripción SEO del producto"
-                    />
-                </field>
-                <notebook position="inside">
-                    <page string="Magento Bindings">
-                        <field
-                            name="magento_bind_ids"
-                            invisible="not magento_bind_ids"
-                        />
-                        <field
-                            name="magento_variant_bind_ids"
-                            invisible="not magento_variant_bind_ids"
-                        />
-                    </page>
-                </notebook>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="priority" eval="8" />
+        <field name="arch" type="xml">
+            <field name="uom_po_id" position="after">
+                <separator string="Magento" />
+                <field name="root_category_ids" invisible="1" />
+                <field
+                    name="product_category_public_ids"
+                    widget="many2many_tags"
+                    domain="[('id','child_of',root_category_ids)]"
+                />
+                <field name="website_ids" widget="many2many_tags" />
+                <separator string="SEO" />
+                <field
+                    name="url_key"
+                    placeholder="Ejemplo: camiseta-roja-deportiva-entrenamiento"
+                />
+                <field
+                    name="meta_title"
+                    placeholder="Ejemplo: Camiseta roja deportiva para entrenamiento"
+                />
+                <field
+                    name="meta_keyword"
+                    placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"
+                />
+                <field
+                    name="meta_description"
+                    placeholder="Descripción SEO del producto"
+                />
             </field>
-        </record>
-
-        <!-- Add Queue Jobs to Connector tab -->
-        <record id="product_template_connector_jobs" model="ir.ui.view">
-            <field name="name">product.template.connector.jobs</field>
-            <field name="model">product.template</field>
-            <field
-                name="inherit_id"
-                ref="connector_base_product.product_template_common_form"
-            />
-            <field name="arch" type="xml">
-                <page name="connector" position="inside">
-                    <separator string="Queue Jobs" invisible="not job_ids" />
-                    <field name="job_ids" readonly="1" invisible="not job_ids">
-                        <list
-                            decoration-danger="state=='failed'"
-                            decoration-warning="state in ('pending','enqueued')"
-                            decoration-success="state=='done'"
-                            decoration-muted="state in ('cancelled')"
-                        >
-                            <field name="name" />
-                            <field name="state" />
-                            <field name="priority" />
-                            <field name="date_created" />
-                            <field name="date_started" />
-                            <field name="date_done" />
-                            <field name="exc_info" optional="hide" />
-                        </list>
-                    </field>
+            <notebook position="inside">
+                <page string="Magento Bindings">
+                    <field name="magento_bind_ids" invisible="not magento_bind_ids" />
+                    <field
+                        name="magento_variant_bind_ids"
+                        invisible="not magento_variant_bind_ids"
+                    />
                 </page>
-            </field>
-        </record>
+            </notebook>
+        </field>
+    </record>
 
-        <!-- Smart button for Magento sync status -->
-        <record id="product_template_magento_smart_button" model="ir.ui.view">
-            <field name="name">product.template.magento.smart.button</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="product.product_template_only_form_view" />
-            <field name="arch" type="xml">
-                <xpath expr="//div[@name='button_box']/button[1]" position="before">
-                    <!-- Invisible field for state calculation -->
-                    <field name="magento_sync_state" invisible="1" />
-
-                    <!-- Published button (green background) -->
-                    <button
-                        name="action_view_magento_bindings"
-                        type="object"
-                        class="oe_stat_button magento_published"
-                        icon="fa-shopping-cart"
-                        invisible="magento_sync_state != 'published'"
+    <!-- Add Queue Jobs to Connector tab -->
+    <record id="product_template_connector_jobs" model="ir.ui.view">
+        <field name="name">product.template.connector.jobs</field>
+        <field name="model">product.template</field>
+        <field
+            name="inherit_id"
+            ref="connector_base_product.product_template_common_form"
+        />
+        <field name="arch" type="xml">
+            <page name="connector" position="inside">
+                <separator string="Queue Jobs" invisible="not job_ids" />
+                <field name="job_ids" readonly="1" invisible="not job_ids">
+                    <list
+                        decoration-danger="state=='failed'"
+                        decoration-warning="state in ('pending','enqueued')"
+                        decoration-success="state=='done'"
+                        decoration-muted="state in ('cancelled')"
                     >
-                        <div class="o_stat_info">
-                            <span class="o_stat_value">
-                                <field name="magento_bindings_count" />
-                            </span>
-                            <span class="o_stat_text">
+                        <field name="name" />
+                        <field name="state" />
+                        <field name="priority" />
+                        <field name="date_created" />
+                        <field name="date_started" />
+                        <field name="date_done" />
+                        <field name="exc_info" optional="hide" />
+                    </list>
+                </field>
+            </page>
+        </field>
+    </record>
+
+    <!-- Smart button for Magento sync status -->
+    <record id="product_template_magento_smart_button" model="ir.ui.view">
+        <field name="name">product.template.magento.smart.button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']/button[1]" position="before">
+                <!-- Invisible field for state calculation -->
+                <field name="magento_sync_state" invisible="1" />
+
+                <!-- Published button (green background) -->
+                <button
+                    name="action_view_magento_bindings"
+                    type="object"
+                    class="oe_stat_button magento_published"
+                    icon="fa-shopping-cart"
+                    invisible="magento_sync_state != 'published'"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="magento_bindings_count" />
+                        </span>
+                        <span class="o_stat_text">
                                 Magento Published
                             </span>
-                        </div>
-                    </button>
+                    </div>
+                </button>
 
-                    <!-- Partial button (orange background) -->
-                    <button
-                        name="action_view_magento_bindings"
-                        type="object"
-                        class="oe_stat_button magento_partial"
-                        icon="fa-shopping-cart"
-                        invisible="magento_sync_state != 'partial'"
-                    >
-                        <div class="o_stat_info">
-                            <span class="o_stat_value">
-                                <field name="magento_bindings_count" />
-                            </span>
-                            <span class="o_stat_text">
+                <!-- Partial button (orange background) -->
+                <button
+                    name="action_view_magento_bindings"
+                    type="object"
+                    class="oe_stat_button magento_partial"
+                    icon="fa-shopping-cart"
+                    invisible="magento_sync_state != 'partial'"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="magento_bindings_count" />
+                        </span>
+                        <span class="o_stat_text">
                                 Magento Partial
                             </span>
-                        </div>
-                    </button>
+                    </div>
+                </button>
 
-                    <!-- Unpublished button (red background) -->
-                    <button
-                        name="action_view_magento_bindings"
-                        type="object"
-                        class="oe_stat_button magento_unpublished"
-                        icon="fa-shopping-cart"
-                        invisible="magento_sync_state != 'unpublished'"
-                    >
-                        <div class="o_stat_info">
-                            <span class="o_stat_value">
-                                <field name="magento_bindings_count" />
-                            </span>
-                            <span class="o_stat_text">
+                <!-- Unpublished button (red background) -->
+                <button
+                    name="action_view_magento_bindings"
+                    type="object"
+                    class="oe_stat_button magento_unpublished"
+                    icon="fa-shopping-cart"
+                    invisible="magento_sync_state != 'unpublished'"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="magento_bindings_count" />
+                        </span>
+                        <span class="o_stat_text">
                                 Magento Unpublished
                             </span>
-                        </div>
-                    </button>
+                    </div>
+                </button>
 
-                    <!-- Add Magento button (visible only when no bindings) -->
-                    <button
-                        name="action_add_magento_backend"
-                        type="object"
-                        class="oe_stat_button"
-                        icon="fa-plus-circle"
-                        string="Add Magento"
-                        invisible="magento_sync_state != 'none'"
-                    />
-                </xpath>
-            </field>
-        </record>
-    </data>
+                <!-- Add Magento button (visible only when no bindings) -->
+                <button
+                    name="action_add_magento_backend"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-plus-circle"
+                    string="Add Magento"
+                    invisible="magento_sync_state != 'none'"
+                />
+            </xpath>
+        </field>
+    </record>
 </odoo>

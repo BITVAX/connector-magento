@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
+
 from .common import Magento2SyncTestCase, recorder
 
 
@@ -27,7 +28,7 @@ class TestUpdateStockQty(Magento2SyncTestCase):
             wizard.change_product_qty()
 
     def setUp(self):
-        super(TestUpdateStockQty, self).setUp()
+        super().setUp()
         self.binding_product = self._import_record(
             "magento.product.product",
             "MH09-L-Blue",

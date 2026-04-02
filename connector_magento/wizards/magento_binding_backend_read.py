@@ -2,14 +2,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
-import logging
-import io
 import contextlib
+import io
 import json
+import logging
 
+from odoo import _, api, fields, models, tools
 from odoo.exceptions import UserError
 
-from odoo import api, fields, models, tools, _
 from odoo.addons.component import core
 
 _logger = logging.getLogger(__name__)

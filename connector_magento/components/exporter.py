@@ -19,6 +19,7 @@ import psycopg2
 
 import odoo
 from odoo import _
+
 from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend, RetryableJobError
 
@@ -35,7 +36,7 @@ class MagentoBaseExporter(AbstractComponent):
     _usage = "record.exporter"
 
     def __init__(self, working_context):
-        super(MagentoBaseExporter, self).__init__(working_context)
+        super().__init__(working_context)
         self.binding = None
         self.external_id = None
 
@@ -140,7 +141,7 @@ class MagentoExporter(AbstractComponent):
     _inherit = "magento.base.exporter"
 
     def __init__(self, working_context):
-        super(MagentoExporter, self).__init__(working_context)
+        super().__init__(working_context)
         self.binding = None
 
     def _lock(self):
@@ -173,7 +174,7 @@ class MagentoExporter(AbstractComponent):
                 "A concurrent job is already exporting the same record "
                 "(%s with id %s). The job will be retried later."
                 % (self.model._name, self.binding.id)
-            )
+            ) from None
 
     def _has_to_skip(self):
         """Return True if the export can be skipped"""
@@ -208,7 +209,7 @@ class MagentoExporter(AbstractComponent):
                     "%s\n\n"
                     "Likely due to 2 concurrent jobs wanting to create "
                     "the same record. The job will be retried later." % err
-                )
+                ) from err
             else:
                 raise
 
