@@ -190,8 +190,12 @@ class MagentoImporter(AbstractComponent):
                     backend_name = self.backend_record.name or "Magento"
                     external_id = self.external_id or "unknown"
                     base_record.message_post(
-                        body="Imported from %s (ID: %s)" % (backend_name, external_id),
-                        subject="Magento Import",
+                        body=self.env._(
+                            "Imported from %(backend)s (ID: %(ext_id)s)",
+                            backend=backend_name,
+                            ext_id=external_id,
+                        ),
+                        subject=self.env._("Magento Import"),
                         message_type="notification",
                     )
                 except Exception as e:

@@ -126,8 +126,12 @@ class MagentoBaseExporter(AbstractComponent):
                     backend_name = self.backend_record.name or "Magento"
                     external_id = self.external_id or "pending"
                     base_record.message_post(
-                        body="Exported to %s (ID: %s)" % (backend_name, external_id),
-                        subject="Magento Export",
+                        body=self.env._(
+                            "Exported to %(backend)s (ID: %(ext_id)s)",
+                            backend=backend_name,
+                            ext_id=external_id,
+                        ),
+                        subject=self.env._("Magento Export"),
                         message_type="notification",
                     )
                 except Exception as e:

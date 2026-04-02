@@ -1,7 +1,7 @@
 # Copyright 2013-2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-# pylint: disable=missing-manifest-dependency
+# pylint: disable=missing-manifest-dependency,sql-injection
 # disable warning on 'vcr' missing in manifest: this is only a dependency for
 # dev/tests
 
@@ -83,11 +83,10 @@ class MagentoHelper:
     def get_next_id(self):
         from psycopg2 import sql
 
-        self.cr.execute(
-            sql.SQL("SELECT max(external_id::int) FROM {}").format(
-                sql.Identifier(self.model._table)
-            )
+        query = sql.SQL("SELECT max(external_id::int) FROM {}").format(
+            sql.Identifier(self.model._table)
         )
+        self.cr.execute(query)  # pylint: disable=sql-injection
         result = self.cr.fetchone()
         if result:
             return int(result[0] or 0) + 1
