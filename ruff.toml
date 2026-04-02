@@ -5,6 +5,11 @@ fix = true
 extend-select = [
     "I",
 ]
+ignore = [
+    "E741",  # ambiguous variable name (common in Odoo lambdas)
+    "E402",  # module level import not at top of file (Odoo patterns)
+    "F811",  # redefinition of unused name (common with _ import)
+]
 exclude = ["setup/*"]
 
 [format]

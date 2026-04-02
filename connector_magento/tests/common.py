@@ -81,7 +81,9 @@ class MagentoHelper:
         self.model = registry(model_name)
 
     def get_next_id(self):
-        self.cr.execute("SELECT max(external_id::int) FROM %s " % self.model._table)
+        self.cr.execute(
+            "SELECT max(external_id::int) FROM %s " % self.model._table  # pylint: disable=sql-injection
+        )
         result = self.cr.fetchone()
         if result:
             return int(result[0] or 0) + 1

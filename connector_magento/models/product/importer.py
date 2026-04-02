@@ -104,7 +104,7 @@ class CatalogImageImporter(Component):
             )
             headers["Authorization"] = "Basic %s" % (base64string.decode("utf-8"))
         request = requests.get(
-            url, headers=headers, verify=self.backend_record.verify_ssl
+            url, headers=headers, verify=self.backend_record.verify_ssl, timeout=30
         )
         if request.status_code == 404:
             # the image is just missing, we skip it
