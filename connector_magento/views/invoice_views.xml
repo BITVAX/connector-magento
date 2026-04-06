@@ -30,7 +30,7 @@
     </record>
 
     <record id="view_magento_account_invoice_tree" model="ir.ui.view">
-        <field name="name">magento.account.invoice.tree</field>
+        <field name="name">magento.account.invoice.list</field>
         <field name="model">magento.account.invoice</field>
         <field name="arch" type="xml">
             <list string="Magento Invoice" create="false" delete="false">

@@ -47,7 +47,7 @@
 
     <!-- Tree view for magento.product.attribute -->
     <record id="view_magento_product_attribute_tree" model="ir.ui.view">
-        <field name="name">magento.product.attribute.tree</field>
+        <field name="name">magento.product.attribute.list</field>
         <field name="model">magento.product.attribute</field>
         <field name="arch" type="xml">
             <list string="Magento Product Attribute">

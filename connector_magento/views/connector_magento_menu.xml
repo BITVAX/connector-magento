@@ -4,63 +4,63 @@
         <field name="name">Magento Backends</field>
         <field name="res_model">magento.backend</field>
         <!--        <field name="view_type">form</field>-->
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_magento_backend_tree" />
     </record>
     <record id="action_magento_store" model="ir.actions.act_window">
         <field name="name">Magento Stores</field>
         <field name="res_model">magento.store</field>
         <!--        <field name="view_type">form</field>-->
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_magento_store_tree" />
     </record>
     <record id="action_magento_website" model="ir.actions.act_window">
         <field name="name">Magento Websites</field>
         <field name="res_model">magento.website</field>
         <!--        <field name="view_type">form</field>-->
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_magento_website_tree" />
     </record>
 
     <record id="action_magento_storeview" model="ir.actions.act_window">
         <field name="name">Magento Storeviews</field>
         <field name="res_model">magento.storeview</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="view_id" ref="view_magento_storeview_tree" />
     </record>
 
     <record id="action_magento_account_tax" model="ir.actions.act_window">
         <field name="name">Magento Account Tax</field>
         <field name="res_model">magento.account.tax</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="action_product_category_public" model="ir.actions.act_window">
         <field name="name">Product Categories Public</field>
         <field name="res_model">product.category.public</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="action_magento_attribute_set" model="ir.actions.act_window">
         <field name="name">Magento Attribute Sets</field>
         <field name="res_model">magento.product.attribute.set</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record model="ir.actions.act_window" id="action_magento_product_product">
         <field name="name">Magento Product</field>
         <field name="res_model">magento.product.product</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <record model="ir.actions.act_window" id="action_magento_product_template">
         <field name="name">Magento Product Template</field>
         <field name="res_model">magento.product.template</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <record model="ir.actions.act_window" id="action_magento_product_category">
         <field name="name">Magento Product Category</field>
         <field name="res_model">magento.product.category</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record
@@ -69,13 +69,13 @@
     >
         <field name="name">Magento Product Template Attribute Line</field>
         <field name="res_model">magento.product.template.attribute.line</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <!-- Action for magento.product.attribute -->
     <record id="action_magento_product_attribute" model="ir.actions.act_window">
         <field name="name">Magento Product Attributes</field>
         <field name="res_model">magento.product.attribute</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <!-- Menu for magento.product.attribute -->

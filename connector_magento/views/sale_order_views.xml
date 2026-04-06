@@ -34,7 +34,7 @@
     </record>
 
     <record id="view_magento_sale_order_tree" model="ir.ui.view">
-        <field name="name">magento.sale.order.tree</field>
+        <field name="name">magento.sale.order.list</field>
         <field name="model">magento.sale.order</field>
         <field name="arch" type="xml">
             <list string="Magento Sales Orders" create="false" delete="false">

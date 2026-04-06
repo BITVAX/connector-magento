@@ -47,7 +47,7 @@
     </record>
 
     <record id="view_magento_res_partner_tree" model="ir.ui.view">
-        <field name="name">magento.res.partner.tree</field>
+        <field name="name">magento.res.partner.list</field>
         <field name="model">magento.res.partner</field>
         <field name="arch" type="xml">
             <list string="Magento Partner" create="false" delete="false">
@@ -77,7 +77,7 @@
     </record>
 
     <record id="view_magento_address_tree" model="ir.ui.view">
-        <field name="name">magento.address.tree</field>
+        <field name="name">magento.address.list</field>
         <field name="model">magento.address</field>
         <field name="arch" type="xml">
             <list string="Magento Address" create="false" delete="false">

@@ -266,7 +266,7 @@
     </record>
 
     <record id="view_magento_backend_tree" model="ir.ui.view">
-        <field name="name">magento.backend.tree</field>
+        <field name="name">magento.backend.list</field>
         <field name="model">magento.backend</field>
         <field name="arch" type="xml">
             <list string="Magento Backend">
@@ -356,7 +356,7 @@
     </record>
 
     <record id="view_magento_website_tree" model="ir.ui.view">
-        <field name="name">magento.website.tree</field>
+        <field name="name">magento.website.list</field>
         <field name="model">magento.website</field>
         <field name="arch" type="xml">
             <list string="Magento Website" create="false" delete="false">
@@ -425,7 +425,7 @@
     </record>
 
     <record id="view_magento_store_tree" model="ir.ui.view">
-        <field name="name">magento.store.tree</field>
+        <field name="name">magento.store.list</field>
         <field name="model">magento.store</field>
         <field name="arch" type="xml">
             <list string="Magento Store" create="false" delete="false">
@@ -521,7 +521,7 @@
     </record>
 
     <record id="view_magento_storeview_tree" model="ir.ui.view">
-        <field name="name">magento.storeview.tree</field>
+        <field name="name">magento.storeview.list</field>
         <field name="model">magento.storeview</field>
         <field name="arch" type="xml">
             <list string="Magento Storeview" create="false" delete="false">

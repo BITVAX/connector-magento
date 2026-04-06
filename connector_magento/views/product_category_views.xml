@@ -38,7 +38,7 @@
     </record>
 
     <record id="view_product_category_public_tree" model="ir.ui.view">
-        <field name="name">product.category.public.tree</field>
+        <field name="name">product.category.public.list</field>
         <field name="model">product.category.public</field>
         <field name="arch" type="xml">
             <list string="Product Category Public">
@@ -49,7 +49,7 @@
         </field>
     </record>
     <record id="view_magento_product_category_tree" model="ir.ui.view">
-        <field name="name">magento.product.category.tree</field>
+        <field name="name">magento.product.category.list</field>
         <field name="model">magento.product.category</field>
         <field name="arch" type="xml">
             <list string="Magento Product Category">
