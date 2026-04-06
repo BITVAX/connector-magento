@@ -61,7 +61,7 @@ class ProductCategoryPublic(models.Model):
         string="# Products",
         help="The number of products under this category (Does not consider the children categories)",
     )
-    parent_path = fields.Char(index=True, unaccent=False)
+    parent_path = fields.Char(index=True)
     parents_and_self = fields.Many2many(
         "product.category.public", compute="_compute_parents_and_self"
     )
@@ -125,7 +125,9 @@ class MagentoProductCategory(models.Model):
         "magento.binding",
         "image.mixin",
     ]
-    odoo_id = fields.Many2one("product.category.public")
+    odoo_id = fields.Many2one(
+        "product.category.public", required=True, ondelete="cascade"
+    )
 
 
 class ProductCategoryAdapter(Component):

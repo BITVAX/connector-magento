@@ -6,7 +6,6 @@ import logging
 
 from odoo import _, api, fields, models
 
-import odoo.addons.decimal_precision as dp
 
 # from odoo.addons.queue_job.job import job3
 from odoo.addons.component.core import Component
@@ -34,10 +33,10 @@ class MagentoSaleOrder(models.Model):
         string="Magento Order Lines",
     )
     total_amount = fields.Float(
-        string="Total amount", digits=dp.get_precision("Account")
+        string="Total amount", digits="Account"
     )
     total_amount_tax = fields.Float(
-        string="Total amount w. tax", digits=dp.get_precision("Account")
+        string="Total amount w. tax", digits="Account"
     )
     magento_order_id = fields.Integer(
         string="Magento Order ID", help="'order_id' field in Magento"
@@ -183,15 +182,16 @@ class MagentoSaleOrderLine(models.Model):
         # override 'magento.binding', can't be INSERTed if True:
         required=False,
     )
-    tax_rate = fields.Float(digits=dp.get_precision("Account"))
+    tax_rate = fields.Float(digits="Account")
     notes = fields.Char()
 
-    @api.model
-    def create(self, vals):
-        magento_order_id = vals["magento_order_id"]
-        binding = self.env["magento.sale.order"].browse(magento_order_id)
-        vals["order_id"] = binding.odoo_id.id
-        binding = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            magento_order_id = vals["magento_order_id"]
+            binding = self.env["magento.sale.order"].browse(magento_order_id)
+            vals["order_id"] = binding.odoo_id.id
+        binding = super().create(vals_list)
         # FIXME triggers function field
         # The amounts (amount_total, ...) computed fields on 'sale.order' are
         # not triggered when magento.sale.order.line are created.

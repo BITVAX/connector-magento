@@ -61,22 +61,23 @@ class MagentoTemplateAttributeline(models.Model):
         line = super().write(vals)
         return line
 
-    @api.model
-    def create(self, vals):
-        # Do read product_tmpl_id using the magento_tmpl_id
-        tmpl_binding = self.env["magento.product.template"].browse(
-            vals["magento_template_id"]
-        )
-        vals["product_tmpl_id"] = tmpl_binding.odoo_id.id
-        # Do resolve the attribute id from the magento binding
-        binding = self.env["magento.product.attribute"].browse(
-            vals["magento_attribute_id"]
-        )
-        vals["attribute_id"] = binding.odoo_id.id
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            # Do read product_tmpl_id using the magento_tmpl_id
+            tmpl_binding = self.env["magento.product.template"].browse(
+                vals["magento_template_id"]
+            )
+            vals["product_tmpl_id"] = tmpl_binding.odoo_id.id
+            # Do resolve the attribute id from the magento binding
+            binding = self.env["magento.product.attribute"].browse(
+                vals["magento_attribute_id"]
+            )
+            vals["attribute_id"] = binding.odoo_id.id
         return super(
             MagentoTemplateAttributeline,
             self.with_context(create_product_product=False),
-        ).create(vals)
+        ).create(vals_list)
 
 
 class ProductTemplateAttributeline(models.Model):

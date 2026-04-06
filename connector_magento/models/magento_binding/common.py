@@ -26,7 +26,7 @@ class MagentoBinding(models.AbstractModel):
         ondelete="restrict",
     )
     # fields.Char because 0 is a valid Magento ID
-    external_id = fields.Char(string="ID on Magento", oldname="magento_id")
+    external_id = fields.Char(string="ID on Magento")
 
     data = fields.Json(
         string="Raw Json Data",

@@ -22,6 +22,7 @@ class MagentoResPartnerCategory(models.Model):
     _name = "magento.res.partner.category"
     _inherit = "magento.binding"
     _inherits = {"res.partner.category": "odoo_id"}
+    _description = "Magento Partner Category"
 
     odoo_id = fields.Many2one(
         comodel_name="res.partner.category",

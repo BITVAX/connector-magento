@@ -71,15 +71,9 @@ class MagentoProductAttribute(models.Model):
         )
     ]
 
-    @api.model
-    def create(self, vals):
-        """
-        This can not be correct !
-        if 'attribute_set_ids' not in vals:
-            backend = self.env['magento.backend'].browse(vals['backend_id'])
-            vals['attribute_set_ids'] = [(4, backend.id)]
-        """
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        return super().create(vals_list)
 
     def export_product_attribute_button(self):
         self.ensure_one()

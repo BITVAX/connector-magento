@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 
 class WizardModel(models.TransientModel):
     _name = "connector_magento.add_backend.wizard"
+    _description = "Add Magento Backend Wizard"
 
     def get_default_object(self, model):
         domain = []

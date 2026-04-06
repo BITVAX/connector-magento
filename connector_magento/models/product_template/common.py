@@ -257,7 +257,6 @@ class ProductTemplate(models.Model):
         comodel_name="product.category.public",
         string="Root Categories",
         compute="_compute_root_category_ids",
-        invisible=True,
     )
 
     @api.depends("website_ids")
@@ -331,6 +330,7 @@ class ProductTemplate(models.Model):
     magento_bindings_count = fields.Integer(
         string="Magento Bindings",
         compute="_compute_magento_sync_info",
+        store=True,
         help="Number of Magento backend bindings for this product",
     )
     magento_sync_state = fields.Selection(
@@ -571,16 +571,23 @@ class ProductTemplate(models.Model):
         )
         return action
 
-    @api.model
-    def create(self, vals):
-        # Avoid to create variants
-        if vals.get("auto_create_variants", True):
-            # If auto create is true - then create the normal way
-            return super().create(vals)
-        # Else avoid creating the variants
-        me = self.with_context(create_product_product=True)
-
-        return super(ProductTemplate, me).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Check if any vals needs variant creation suppression
+        no_variant_vals = []
+        variant_vals = []
+        for vals in vals_list:
+            if vals.get("auto_create_variants", True):
+                variant_vals.append(vals)
+            else:
+                no_variant_vals.append(vals)
+        records = self.env["product.template"]
+        if variant_vals:
+            records |= super().create(variant_vals)
+        if no_variant_vals:
+            me = self.with_context(create_product_product=True)
+            records |= super(ProductTemplate, me).create(no_variant_vals)
+        return records
 
     def _create_variant_ids(self):
         for rec in self:
