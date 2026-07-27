@@ -38,6 +38,7 @@
         "views/partner_views.xml",
         "views/invoice_views.xml",
         "views/sale_order_views.xml",
+        "views/magento_account_tax_views.xml",
         "views/connector_magento_menu.xml",
         "views/delivery_views.xml",
         "views/stock_views.xml",

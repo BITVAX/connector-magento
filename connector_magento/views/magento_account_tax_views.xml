@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--
+        Dedicated views for the tax-class binding.
+
+        magento.account.tax uses `_inherits = {'account.tax': 'odoo_id'}`. Without
+        an explicit view, Odoo auto-generates a form/list exposing ALL delegated
+        account.tax fields, including the three overlapping repartition One2many
+        (invoice_/refund_/repartition_line_ids, all sharing inverse `tax_id` in
+        18.0). Re-pointing `odoo_id` then makes the web client emit delete/link
+        commands on those lines, which corrupts the target tax's repartition and
+        raises "distribution should contain exactly one line for the base".
+
+        A binding only needs the imported Magento data (read-only) and the
+        `odoo_id` mapping, so we scope the views to those fields. The delegated
+        repartition fields never enter the field spec, so `web_save` carries only
+        `odoo_id` and the mapping can be reworked safely.
+    -->
+    <record id="view_magento_account_tax_form" model="ir.ui.view">
+        <field name="name">magento.account.tax.form</field>
+        <field name="model">magento.account.tax</field>
+        <field name="arch" type="xml">
+            <form string="Magento Tax Class">
+                <sheet>
+                    <group>
+                        <group string="Imported from Magento">
+                            <field name="backend_id" />
+                            <field
+                                name="external_id"
+                                string="Magento Class ID"
+                                readonly="1"
+                            />
+                            <field name="class_name" readonly="1" />
+                            <field name="class_type" readonly="1" />
+                        </group>
+                        <group string="Odoo Mapping">
+                            <field name="odoo_id" options="{'no_create': True}" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_magento_account_tax_tree" model="ir.ui.view">
+        <field name="name">magento.account.tax.list</field>
+        <field name="model">magento.account.tax</field>
+        <field name="arch" type="xml">
+            <list string="Magento Tax Classes">
+                <field name="external_id" string="Magento Class ID" />
+                <field name="class_name" />
+                <field name="class_type" />
+                <field name="odoo_id" />
+            </list>
+        </field>
+    </record>
+</odoo>
