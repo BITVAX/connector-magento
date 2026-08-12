@@ -349,6 +349,8 @@ class ProductTemplateImporter(Component):
 
     def _import_dependencies(self, **kwargs):
         record = self.magento_record
+        attribute_binder = self.binder_for("magento.product.attribute")
+        attribute_value_binder = self.binder_for("magento.product.attribute.value")
         # Import attribute deps
         for attribute in record.get("custom_attributes"):
             # We do search binding using attribute_code - default is attribute_id !
@@ -357,11 +359,32 @@ class ProductTemplateImporter(Component):
                 "magento.product.attribute",
                 external_field="attribute_code",
             )
+            mattribute = attribute_binder.to_internal(
+                attribute["attribute_code"],
+                unwrap=False,
+                external_field="attribute_code",
+            )
+            if (
+                mattribute
+                and mattribute.is_user_defined
+                and mattribute.frontend_input == "select"
+            ):
+                mvalue = attribute_value_binder.to_internal(
+                    "%s_%s" % (mattribute.attribute_id, str(attribute["value"])),
+                    unwrap=False,
+                )
+                if not mvalue:
+                    # Same repair as ProductImporter._import_attributes: Magento 2
+                    # cannot serve a single option, so reimport the attribute to
+                    # (re)create all its options before the mapper demands them.
+                    self._import_dependency(
+                        mattribute.attribute_id,
+                        "magento.product.attribute",
+                        always=True,
+                    )
         self._import_category_dependencies()
         # Check for attributes in configurable - with values
         product_options = record["extension_attributes"]["configurable_product_options"]
-        attribute_binder = self.binder_for("magento.product.attribute")
-        attribute_value_binder = self.binder_for("magento.product.attribute.value")
         for product_option in product_options:
             attribute = attribute_binder.to_internal(
                 product_option["attribute_id"], unwrap=True
@@ -663,9 +686,11 @@ class ProductTemplateImportMapper(Component):
                 del data["attribute_line_ids"]
             binding_template_id = self.options["binding_template_id"]
             template_id = binding_template_id.odoo_id
-            ptav_ids = template_id.mapped(
-                "attribute_line_ids.product_template_value_ids"
-            ).filtered(lambda x: x.product_attribute_value_id.id in value_ids)
+            ptav_ids = (
+                template_id.mapped("attribute_line_ids.product_template_value_ids")
+                .filtered(lambda x: x.product_attribute_value_id.id in value_ids)
+                ._without_no_variant_attributes()
+            )
             data["product_template_attribute_value_ids"] = [(6, 0, ptav_ids.ids)]
 
         return data

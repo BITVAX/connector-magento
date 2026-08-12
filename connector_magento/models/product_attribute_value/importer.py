@@ -54,11 +54,15 @@ class AttributeValueImportMapper(Component):
 
     @mapping
     def odoo_id(self, record):
+        # limit=1: product.attribute.value has no unique constraint on
+        # (name, attribute_id) in Odoo 18, and a multi-record result here
+        # used to map odoo_id to None, breaking the product import later.
         odoo_value = self.env["product.attribute.value"].search(
             [
                 ("name", "=", record.get("label")),
                 ("attribute_id", "=", self.options.magento_attribute.odoo_id.id),
-            ]
+            ],
+            limit=1,
         )
         if not odoo_value:
             odoo_value = self.env["product.attribute.value"].create(
@@ -69,7 +73,7 @@ class AttributeValueImportMapper(Component):
             )
 
         return {
-            "odoo_id": odoo_value.id if odoo_value and len(odoo_value) == 1 else None,
+            "odoo_id": odoo_value.id,
             "magento_attribute_id": self.options.magento_attribute.id,
         }
 

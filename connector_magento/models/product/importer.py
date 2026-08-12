@@ -439,9 +439,11 @@ class ProductImportMapper(Component):
         if self.options.get("binding_template_id") and len(value_ids):
             binding_template_id = self.options["binding_template_id"]
             template_id = binding_template_id.odoo_id
-            ptav_ids = template_id.mapped(
-                "attribute_line_ids.product_template_value_ids"
-            ).filtered(lambda x: x.product_attribute_value_id.id in value_ids)
+            ptav_ids = (
+                template_id.mapped("attribute_line_ids.product_template_value_ids")
+                .filtered(lambda x: x.product_attribute_value_id.id in value_ids)
+                ._without_no_variant_attributes()
+            )
             data["product_template_attribute_value_ids"] = [(6, 0, ptav_ids.ids)]
             # Remove attribute_line_ids as variants don't manage template lines
             if data.get("attribute_line_ids"):
@@ -562,18 +564,21 @@ class ProductImporter(Component):
             if (
                 mattribute
                 and mattribute.is_user_defined
-                and mattribute.create_variant != "no_variant"
+                and mattribute.frontend_input == "select"
             ):
                 mvalue = value_binder.to_internal(
                     "%s_%s" % (mattribute.attribute_id, str(attribute["value"])),
                     unwrap=False,
                 )
                 if not mvalue:
+                    # Magento 2 has no GET /products/attributes/{code}/options/{id},
+                    # only the full collection, so a per-value import can never
+                    # succeed. Reimport the whole attribute instead: its
+                    # _after_import creates every option.
                     self._import_dependency(
-                        str(attribute["value"]),
-                        "magento.product.attribute.value",
-                        attribute_code=attribute["attribute_code"],
-                        magento_attribute=mattribute,
+                        mattribute.attribute_id,
+                        "magento.product.attribute",
+                        always=True,
                     )
 
     def _validate_product_type(self, data):
@@ -688,6 +693,12 @@ class ProductImporter(Component):
         ptav_obj = self.env["product.template.attribute.value"]
         ptav_ids = []
         for attribute_line in binding.attribute_line_ids:
+            if attribute_line.attribute_id.create_variant == "no_variant":
+                # The core never puts no_variant PTAVs in a variant combination
+                # (see product.template._create_product_variant): they would
+                # poison combination_indices and _get_variant_for_combination
+                # would never find the variant again.
+                continue
             for value in attribute_line.value_ids:
                 ptav = ptav_obj.search(
                     [
@@ -702,10 +713,15 @@ class ProductImporter(Component):
                             "attribute_line_id": attribute_line.id,
                         }
                     )
-                if ptav and binding.id not in ptav.ptav_product_variant_ids.ids:
+                if (
+                    ptav
+                    and binding.odoo_id.id not in ptav.ptav_product_variant_ids.ids
+                ):
                     ptav_ids.append(ptav.id)
         if ptav_ids:
-            binding.write({"product_template_attribute_value_ids": [(6, 0, ptav_ids)]})
+            binding.write(
+                {"product_template_attribute_value_ids": [(4, pid) for pid in ptav_ids]}
+            )
 
     def _after_import(self, binding, **kwargs):
         """Hook called at the end of the import"""
