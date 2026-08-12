@@ -93,6 +93,13 @@ class MagentoBackend(models.Model):
         help="When enabled, import/export operations will post a "
         "notification message in the chatter of the related record.",
     )
+    rename_duplicate_values = fields.Boolean(
+        string="Rename Duplicate Attribute Values",
+        default=False,
+        help="When a product attribute is imported with several options "
+        "sharing the same label, rename the duplicates with a unique "
+        "suffix instead of failing the import.",
+    )
     sale_prefix = fields.Char(
         help="A prefix put before the name of imported sales orders.\n"
         "For instance, if the prefix is 'mag-', the sales "
