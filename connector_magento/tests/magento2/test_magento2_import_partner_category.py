@@ -26,6 +26,11 @@ class TestImportPartnerCategory(Magento2SyncTestCase):
         binding_model = self.env["magento.res.partner.category"]
         category_model = self.env["res.partner.category"]
 
+        # Neutralize same-name categories that may pre-exist in the database
+        # (production copies): the mapper binds by name to the first match.
+        category_model.search([("name", "=", "Wholesale")]).write(
+            {"name": "Wholesale (pre-existing)"}
+        )
         existing_category = category_model.create({"name": "Wholesale"})
 
         self.env["magento.res.partner.category"].import_record(self.backend, 2)

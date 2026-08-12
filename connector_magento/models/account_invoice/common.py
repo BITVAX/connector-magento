@@ -70,6 +70,9 @@ class AccountInvoiceAdapter(Component):
     _apply_on = "magento.account.invoice"
 
     _magento_model = "sales_order_invoice"
+    _magento2_model = "invoices"
+    _magento2_search = "invoices"
+    _magento2_key = "entity_id"
     _admin_path = "sales_invoice/view/invoice_id/{id}"
     # Not valid without security key
     # _admin2_path = 'sales/order_invoice/view/invoice_id/{id}'
@@ -103,7 +106,11 @@ class AccountInvoiceAdapter(Component):
             filters = {}
         if order_id is not None:
             filters["order_id"] = {"eq": order_id}
-        return super().search_read(filters=filters)
+        res = super().search_read(filters=filters)
+        # Magento 2 search endpoints wrap the records in an 'items' key
+        if isinstance(res, dict):
+            res = res.get("items") or []
+        return res
 
 
 class MagentoBindingInvoiceListener(Component):

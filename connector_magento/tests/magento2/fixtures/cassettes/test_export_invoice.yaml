@@ -767,4 +767,38 @@ interactions:
         X-Frame-Options: [SAMEORIGIN]
         content-length: ["3"]
       status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["application/json"]
+        Authorization: ["Bearer test_token"]
+        Content-Type: ["application/json"]
+        User-Agent: ["python-requests/2.25.1"]
+      method: GET
+      uri: http://magento/index.php/rest/V1/invoices?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=order_id&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=eq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=16
+    response:
+      body:
+        {
+          string: '{"items":[{"entity_id":4,"increment_id":"4","order_id":16}],"search_criteria":{"filter_groups":[{"filters":[{"field":"order_id","value":"16","condition_type":"eq"}]}]},"total_count":1}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
+  - request:
+      body: null
+      headers:
+        Accept: ["application/json"]
+        Authorization: ["Bearer test_token"]
+        Content-Type: ["application/json"]
+        User-Agent: ["python-requests/2.25.1"]
+      method: GET
+      uri: http://magento/index.php/rest/V1/invoices?searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bfield%5D=order_id&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bcondition_type%5D=eq&searchCriteria%5Bfilter_groups%5D%5B0%5D%5Bfilters%5D%5B0%5D%5Bvalue%5D=16
+    response:
+      body:
+        {
+          string: '{"items":[{"entity_id":4,"increment_id":"4","order_id":16}],"search_criteria":{"filter_groups":[{"filters":[{"field":"order_id","value":"16","condition_type":"eq"}]}]},"total_count":1}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
 version: 1
