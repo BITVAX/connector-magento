@@ -10,8 +10,6 @@ is created with variant generation suppressed and ends up with no variant at
 all.
 """
 
-import unittest
-
 from odoo.tests import tagged
 
 from .common import Magento2TestCase
@@ -46,21 +44,15 @@ class TestProductCopy(Magento2TestCase):
             "The duplicated template must have its variant",
         )
 
-    @unittest.expectedFailure
     def test_copy_variant_returns_a_real_record(self):
         """product.product.copy() copies the template and returns its variant.
 
-        KNOWN GAP, kept as a tripwire. copy=False fixes the flag but not this
-        case: when the source template already has its variant -- which is
-        exactly how the importer leaves an imported product -- the duplicate is
-        created with auto_create_variants=True and still ends up with no
-        variant at all. Duplicating a template that has no variants does work,
-        so the two paths differ and the cause is not identified yet; finding it
-        needs live instrumentation, not more code reading.
-
-        Marked expectedFailure rather than deleted: unittest reports an
-        unexpected success, so the day someone fixes the copy this test says so
-        instead of staying quietly green.
+        The variant is re-browsed on purpose. product.product.create returns a
+        recordset carrying create_product_product=False in its context, and
+        core's product.template.create only calls _create_variant_ids when that
+        key is not False -- so copying the very recordset create() just handed
+        back silently skips variant creation. Production never does that: it
+        searches the product and duplicates it, with a clean context.
 
         The assertions walk the chain stage by stage on purpose: core's copy()
         does template-copy first and only then resolves the variant, so a bare
@@ -71,6 +63,7 @@ class TestProductCopy(Magento2TestCase):
         variant = self.env["product.product"].create(
             {"product_tmpl_id": template.id, "default_code": "MAG-SIMPLE"}
         )
+        variant = self.env["product.product"].browse(variant.id)
         new_variant = variant.copy()
 
         new_template = self.env["product.template"].search(
