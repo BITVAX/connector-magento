@@ -293,7 +293,12 @@ class ProductTemplate(models.Model):
         compute="_compute_magento_variant_bind_ids",
         string="Magento Variant Bindings",
     )
-    auto_create_variants = fields.Boolean(default=True)
+    # copy=False: a duplicate is a brand new Odoo product, not an imported
+    # webshop one. Importers force this flag to False so that they create the
+    # variant themselves; without copy=False the duplicate inherits False and
+    # is left with no variant at all (product.product.copy returns an empty
+    # recordset because _create_variant_ids is suppressed).
+    auto_create_variants = fields.Boolean(default=True, copy=False)
     magento_default_code = fields.Char(string="Default code used for magento")
     job_ids = fields.Many2many("queue.job", string="Jobs")
     open_job_count = fields.Integer(
