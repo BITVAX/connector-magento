@@ -456,7 +456,11 @@ class ProductTemplateExportMapper(Component):
             mime = magic.Magic(mime=True)
             image_count = 0
             for image in [record.odoo_id]:
-                mimetype = mime.from_buffer(base64.b64decode(image.image_1920))
+                # image_1920 is a bytes value holding base64-encoded data
+                image_data = image.image_1920
+                if not image_data:
+                    continue
+                mimetype = mime.from_buffer(base64.b64decode(image_data))
                 extension = self.mime_to_extension.get(mimetype, "jpg")
                 filename = f"{slugify(image.name or record.external_id)}_{record.id}_{image_count}.{extension}"
                 image_count += 1
@@ -467,7 +471,8 @@ class ProductTemplateExportMapper(Component):
                         "position": image_count,
                         "disabled": False,
                         "content": {
-                            "base64_encoded_data": image.image_1920,
+                            # decode() because json.dumps cannot serialize bytes
+                            "base64_encoded_data": image_data.decode(),
                             "type": mimetype,
                             "name": filename,
                         },

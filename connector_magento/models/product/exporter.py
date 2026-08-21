@@ -533,9 +533,11 @@ class ProductProductExportMapper(Component):
             else:
                 images = record.image_ids
             for image in images:
-                if not image.image_1920:
+                # image_1920 is a bytes value holding base64-encoded data
+                image_data = image.image_1920
+                if not image_data:
                     continue
-                mimetype = mime.from_buffer(base64.b64decode(image.image_1920))
+                mimetype = mime.from_buffer(base64.b64decode(image_data))
                 extension = self.mime_to_extension.get(mimetype, "jpg")
                 filename = f"{slugify(image.name or record.default_code)}_{record.id}_{image_count}.{extension}"
                 image_count += 1
@@ -547,7 +549,8 @@ class ProductProductExportMapper(Component):
                         "disabled": False,
                         # "file": filename,
                         "content": {
-                            "base64_encoded_data": image.image_1920,
+                            # decode() because json.dumps cannot serialize bytes
+                            "base64_encoded_data": image_data.decode(),
                             "type": mimetype,
                             "name": filename,
                         },
