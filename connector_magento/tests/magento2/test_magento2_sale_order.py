@@ -68,7 +68,8 @@ class TestSaleOrder(Magento2SyncTestCase):
             ),
             ExpectedOrderLine(
                 product_id=ship,
-                name="Shipping Costs",
+                # The shipping product is named by the instance, not by us.
+                name=ship.name,
                 price_unit=5.0,
                 product_uom_qty=1.0,
             ),
@@ -114,12 +115,19 @@ class TestSaleOrder(Magento2SyncTestCase):
                 "name": "Carrier Product",
             }
         )
+        # The importer resolves the carrier with
+        # search([("magento_code", "=", ...)], limit=1), so any carrier already
+        # carrying that code in this database would win over the one below --
+        # a migrated database usually has one. Free the code first, otherwise
+        # the test only passes on an empty database.
+        self.env["delivery.carrier"].search(
+            [("magento_code", "=", "tablerate_bestway")]
+        ).magento_code = False
         self.env["delivery.carrier"].create(
             {
                 "name": "ups_GND",
                 "product_id": product.id,
                 "magento_code": "tablerate_bestway",
-                "magento_carrier_code": "ups_GND",
             }
         )
         binding = self._import_sale_order("9")

@@ -17,24 +17,49 @@ class TestUpdateStockQty(Magento2SyncTestCase):
     """Test the export of pickings to Magento"""
 
     def _product_change_qty(self, product, new_qty, location_id=False):
-        # Odoo 16: use stock.quant directly for location-specific qty changes
-        if location_id:
-            location = self.env["stock.location"].browse(location_id)
-            self.env["stock.quant"]._update_available_quantity(
-                product, location, new_qty
-            )
-        else:
-            wizard = self.env["stock.change.product.qty"].create(
-                {
-                    "product_id": product.id,
-                    "product_tmpl_id": product.product_tmpl_id.id,
-                    "new_quantity": new_qty,
-                }
-            )
-            wizard.change_product_qty()
+        """Put the quantity in a location this test owns.
+
+        Deliberately NOT stock.change.product.qty: that wizard applies an
+        inventory adjustment, whose counterpart is the database's inventory
+        adjustment location. On a migrated database that location can be
+        configured as internal instead of inventory, and then the adjustment
+        does not create stock at all -- it shifts it between two internal
+        locations and the product ends up negative, with no error anywhere.
+        Writing the quant directly has no counterpart and does not depend on
+        how the database happens to be configured.
+        """
+        location = (
+            self.env["stock.location"].browse(location_id)
+            if location_id
+            else self.stock_location
+        )
+        self.env["stock.quant"]._update_available_quantity(product, location, new_qty)
+        # qty_available and friends are computed on read from the quants, with
+        # no declared dependency on them, so a quant written behind their back
+        # leaves whatever the test read before still cached. The wizard used to
+        # hide this because applying an inventory flushes and invalidates.
+        self.env.flush_all()
+        self.env.invalidate_all()
 
     def setUp(self):
         super().setUp()
+        # Our own warehouse, and the backend pointed at it.
+        #
+        # These tests need one location to satisfy two readers at once:
+        # product.virtual_available, which only counts locations hanging below
+        # some warehouse's view_location_id, and the connector, which reads the
+        # quantity restricted to backend.warehouse_id.lot_stock_id. A warehouse
+        # created here satisfies both because Odoo builds its tree consistently.
+        # The database's own warehouse may not: in forum, Alm.FF has its
+        # lot_stock_id outside its own view location, so stock put there is
+        # invisible to virtual_available while being the only place the
+        # connector looks. Nothing in the connector is wrong there -- the
+        # warehouse is -- and a test must not depend on it either way.
+        self.warehouse = self.env["stock.warehouse"].create(
+            {"name": "Magento Test Warehouse", "code": "MGTST"}
+        )
+        self.backend.warehouse_id = self.warehouse
+        self.stock_location = self.warehouse.lot_stock_id
         self.binding_product = self._import_record(
             "magento.product.product",
             "MH09-L-Blue",
@@ -98,7 +123,7 @@ class TestUpdateStockQty(Magento2SyncTestCase):
                 "product_id": product.id,
                 "product_uom_qty": 11,
                 "product_uom": product.uom_id.id,
-                "location_id": self.env.ref("stock.stock_location_stock").id,
+                "location_id": self.stock_location.id,
                 "location_dest_id": customer_location.id,
             }
         )
@@ -216,12 +241,11 @@ class TestUpdateStockQty(Magento2SyncTestCase):
         self.assertEqual(binding.magento_qty, 0.0)
 
         # Create a sub-location for the test (demo data may not be available)
-        warehouse = self.env.ref("stock.warehouse0")
         my_location = self.env["stock.location"].create(
             {
                 "name": "Test Components",
                 "usage": "internal",
-                "location_id": warehouse.lot_stock_id.id,
+                "location_id": self.stock_location.id,
             }
         )
         my_location_id = my_location.id
