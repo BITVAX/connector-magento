@@ -2,11 +2,17 @@
 # Copyright 2020 Opener B.V.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
+from odoo.tests import tagged
+
 from odoo.addons.connector.exception import InvalidDataError
 
 from .common import Magento2SyncTestCase, recorder
 
 
+# post_install: en at_install el registry todavía no tiene los módulos que
+# dependen de éste, así que los campos que ellos añaden a modelos ya existentes
+# no aplican su default aunque su columna esté en la base de datos.
+@tagged("post_install", "-at_install")
 class TestImportProduct(Magento2SyncTestCase):
     def setUp(self):
         super().setUp()

@@ -5,9 +5,56 @@
 Tests for exporting products to Magento (create and update).
 """
 
+import json
+
+from odoo.tests import tagged
+
 from .common import Magento2SyncTestCase, recorder
 
+# Smallest valid PNG (1x1 transparent), base64-encoded, so that python-magic
+# detects a real mimetype from the decoded buffer.
+PNG_1X1_B64 = (
+    b"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGA"
+    b"hKmMIQAAAABJRU5ErkJggg=="
+)
 
+
+def _add_image(env, owner, name="Test image"):
+    """Give a product template an image, through product_multi_image's own API.
+
+    Writing image_1920 goes through _inverse_image_1920, which creates the
+    base_multi_image.image AND keeps the stored image_1920 consistent with it.
+
+    Creating that row directly instead does not work: image_ids is a One2many
+    whose inverse (owner_id) is a plain Integer, so the ORM has no relational
+    link to notice the new child -- neither image_ids nor the stored compute
+    that reads it get invalidated. The export mapper checks image_ids but then
+    reads the template's own image_1920, so a row created behind the module's
+    back yields an empty gallery and a failure far from its cause.
+
+    Both calls below are needed, and for different reasons: flush_all() makes
+    the inverse actually persist the row, and invalidate_all() drops the stale
+    One2many so the next read goes to the database. Flushing alone leaves
+    image_ids serving its cached empty value; invalidating alone leaves the
+    stored image_1920 unrefreshed.
+    """
+    owner.image_1920 = PNG_1X1_B64
+    env.flush_all()
+    env.invalidate_all()
+    assert owner.image_ids, "the owner does not see the image just created"
+    assert owner.image_1920, "the stored image_1920 was not refreshed"
+    if name:
+        owner.image_ids[:1].name = name
+        env.flush_all()
+    return owner.image_ids[:1]
+
+
+# post_install: estas pruebas necesitan el registry COMPLETO. Las pruebas
+# at_install corren dentro de load_module_graph, justo después de cargar este
+# módulo, cuando los módulos que dependen de él todavía no están cargados; sus
+# extensiones de modelo (campos con default incluidos) aún no existen, aunque
+# sus columnas sí estén ya en la base de datos.
+@tagged("post_install", "-at_install")
 class TestExportProduct(Magento2SyncTestCase):
     def setUp(self):
         super().setUp()
@@ -99,6 +146,26 @@ class TestExportProduct(Magento2SyncTestCase):
         self.assertIn("attributeSetId", data)
         self.assertIn("weight", data)
 
+    def test_export_product_mapper_image_is_json_serializable(self):
+        """Image payload must be JSON-serializable (image_1920 returns bytes)."""
+        binding = self._create_product_binding("Image Test", "IMAGE-SKU")
+        _add_image(self.env, binding.odoo_id.product_tmpl_id)
+
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        entries = data.get("media_gallery_entries")
+        self.assertTrue(entries, "The image should reach media_gallery_entries")
+        self.assertIsInstance(
+            entries[0]["content"]["base64_encoded_data"],
+            str,
+            "base64_encoded_data must be str, not bytes",
+        )
+        # This is what requests(json=...) does and what used to raise
+        # TypeError: Object of type bytes is not JSON serializable
+        json.dumps(data)
+
     def test_export_product_mapper_website_ids(self):
         """Export mapper includes website_ids in extension_attributes."""
         binding = self._create_product_binding("Website Test", "WEBSITE-SKU")
@@ -114,6 +181,7 @@ class TestExportProduct(Magento2SyncTestCase):
         )
 
 
+@tagged("post_install", "-at_install")
 class TestExportProductTemplate(Magento2SyncTestCase):
     """Tests for exporting configurable product templates with variants."""
 
@@ -296,3 +364,21 @@ class TestExportProductTemplate(Magento2SyncTestCase):
         self.assertEqual(
             len(variant_bindings), 2, "Should have created 2 variant bindings"
         )
+
+    def test_template_export_mapper_image_is_json_serializable(self):
+        """Template image payload must be JSON-serializable too."""
+        binding = self._create_configurable_template()
+        _add_image(self.env, binding.odoo_id)
+
+        with self.backend.work_on("magento.product.template") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        entries = data.get("media_gallery_entries")
+        self.assertTrue(entries, "The image should reach media_gallery_entries")
+        self.assertIsInstance(
+            entries[0]["content"]["base64_encoded_data"],
+            str,
+            "base64_encoded_data must be str, not bytes",
+        )
+        json.dumps(data)

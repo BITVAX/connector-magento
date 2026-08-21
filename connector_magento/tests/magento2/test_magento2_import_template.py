@@ -6,9 +6,15 @@ Tests for importing configurable products as product.template with
 all their simple variant children.
 """
 
+from odoo.tests import tagged
+
 from .common import Magento2SyncTestCase
 
 
+# post_install: en at_install el registry todavía no tiene los módulos que
+# dependen de éste, así que los campos que ellos añaden a modelos ya existentes
+# no aplican su default aunque su columna esté en la base de datos.
+@tagged("post_install", "-at_install")
 class TestImportProductTemplate(Magento2SyncTestCase):
     def setUp(self):
         super().setUp()
