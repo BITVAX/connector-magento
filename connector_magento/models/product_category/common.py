@@ -76,13 +76,18 @@ class ProductCategoryPublic(models.Model):
             category.product_count = len(category.product_tmpl_ids)
         return
 
-    @api.depends("name", "parent_id.name")
+    @api.depends("name", "parents_and_self")
     def _compute_display_name(self):
+        # The lambda used to be `x.name if x.parent_id else ""`, which drops
+        # the name of the root of the branch. A root category has only itself
+        # in parents_and_self and no parent, so its whole display name came
+        # out empty and it showed as "Sin nombre" wherever it was referenced;
+        # a child came out as "/Child", with a stray leading separator and no
+        # top level. This mirrors product.public.category in core instead.
+        # The Magento export is unaffected: its mapper sends `name`, not this.
         for category in self:
-            category.display_name = "/".join(
-                category.parents_and_self.mapped(
-                    lambda x: x.name if x.parent_id else ""
-                )
+            category.display_name = " / ".join(
+                category.parents_and_self.mapped(lambda x: x.name or "")
             )
 
     magento_bind_ids = fields.One2many(
@@ -96,7 +101,12 @@ class ProductCategoryPublic(models.Model):
         if not self._check_recursion():
             raise ValueError(_("Error ! You cannot create recursive categories."))
 
+    @api.depends("parent_path")
     def _compute_parents_and_self(self):
+        # The dependency is what product.public.category declares in core and
+        # what this compute actually reads. Without it the field never gets
+        # invalidated, so a category moved to another parent keeps serving the
+        # old branch from cache for the rest of the transaction.
         for category in self:
             if category.parent_path:
                 category.parents_and_self = self.env["product.category.public"].browse(
