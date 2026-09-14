@@ -79,6 +79,23 @@ class TestMagento2SearchPaging(Magento2TestCase):
                 "website_id",
             )
 
+    def test_page_size_comes_from_the_backend(self):
+        """``search_page_size`` on the backend drives the page size."""
+        self.backend.search_page_size = 200
+        shop = FakeShop(total=1200)
+        ids = self._search(shop)
+        self.assertEqual(len(ids), 1200)
+        self.assertEqual(len(shop.calls), 6)
+        self.assertTrue(
+            all(p["searchCriteria[pageSize]"] == 200 for _, p in shop.calls)
+        )
+
+    def test_empty_page_size_falls_back_to_default(self):
+        self.backend.search_page_size = 0
+        shop = FakeShop(total=10)
+        self._search(shop)
+        self.assertEqual(shop.calls[0][1]["searchCriteria[pageSize]"], PAGE)
+
     def test_search_without_filters_sends_no_empty_placeholder(self):
         shop = FakeShop(total=3)
         ids = self._search(shop)

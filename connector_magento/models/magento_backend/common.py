@@ -154,6 +154,15 @@ class MagentoBackend(models.Model):
         comodel_name="product.pricelist",
         help="Pricelist to calculate special_price on export. ",
     )
+    search_page_size = fields.Integer(
+        string="Search page size",
+        default=500,
+        help="Records asked per page on every Magento 2 search "
+        "(customers, products, orders...). Magento cannot serve an "
+        "unpaged search on a big shop: it answers HTTP 500 or times out. "
+        "Lower it if the shop is slow on heavy records; 0 or empty falls "
+        "back to the default of 500.",
+    )
     # TODO? add a field `auto_activate` -> activate a cron
     import_products_from_date = fields.Datetime(
         string="Import products from date",

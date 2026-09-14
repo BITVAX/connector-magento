@@ -281,9 +281,14 @@ class GenericAdapter(AbstractComponent):
     # a shop with 15,000 customers answers ``customers/search`` with HTTP 500
     # and ``products`` takes ~9 s for 2,400 SKUs (measured 2026-09-14), and
     # bigger catalogues simply time out. 500 keeps each call under a second
-    # while listing that shop's customers in ~30 calls; an adapter can lower
-    # it for heavier payloads.
+    # while listing that shop's customers in ~30 calls. The backend's
+    # ``search_page_size`` overrides it per shop; an adapter can still pin
+    # its own default for heavier payloads.
     _magento2_page_size = 500
+
+    def _page_size(self):
+        configured = getattr(self.backend_record, "search_page_size", 0)
+        return configured if configured and configured > 0 else self._magento2_page_size
 
     def _search_all_pages(self, path, params):
         """Call a Magento 2 search endpoint page by page and merge the pages.
@@ -302,7 +307,7 @@ class GenericAdapter(AbstractComponent):
         # The empty placeholder ``searchCriteria=`` is what get_searchCriteria
         # emits without filters; it does not combine with the paging keys.
         params.pop("searchCriteria", None)
-        page_size = self._magento2_page_size
+        page_size = self._page_size()
         items, total, page = [], None, 1
         while True:
             params["searchCriteria[pageSize]"] = page_size
