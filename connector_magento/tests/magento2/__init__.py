@@ -15,3 +15,4 @@ from . import test_magento2_import_template
 from . import test_magento2_import_product_image
 from . import test_magento2_related_action
 from . import test_magento2_sale_order
+from . import test_magento2_search_paging

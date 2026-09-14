@@ -276,6 +276,52 @@ class GenericAdapter(AbstractComponent):
         _logger.debug("searchCriteria %s from %s", res, filters)
         return res if res else {"searchCriteria": ""}
 
+    # Magento 2 search endpoints are ALWAYS asked page by page. Without
+    # ``searchCriteria[pageSize]`` Magento serialises the whole result set:
+    # a shop with 15,000 customers answers ``customers/search`` with HTTP 500
+    # and ``products`` takes ~9 s for 2,400 SKUs (measured 2026-09-14), and
+    # bigger catalogues simply time out. 500 keeps each call under a second
+    # while listing that shop's customers in ~30 calls; an adapter can lower
+    # it for heavier payloads.
+    _magento2_page_size = 500
+
+    def _search_all_pages(self, path, params):
+        """Call a Magento 2 search endpoint page by page and merge the pages.
+
+        Two stop conditions on purpose: a short (or empty) page, and having
+        collected ``total_count`` records. Magento builds differ on what a
+        page past the end returns -- ``{"items": null}`` on some, the last
+        page again on others -- and only ``total_count`` stops the second
+        kind when the total is an exact multiple of the page size.
+
+        Repository endpoints reached through ``_magento2_search`` (attribute
+        options, the category tree) ignore the paging keys and answer a plain
+        list: that is returned untouched after the first call.
+        """
+        params = dict(params)
+        # The empty placeholder ``searchCriteria=`` is what get_searchCriteria
+        # emits without filters; it does not combine with the paging keys.
+        params.pop("searchCriteria", None)
+        page_size = self._magento2_page_size
+        items, total, page = [], None, 1
+        while True:
+            params["searchCriteria[pageSize]"] = page_size
+            params["searchCriteria[currentPage]"] = page
+            res = self._call(path, params)
+            if not isinstance(res, dict) or "items" not in res:
+                return res
+            got = res.get("items") or []
+            items.extend(got)
+            if res.get("total_count") is not None:
+                total = res["total_count"]
+            if len(got) < page_size or (total is not None and len(items) >= total):
+                break
+            page += 1
+        merged = dict(res, items=items)
+        if total is not None:
+            merged["total_count"] = total
+        return merged
+
     def search(self, filters=None):
         """Search records according to some criteria
         and returns a list of unique identifiers
@@ -292,13 +338,14 @@ class GenericAdapter(AbstractComponent):
         key = self._magento2_key or "id"
         params = {}
         if self._magento2_search:
-            params["fields"] = "items[%s]" % key
+            params["fields"] = "items[%s],total_count" % key
             params.update(self.get_searchCriteria(filters))
+            res = self._search_all_pages(self._magento2_search, params)
         else:
             params["fields"] = key
             if filters:
                 raise NotImplementedError
-        res = self._call(self._magento2_search or self._magento2_model, params)
+            res = self._call(self._magento2_model, params)
         if "items" in res:
             res = res["items"] or []
         return [item[key] for item in res if item[key] != 0]
@@ -335,10 +382,10 @@ class GenericAdapter(AbstractComponent):
         params = {}
         if self._magento2_search:
             params.update(self.get_searchCriteria(filters))
-        else:
-            if filters:
-                raise NotImplementedError
-        return self._call(self._magento2_search or self._magento2_model, params)
+            return self._search_all_pages(self._magento2_search, params)
+        if filters:
+            raise NotImplementedError
+        return self._call(self._magento2_model, params)
 
     def create(self, data, storeview=None, **kwargs):
         """Create a record on the external system"""
