@@ -233,7 +233,7 @@
                             <field name="default_attribute_set_id" />
                             <field
                                 name="default_attribute_group_id"
-                                help="ID de grupo de atributos por defecto para nuevos atributos en Magento. Usado si no se especifica otro grupo."
+                                help="Default attribute group ID for new attributes in Magento. Used when no other group is given."
                             />
                             <field name="no_stock_sync" />
                             <field name="sale_prefix" placeholder="mag-" />

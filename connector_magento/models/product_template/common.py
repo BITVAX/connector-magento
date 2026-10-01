@@ -229,16 +229,16 @@ class ProductTemplate(models.Model):
     )
 
     meta_title = fields.Char(
-        string="Título SEO",
+        string="SEO Title",
         help="SEO title for this product. Usually imported from Magento.",
         translate=True,
     )
     meta_keyword = fields.Char(
-        string="Palabras clave",
+        string="Keywords",
         help="SEO keywords for this product. Usually imported from Magento.",
     )
     meta_description = fields.Text(
-        string="Descripción SEO",
+        string="SEO Description",
         help="SEO description for this product. Usually imported from Magento.",
         translate=True,
     )

@@ -28,7 +28,7 @@ class MagentoBackend(models.Model):
     default_attribute_group_id = fields.Integer(
         string="Default Attribute Group ID",
         default=7,
-        help="ID de grupo de atributos que se usará por defecto al crear nuevos atributos en Magento. Por defecto es 7 (grupo 'General' en Magento).",
+        help="Attribute group ID used by default when creating new attributes in Magento. Defaults to 7 (the 'General' group in Magento).",
     )
 
     @api.model

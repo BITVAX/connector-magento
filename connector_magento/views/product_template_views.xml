@@ -16,21 +16,18 @@
                 />
                 <field name="website_ids" widget="many2many_tags" />
                 <separator string="SEO" />
-                <field
-                    name="url_key"
-                    placeholder="Ejemplo: camiseta-roja-deportiva-entrenamiento"
-                />
+                <field name="url_key" placeholder="e.g. red-sports-training-t-shirt" />
                 <field
                     name="meta_title"
-                    placeholder="Ejemplo: Camiseta roja deportiva para entrenamiento"
+                    placeholder="e.g. Red sports t-shirt for training"
                 />
                 <field
                     name="meta_keyword"
-                    placeholder="Ejemplo: camiseta, deporte, entrenamiento, mujer"
+                    placeholder="e.g. t-shirt, sport, training, women"
                 />
                 <field
                     name="meta_description"
-                    placeholder="Descripción SEO del producto"
+                    placeholder="SEO description of the product"
                 />
             </field>
             <notebook position="inside">
