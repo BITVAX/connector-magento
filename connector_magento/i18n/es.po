@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 06:53+0000\n"
-"PO-Revision-Date: 2026-10-01 06:53+0000\n"
+"POT-Creation-Date: 2026-10-01 10:40+0000\n"
+"PO-Revision-Date: 2026-10-01 10:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -553,6 +553,11 @@ msgid "Address from a Magento Order"
 msgstr "Dirección de un pedido de Magento"
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
+msgid "Addresses"
+msgstr "Direcciones"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__admin_location
 msgid "Admin Location"
 msgstr "Ubicación de administración"
@@ -598,15 +603,6 @@ msgid ""
 msgstr ""
 "Todos los correos electrónicos y documentos enviados a este contacto se "
 "traducirán a este idioma."
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_sale_order__force_delivery_state
-msgid ""
-"Allow to enforce done state of delivery, for instance if some quantities "
-"were cancelled"
-msgstr ""
-"Permite forzar el estado hecho de la entrega, por ejemplo si se cancelaron "
-"algunas cantidades"
 
 #. module: connector_magento
 #. odoo-python
@@ -661,29 +657,6 @@ msgstr "Importe pendiente"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_residual_signed
 msgid "Amount Due Signed"
 msgstr "Importe pendiente con signo"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_unpaid
-msgid "Amount To Pay In POS"
-msgstr "Importe a pagar en TPV"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_total_before_global_discounts
-msgid "Amount Total Before Discounts"
-msgstr "Importe total antes de descuentos"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_untaxed_before_global_discounts
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_untaxed_before_global_discounts
-msgid "Amount Untaxed Before Discounts"
-msgstr "Base imponible antes de descuentos"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_sale_order__amount_unpaid
-msgid "Amount left to pay in POS to avoid double payment or double invoicing."
-msgstr ""
-"Importe pendiente de pagar en el TPV para evitar un doble pago o una doble "
-"facturación."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_paid
@@ -875,8 +848,6 @@ msgid "Auto-post until"
 msgstr "Contabilizar automáticamente hasta"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__workflow_process_id
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__workflow_process_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__workflow_process_id
 msgid "Automatic Workflow"
 msgstr "Flujo de trabajo automático"
@@ -906,12 +877,6 @@ msgid ""
 msgstr ""
 "Enviar automáticamente un correo de confirmación al proveedor X días antes "
 "de la fecha de recepción prevista, pidiéndole que confirme la fecha exacta."
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__available_in_pos
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__available_in_pos
-msgid "Available in POS"
-msgstr "Disponible en TPV"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__avatar_1920
@@ -966,6 +931,7 @@ msgstr "Pedidos pendientes"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_connector_magento_add_backend_wizard__backend_id
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_search
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
 msgid "Backend"
 msgstr "Backend"
 
@@ -1030,21 +996,6 @@ msgstr "Bancos"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__barcode
 msgid "Barcode"
 msgstr "Código de barras"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__barcode_message
-msgid "Barcode Message"
-msgstr "Mensaje de código de barras"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__barcode_message_type
-msgid "Barcode Message Type"
-msgstr "Tipo de mensaje de código de barras"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking___barcode_scanned
-msgid "Barcode Scanned"
-msgstr "Código de barras escaneado"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__valid_ean
@@ -1149,6 +1100,7 @@ msgstr "Lista de materiales"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__birthday
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__birthday
 #: model:ir.model.fields,field_description:connector_magento.field_res_partner__birthday
+#: model:ir.model.fields,field_description:connector_magento.field_res_users__birthday
 msgid "Birthday"
 msgstr "Cumpleaños"
 
@@ -1410,12 +1362,6 @@ msgid "Category Routes"
 msgstr "Rutas de la categoría"
 
 #. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__pos_categ_ids
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__pos_categ_ids
-msgid "Category used in the Point of Sale."
-msgstr "Categoría utilizada en el punto de venta."
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__channel_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__channel_ids
 msgid "Channels"
@@ -1429,15 +1375,6 @@ msgstr ""
 "Marque si el contacto es una empresa; en caso contrario, es una persona"
 
 #. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__to_weight
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__to_weight
-msgid ""
-"Check if the product should be weighted using the hardware scale "
-"integration."
-msgstr ""
-"Marque si el producto debe pesarse mediante la integración con la báscula."
-
-#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_storeview__no_sales_order_sync
 msgid ""
 "Check if the storeview is active in Magento but its sales orders should not "
@@ -1445,12 +1382,6 @@ msgid ""
 msgstr ""
 "Marque si la vista de tienda está activa en Magento pero sus pedidos de "
 "venta no deben importarse."
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__available_in_pos
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__available_in_pos
-msgid "Check if you want this product to appear in the Point of Sale."
-msgstr "Marque si quiere que este producto aparezca en el punto de venta."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_stock_picking__has_packages
@@ -1563,11 +1494,6 @@ msgstr "Tipo de clase"
 #: model_terms:ir.ui.view,arch_db:connector_magento.magento_binding_backend_read_form_view
 msgid "Close"
 msgstr "Cerrar"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__closing_type
-msgid "Closing Type"
-msgstr "Tipo de cierre"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_storeview__code
@@ -1713,6 +1639,11 @@ msgid "Configure Magento backend binding for selected products"
 msgstr ""
 "Configurar la vinculación con el backend de Magento para los productos "
 "seleccionados"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
+msgid "Considered as Company"
+msgstr "Considerado como empresa"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__consider_as_company
@@ -1945,6 +1876,7 @@ msgstr "Límite de crédito específico de este contacto."
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__currency_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__currency_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__currency_id
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__currency_id
 msgid "Currency"
 msgstr "Moneda"
 
@@ -1987,13 +1919,17 @@ msgid "Custom Values"
 msgstr "Valores personalizados"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__customer_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__customer_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__partner_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__order_partner_id
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_account_tax__class_type__customer
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 msgid "Customer"
 msgstr "Cliente"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
+msgid "Customer Group"
+msgstr "Grupo de cliente"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__sale_delay
@@ -2276,6 +2212,7 @@ msgstr "Dirección de entrega"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__delivery_date
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__commitment_date
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__date_delivered
 msgid "Delivery Date"
 msgstr "Fecha de entrega"
 
@@ -2573,12 +2510,6 @@ msgstr ""
 " electrónico en Magento?"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__bypass_global_discount
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__bypass_global_discount
-msgid "Don't apply global discount"
-msgstr "No aplicar descuento global"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__street_number2
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__street_number2
 msgid "Door"
@@ -2674,18 +2605,6 @@ msgstr "Correo electrónico"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__employee
 msgid "Employee"
 msgstr "Empleado"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__employee_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__employee_ids
-msgid "Employees"
-msgstr "Empleados"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__employees_count
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__employees_count
-msgid "Employees Count"
-msgstr "Número de empleados"
 
 #. module: connector_magento
 #. odoo-python
@@ -2872,20 +2791,9 @@ msgid "Exported to %(backend)s (ID: %(ext_id)s)"
 msgstr "Exportado a %(backend)s (ID: %(ext_id)s)"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__categ_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__categ_ids
-msgid "Extra Categories"
-msgstr "Categorías adicionales"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__product_no_variant_attribute_value_ids
 msgid "Extra Values"
 msgstr "Valores adicionales"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__ftp_export
-msgid "FTP automatic export"
-msgstr "Exportación automática por FTP"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__failed_job_count
@@ -3002,11 +2910,6 @@ msgid "Fiscal year"
 msgstr "Año fiscal"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__fyc_id
-msgid "Fiscal year closing"
-msgstr "Cierre del año fiscal"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__fix_price
 msgid "Fix Price"
 msgstr "Precio fijo"
@@ -3050,16 +2953,6 @@ msgstr "Seguidores (contactos)"
 #: model:ir.model.fields,help:connector_magento.field_magento_stock_picking__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
 msgstr "Icono Font Awesome, p. ej. fa-tasks"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__force_delivery_state
-msgid "Force Delivery State"
-msgstr "Forzar estado de entrega"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__force_invoiced
-msgid "Force Invoiced"
-msgstr "Forzar facturado"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__not_in_mod347
@@ -3137,6 +3030,7 @@ msgstr "Cantidad libre para usar "
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_template_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_template_tree
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_tree
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 msgid "From Magento"
 msgstr "Desde Magento"
 
@@ -3204,6 +3098,7 @@ msgstr ""
 "servicio es un producto inmaterial que usted suministra."
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_product_category_public_search
 msgid "Group By"
 msgstr "Agrupar por"
@@ -3223,6 +3118,11 @@ msgstr "Los productos agrupados requieren al menos un producto vinculado."
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__guest_customer
 msgid "Guest Customer"
 msgstr "Cliente invitado"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
+msgid "Guest Customers"
+msgstr "Clientes invitados"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__hs_code
@@ -3652,16 +3552,6 @@ msgstr ""
 "Si esta casilla no está marcada, significa que el usuario no estaba seguro "
 "de toda la información relacionada en el momento de crear el movimiento y "
 "que el movimiento debe revisarse de nuevo."
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__bypass_global_discount
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__bypass_global_discount
-msgid ""
-"If this checkbox is ticked, it means that this product will not be taken "
-"into account when calculating the global discounts."
-msgstr ""
-"Si esta casilla está marcada, este producto no se tendrá en cuenta al "
-"calcular los descuentos globales."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_stock_picking__show_operations
@@ -4225,21 +4115,6 @@ msgid "Invoice Filter Type Domain"
 msgstr "Dominio del tipo de filtro de factura"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__invoice_global_discount_ids
-msgid "Invoice Global Discount"
-msgstr "Descuento global de factura"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__global_discount_ids
-msgid "Invoice Global Discounts"
-msgstr "Descuentos globales de factura"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__global_discount_ids_readonly
-msgid "Invoice Global Discounts (readonly)"
-msgstr "Descuentos globales de factura (solo lectura)"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__invoice_has_outstanding
 msgid "Invoice Has Outstanding"
 msgstr "La factura tiene pendiente"
@@ -4316,7 +4191,6 @@ msgstr "Cantidad facturada (contabilizada)"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__invoice_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__invoice_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__invoice_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__invoice_ids
 msgid "Invoices"
 msgstr "Facturas"
 
@@ -4531,6 +4405,7 @@ msgstr "Especifica si los bienes se entregan parcialmente o todos a la vez"
 #. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_template_form
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 msgid "JSON Data"
 msgstr "Datos JSON"
 
@@ -4802,6 +4677,7 @@ msgstr "Hueco de secuencia creado"
 #: model_terms:ir.ui.view,arch_db:connector_magento.account_payment_mode_form_inherit
 #: model_terms:ir.ui.view,arch_db:connector_magento.product_template_form_view
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_delivery_carrier_form
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_partner_category_form
 msgid "Magento"
 msgstr "Magento"
@@ -5034,6 +4910,9 @@ msgstr "Grupo de Magento (categoría)"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_id
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_template_search
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_tree
 msgid "Magento ID"
 msgstr "ID de Magento"
 
@@ -5081,6 +4960,7 @@ msgstr "Líneas de pedido de Magento"
 #: model:ir.model,name:connector_magento.model_magento_res_partner
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__magento_partner_id
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_tree
 msgid "Magento Partner"
 msgstr "Contacto de Magento"
@@ -5089,6 +4969,12 @@ msgstr "Contacto de Magento"
 #: model:ir.model,name:connector_magento.model_magento_res_partner_category
 msgid "Magento Partner Category"
 msgstr "Categoría de contacto de Magento"
+
+#. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_res_partner
+#: model:ir.ui.menu,name:connector_magento.menu_magento_res_partner
+msgid "Magento Partners"
+msgstr "Contactos de Magento"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__is_pivot_attribute
@@ -5259,7 +5145,7 @@ msgstr "Título de seguimiento de Magento"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__taxvat
 msgid "Magento VAT"
-msgstr "IVA de Magento"
+msgstr "NIF de Magento"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_variant_bind_ids
@@ -5619,6 +5505,7 @@ msgstr "Términos necesarios sucios"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__newsletter
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
 msgid "Newsletter"
 msgstr "Boletín"
 
@@ -5785,11 +5672,6 @@ msgstr "Número de productos relacionados"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Número de acciones"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__invoice_count
-msgid "Number of Invoices"
-msgstr "Número de facturas"
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_bindings_count
@@ -6015,6 +5897,7 @@ msgstr ""
 "software, etc.)."
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__option_ids
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_store_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_storeview_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_website_form
@@ -6041,12 +5924,6 @@ msgstr "Referencia del pedido"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__state
 msgid "Order Status"
 msgstr "Estado del pedido"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__pos_order_line_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__pos_order_line_ids
-msgid "Order lines Transfered to Point of Sale"
-msgstr "Líneas de pedido transferidas al punto de venta"
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_product_product__invoice_policy
@@ -6110,11 +5987,6 @@ msgstr "Archivo PDF"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__purchase_order_line_ids
 msgid "PO Lines"
 msgstr "Líneas de pedido de compra"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__pos_session_ids
-msgid "POS Sessions"
-msgstr "Sesiones de TPV"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__package_level_ids
@@ -6401,56 +6273,15 @@ msgid "Picking Method"
 msgstr "Método de preparación"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__picking_count
-msgid "Pickings count"
-msgstr "Número de albaranes"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__pickup_location_data
 msgid "Pickup Location Data"
 msgstr "Datos de la ubicación de recogida"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__pos_categ_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__pos_categ_ids
-msgid "Point of Sale Category"
-msgstr "Categoría del punto de venta"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__access_url
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__access_url
 msgid "Portal Access URL"
 msgstr "URL de acceso al portal"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__pos_order_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__pos_order_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__pos_order_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__pos_order_id
-msgid "Pos Order"
-msgstr "Pedido de TPV"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__pos_order_count
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__pos_order_count
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__pos_order_count
-msgid "Pos Order Count"
-msgstr "Número de pedidos de TPV"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__pos_payment_ids
-msgid "Pos Payment"
-msgstr "Pago de TPV"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__pos_refunded_invoice_ids
-msgid "Pos Refunded Invoice"
-msgstr "Factura rectificada de TPV"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__pos_session_id
-msgid "Pos Session"
-msgstr "Sesión de TPV"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template_attribute_line__position
@@ -6642,12 +6473,6 @@ msgstr "Categoría de producto pública"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_product_category_public_search
 msgid "Product Count"
 msgstr "Número de productos"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__public_description
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__public_description
-msgid "Product Description"
-msgstr "Descripción del producto"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_export_strategy
@@ -6851,12 +6676,6 @@ msgstr "Compra"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__description_purchase
 msgid "Purchase Description"
 msgstr "Descripción de compra"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__supplier_global_discount_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__supplier_global_discount_ids
-msgid "Purchase Global Discounts"
-msgstr "Descuentos globales de compra"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__purchase_line_ids
@@ -7214,11 +7033,6 @@ msgid "Related Company"
 msgstr "Empresa relacionada"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__picking_ids
-msgid "Related Pickings"
-msgstr "Albaranes relacionados"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__product_tmpl_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_links
 msgid "Related Products"
@@ -7228,21 +7042,6 @@ msgstr "Productos relacionados"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__related_backorder_ids
 msgid "Related backorders"
 msgstr "Entregas pendientes relacionadas"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_address__employee_ids
-#: model:ir.model.fields,help:connector_magento.field_magento_res_partner__employee_ids
-msgid "Related employees based on their private address"
-msgstr "Empleados relacionados según su dirección privada"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_account_invoice__picking_ids
-msgid ""
-"Related pickings (only when the invoice has been generated from a sale "
-"order)."
-msgstr ""
-"Albaranes relacionados (solo cuando la factura se ha generado a partir de un"
-" pedido de venta)."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__wip_production_ids
@@ -7335,11 +7134,6 @@ msgstr "Asiento de reversión"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__reversed_entry_id
 msgid "Reversal of"
 msgstr "Reversión de"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__reversed_pos_order_id
-msgid "Reversed POS Order"
-msgstr "Pedido de TPV revertido"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__root_category_ids
@@ -7456,18 +7250,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr "Error de entrega de SMS"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_address__customer_global_discount_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__customer_global_discount_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__global_discount_ids
-msgid "Sale Global Discounts"
-msgstr "Descuentos globales de venta"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__global_discount_ids_readonly
-msgid "Sale Global Discounts (readonly)"
-msgstr "Descuentos globales de venta (solo lectura)"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__odoo_id
@@ -7962,11 +7744,6 @@ msgid "Simplified invoices in AEAT?"
 msgstr "¿Facturas simplificadas en la AEAT?"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__skip_sale_delivery_state
-msgid "Skip Delivery State"
-msgstr "Omitir estado de entrega"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__sales_count
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__sales_count
 msgid "Sold"
@@ -8430,6 +8207,7 @@ msgstr "Impuesto utilizado"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_tax
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__tax_id
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__amount_tax
 msgid "Taxes"
 msgstr "Impuestos"
 
@@ -8675,12 +8453,6 @@ msgstr ""
 " de caja."
 
 #. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_address__pos_order_count
-#: model:ir.model.fields,help:connector_magento.field_magento_res_partner__pos_order_count
-msgid "The number of point of sales orders related to this customer"
-msgstr "El número de pedidos de punto de venta relacionados con este cliente"
-
-#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_product_category__product_count
 #: model:ir.model.fields,help:connector_magento.field_product_category_public__product_count
 msgid ""
@@ -8707,15 +8479,6 @@ msgid ""
 msgstr ""
 "El porcentaje del importe necesario que debe pagar el cliente para confirmar"
 " el pedido."
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_account_invoice__reversed_pos_order_id
-msgid ""
-"The pos order that was reverted after closing the session to create an "
-"invoice for it."
-msgstr ""
-"El pedido de TPV que se revirtió tras cerrar la sesión para crear una "
-"factura."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_address__company_registry
@@ -9051,12 +8814,6 @@ msgid "To Magento"
 msgstr "A Magento"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__to_weight
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__to_weight
-msgid "To Weigh With Scale"
-msgstr "Para pesar con báscula"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__token
 msgid "Token"
 msgstr "Token"
@@ -9065,6 +8822,7 @@ msgstr "Token"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_total
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_total
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__price_total
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__amount_total
 msgid "Total"
 msgstr "Total"
 
@@ -9087,12 +8845,6 @@ msgstr "Saldo total"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_tax__base_balance
 msgid "Total Base Balance"
 msgstr "Saldo base total"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_global_discount
-#: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_global_discount
-msgid "Total Global Discounts"
-msgstr "Total de descuentos globales"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__total_invoiced
@@ -9329,6 +9081,7 @@ msgstr "No publicado"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_untaxed
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_untaxed
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__amount_untaxed
 msgid "Untaxed Amount"
 msgstr "Importe sin impuestos"
 
@@ -9542,11 +9295,6 @@ msgid "Value Svl"
 msgstr "Valor SVL"
 
 #. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_stock_picking___barcode_scanned
-msgid "Value of the last barcode scanned."
-msgstr "Valor del último código de barras escaneado."
-
-#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_product_product__standard_price
 #: model:ir.model.fields,help:connector_magento.field_magento_product_template__standard_price
 msgid ""
@@ -9568,12 +9316,6 @@ msgstr "Valores"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__create_variant
 msgid "Variant Creation"
 msgstr "Creación de variantes"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__variant_customer_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__variant_customer_ids
-msgid "Variant Customer"
-msgstr "Cliente de la variante"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__variant_default_code_error
@@ -9624,7 +9366,6 @@ msgstr "Etiquetas de la variante"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_template_variant_value_ids
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_variant_creating_value_ids
 msgid "Variant Values"
 msgstr "Valores de la variante"
 
@@ -9743,6 +9484,7 @@ msgstr ""
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__website_ids
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_search
 msgid "Website"
 msgstr "Sitio web"
 
@@ -9861,17 +9603,6 @@ msgid ""
 "When validating the transfer, the products will be assigned to this owner."
 msgstr ""
 "Al validar la transferencia, los productos se asignarán a este propietario."
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_sale_order__force_invoiced
-msgid ""
-"When you set this field, the sales order will be considered as fully "
-"invoiced, even when there may be ordered or delivered quantities pending to "
-"invoice."
-msgstr ""
-"Si establece este campo, el pedido de venta se considerará totalmente "
-"facturado, aunque puedan quedar cantidades pedidas o entregadas pendientes "
-"de facturar."
 
 #. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_attribute__frontend_input__boolean

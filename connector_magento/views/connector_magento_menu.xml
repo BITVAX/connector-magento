@@ -119,6 +119,14 @@
     />
 
     <menuitem
+        id="menu_magento_res_partner"
+        name="Magento Partners"
+        parent="menu_magento_root"
+        sequence="45"
+        action="action_magento_res_partner"
+    />
+
+    <menuitem
         id="menu_magento_category"
         name="Public Categories"
         parent="menu_magento_root"
