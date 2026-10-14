@@ -4,7 +4,7 @@
 
 {
     "name": "Magento Connector",
-    "version": "18.0.1.1.1",
+    "version": "18.0.1.2.0",
     "category": "Connector",
     "depends": [
         "account",
@@ -29,6 +29,7 @@
     ],
     "data": [
         "data/connector_magento_data.xml",
+        "data/queue_job_function_data.xml",
         "data/res_partner_category.xml",
         "security/ir.model.access.csv",
         "views/magento_backend_views.xml",

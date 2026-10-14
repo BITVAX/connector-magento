@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Job functions whose exporter commits.
+
+    queue_job forbids commits inside a job unless its job function has
+    "Allow Commit". The Magento exporters commit on purpose right after
+    binding the Magento id (magento.base.exporter run and
+    _export_dependency, and the picking exporter after the shipment), so the
+    id is kept when a later dependency fails. Without "Allow Commit" those
+    jobs fail with "Commit is forbidden in queue jobs".
+
+    The records are declared by `name`, not by model_id/method: queue_job's
+    create, in install mode, rebinds a record to an existing job function of
+    the same name instead of creating a second one, and it only looks at
+    `name`. Databases that already had these functions (created by earlier
+    jobs or migrated) get the flag on them; the others get new ones.
+-->
+<odoo noupdate="1">
+    <record id="job_function_product_export_record" model="queue.job.function">
+        <field name="name">&lt;magento.product.product&gt;.export_record</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="job_function_category_export_record" model="queue.job.function">
+        <field name="name">&lt;magento.product.category&gt;.export_record</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="job_function_attribute_export_record" model="queue.job.function">
+        <field name="name">&lt;magento.product.attribute&gt;.export_record</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record
+        id="job_function_attribute_export_product_attribute"
+        model="queue.job.function"
+    >
+        <field
+            name="name"
+        >&lt;magento.product.attribute&gt;.export_product_attribute</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="job_function_attribute_value_export_record" model="queue.job.function">
+        <field name="name">&lt;magento.product.attribute.value&gt;.export_record</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="job_function_invoice_export_record" model="queue.job.function">
+        <field name="name">&lt;magento.account.invoice&gt;.export_record</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+    <record id="job_function_picking_export_picking_done" model="queue.job.function">
+        <field name="name">&lt;magento.stock.picking&gt;.export_picking_done</field>
+        <field name="allow_commit" eval="True" />
+    </record>
+</odoo>
