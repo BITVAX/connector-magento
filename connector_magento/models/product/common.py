@@ -133,6 +133,10 @@ class MagentoProductProduct(models.Model):
         column2="linked_product_id",
         string="Related Products",
     )
+    # The buttons of the views follow it.
+    product_sync_direction = fields.Selection(
+        related="backend_id.product_sync_direction"
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -175,6 +179,18 @@ class MagentoProductProduct(models.Model):
     #             return exporter.run(self)
     #     except MissingError as e:
     #         return True
+
+    def sync_from_magento(self):
+        self.backend_id._check_product_sync_direction("import")
+        return super().sync_from_magento()
+
+    def sync_to_magento(self):
+        self.backend_id._check_product_sync_direction("export")
+        return super().sync_to_magento()
+
+    def delete_from_magento(self):
+        self.backend_id._check_product_sync_direction("export")
+        return super().delete_from_magento()
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_unwrap_binding')

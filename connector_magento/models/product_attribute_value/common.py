@@ -1,3 +1,4 @@
+import json
 import logging
 
 from odoo import fields, models
@@ -44,6 +45,80 @@ class MagentoProductAttributevalue(models.Model):
         # override 'magento.binding', can't be INSERTed if True:
         required=False,
     )
+    magento_labels_signature = fields.Char(
+        copy=False,
+        help="Admin label and store view labels last sent to Magento.",
+    )
+
+    def _magento_sort_order(self):
+        """Position of the value in its Odoo attribute, from 1. Magento saves
+        the order of an option with its labels, and the sequences of the
+        values are often all the same. Without a default language on the
+        backend, the sequence as before."""
+        self.ensure_one()
+        if not self.backend_id._magento_admin_lang():
+            return self.odoo_id.sequence or 0
+        values = self.odoo_id.attribute_id.value_ids.sorted(lambda v: (v.sequence, v.id))
+        return values.ids.index(self.odoo_id.id) + 1 if self.odoo_id in values else 0
+
+    def _magento_admin_label(self):
+        self.ensure_one()
+        lang = self.backend_id._magento_admin_lang() or self.env.lang
+        return self.odoo_id.with_context(lang=lang).name
+
+    def _magento_store_labels(self):
+        """Labels of the value for the store views whose language has a
+        translation of its own, as Magento's ``store_labels``. A store view
+        without one falls back to the admin label."""
+        self.ensure_one()
+        admin_lang = self.backend_id._magento_admin_lang()
+        if not admin_lang or not self.odoo_id:
+            return []
+        admin_label = self._magento_admin_label()
+        # Only the translations of their own: reading the field in a language
+        # without one gives the source text.
+        translations = (
+            self.odoo_id._fields["name"]._get_stored_translations(self.odoo_id) or {}
+        )
+        storeviews = self.env["magento.storeview"].search(
+            [("backend_id", "=", self.backend_id.id), ("lang_id", "!=", False)]
+        )
+        labels = []
+        for storeview in storeviews.sorted(lambda s: int(s.external_id or 0)):
+            lang = storeview.lang_id.code
+            if lang == admin_lang or not storeview.external_id:
+                continue
+            label = translations.get(lang)
+            if label and label != admin_label:
+                labels.append({"store_id": int(storeview.external_id), "label": label})
+        return labels
+
+    def _magento_labels_signature(self):
+        return json.dumps(
+            [
+                self._magento_admin_label(),
+                self._magento_store_labels(),
+                self._magento_sort_order(),
+            ],
+            ensure_ascii=False,
+        )
+
+    def _magento_labels_changed(self):
+        """Whether the labels of the option have to go to Magento again.
+
+        Magento replaces all the store labels of an option when it is saved,
+        so an option is only sent once Odoo has translations for it: one that
+        was never translated in Odoo (a model, a colour) keeps the labels it
+        has in Magento.
+        """
+        self.ensure_one()
+        if not self.external_id or not self.code or not self.odoo_id:
+            return False
+        if not self.backend_id._magento_admin_lang():
+            return False
+        if not self.magento_labels_signature and not self._magento_store_labels():
+            return False
+        return self.magento_labels_signature != self._magento_labels_signature()
 
 
 class ProductAttributevalue(models.Model):
@@ -88,6 +163,20 @@ class ProductAttributeValueAdapter(Component):
             http_method="delete",
         )
         return res
+
+    def update_option(self, attribute_code, option_id, data):
+        """Update the labels of an existing option. Unlike the POST of
+        write(), it does not add a new option."""
+        return self._call(
+            "%s/%s"
+            % (
+                self._magento2_model % {"attribute_code": attribute_code},
+                self.escape(option_id),
+            ),
+            {"option": data},
+            http_method="put",
+            storeview="all",
+        )
 
     def write(self, id, data, **kwargs):  # pylint: disable=method-required-super
         """Update a record on the external system"""

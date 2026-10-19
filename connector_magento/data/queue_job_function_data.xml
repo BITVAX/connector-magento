@@ -20,6 +20,12 @@
         <field name="name">&lt;magento.product.product&gt;.export_record</field>
         <field name="allow_commit" eval="True" />
     </record>
+    <!-- The configurable exporter exports its variants with the product
+         exporter, which commits. -->
+    <record id="job_function_template_export_record" model="queue.job.function">
+        <field name="name">&lt;magento.product.template&gt;.export_record</field>
+        <field name="allow_commit" eval="True" />
+    </record>
     <record id="job_function_category_export_record" model="queue.job.function">
         <field name="name">&lt;magento.product.category&gt;.export_record</field>
         <field name="allow_commit" eval="True" />

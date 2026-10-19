@@ -170,6 +170,7 @@
                             <button
                                 name="import_product_product"
                                 type="object"
+                                invisible="product_sync_direction == 'export'"
                                 class="oe_highlight"
                                 string="Import in background"
                             />
@@ -190,6 +191,7 @@
                             <button
                                 name="import_product_template"
                                 type="object"
+                                invisible="product_sync_direction == 'export'"
                                 class="oe_highlight"
                                 string="Import in background"
                             />
@@ -248,6 +250,7 @@
                             />
                             <field name="fiscal_position_id" />
                             <field name="is_multi_company" />
+                            <field name="product_sync_direction" />
                             <field name="product_synchro_strategy" />
                             <field name="product_export_strategy" />
                             <field name="product_import_strategy" />

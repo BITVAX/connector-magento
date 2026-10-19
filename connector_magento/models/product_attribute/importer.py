@@ -9,6 +9,7 @@ from odoo import tools
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping, only_create
+from odoo.addons.connector.exception import IDMissingInBackend, JobError
 
 _logger = logging.getLogger(__name__)
 
@@ -56,7 +57,72 @@ class AttributeImporter(Component):
                 magento_attribute=binding,
                 attribute_code=record["attribute_code"],
             )
+        self._import_option_labels(binding, record["attribute_code"])
         return
+
+    def _import_option_labels(self, binding, attribute_code):
+        """Keep the store view labels of the options as translations of the
+        Odoo values, for the languages that have none of their own yet: the
+        option export sends them back and Magento replaces all the labels of
+        an option when it is saved."""
+        admin_lang = self.backend_record._magento_admin_lang()
+        if not admin_lang:
+            return
+        storeviews = self.env["magento.storeview"].search(
+            [
+                ("backend_id", "=", self.backend_record.id),
+                ("lang_id", "!=", False),
+                ("code", "!=", False),
+                ("lang_id.code", "!=", admin_lang),
+            ]
+        )
+        values = binding.magento_attribute_value_ids.filtered(
+            lambda v: v.code and v.odoo_id
+        )
+        if not storeviews or not values:
+            return
+        name_field = self.env["product.attribute.value"]._fields["name"]
+
+        def option_labels(storeview_code):
+            try:
+                options = self.backend_adapter._call(
+                    "products/attributes/%s/options" % attribute_code,
+                    None,
+                    storeview=storeview_code,
+                )
+            except (IDMissingInBackend, JobError) as err:
+                _logger.warning(
+                    "Labels of %s not read from store view %s: %s",
+                    attribute_code,
+                    storeview_code,
+                    err,
+                )
+                return None
+            return {
+                str(option["value"]): option["label"]
+                for option in options or []
+                if option.get("value") and option.get("label")
+            }
+
+        # A store view without a label of its own gives the admin one.
+        admin_labels = option_labels("all")
+        if admin_labels is None:
+            return
+        for storeview in storeviews:
+            lang = storeview.lang_id.code
+            labels = option_labels(storeview.code)
+            if not labels:
+                continue
+            for value in values:
+                label = labels.get(value.code)
+                odoo_value = value.odoo_id
+                if not label or label == admin_labels.get(value.code):
+                    continue
+                if (name_field._get_stored_translations(odoo_value) or {}).get(lang):
+                    continue
+                odoo_value.with_context(connector_no_export=True).update_field_translations(
+                    "name", {lang: label}
+                )
 
     def _before_import(self):
         record = self.magento_record

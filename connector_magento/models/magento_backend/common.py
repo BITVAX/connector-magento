@@ -247,6 +247,19 @@ class MagentoBackend(models.Model):
         help="Precise which strategy you want to use for the product export",
         default="always",
     )
+    product_sync_direction = fields.Selection(
+        [
+            ("both", "Import and Export"),
+            ("import", "Import from Magento"),
+            ("export", "Export to Magento"),
+        ],
+        default="both",
+        required=True,
+        help="Which way the products go between Odoo and Magento. With only "
+        "one way, the buttons and actions of the other one are hidden and "
+        "refused, and the scheduled product import skips the backends that "
+        "only export.",
+    )
 
     _sql_constraints = [
         (
@@ -266,6 +279,13 @@ class MagentoBackend(models.Model):
             if not websites:
                 backend.synchronize_metadata()
         return True
+
+    def _magento_admin_lang(self):
+        """Language of Magento's admin store (store_id 0): the default
+        language of the backend. Without one, the attribute options are
+        exported as before, with no store view labels."""
+        self.ensure_one()
+        return self.default_lang_id.code
 
     @contextmanager
     def work_on(self, model_name, **kwargs):
@@ -382,11 +402,31 @@ class MagentoBackend(models.Model):
         )
         return True
 
+    def _check_product_sync_direction(self, direction):
+        """Refuse a product ``direction`` ("import" or "export") that the
+        backends do not allow."""
+        for backend in self:
+            if backend.product_sync_direction in ("both", direction):
+                continue
+            if direction == "import":
+                message = _(
+                    "The Magento backend %s only exports products: they "
+                    "cannot be imported from Magento."
+                )
+            else:
+                message = _(
+                    "The Magento backend %s only imports products: they "
+                    "cannot be exported to or deleted from Magento."
+                )
+            raise UserError(message % backend.name)
+
     def import_product_product(self):
+        self._check_product_sync_direction("import")
         self._import_from_date("magento.product.product", "import_products_from_date")
         return True
 
     def import_product_template(self):
+        self._check_product_sync_direction("import")
         self._import_from_date(
             "magento.product.template", "import_configurables_from_date"
         )
@@ -448,6 +488,7 @@ class MagentoBackend(models.Model):
 
     @api.model
     def _scheduler_import_product_product(self, domain=None):
+        domain = (domain or []) + [("product_sync_direction", "!=", "export")]
         self._magento_backend("import_product_product", domain=domain)
 
     @api.model

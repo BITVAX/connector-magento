@@ -12,6 +12,7 @@ from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.exception import IDMissingInBackend, JobError
 
 # import odoo.addons.connector_magento.models.get_exported_value
 
@@ -378,6 +379,18 @@ class ProductProductExporter(Component):
                     needs_sync = True
                 else:
                     m_att_values.append((4, m_value_id.id))
+                    if m_value_id._magento_labels_changed():
+                        # Its translations changed in Odoo since they were
+                        # last sent: update the option in Magento. A refused
+                        # option must not stop the export of the product.
+                        try:
+                            mpav_exporter.run(m_value_id)
+                        except (IDMissingInBackend, JobError) as err:
+                            _logger.warning(
+                                "Labels of option %s not exported to Magento: %s",
+                                m_value_id.external_id,
+                                err,
+                            )
             if needs_sync:
                 # Write the values - then update the attribute
                 m_att_id.sudo().with_context(connector_no_export=True).write(

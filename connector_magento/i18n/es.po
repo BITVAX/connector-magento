@@ -2764,6 +2764,7 @@ msgstr "Exportar plantilla %s (cambio de tarifa) a Magento"
 #: code:addons/connector_magento/models/magento_binding/common.py:0
 #: model:ir.actions.server,name:connector_magento.action_magento_product_export_to_magento
 #: model:ir.actions.server,name:connector_magento.action_magento_product_template_export_to_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_sync_direction__export
 msgid "Export to Magento"
 msgstr "Exportar a Magento"
 
@@ -3832,6 +3833,7 @@ msgstr "Importar configurables desde la fecha"
 #: code:addons/connector_magento/models/product_template/common.py:0
 #: model:ir.actions.server,name:connector_magento.action_magento_product_import_from_magento
 #: model:ir.actions.server,name:connector_magento.action_magento_product_template_import_from_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_sync_direction__import
 msgid "Import from Magento"
 msgstr "Importar desde Magento"
 
@@ -9703,3 +9705,41 @@ msgstr "almacén"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "º"
 msgstr "º"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_sync_direction
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_sync_direction
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_sync_direction
+msgid "Product Sync Direction"
+msgstr "Dirección de sincronización de productos"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_sync_direction__both
+msgid "Import and Export"
+msgstr "Importar y exportar"
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_sync_direction
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_sync_direction
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_sync_direction
+msgid ""
+"Which way the products go between Odoo and Magento. With only one way, the "
+"buttons and actions of the other one are hidden and refused, and the "
+"scheduled product import skips the backends that only export."
+msgstr "En qué sentido van los productos entre Odoo y Magento. Con un solo sentido, los botones y acciones del otro se ocultan y se rechazan, y la importación programada de productos se salta los backends que solo exportan."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_backend/common.py:0
+msgid ""
+"The Magento backend %s only exports products: they cannot be imported from "
+"Magento."
+msgstr "El backend de Magento %s solo exporta productos: no se pueden importar desde Magento."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_backend/common.py:0
+msgid ""
+"The Magento backend %s only imports products: they cannot be exported to or "
+"deleted from Magento."
+msgstr "El backend de Magento %s solo importa productos: no se pueden exportar ni eliminar en Magento."

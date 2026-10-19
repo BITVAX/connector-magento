@@ -63,6 +63,10 @@ class MagentoProductTemplate(models.Model):
     #                 'position': position.position,
     #             })
 
+    # The buttons of the views follow it.
+    product_sync_direction = fields.Selection(
+        related="backend_id.product_sync_direction"
+    )
     attribute_set_id = fields.Many2one(
         "magento.product.attribute.set", string="Attribute set"
     )
@@ -173,6 +177,7 @@ class MagentoProductTemplate(models.Model):
 
     # @job(default_channel='root.magento')
     def sync_from_magento(self):
+        self.backend_id._check_product_sync_direction("import")
         for binding in self:
             sku = binding.odoo_id.default_code or binding.external_id or ""
             delayed = binding.with_delay(
@@ -191,6 +196,14 @@ class MagentoProductTemplate(models.Model):
                 "sticky": False,
             },
         }
+
+    def sync_to_magento(self):
+        self.backend_id._check_product_sync_direction("export")
+        return super().sync_to_magento()
+
+    def delete_from_magento(self):
+        self.backend_id._check_product_sync_direction("export")
+        return super().delete_from_magento()
 
     # @job(default_channel='root.magento')
     def run_sync_from_magento(self):
