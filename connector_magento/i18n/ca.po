@@ -628,12 +628,6 @@ msgid "Already up-to-date."
 msgstr "Ja està actualitzat."
 
 #. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__always
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__always
-msgid "Always Import"
-msgstr "Importar sempre"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__always_tax_exigible
 msgid "Always Tax Exigible"
 msgstr "Sempre exigible"
@@ -1332,6 +1326,7 @@ msgstr "Mètode d'arrodoniment d'efectiu"
 #. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_product__magento_visibility__2
 #: model:ir.model.fields.selection,name:connector_magento.selection__product_template__magento_visibility__2
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Catalog"
 msgstr "Catàleg"
 
@@ -1735,12 +1730,6 @@ msgstr "Crear vinculació"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__use_create_lots
 msgid "Create New Lots/Serial Numbers"
 msgstr "Crear nous lots/números de sèrie"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__create
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__create
-msgid "Create New Products"
-msgstr "Crear nous productes"
 
 #. module: connector_magento
 #. odoo-python
@@ -2475,12 +2464,6 @@ msgid "Do Not Manage Stock"
 msgstr "No gestionar l'estoc"
 
 #. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__never
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__never
-msgid "Do not Import"
-msgstr "No importar"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_document_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_document_ids
 msgid "Documents"
@@ -2766,7 +2749,6 @@ msgstr "Exportar plantilla %s (canvi de tarifa) a Magento"
 #: code:addons/connector_magento/models/magento_binding/common.py:0
 #: model:ir.actions.server,name:connector_magento.action_magento_product_export_to_magento
 #: model:ir.actions.server,name:connector_magento.action_magento_product_template_export_to_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_sync_direction__export
 msgid "Export to Magento"
 msgstr "Exportar a Magento"
 
@@ -3792,11 +3774,6 @@ msgid "Import %(name)s (ID: %(ext_id)s) from Magento"
 msgstr "Importar %(name)s (ID: %(ext_id)s) des de Magento"
 
 #. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import Attrbute Sets"
-msgstr "Importar conjunts d'atributs"
-
-#. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_storeview_form
 msgid "Import Sale Orders"
 msgstr "Importar comandes de venda"
@@ -3805,11 +3782,6 @@ msgstr "Importar comandes de venda"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_storeview_form
 msgid "Import Sale Orders since"
 msgstr "Importar comandes de venda des de"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import all customer groups"
-msgstr "Importar tots els grups de clients"
 
 #. module: connector_magento
 #. odoo-python
@@ -3823,17 +3795,11 @@ msgid "Import categories from date"
 msgstr "Importar categories des de la data"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_configurables_from_date
-msgid "Import configurables from date"
-msgstr "Importar configurables des de la data"
-
-#. module: connector_magento
 #. odoo-python
 #: code:addons/connector_magento/models/magento_binding/common.py:0
 #: code:addons/connector_magento/models/product_template/common.py:0
 #: model:ir.actions.server,name:connector_magento.action_magento_product_import_from_magento
 #: model:ir.actions.server,name:connector_magento.action_magento_product_template_import_from_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_sync_direction__import
 msgid "Import from Magento"
 msgstr "Importar des de Magento"
 
@@ -3850,11 +3816,6 @@ msgid "Import order #%s from Magento"
 msgstr "Importar comanda #%s des de Magento"
 
 #. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import partners from all websites"
-msgstr "Importar contactes de tots els llocs web"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_website__import_partners_from_date
 msgid "Import partners from date"
 msgstr "Importar contactes des de la data"
@@ -3865,34 +3826,9 @@ msgid "Import partners since"
 msgstr "Importar contactes des de"
 
 #. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import products categories since"
-msgstr "Importar categories de producte des de"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_products_from_date
-msgid "Import products from date"
-msgstr "Importar productes des de la data"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import products since"
-msgstr "Importar productes des de"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_storeview__import_orders_from_date
 msgid "Import sale orders from date"
 msgstr "Importar comandes de venda des de la data"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import sales orders from all store views"
-msgstr "Importar comandes de venda de totes les vistes de botiga"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Import taxclasses"
-msgstr "Importar classes d'impostos"
 
 #. module: connector_magento
 #. odoo-python
@@ -4681,6 +4617,7 @@ msgstr "Buit de seqüència creat"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_partner_category_form
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__magento_first
 msgid "Magento"
 msgstr "Magento"
 
@@ -4893,11 +4830,6 @@ msgstr "Exportació de Magento"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_attribute_form
 msgid "Magento Fields"
 msgstr "Camps de Magento"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__magento_first
-msgid "Magento First"
-msgstr "Magento primer"
 
 #. module: connector_magento
 #: model:ir.model,name:connector_magento.model_magento_binding_backend_read
@@ -5775,6 +5707,7 @@ msgstr "Número de la factura emesa per un tercer."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_category__odoo_id
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__odoo_first
 msgid "Odoo"
 msgstr "Odoo"
 
@@ -5782,11 +5715,6 @@ msgstr "Odoo"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__field_id
 msgid "Odoo Field"
 msgstr "Camp d'Odoo"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__odoo_first
-msgid "Odoo First"
-msgstr "Odoo primer"
 
 #. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_account_tax_form
@@ -5814,21 +5742,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__on_time_rate
 msgid "On-Time Delivery Rate"
 msgstr "Taxa de lliurament a temps"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid ""
-"Once imported,\n"
-"                                some types of records,\n"
-"                                like the products or categories,\n"
-"                                need a manual review.\n"
-"                                You will find the list\n"
-"                                of the new records to review\n"
-"                                in the menu 'Connectors &gt; Checkpoint'."
-msgstr ""
-"Un cop importats, alguns tipus de registres, com els productes o les "
-"categories, necessiten una revisió manual. Trobareu la llista dels nous "
-"registres a revisar al menú 'Connectors &gt; Punt de control'."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__require_payment
@@ -6294,21 +6207,6 @@ msgid "Posted Before"
 msgstr "Comptabilitzat abans"
 
 #. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_synchro_strategy
-msgid "Precise which strategy you want to update"
-msgstr "Indiqueu quina estratègia voleu actualitzar"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_export_strategy
-msgid "Precise which strategy you want to use for the product export"
-msgstr "Indiqueu quina estratègia voleu usar per a l'exportació de productes"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_import_strategy
-msgid "Precise which strategy you want to use for the product import"
-msgstr "Indiqueu quina estratègia voleu usar per a la importació de productes"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__preferred_payment_method_line_id
 msgid "Preferred Payment Method Line"
 msgstr "Línia de mètode de pagament preferida"
@@ -6475,16 +6373,6 @@ msgid "Product Count"
 msgstr "Nombre de productes"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_export_strategy
-msgid "Product Export Strategy"
-msgstr "Estratègia d'exportació de productes"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_import_strategy
-msgid "Product Import Strategy"
-msgstr "Estratègia d'importació de productes"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__packaging_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__packaging_ids
 msgid "Product Packages"
@@ -6544,11 +6432,6 @@ msgstr "Tipus de producte"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__product_uom_readonly
 msgid "Product Uom Readonly"
 msgstr "UdM del producte de només lectura"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_synchro_strategy
-msgid "Product Update Strategy"
-msgstr "Estratègia d'actualització de productes"
 
 #. module: connector_magento
 #: model:ir.model,name:connector_magento.model_product_product
@@ -7291,6 +7174,7 @@ msgstr "La venda no està vinculada a una comanda de venda de Magento"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__sale_ok
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__sale_ok
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Sales"
 msgstr "Vendes"
 
@@ -9115,17 +8999,6 @@ msgid "Update"
 msgstr "Actualitzar"
 
 #. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__update
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__update
-msgid "Update Existing Products"
-msgstr "Actualitzar productes existents"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Update all the products stock quantities"
-msgstr "Actualitzar les quantitats d'estoc de tots els productes"
-
-#. module: connector_magento
 #. odoo-python
 #: code:addons/connector_magento/models/product_category/listener.py:0
 msgid "Update positions for category #%s"
@@ -9698,44 +9571,206 @@ msgid "warehouse"
 msgstr "magatzem"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_synchro_strategy
+msgid "Product Data Master"
+msgstr "Sistema mestre de productes"
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_synchro_strategy
+msgid ""
+"Which system wins after a product is exported. Odoo: the product keeps its "
+"Odoo data. Magento: the product is read back from Magento and its data "
+"replaces the Odoo one."
+msgstr ""
+"Quin sistema preval després d'exportar un producte. Odoo: el producte "
+"conserva les seves dades d'Odoo. Magento: el producte es torna a llegir de "
+"Magento i les seves dades substitueixen les d'Odoo."
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_import_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_import_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_import_strategy
+msgid "Product Import"
+msgstr "Importació de productes"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_export_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_export_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_export_strategy
+msgid "Product Export"
+msgstr "Exportació de productes"
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_import_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_import_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_import_strategy
+msgid ""
+"Which products are imported from Magento. Create and Update: all of them. Do not Import: none; the import buttons and actions are hidden and the scheduled product import skips this backend. Only New Products: those not yet in Odoo; the ones already linked are not updated. Only Existing Products: those already linked; the new ones in Magento are not created in Odoo.\n"
+"The products a sale order needs are always imported."
+msgstr ""
+"Quins productes s'importen des de Magento. Crear i actualitzar: tots. No importar: cap; els botons i accions d'importació s'amaguen i la importació programada de productes se salta aquest backend. Només productes nous: els que encara no són a Odoo; els ja vinculats no s'actualitzen. Només productes existents: els ja vinculats; els nous de Magento no es creen a Odoo.\n"
+"Els productes que necessita una comanda de venda s'importen sempre."
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_export_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_export_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_export_strategy
+msgid ""
+"Which products are exported to Magento. Create and Update: all of them. Do not Export: none; the export and delete buttons and actions are hidden. Only New Products: those not yet in Magento; the ones already there are not updated. Only Existing Products: those already in Magento; no new product is created there.\n"
+"The variants of an exported configurable product always go with it."
+msgstr ""
+"Quins productes s'exporten a Magento. Crear i actualitzar: tots. No exportar: cap; els botons i accions d'exportació i esborrat s'amaguen. Només productes nous: els que encara no són a Magento; els que ja hi són no s'actualitzen. Només productes existents: els que ja són a Magento; no s'hi crea cap producte nou.\n"
+"Les variants d'un producte configurable exportat hi van sempre amb ell."
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__always
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__always
+msgid "Create and Update"
+msgstr "Crear i actualitzar"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__never
+msgid "Do not Import"
+msgstr "No importar"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__never
+msgid "Do not Export"
+msgstr "No exportar"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__create
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__create
+msgid "Only New Products"
+msgstr "Només productes nous"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__update
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__update
+msgid "Only Existing Products"
+msgstr "Només productes existents"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_products_from_date
+msgid "Import simple products from date"
+msgstr "Importar productes simples des de la data"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_configurables_from_date
+msgid "Import configurable products from date"
+msgstr "Importar productes configurables des de la data"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_backend/common.py:0
+msgid ""
+"The Magento backend %s does not import products (Product Import: Do not "
+"Import)."
+msgstr ""
+"El backend de Magento %s no importa productes (Importació de productes: No "
+"importar)."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_backend/common.py:0
+msgid ""
+"The Magento backend %s does not export products (Product Export: Do not "
+"Export)."
+msgstr ""
+"El backend de Magento %s no exporta productes (Exportació de productes: No "
+"exportar)."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid ""
+"Product Import is set to 'Only New Products' on the Magento backend: the "
+"products already in Odoo are not updated from Magento."
+msgstr ""
+"La importació de productes del backend de Magento és a «Només productes "
+"nous»: els productes que ja són a Odoo no s'actualitzen des de Magento."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid ""
+"Product Export is set to 'Only New Products' on the Magento backend: the "
+"products already in Magento are not updated."
+msgstr ""
+"L'exportació de productes del backend de Magento és a «Només productes "
+"nous»: els productes que ja són a Magento no s'actualitzen."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid ""
+"Product Export is set to 'Only Existing Products' on the Magento backend: no"
+" new product is created in Magento."
+msgstr ""
+"L'exportació de productes del backend de Magento és a «Només productes "
+"existents»: no es crea cap producte nou a Magento."
+
+#. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "º"
-msgstr "º"
+msgid "Store Setup"
+msgstr "Configuració de la botiga"
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_sync_direction
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_sync_direction
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_sync_direction
-msgid "Product Sync Direction"
-msgstr "Direcció de sincronització de productes"
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Customer groups"
+msgstr "Grups de clients"
 
 #. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_sync_direction__both
-msgid "Import and Export"
-msgstr "Importar i exportar"
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Tax classes"
+msgstr "Classes d'impostos"
 
 #. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_sync_direction
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_sync_direction
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_sync_direction
-msgid ""
-"Which way the products go between Odoo and Magento. With only one way, the "
-"buttons and actions of the other one are hidden and refused, and the "
-"scheduled product import skips the backends that only export."
-msgstr "En quin sentit van els productes entre Odoo i Magento. Amb un sol sentit, els botons i accions de l'altre s'amaguen i es rebutgen, i la importació programada de productes se salta els backends que només exporten."
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Attribute sets"
+msgstr "Conjunts d'atributs"
 
 #. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_backend/common.py:0
-msgid ""
-"The Magento backend %s only exports products: they cannot be imported from "
-"Magento."
-msgstr "El backend de Magento %s només exporta productes: no es poden importar des de Magento."
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Customers of all websites"
+msgstr "Clients de tots els webs"
 
 #. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_backend/common.py:0
-msgid ""
-"The Magento backend %s only imports products: they cannot be exported to or "
-"deleted from Magento."
-msgstr "El backend de Magento %s només importa productes: no es poden exportar ni eliminar a Magento."
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Catalog and Sales"
+msgstr "Catàleg i vendes"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Product categories since"
+msgstr "Categories de producte des de"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Simple products since"
+msgstr "Productes simples des de"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Configurable products since"
+msgstr "Productes configurables des de"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Sale orders of all store views"
+msgstr "Comandes de venda de totes les vistes de botiga"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Stock quantities of all products"
+msgstr "Quantitats d'estoc de tots els productes"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Product Synchronization"
+msgstr "Sincronització de productes"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Stock"
+msgstr "Estoc"

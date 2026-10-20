@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 from odoo.addons.queue_job.job import identity_exact
 
@@ -106,6 +107,45 @@ class MagentoBinding(models.AbstractModel):
                 "sticky": False,
             },
         }
+
+    def _exists_in_magento(self):
+        """Whether the record was already created in Magento."""
+        self.ensure_one()
+        return bool(self.external_id)
+
+    def _filter_product_strategy(self, direction):
+        """The product bindings that the product import or export strategy
+        of their backend lets go ``direction`` ("import" or "export").
+
+        On import the binding is already in Odoo, so it is an update; on
+        export it is an update when the product is already in Magento.
+        Raise when none of them can go.
+        """
+        self.backend_id._check_product_strategy(direction)
+        allowed = self.filtered(
+            lambda b: b.backend_id._product_strategy_allows(
+                direction, direction == "import" or b._exists_in_magento()
+            )
+        )
+        if self and not allowed:
+            if direction == "import":
+                message = _(
+                    "Product Import is set to 'Only New Products' on the Magento "
+                    "backend: the products already in Odoo are not updated "
+                    "from Magento."
+                )
+            elif self.backend_id[:1].product_export_strategy == "create":
+                message = _(
+                    "Product Export is set to 'Only New Products' on the Magento "
+                    "backend: the products already in Magento are not updated."
+                )
+            else:
+                message = _(
+                    "Product Export is set to 'Only Existing Products' on the "
+                    "Magento backend: no new product is created in Magento."
+                )
+            raise UserError(message)
+        return allowed
 
     def sync_to_magento(self):
         for binding in self:

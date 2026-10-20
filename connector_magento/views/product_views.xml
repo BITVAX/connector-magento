@@ -21,27 +21,28 @@
                         <list>
                             <field name="backend_id" />
                             <field name="product_type" />
-                            <field name="product_sync_direction" column_invisible="1" />
+                            <field name="product_import_strategy" column_invisible="1" />
+                            <field name="product_export_strategy" column_invisible="1" />
                             <button
                                 name="sync_to_magento"
                                 string="To Magento"
                                 type="object"
                                 class="oe_highlight"
-                                invisible="product_sync_direction == 'import'"
+                                invisible="product_export_strategy == 'never'"
                             />
                             <button
                                 name="sync_from_magento"
                                 string="From Magento"
                                 type="object"
                                 class="oe_highlight"
-                                invisible="product_sync_direction == 'export'"
+                                invisible="product_import_strategy == 'never'"
                             />
                             <button
                                 name="delete_from_magento"
                                 string="Delete from Magento"
                                 type="object"
                                 class="oe_highlight"
-                                invisible="product_sync_direction == 'import'"
+                                invisible="product_export_strategy == 'never'"
                             />
                         </list>
                     </field>
@@ -201,27 +202,28 @@
         <field name="arch" type="xml">
             <form string="Magento Product">
                 <header>
-                    <field name="product_sync_direction" invisible="1" />
+                    <field name="product_import_strategy" invisible="1" />
+                    <field name="product_export_strategy" invisible="1" />
                     <button
                         name="sync_to_magento"
                         string="To Magento"
                         type="object"
                         class="oe_highlight"
-                        invisible="product_sync_direction == 'import'"
+                        invisible="product_export_strategy == 'never'"
                     />
                     <button
                         name="sync_from_magento"
                         string="From Magento"
                         type="object"
                         class="oe_highlight"
-                        invisible="product_sync_direction == 'export'"
+                        invisible="product_import_strategy == 'never'"
                     />
                     <button
                         name="delete_from_magento"
                         string="Delete from Magento"
                         type="object"
                         class="oe_highlight"
-                        invisible="product_sync_direction == 'import'"
+                        invisible="product_export_strategy == 'never'"
                     />
                 </header>
                 <sheet>
@@ -292,27 +294,28 @@
                 <field name="default_code" />
                 <field name="backend_id" />
                 <field name="product_type" />
-                <field name="product_sync_direction" column_invisible="1" />
+                <field name="product_import_strategy" column_invisible="1" />
+                <field name="product_export_strategy" column_invisible="1" />
                 <button
                     name="sync_to_magento"
                     string="To Magento"
                     type="object"
                     class="oe_highlight"
-                    invisible="product_sync_direction == 'import'"
+                    invisible="product_export_strategy == 'never'"
                 />
                 <button
                     name="sync_from_magento"
                     string="From Magento"
                     type="object"
                     class="oe_highlight"
-                    invisible="product_sync_direction == 'export'"
+                    invisible="product_import_strategy == 'never'"
                 />
                 <button
                     name="delete_from_magento"
                     string="Delete from Magento"
                     type="object"
                     class="oe_highlight"
-                    invisible="product_sync_direction == 'import'"
+                    invisible="product_export_strategy == 'never'"
                 />
             </list>
         </field>
@@ -326,24 +329,25 @@
                 <field name="external_id" />
                 <field name="odoo_id" />
                 <field name="backend_id" />
-                <field name="product_sync_direction" column_invisible="1" />
+                <field name="product_import_strategy" column_invisible="1" />
+                <field name="product_export_strategy" column_invisible="1" />
                 <button
                     name="sync_to_magento"
                     string="To Magento"
                     type="object"
-                    invisible="product_sync_direction == 'import'"
+                    invisible="product_export_strategy == 'never'"
                 />
                 <button
                     name="sync_from_magento"
                     string="From Magento"
                     type="object"
-                    invisible="product_sync_direction == 'export'"
+                    invisible="product_import_strategy == 'never'"
                 />
                 <button
                     name="delete_from_magento"
                     string="Delete"
                     type="object"
-                    invisible="product_sync_direction == 'import'"
+                    invisible="product_export_strategy == 'never'"
                 />
             </list>
         </field>
@@ -371,27 +375,28 @@
         <field name="arch" type="xml">
             <form string="Magento Product Template">
                 <header>
-                    <field name="product_sync_direction" invisible="1" />
+                    <field name="product_import_strategy" invisible="1" />
+                    <field name="product_export_strategy" invisible="1" />
                     <button
                         name="sync_to_magento"
                         string="To Magento"
                         type="object"
                         class="oe_highlight"
-                        invisible="product_sync_direction == 'import'"
+                        invisible="product_export_strategy == 'never'"
                     />
                     <button
                         name="sync_from_magento"
                         string="From Magento"
                         type="object"
                         class="oe_highlight"
-                        invisible="product_sync_direction == 'export'"
+                        invisible="product_import_strategy == 'never'"
                     />
                     <button
                         name="delete_from_magento"
                         string="Delete from Magento"
                         type="object"
                         class="oe_highlight"
-                        invisible="product_sync_direction == 'import'"
+                        invisible="product_export_strategy == 'never'"
                     />
                 </header>
                 <sheet>

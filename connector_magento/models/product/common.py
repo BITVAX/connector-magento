@@ -133,9 +133,12 @@ class MagentoProductProduct(models.Model):
         column2="linked_product_id",
         string="Related Products",
     )
-    # The buttons of the views follow it.
-    product_sync_direction = fields.Selection(
-        related="backend_id.product_sync_direction"
+    # The buttons of the views follow them.
+    product_import_strategy = fields.Selection(
+        related="backend_id.product_import_strategy"
+    )
+    product_export_strategy = fields.Selection(
+        related="backend_id.product_export_strategy"
     )
 
     @api.model_create_multi
@@ -180,16 +183,22 @@ class MagentoProductProduct(models.Model):
     #     except MissingError as e:
     #         return True
 
+    def _exists_in_magento(self):
+        self.ensure_one()
+        return bool(self.external_id and self.magento_internal_id)
+
     def sync_from_magento(self):
-        self.backend_id._check_product_sync_direction("import")
-        return super().sync_from_magento()
+        return super(
+            MagentoProductProduct, self._filter_product_strategy("import")
+        ).sync_from_magento()
 
     def sync_to_magento(self):
-        self.backend_id._check_product_sync_direction("export")
-        return super().sync_to_magento()
+        return super(
+            MagentoProductProduct, self._filter_product_strategy("export")
+        ).sync_to_magento()
 
     def delete_from_magento(self):
-        self.backend_id._check_product_sync_direction("export")
+        self.backend_id._check_product_strategy("export")
         return super().delete_from_magento()
 
     # @job(default_channel='root.magento')

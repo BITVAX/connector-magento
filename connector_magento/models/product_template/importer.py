@@ -37,7 +37,14 @@ class ProductTemplateBatchImporter(Component):
             "search for magento product templates %s returned %s", filters, external_ids
         )
         for external_id in external_ids:
-            self._import_record(external_id)
+            if self._allowed_by_import_strategy(external_id):
+                self._import_record(external_id)
+
+    def _allowed_by_import_strategy(self, external_id):
+        """Product Import "Only New Products" / "Only Existing Products"
+        leave out the products already linked / not linked yet."""
+        exists = bool(self.binder.to_internal(external_id))
+        return self.backend_record._product_strategy_allows("import", exists)
 
 
 class ProductTemplateImporter(Component):

@@ -63,9 +63,12 @@ class MagentoProductTemplate(models.Model):
     #                 'position': position.position,
     #             })
 
-    # The buttons of the views follow it.
-    product_sync_direction = fields.Selection(
-        related="backend_id.product_sync_direction"
+    # The buttons of the views follow them.
+    product_import_strategy = fields.Selection(
+        related="backend_id.product_import_strategy"
+    )
+    product_export_strategy = fields.Selection(
+        related="backend_id.product_export_strategy"
     )
     attribute_set_id = fields.Many2one(
         "magento.product.attribute.set", string="Attribute set"
@@ -177,8 +180,8 @@ class MagentoProductTemplate(models.Model):
 
     # @job(default_channel='root.magento')
     def sync_from_magento(self):
-        self.backend_id._check_product_sync_direction("import")
-        for binding in self:
+        bindings = self._filter_product_strategy("import")
+        for binding in bindings:
             sku = binding.odoo_id.default_code or binding.external_id or ""
             delayed = binding.with_delay(
                 identity_key=identity_exact,
@@ -191,18 +194,24 @@ class MagentoProductTemplate(models.Model):
             "tag": "display_notification",
             "params": {
                 "title": _("Import from Magento"),
-                "message": _("%d record(s) queued for import from Magento") % len(self),
+                "message": _("%d record(s) queued for import from Magento")
+                % len(bindings),
                 "type": "info",
                 "sticky": False,
             },
         }
 
+    def _exists_in_magento(self):
+        self.ensure_one()
+        return bool(self.external_id and self.magento_id)
+
     def sync_to_magento(self):
-        self.backend_id._check_product_sync_direction("export")
-        return super().sync_to_magento()
+        return super(
+            MagentoProductTemplate, self._filter_product_strategy("export")
+        ).sync_to_magento()
 
     def delete_from_magento(self):
-        self.backend_id._check_product_sync_direction("export")
+        self.backend_id._check_product_strategy("export")
         return super().delete_from_magento()
 
     # @job(default_channel='root.magento')

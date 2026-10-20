@@ -165,10 +165,10 @@ class MagentoBackend(models.Model):
     )
     # TODO? add a field `auto_activate` -> activate a cron
     import_products_from_date = fields.Datetime(
-        string="Import products from date",
+        string="Import simple products from date",
     )
     import_configurables_from_date = fields.Datetime(
-        string="Import configurables from date",
+        string="Import configurable products from date",
     )
     import_categories_from_date = fields.Datetime(
         string="Import categories from date",
@@ -220,45 +220,50 @@ class MagentoBackend(models.Model):
     )
     product_synchro_strategy = fields.Selection(
         [
-            ("magento_first", "Magento First"),
-            ("odoo_first", "Odoo First"),
+            ("magento_first", "Magento"),
+            ("odoo_first", "Odoo"),
         ],
-        string="Product Update Strategy",
-        help="Precise which strategy you want to update",
+        string="Product Data Master",
+        help="Which system wins after a product is exported. Odoo: the "
+        "product keeps its Odoo data. Magento: the product is read back from "
+        "Magento and its data replaces the Odoo one.",
         default="odoo_first",
+        required=True,
     )
     product_import_strategy = fields.Selection(
         [
-            ("always", "Always Import"),
+            ("always", "Create and Update"),
             ("never", "Do not Import"),
-            ("create", "Create New Products"),
-            ("update", "Update Existing Products"),
+            ("create", "Only New Products"),
+            ("update", "Only Existing Products"),
         ],
-        help="Precise which strategy you want to use for the product import",
+        string="Product Import",
+        help="Which products are imported from Magento. Create and Update: "
+        "all of them. Do not Import: none; the import buttons and actions are "
+        "hidden and the scheduled product import skips this backend. Only New "
+        "Products: those not yet in Odoo; the ones already linked are not "
+        "updated. Only Existing Products: those already linked; the new ones "
+        "in Magento are not created in Odoo.\n"
+        "The products a sale order needs are always imported.",
         default="always",
+        required=True,
     )
     product_export_strategy = fields.Selection(
         [
-            ("always", "Always Import"),
-            ("never", "Do not Import"),
-            ("create", "Create New Products"),
-            ("update", "Update Existing Products"),
+            ("always", "Create and Update"),
+            ("never", "Do not Export"),
+            ("create", "Only New Products"),
+            ("update", "Only Existing Products"),
         ],
-        help="Precise which strategy you want to use for the product export",
+        string="Product Export",
+        help="Which products are exported to Magento. Create and Update: all "
+        "of them. Do not Export: none; the export and delete buttons and "
+        "actions are hidden. Only New Products: those not yet in Magento; the "
+        "ones already there are not updated. Only Existing Products: those "
+        "already in Magento; no new product is created there.\n"
+        "The variants of an exported configurable product always go with it.",
         default="always",
-    )
-    product_sync_direction = fields.Selection(
-        [
-            ("both", "Import and Export"),
-            ("import", "Import from Magento"),
-            ("export", "Export to Magento"),
-        ],
-        default="both",
         required=True,
-        help="Which way the products go between Odoo and Magento. With only "
-        "one way, the buttons and actions of the other one are hidden and "
-        "refused, and the scheduled product import skips the backends that "
-        "only export.",
     )
 
     _sql_constraints = [
@@ -402,31 +407,49 @@ class MagentoBackend(models.Model):
         )
         return True
 
-    def _check_product_sync_direction(self, direction):
-        """Refuse a product ``direction`` ("import" or "export") that the
-        backends do not allow."""
+    def _product_strategy(self, direction):
+        """Product import or export strategy of the backend, for
+        ``direction`` "import" or "export"."""
+        self.ensure_one()
+        if direction == "import":
+            return self.product_import_strategy or "always"
+        return self.product_export_strategy or "always"
+
+    def _product_strategy_allows(self, direction, exists):
+        """Whether the product strategy of ``direction`` lets a product that
+        already ``exists`` on the other side (or not) go that way."""
+        strategy = self._product_strategy(direction)
+        if strategy == "always":
+            return True
+        if strategy == "never":
+            return False
+        return strategy == ("update" if exists else "create")
+
+    def _check_product_strategy(self, direction):
+        """Refuse the product ``direction`` ("import" or "export") on the
+        backends whose strategy is "Do not Import" / "Do not Export"."""
         for backend in self:
-            if backend.product_sync_direction in ("both", direction):
+            if backend._product_strategy(direction) != "never":
                 continue
             if direction == "import":
                 message = _(
-                    "The Magento backend %s only exports products: they "
-                    "cannot be imported from Magento."
+                    "The Magento backend %s does not import products "
+                    "(Product Import: Do not Import)."
                 )
             else:
                 message = _(
-                    "The Magento backend %s only imports products: they "
-                    "cannot be exported to or deleted from Magento."
+                    "The Magento backend %s does not export products "
+                    "(Product Export: Do not Export)."
                 )
             raise UserError(message % backend.name)
 
     def import_product_product(self):
-        self._check_product_sync_direction("import")
+        self._check_product_strategy("import")
         self._import_from_date("magento.product.product", "import_products_from_date")
         return True
 
     def import_product_template(self):
-        self._check_product_sync_direction("import")
+        self._check_product_strategy("import")
         self._import_from_date(
             "magento.product.template", "import_configurables_from_date"
         )
@@ -488,7 +511,7 @@ class MagentoBackend(models.Model):
 
     @api.model
     def _scheduler_import_product_product(self, domain=None):
-        domain = (domain or []) + [("product_sync_direction", "!=", "export")]
+        domain = (domain or []) + [("product_import_strategy", "!=", "never")]
         self._magento_backend("import_product_product", domain=domain)
 
     @api.model
