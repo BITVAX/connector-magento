@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-21 05:04+0000\n"
+"POT-Creation-Date: 2026-10-21 15:31+0000\n"
 "PO-Revision-Date: 2026-10-01 10:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -554,6 +554,7 @@ msgid "Address from a Magento Order"
 msgstr "Dirección de un pedido de Magento"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_address
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 msgid "Addresses"
 msgstr "Direcciones"
@@ -729,6 +730,7 @@ msgstr "Adjuntos"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__name
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template_attribute_line__attribute_id
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_attribute_value_search
 msgid "Attribute"
 msgstr "Atributo"
 
@@ -738,6 +740,7 @@ msgid "Attribute Code"
 msgstr "Código de atributo"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_product_template_attribute_line
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_template_form
 msgid "Attribute Lines"
 msgstr "Líneas de atributo"
@@ -749,6 +752,11 @@ msgid "Attribute Set"
 msgstr "Conjunto de atributos"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_attribute_set
+msgid "Attribute Sets"
+msgstr "Conjuntos de atributos"
+
+#. module: connector_magento
 #: model:ir.model,name:connector_magento.model_product_attribute_value
 msgid "Attribute Value"
 msgstr "Valor de atributo"
@@ -756,6 +764,7 @@ msgstr "Valor de atributo"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_template_attribute_value_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__product_template_attribute_value_ids
+#: model:ir.ui.menu,name:connector_magento.menu_magento_product_attribute_value
 msgid "Attribute Values"
 msgstr "Valores de atributo"
 
@@ -801,6 +810,11 @@ msgstr "Atributo(s)"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__attribute_set_ids
 msgid "Attribute_set(s)"
 msgstr "Conjunto(s) de atributos"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_product_attribute
+msgid "Attributes"
+msgstr "Atributos"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__audit_trail_message_ids
@@ -1120,6 +1134,11 @@ msgid "Bill of Materials"
 msgstr "Lista de materiales"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_bindings
+msgid "Bindings"
+msgstr "Vinculaciones"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__birthday
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__birthday
 #: model:ir.model.fields,field_description:connector_magento.field_res_partner__birthday
@@ -1356,6 +1375,7 @@ msgstr "Método de redondeo de efectivo"
 #. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_product__magento_visibility__2
 #: model:ir.model.fields.selection,name:connector_magento.selection__product_template__magento_visibility__2
+#: model:ir.ui.menu,name:connector_magento.menu_magento_bindings_catalog
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Catalog"
 msgstr "Catálogo"
@@ -1370,6 +1390,11 @@ msgstr "Catálogo y ventas"
 #: model:ir.model.fields.selection,name:connector_magento.selection__product_template__magento_visibility__4
 msgid "Catalog, Search"
 msgstr "Catálogo, búsqueda"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_product_category
+msgid "Categories"
+msgstr "Categorías"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner_category__parent_id
@@ -1662,6 +1687,11 @@ msgid "Configurable Product"
 msgstr "Producto configurable"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_product_template
+msgid "Configurable Products"
+msgstr "Productos configurables"
+
+#. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Configurable products since"
 msgstr "Productos configurables desde"
@@ -1690,6 +1720,11 @@ msgstr "Considerado como empresa"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__partner_id
 msgid "Contact"
 msgstr "Contacto"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_res_partner
+msgid "Contacts"
+msgstr "Contactos"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__purchase_method
@@ -1966,6 +2001,11 @@ msgid "Customer Group"
 msgstr "Grupo de cliente"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_res_partner_category
+msgid "Customer Groups"
+msgstr "Grupos de clientes"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__sale_delay
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__sale_delay
 msgid "Customer Lead Time"
@@ -2015,6 +2055,11 @@ msgstr "Referencia del cliente"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Customer groups"
 msgstr "Grupos de clientes"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_bindings_customers
+msgid "Customers"
+msgstr "Clientes"
 
 #. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
@@ -2246,6 +2291,11 @@ msgstr "Eliminar de Magento"
 #: code:addons/connector_magento/models/product/listener.py:0
 msgid "Delete product %s from Magento"
 msgstr "Eliminar producto %s de Magento"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_stock_picking
+msgid "Deliveries"
+msgstr "Albaranes"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__partner_shipping_id
@@ -4229,6 +4279,7 @@ msgstr "Cantidad facturada (contabilizada)"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__invoice_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__invoice_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__invoice_ids
+#: model:ir.ui.menu,name:connector_magento.menu_magento_account_invoice
 msgid "Invoices"
 msgstr "Facturas"
 
@@ -4787,6 +4838,11 @@ msgid "Magento Address Bindings"
 msgstr "Vinculaciones de dirección de Magento"
 
 #. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_address
+msgid "Magento Addresses"
+msgstr "Direcciones de Magento"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__attribute_code
 msgid "Magento Attribute Attribute Code"
 msgstr "Código de atributo del atributo de Magento"
@@ -4806,7 +4862,6 @@ msgstr "Conjunto de atributos de Magento"
 
 #. module: connector_magento
 #: model:ir.actions.act_window,name:connector_magento.action_magento_attribute_set
-#: model:ir.ui.menu,name:connector_magento.menu_magento_attribute_set
 msgid "Magento Attribute Sets"
 msgstr "Conjuntos de atributos de Magento"
 
@@ -4814,6 +4869,11 @@ msgstr "Conjuntos de atributos de Magento"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__is_user_defined
 msgid "Magento Attribute User Defined"
 msgstr "Atributo de Magento definido por el usuario"
+
+#. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_product_attribute_value
+msgid "Magento Attribute Values"
+msgstr "Valores de atributo de Magento"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_template_attribute_line_ids
@@ -4936,6 +4996,16 @@ msgid "Magento Configuration Specializer Mixin"
 msgstr "Mixin de especialización de configuración de Magento"
 
 #. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_res_partner_category
+msgid "Magento Customer Groups"
+msgstr "Grupos de clientes de Magento"
+
+#. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_stock_picking
+msgid "Magento Deliveries"
+msgstr "Albaranes de Magento"
+
+#. module: connector_magento
 #: model:ir.model,name:connector_magento.model_magento_stock_picking
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_stock_picking_out_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_stock_picking_out_tree
@@ -5004,6 +5074,11 @@ msgid "Magento Invoice"
 msgstr "Factura de Magento"
 
 #. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_account_invoice
+msgid "Magento Invoices"
+msgstr "Facturas de Magento"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute_value__label
 msgid "Magento Label"
 msgstr "Etiqueta de Magento"
@@ -5039,7 +5114,6 @@ msgstr "Categoría de contacto de Magento"
 
 #. module: connector_magento
 #: model:ir.actions.act_window,name:connector_magento.action_magento_res_partner
-#: model:ir.ui.menu,name:connector_magento.menu_magento_res_partner
 msgid "Magento Partners"
 msgstr "Contactos de Magento"
 
@@ -5066,14 +5140,8 @@ msgstr "Atributo de producto de Magento"
 
 #. module: connector_magento
 #: model:ir.actions.act_window,name:connector_magento.action_magento_product_attribute
-#: model:ir.ui.menu,name:connector_magento.menu_magento_product_attribute
 msgid "Magento Product Attributes"
 msgstr "Atributos de producto de Magento"
-
-#. module: connector_magento
-#: model:ir.ui.menu,name:connector_magento.menu_magento_product_category
-msgid "Magento Product Categories"
-msgstr "Categorías de producto de Magento"
 
 #. module: connector_magento
 #: model:ir.actions.act_window,name:connector_magento.action_magento_product_category
@@ -5099,16 +5167,6 @@ msgid "Magento Product Template Attribute Line"
 msgstr "Línea de atributo de plantilla de producto de Magento"
 
 #. module: connector_magento
-#: model:ir.ui.menu,name:connector_magento.menu_magento_product_template_attribute_line
-msgid "Magento Product Template Attribute Lines"
-msgstr "Líneas de atributo de plantilla de producto de Magento"
-
-#. module: connector_magento
-#: model:ir.ui.menu,name:connector_magento.menu_magento_product_template
-msgid "Magento Product Templates"
-msgstr "Plantillas de producto de Magento"
-
-#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_type
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_type
 msgid "Magento Product Type"
@@ -5122,7 +5180,6 @@ msgstr "Valores de producto de Magento"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_binding_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_website__product_binding_ids
-#: model:ir.ui.menu,name:connector_magento.menu_magento_product_product
 msgid "Magento Products"
 msgstr "Productos de Magento"
 
@@ -5143,6 +5200,16 @@ msgstr "Pedido de venta de Magento"
 #: model:ir.model,name:connector_magento.model_magento_sale_order_line
 msgid "Magento Sale Order Line"
 msgstr "Línea de pedido de venta de Magento"
+
+#. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_sale_order_line
+msgid "Magento Sale Order Lines"
+msgstr "Líneas de pedido de Magento"
+
+#. module: connector_magento
+#: model:ir.actions.act_window,name:connector_magento.action_magento_sale_order
+msgid "Magento Sale Orders"
+msgstr "Pedidos de venta de Magento"
 
 #. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_sale_order_form
@@ -5206,11 +5273,6 @@ msgstr "Clase de impuesto de Magento"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_account_tax_tree
 msgid "Magento Tax Classes"
 msgstr "Clases de impuesto de Magento"
-
-#. module: connector_magento
-#: model:ir.ui.menu,name:connector_magento.menu_magento_account_tax
-msgid "Magento Taxes"
-msgstr "Impuestos de Magento"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_delivery_carrier__magento_tracking_title
@@ -6715,6 +6777,7 @@ msgstr "Ubicación de producción"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_variant_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_variant_ids
+#: model:ir.ui.menu,name:connector_magento.menu_magento_product_product
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_product_category_public_form
 msgid "Products"
 msgstr "Productos"
@@ -7401,6 +7464,16 @@ msgid "Sale Order Line"
 msgstr "Línea de pedido de venta"
 
 #. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_sale_order_line
+msgid "Sale Order Lines"
+msgstr "Líneas de pedido"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_sale_order
+msgid "Sale Orders"
+msgstr "Pedidos de venta"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__sale_prefix
 msgid "Sale Prefix"
 msgstr "Prefijo de venta"
@@ -7425,6 +7498,7 @@ msgstr "Pedidos de venta de todas las vistas de tienda"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__sale_ok
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__sale_ok
+#: model:ir.ui.menu,name:connector_magento.menu_magento_bindings_sales
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Sales"
 msgstr "Ventas"
@@ -8267,6 +8341,11 @@ msgstr "Asiento de impuestos de caja de"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner_category__tax_class_id
 msgid "Tax Class ID"
 msgstr "ID de clase de impuesto"
+
+#. module: connector_magento
+#: model:ir.ui.menu,name:connector_magento.menu_magento_account_tax
+msgid "Tax Classes"
+msgstr "Clases de impuestos"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_tax__amount_type
@@ -9838,6 +9917,11 @@ msgstr ""
 " y sus datos sustituyen a los de Odoo."
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_product_attribute_value_search
+msgid "Without Odoo Value"
+msgstr "Sin valor de Odoo"
+
+#. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_attribute__frontend_input__boolean
 msgid "Yes/No"
 msgstr "Sí/No"
@@ -9931,6 +10015,18 @@ msgstr "o"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_website__warehouse_id
 msgid "warehouse"
 msgstr "almacén"
+
+#~ msgid "Magento Product Categories"
+#~ msgstr "Categorías de producto de Magento"
+
+#~ msgid "Magento Product Template Attribute Lines"
+#~ msgstr "Líneas de atributo de plantilla de producto de Magento"
+
+#~ msgid "Magento Product Templates"
+#~ msgstr "Plantillas de producto de Magento"
+
+#~ msgid "Magento Taxes"
+#~ msgstr "Impuestos de Magento"
 
 #~ msgid "SEO-friendly URL key for this product. Usually imported from Magento."
 #~ msgstr ""

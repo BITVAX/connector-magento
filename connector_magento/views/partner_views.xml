@@ -154,10 +154,31 @@
         </field>
     </record>
 
+    <!-- The default list is the one embedded in the contact form (no delete,
+         no contact column): the action of the Bindings menu opens this one. -->
+    <record id="view_magento_res_partner_bindings_list" model="ir.ui.view">
+        <field name="name">magento.res.partner.list.bindings</field>
+        <field name="model">magento.res.partner</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="odoo_id" />
+                <field name="emailid" />
+                <field name="external_id" />
+                <field name="group_id" optional="show" />
+                <field name="website_id" optional="show" />
+                <field name="guest_customer" optional="hide" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
     <record id="action_magento_res_partner" model="ir.actions.act_window">
         <field name="name">Magento Partners</field>
         <field name="res_model">magento.res.partner</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_res_partner_bindings_list" />
         <field name="search_view_id" ref="view_magento_res_partner_search" />
     </record>
 

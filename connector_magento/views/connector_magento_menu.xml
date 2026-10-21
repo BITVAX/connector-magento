@@ -45,6 +45,7 @@
         <field name="name">Magento Attribute Sets</field>
         <field name="res_model">magento.product.attribute.set</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_attribute_set_list" />
     </record>
 
     <record model="ir.actions.act_window" id="action_magento_product_product">
@@ -70,6 +71,7 @@
         <field name="name">Magento Product Template Attribute Line</field>
         <field name="res_model">magento.product.template.attribute.line</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_template_attribute_line_list" />
     </record>
     <!-- Action for magento.product.attribute -->
     <record id="action_magento_product_attribute" model="ir.actions.act_window">
@@ -78,7 +80,65 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Menu for magento.product.attribute -->
+    <!-- Actions of the bindings that had none: every binding has its entry
+         in the Bindings menu (the store bindings are configuration, in the
+         Magento menu). -->
+
+    <record id="action_magento_product_attribute_value" model="ir.actions.act_window">
+        <field name="name">Magento Attribute Values</field>
+        <field name="res_model">magento.product.attribute.value</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_product_attribute_value_list" />
+        <field
+            name="search_view_id"
+            ref="view_magento_product_attribute_value_search"
+        />
+    </record>
+
+    <record id="action_magento_res_partner_category" model="ir.actions.act_window">
+        <field name="name">Magento Customer Groups</field>
+        <field name="res_model">magento.res.partner.category</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_partner_category_list" />
+    </record>
+
+    <record id="action_magento_address" model="ir.actions.act_window">
+        <field name="name">Magento Addresses</field>
+        <field name="res_model">magento.address</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_address_bindings_list" />
+    </record>
+
+    <record id="action_magento_sale_order" model="ir.actions.act_window">
+        <field name="name">Magento Sale Orders</field>
+        <field name="res_model">magento.sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_sale_order_bindings_list" />
+    </record>
+
+    <record id="action_magento_sale_order_line" model="ir.actions.act_window">
+        <field name="name">Magento Sale Order Lines</field>
+        <field name="res_model">magento.sale.order.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_sale_order_line_list" />
+    </record>
+
+    <record id="action_magento_stock_picking" model="ir.actions.act_window">
+        <field name="name">Magento Deliveries</field>
+        <field name="res_model">magento.stock.picking</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_stock_picking_bindings_list" />
+    </record>
+
+    <record id="action_magento_account_invoice" model="ir.actions.act_window">
+        <field name="name">Magento Invoices</field>
+        <field name="res_model">magento.account.invoice</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_magento_account_invoice_bindings_list" />
+    </record>
+
+    <!-- Connectors > Magento: the configuration -->
+
     <menuitem
         id="menu_magento_root"
         parent="connector.menu_connector_root"
@@ -119,59 +179,11 @@
     />
 
     <menuitem
-        id="menu_magento_res_partner"
-        name="Magento Partners"
-        parent="menu_magento_root"
-        sequence="45"
-        action="action_magento_res_partner"
-    />
-
-    <menuitem
         id="menu_magento_category"
         name="Public Categories"
         parent="menu_magento_root"
         sequence="50"
         action="action_product_category_public"
-    />
-
-    <menuitem
-        id="menu_magento_account_tax"
-        name="Magento Taxes"
-        parent="menu_magento_root"
-        sequence="60"
-        action="action_magento_account_tax"
-    />
-
-    <menuitem
-        id="menu_magento_attribute_set"
-        name="Magento Attribute Sets"
-        parent="menu_magento_root"
-        sequence="70"
-        action="action_magento_attribute_set"
-    />
-
-    <menuitem
-        id="menu_magento_product_attribute"
-        name="Magento Product Attributes"
-        parent="connector_magento.menu_magento_root"
-        sequence="75"
-        action="action_magento_product_attribute"
-    />
-
-    <menuitem
-        id="menu_magento_product_product"
-        name="Magento Products"
-        parent="menu_magento_root"
-        sequence="80"
-        action="action_magento_product_product"
-    />
-
-    <menuitem
-        id="menu_magento_product_template"
-        name="Magento Product Templates"
-        parent="menu_magento_root"
-        sequence="90"
-        action="action_magento_product_template"
     />
 
     <menuitem
@@ -182,19 +194,142 @@
         action="action_product_category_public"
     />
 
+    <!-- Connectors > Bindings: every link between an Odoo record and its
+         Magento counterpart, to review, fix or delete them. Deleting a binding
+         only removes the link: the Odoo record stays and nothing is sent to
+         Magento. -->
+
+    <menuitem
+        id="menu_magento_bindings"
+        name="Bindings"
+        parent="connector.menu_connector_root"
+        sequence="11"
+        groups="connector.group_connector_manager"
+    />
+
+    <menuitem
+        id="menu_magento_bindings_catalog"
+        name="Catalog"
+        parent="menu_magento_bindings"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_magento_product_product"
+        name="Products"
+        parent="menu_magento_bindings_catalog"
+        sequence="10"
+        action="action_magento_product_product"
+    />
+    <menuitem
+        id="menu_magento_product_template"
+        name="Configurable Products"
+        parent="menu_magento_bindings_catalog"
+        sequence="20"
+        action="action_magento_product_template"
+    />
+    <menuitem
+        id="menu_magento_product_template_attribute_line"
+        name="Attribute Lines"
+        parent="menu_magento_bindings_catalog"
+        sequence="30"
+        action="action_magento_product_template_attribute_line"
+    />
+    <menuitem
+        id="menu_magento_product_attribute"
+        name="Attributes"
+        parent="menu_magento_bindings_catalog"
+        sequence="40"
+        action="action_magento_product_attribute"
+    />
+    <menuitem
+        id="menu_magento_product_attribute_value"
+        name="Attribute Values"
+        parent="menu_magento_bindings_catalog"
+        sequence="50"
+        action="action_magento_product_attribute_value"
+    />
+    <menuitem
+        id="menu_magento_attribute_set"
+        name="Attribute Sets"
+        parent="menu_magento_bindings_catalog"
+        sequence="60"
+        action="action_magento_attribute_set"
+    />
     <menuitem
         id="menu_magento_product_category"
-        name="Magento Product Categories"
-        parent="menu_magento_root"
-        sequence="100"
+        name="Categories"
+        parent="menu_magento_bindings_catalog"
+        sequence="70"
         action="action_magento_product_category"
     />
 
     <menuitem
-        id="menu_magento_product_template_attribute_line"
-        name="Magento Product Template Attribute Lines"
-        parent="menu_magento_root"
-        sequence="110"
-        action="action_magento_product_template_attribute_line"
+        id="menu_magento_bindings_customers"
+        name="Customers"
+        parent="menu_magento_bindings"
+        sequence="20"
+    />
+    <menuitem
+        id="menu_magento_res_partner"
+        name="Contacts"
+        parent="menu_magento_bindings_customers"
+        sequence="10"
+        action="action_magento_res_partner"
+    />
+    <menuitem
+        id="menu_magento_address"
+        name="Addresses"
+        parent="menu_magento_bindings_customers"
+        sequence="20"
+        action="action_magento_address"
+    />
+    <menuitem
+        id="menu_magento_res_partner_category"
+        name="Customer Groups"
+        parent="menu_magento_bindings_customers"
+        sequence="30"
+        action="action_magento_res_partner_category"
+    />
+
+    <menuitem
+        id="menu_magento_bindings_sales"
+        name="Sales"
+        parent="menu_magento_bindings"
+        sequence="30"
+    />
+    <menuitem
+        id="menu_magento_sale_order"
+        name="Sale Orders"
+        parent="menu_magento_bindings_sales"
+        sequence="10"
+        action="action_magento_sale_order"
+    />
+    <menuitem
+        id="menu_magento_sale_order_line"
+        name="Sale Order Lines"
+        parent="menu_magento_bindings_sales"
+        sequence="20"
+        action="action_magento_sale_order_line"
+    />
+    <menuitem
+        id="menu_magento_stock_picking"
+        name="Deliveries"
+        parent="menu_magento_bindings_sales"
+        sequence="30"
+        action="action_magento_stock_picking"
+    />
+    <menuitem
+        id="menu_magento_account_invoice"
+        name="Invoices"
+        parent="menu_magento_bindings_sales"
+        sequence="40"
+        action="action_magento_account_invoice"
+    />
+    <menuitem
+        id="menu_magento_account_tax"
+        name="Tax Classes"
+        parent="menu_magento_bindings_sales"
+        sequence="50"
+        action="action_magento_account_tax"
     />
 </odoo>

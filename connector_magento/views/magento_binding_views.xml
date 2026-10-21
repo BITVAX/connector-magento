@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Views of the binding lists of the Connectors > Bindings menu
+    (connector_magento_menu.xml): every link between an Odoo record and its
+    Magento counterpart, to review, fix or delete them. Deleting a binding only
+    removes the link: the Odoo record stays and nothing is sent to Magento.
+-->
+<odoo>
+    <!-- Bindings with no view of their own until now. The lists go with
+         priority 20, through the actions of the menu: as default lists, their
+         create="0" would also apply where other forms embed these bindings
+         (the attribute sets of an attribute). -->
+
+    <record id="view_magento_product_attribute_value_list" model="ir.ui.view">
+        <field name="name">magento.product.attribute.value.list</field>
+        <field name="model">magento.product.attribute.value</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="magento_attribute_id" />
+                <field name="name" />
+                <field name="odoo_id" />
+                <field name="code" />
+                <field name="label" optional="hide" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_product_attribute_value_form" model="ir.ui.view">
+        <field name="name">magento.product.attribute.value.form</field>
+        <field name="model">magento.product.attribute.value</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="magento_attribute_id" />
+                            <field name="odoo_id" />
+                            <field name="code" />
+                            <field name="label" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="external_id" />
+                            <field name="sync_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_magento_product_attribute_value_search" model="ir.ui.view">
+        <field name="name">magento.product.attribute.value.search</field>
+        <field name="model">magento.product.attribute.value</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="magento_attribute_id" />
+                <field name="odoo_id" />
+                <field name="external_id" />
+                <filter
+                    name="no_odoo_value"
+                    string="Without Odoo Value"
+                    domain="[('odoo_id', '=', False)]"
+                />
+                <group>
+                    <filter
+                        name="group_attribute"
+                        string="Attribute"
+                        context="{'group_by': 'magento_attribute_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_magento_attribute_set_list" model="ir.ui.view">
+        <field name="name">magento.product.attribute.set.list</field>
+        <field name="model">magento.product.attribute.set</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="name" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_attribute_set_form" model="ir.ui.view">
+        <field name="name">magento.product.attribute.set.form</field>
+        <field name="model">magento.product.attribute.set</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="external_id" />
+                            <field name="sync_date" />
+                        </group>
+                    </group>
+                    <field name="attribute_ids" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_magento_template_attribute_line_list" model="ir.ui.view">
+        <field name="name">magento.product.template.attribute.line.list</field>
+        <field name="model">magento.product.template.attribute.line</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="magento_template_id" />
+                <field name="magento_attribute_id" />
+                <field
+                    name="magento_product_attribute_value_ids"
+                    widget="many2many_tags"
+                />
+                <field name="label" optional="hide" />
+                <field name="position" optional="hide" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_template_attribute_line_form" model="ir.ui.view">
+        <field name="name">magento.product.template.attribute.line.form</field>
+        <field name="model">magento.product.template.attribute.line</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="magento_template_id" />
+                            <field name="magento_attribute_id" />
+                            <field name="odoo_id" />
+                            <field name="label" />
+                            <field name="position" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="external_id" />
+                            <field name="sync_date" />
+                        </group>
+                    </group>
+                    <field name="magento_product_attribute_value_ids" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_magento_product_category_form" model="ir.ui.view">
+        <field name="name">magento.product.category.form</field>
+        <field name="model">magento.product.category</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="odoo_id" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="external_id" />
+                            <field name="sync_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_magento_partner_category_list" model="ir.ui.view">
+        <field name="name">magento.res.partner.category.list</field>
+        <field name="model">magento.res.partner.category</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="name" />
+                <field name="odoo_id" />
+                <field name="tax_class_id" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_partner_category_form" model="ir.ui.view">
+        <field name="name">magento.res.partner.category.form</field>
+        <field name="model">magento.res.partner.category</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="odoo_id" />
+                            <field name="tax_class_id" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="external_id" />
+                            <field name="sync_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_magento_sale_order_line_list" model="ir.ui.view">
+        <field name="name">magento.sale.order.line.list</field>
+        <field name="model">magento.sale.order.line</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="magento_order_id" />
+                <field name="product_id" />
+                <field name="name" optional="hide" />
+                <field name="odoo_id" optional="hide" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_sale_order_line_form" model="ir.ui.view">
+        <field name="name">magento.sale.order.line.form</field>
+        <field name="model">magento.sale.order.line</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="magento_order_id" />
+                            <field name="odoo_id" />
+                            <field name="tax_rate" />
+                            <field name="notes" />
+                        </group>
+                        <group>
+                            <field name="backend_id" />
+                            <field name="external_id" />
+                            <field name="sync_date" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- The default lists of these bindings are the ones embedded in the
+         forms of the Odoo records (no delete, no Odoo record column): the
+         Bindings menu opens these instead. -->
+
+    <record id="view_magento_address_bindings_list" model="ir.ui.view">
+        <field name="name">magento.address.list.bindings</field>
+        <field name="model">magento.address</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="odoo_id" />
+                <field name="magento_partner_id" />
+                <field name="is_default_billing" optional="show" />
+                <field name="is_default_shipping" optional="show" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="website_id" optional="hide" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_sale_order_bindings_list" model="ir.ui.view">
+        <field name="name">magento.sale.order.list.bindings</field>
+        <field name="model">magento.sale.order</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="odoo_id" />
+                <field name="partner_id" />
+                <field name="external_id" />
+                <field name="storeview_id" optional="show" />
+                <field name="total_amount" optional="show" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_stock_picking_bindings_list" model="ir.ui.view">
+        <field name="name">magento.stock.picking.list.bindings</field>
+        <field name="model">magento.stock.picking</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="odoo_id" />
+                <field name="magento_order_id" />
+                <field name="picking_method" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_magento_account_invoice_bindings_list" model="ir.ui.view">
+        <field name="name">magento.account.invoice.list.bindings</field>
+        <field name="model">magento.account.invoice</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list create="0">
+                <field name="odoo_id" />
+                <field name="magento_order_id" />
+                <field name="external_id" />
+                <field name="sync_date" optional="show" />
+                <field name="backend_id" optional="hide" />
+            </list>
+        </field>
+    </record>
+</odoo>

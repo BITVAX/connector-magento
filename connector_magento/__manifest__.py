@@ -4,7 +4,7 @@
 
 {
     "name": "Magento Connector",
-    "version": "18.0.1.5.0",
+    "version": "18.0.1.6.0",
     "category": "Connector",
     "depends": [
         "account",
@@ -41,6 +41,7 @@
         "views/invoice_views.xml",
         "views/sale_order_views.xml",
         "views/magento_account_tax_views.xml",
+        "views/magento_binding_views.xml",
         "views/connector_magento_menu.xml",
         "views/delivery_views.xml",
         "views/stock_views.xml",
