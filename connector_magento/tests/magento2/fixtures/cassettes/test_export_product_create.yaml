@@ -8,7 +8,7 @@ interactions:
         Content-Type: ["application/json"]
         User-Agent: ["python-requests/2.25.1"]
       method: POST
-      uri: http://magento/index.php/rest/V1/products
+      uri: http://magento/index.php/rest/all/V1/products
     response:
       body:
         {
@@ -29,7 +29,7 @@ interactions:
         Content-Type: ["application/json"]
         User-Agent: ["python-requests/2.25.1"]
       method: POST
-      uri: http://magento/index.php/rest/V1/products
+      uri: http://magento/index.php/rest/all/V1/products
     response:
       body:
         {

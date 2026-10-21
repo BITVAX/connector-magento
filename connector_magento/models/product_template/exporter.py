@@ -2,10 +2,8 @@
 # Copyright 2019 Callino
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import base64
 import logging
 
-import magic
 from slugify import slugify
 
 from odoo import _
@@ -15,7 +13,11 @@ from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector.exception import MappingError
 
-from ..product.exporter import get_exported_value
+from ..product.exporter import (
+    add_image_labels,
+    gallery_values,
+    mapped_custom_attributes,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -266,23 +268,6 @@ class ProductTemplateDefinitionExporter(Component):
             self._export_variants()
         return
 
-    def _after_export(self):
-        _logger.info("AFTEREXPORT: In _after_export at %s", __name__)
-        super()._after_export()
-        storeview_id = (
-            self.work.storeview_id if hasattr(self.work, "storeview_id") else False
-        )
-        if storeview_id:
-            # We are already in the storeview specific export
-            return
-        # TODO Fix and enable again
-        # for storeview_id in self.env['magento.storeview'].search(
-        #     [('backend_id', '=', self.backend_record.id)]
-        # ):
-        #     self.binding.export_product_template_for_storeview(
-        #         storeview_id=storeview_id
-        #     )
-
 
 class ProductTemplateExportMapper(Component):
     _name = "magento.product.template.export.mapper"
@@ -451,41 +436,12 @@ class ProductTemplateExportMapper(Component):
 
     @mapping
     def media_gallery_entries(self, record):
-        if record.image_ids:
-            media_gallery_entries = []
-            mime = magic.Magic(mime=True)
-            image_count = 0
-            for image in [record.odoo_id]:
-                # image_1920 is a bytes value holding base64-encoded data
-                image_data = image.image_1920
-                if not image_data:
-                    continue
-                mimetype = mime.from_buffer(base64.b64decode(image_data))
-                extension = self.mime_to_extension.get(mimetype, "jpg")
-                filename = f"{slugify(image.name or record.external_id)}_{record.id}_{image_count}.{extension}"
-                image_count += 1
-                media_gallery_entries.append(
-                    {
-                        "media_type": "image",
-                        "label": image.name or record.name,
-                        "position": image_count,
-                        "disabled": False,
-                        "content": {
-                            # decode() because json.dumps cannot serialize bytes
-                            "base64_encoded_data": image_data.decode(),
-                            "type": mimetype,
-                            "name": filename,
-                        },
-                    }
-                )
-            if len(media_gallery_entries):
-                media_gallery_entries[0]["types"] = [
-                    "image",
-                    "small_image",
-                    "thumbnail",
-                ]
-            return {"media_gallery_entries": media_gallery_entries}
-        return {}
+        # The whole gallery of the configurable product, not only its main
+        # image, when it changed since the last export.
+        return gallery_values(self, record)
+
+    def finalize(self, map_record, values):
+        return add_image_labels(super().finalize(map_record, values))
 
     @mapping
     def attribute_set_id(self, record):
@@ -535,39 +491,9 @@ class ProductTemplateExportMapper(Component):
         custom_attributes = []
         custom_attributes.append(self.category_ids(record))
         custom_attributes.extend(self.get_non_configurable_attributes(record))
-        if record.attribute_set_id:
-            for matt_id in record.attribute_set_id.attribute_ids.filtered(
-                lambda a: a.field_id
-            ):
-                custom_attributes.append(
-                    {
-                        "attribute_code": matt_id.attribute_code,
-                        "value": get_exported_value(matt_id, record),
-                    }
-                )
-        if record.magento_url_key:
-            custom_attributes.append(
-                {"attribute_code": "url_key", "value": record.magento_url_key}
-            )
-
-        # Add meta fields as custom attributes
-        if record.odoo_id.meta_title:
-            custom_attributes.append(
-                {"attribute_code": "meta_title", "value": record.odoo_id.meta_title}
-            )
-
-        if record.odoo_id.meta_keyword:
-            custom_attributes.append(
-                {"attribute_code": "meta_keyword", "value": record.odoo_id.meta_keyword}
-            )
-
-        if record.odoo_id.meta_description:
-            custom_attributes.append(
-                {
-                    "attribute_code": "meta_description",
-                    "value": record.odoo_id.meta_description,
-                }
-            )
+        # The fields mapped on the attributes of the set (URL key, SEO,
+        # descriptions...): every text of the product page goes this way.
+        custom_attributes.extend(mapped_custom_attributes(record))
 
         # Export tax_class_id from template's taxes_id
         tax_class_value = self._get_tax_class_id(record)

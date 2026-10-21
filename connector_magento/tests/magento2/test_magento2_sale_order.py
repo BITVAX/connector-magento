@@ -53,6 +53,13 @@ class TestSaleOrder(Magento2SyncTestCase):
             [("external_id", "=", "RACER"), ("backend_id", "=", self.backend.id)]
         )
         ship = binding.carrier_id.product_id
+        # The shipping line is named by the instance: after the product by
+        # default, after the carrier with other modules installed.
+        shipping_line = binding.order_line.filtered(
+            lambda line: line.product_id == ship
+        )
+        self.assertEqual(len(shipping_line), 1)
+        self.assertIn(shipping_line.name, (ship.name, binding.carrier_id.name))
         expected = [
             ExpectedOrderLine(
                 product_id=prod1.odoo_id,
@@ -68,8 +75,7 @@ class TestSaleOrder(Magento2SyncTestCase):
             ),
             ExpectedOrderLine(
                 product_id=ship,
-                # The shipping product is named by the instance, not by us.
-                name=ship.name,
+                name=shipping_line.name,
                 price_unit=5.0,
                 product_uom_qty=1.0,
             ),

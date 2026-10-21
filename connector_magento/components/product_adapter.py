@@ -7,6 +7,13 @@ from odoo.addons.component.core import Component
 
 _logger = logging.getLogger(__name__)
 
+# Store code of Magento's admin store (store_id 0) in the REST URLs. Every
+# product call goes there: its values are the ones every store view falls back
+# to. Through the default store view (/rest/V1) Magento saves the URL key, the
+# image labels and the image roles on that store view only, and an image role
+# held there blocks deleting the image.
+ADMIN_STORE = "all"
+
 
 class MagentoProductAdapter(Component):
     """
@@ -24,6 +31,19 @@ class MagentoProductAdapter(Component):
     _inherit = "magento.adapter"
     # No _apply_on: this is an abstract base component
 
+    def create(self, data, storeview=None, **kwargs):
+        """Create the product in the admin store (see ADMIN_STORE)."""
+        # pylint: disable=method-required-super
+        new_object = self._call(
+            self._magento2_model % kwargs,
+            {self._magento2_name: data, "saveOptions": True},
+            http_method="post",
+            storeview=ADMIN_STORE,
+        )
+        if isinstance(new_object, dict):
+            data.update(new_object)
+        return self._get_id_from_create(new_object, data)
+
     def get_media(self, external_id):
         """Get media gallery entries for a product
 
@@ -33,7 +53,9 @@ class MagentoProductAdapter(Component):
         :param external_id: Product SKU
         :return: List of media gallery entry dicts with 'id', 'file', 'types', etc.
         """
-        media_entries = self._call("products/%s/media" % self.escape(external_id), None)
+        media_entries = self._call(
+            "products/%s/media" % self.escape(external_id), None, storeview=ADMIN_STORE
+        )
         return media_entries if isinstance(media_entries, list) else []
 
     def delete_product_image(self, external_id, entry_id):
@@ -48,6 +70,7 @@ class MagentoProductAdapter(Component):
                 "products/%s/media/%s" % (self.escape(external_id), entry_id),
                 None,
                 http_method="delete",
+                storeview=ADMIN_STORE,
             )
             return True
         except Exception as e:

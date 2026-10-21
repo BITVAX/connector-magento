@@ -120,9 +120,9 @@ class AttributeImporter(Component):
                     continue
                 if (name_field._get_stored_translations(odoo_value) or {}).get(lang):
                     continue
-                odoo_value.with_context(connector_no_export=True).update_field_translations(
-                    "name", {lang: label}
-                )
+                odoo_value.with_context(
+                    connector_no_export=True
+                ).update_field_translations("name", {lang: label})
 
     def _before_import(self):
         record = self.magento_record
@@ -210,6 +210,16 @@ class AttributeImportMapper(Component):
         if "default_frontend_label" in record and record["default_frontend_label"]:
             name = record["default_frontend_label"]
         return {"name": name}
+
+    @only_create
+    @mapping
+    def field_id(self, record):
+        """The Odoo field of an attribute of fixed code, when the binding is
+        created: a re-import respects what the user set or cleared."""
+        field = self.env["magento.product.attribute"]._default_field_for_code(
+            record.get("attribute_code")
+        )
+        return {"field_id": field.id} if field else {}
 
     @only_create
     @mapping

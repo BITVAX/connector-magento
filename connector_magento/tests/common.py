@@ -8,6 +8,8 @@ Helpers usable in the tests
 """
 
 import logging
+import os
+import re
 import xmlrpc.client
 from unittest import mock
 
@@ -31,6 +33,34 @@ recorder = VCR(
     path_transformer=VCR.ensure_suffix(".yaml"),
     filter_headers=["Authorization"],
 )
+
+# Payment methods of the orders the cassettes bring; the tests create a
+# payment mode for each of them.
+CASSETTE_PAYMENT_METHODS = ("checkmo", "ccsave", "cashondelivery")
+
+_CASSETTE_ATTRIBUTE_NAMES = None
+_ATTRIBUTE_NAME_RE = re.compile(
+    r'"(?:default_frontend_label|attribute_code)":\s*"([^"]*)"'
+)
+
+
+def cassette_attribute_names():
+    """Names (labels and codes, lowercased) of the product attributes the
+    cassettes bring. The attribute importer binds an existing attribute of
+    the same name, so a database that already has one (a copy of a
+    production database) would see it rewritten by the tests."""
+    global _CASSETTE_ATTRIBUTE_NAMES  # pylint: disable=global-statement
+    if _CASSETTE_ATTRIBUTE_NAMES is None:
+        names = set()
+        for root, dirs, files in os.walk(dirname(__file__)):
+            if os.path.basename(root) != "cassettes":
+                continue
+            for filename in files:
+                with open(join(root, filename), encoding="utf-8") as cassette:
+                    for match in _ATTRIBUTE_NAME_RE.finditer(cassette.read()):
+                        names.add(match.group(1).strip().lower())
+        _CASSETTE_ATTRIBUTE_NAMES = names
+    return _CASSETTE_ATTRIBUTE_NAMES
 
 
 class MockResponseImage:
@@ -123,6 +153,13 @@ class MagentoTestCase(TransactionComponentCase):
 
     def setUp(self):
         super().setUp()
+        # The messages the tests assert are the English ones, whatever the
+        # language of the database: of the context, and of the user, which
+        # gettext falls back to inside the components (no env on the frame).
+        self.env = self.env(context=dict(self.env.context, lang="en_US"))
+        if self.env.user.lang != "en_US":
+            self.env.user.lang = "en_US"
+        self._shadow_existing_records()
         self.recorder = recorder
         # disable commits when run from pytest/nosetest
         odoo.tools.config["test_enable"] = True
@@ -156,7 +193,7 @@ class MagentoTestCase(TransactionComponentCase):
             {"name": "Check", "type": "cash", "code": "Check"}
         )
         payment_method = self.env.ref("account.account_payment_method_manual_in")
-        for name in ["checkmo", "ccsave", "cashondelivery"]:
+        for name in CASSETTE_PAYMENT_METHODS:
             self.env["account.payment.mode"].create(
                 {
                     "name": name,
@@ -168,6 +205,28 @@ class MagentoTestCase(TransactionComponentCase):
                     "fixed_journal_id": self.journal.id,
                 }
             )
+
+    def _shadow_existing_records(self):
+        """The tests run on any database, also on a copy of a production
+        one. The importers match payment modes and product attributes by
+        name: the records of the database named like the ones the cassettes
+        bring are renamed for the test (the transaction is rolled back), so
+        that the tests create and use their own, as on an empty database."""
+        shadow = "ZZ test shadow: %s"
+        modes = (
+            self.env["account.payment.mode"]
+            .with_context(active_test=False)
+            .search([("name", "in", list(CASSETTE_PAYMENT_METHODS))])
+        )
+        for mode in modes:
+            mode.name = shadow % mode.name
+        names = cassette_attribute_names()
+        attributes = (
+            self.env["product.attribute"].with_context(active_test=False).search([])
+        )
+        for attribute in attributes:
+            if (attribute.name or "").strip().lower() in names:
+                attribute.name = shadow % attribute.name
 
     def get_magento_helper(self, model_name):
         return MagentoHelper(self.cr, self.registry, model_name)

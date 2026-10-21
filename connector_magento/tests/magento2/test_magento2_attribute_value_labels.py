@@ -15,10 +15,9 @@ from unittest import mock
 
 from odoo.tests import tagged
 
-from odoo.addons.connector_magento.components.backend_adapter import (
+from ...components.backend_adapter import (
     MagentoCRUDAdapter,
 )
-
 from .common import Magento2TestCase
 
 
@@ -112,17 +111,19 @@ class TestAttributeValueLabels(Magento2TestCase):
         self.women.with_context(lang="es_ES").name = "Mujer"
         with self.backend.work_on("magento.product.attribute.value") as work:
             mapper = work.component(usage="export.mapper")
-            values = mapper.map_record(
-                self.m_women.with_context(lang="es_ES")
-            ).values()
+            values = mapper.map_record(self.m_women.with_context(lang="es_ES")).values()
         self.assertEqual(values["label"], "Women")
         self.assertEqual(values["store_labels"], [{"store_id": 901, "label": "Mujer"}])
 
-    def test_sort_order_is_the_position_in_odoo(self):
-        self.assertEqual(self.m_women._magento_sort_order(), 1)
-        self.assertEqual(self.m_aura._magento_sort_order(), 2)
+    def test_sort_order_is_the_sequence_in_odoo(self):
+        # The sequence as it is, not the position: an option update must not
+        # reorder the options of the shop to the order of Odoo.
+        self.assertEqual(self.m_women._magento_sort_order(), 0)
+        self.assertEqual(self.m_aura._magento_sort_order(), 0)
         self.women.sequence = 5
-        self.assertEqual(self.m_aura._magento_sort_order(), 1)
+        self.aura.sequence = 2
+        self.assertEqual(self.m_women._magento_sort_order(), 5)
+        self.assertEqual(self.m_aura._magento_sort_order(), 2)
 
     def test_untranslated_option_is_left_alone(self):
         self.assertFalse(self.m_aura._magento_labels_changed())
@@ -137,6 +138,7 @@ class TestAttributeValueLabels(Magento2TestCase):
 
     def test_export_updates_the_option_in_place(self):
         self.women.with_context(lang="es_ES").name = "Mujer"
+        self.women.sequence = 3
         with self.backend.work_on("magento.product.attribute.value") as work:
             exporter = work.component(usage="record.exporter")
             with mock.patch.object(
@@ -150,10 +152,10 @@ class TestAttributeValueLabels(Magento2TestCase):
         self.assertEqual(
             args[1]["option"]["store_labels"], [{"store_id": 901, "label": "Mujer"}]
         )
-        self.assertEqual(args[1]["option"]["sort_order"], 1)
+        self.assertEqual(args[1]["option"]["sort_order"], 3)
         self.assertEqual(
             json.loads(self.m_women.magento_labels_signature),
-            ["Women", [{"store_id": 901, "label": "Mujer"}], 1],
+            ["Women", [{"store_id": 901, "label": "Mujer"}], 3],
         )
         self.assertFalse(self.m_women._magento_labels_changed())
 
@@ -162,8 +164,14 @@ class TestAttributeValueLabels(Magento2TestCase):
 
         def options(path, data, storeview=None, **kwargs):
             return {
-                "all": [{"label": "Women", "value": "199"}, {"label": "AURA", "value": "209"}],
-                "zz_es": [{"label": "Mujer", "value": "199"}, {"label": "AURA", "value": "209"}],
+                "all": [
+                    {"label": "Women", "value": "199"},
+                    {"label": "AURA", "value": "209"},
+                ],
+                "zz_es": [
+                    {"label": "Mujer", "value": "199"},
+                    {"label": "AURA", "value": "209"},
+                ],
                 "zz_de": [{"label": "Damen", "value": "199"}],
             }[storeview]
 

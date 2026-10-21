@@ -41,6 +41,7 @@
 "access_product_category_public","access_product_category_public public","model_product_category_public","connector.group_connector_manager",1,1,1,1
 "access_product_category_public_read","product.category.public read all","model_product_category_public",,1,0,0,0
 "access_magento_product_attribute_set","access_magento_product_attribute_set connector manager","model_magento_product_attribute_set","connector.group_connector_manager",1,1,1,1
+"access_magento_product_attribute_set_read","magento_product_attribute_set read all (product form)","model_magento_product_attribute_set","base.group_user",1,0,0,0
 "access_magento_product_attribute","access_magento_product_attribute connector manager","model_magento_product_attribute","connector.group_connector_manager",1,1,1,1
 "access_magento_product_attribute_value	","access_magento_product_attribute_value connector manager","model_magento_product_attribute_value","connector.group_connector_manager",1,1,1,1
 "access_magento_product_template","access_magento_product_template connector manager","model_magento_product_template","connector.group_connector_manager",1,1,1,1

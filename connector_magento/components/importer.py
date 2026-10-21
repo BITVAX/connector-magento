@@ -20,6 +20,7 @@ from odoo import _, fields
 
 from odoo.addons.component.core import AbstractComponent, Component
 from odoo.addons.connector.exception import IDMissingInBackend
+
 from ..exception import NothingToDoJob
 
 _logger = logging.getLogger(__name__)
@@ -393,7 +394,19 @@ class TranslationImporter(Component):
                 for field, value in list(record.items())
                 if field in translatable_fields
             )
-
-            binding.odoo_id.with_context(
-                connector_no_export=True, lang=storeview.lang_id.code
-            ).write(data)
+            # The fields of the binding itself (the URL key of a product) go
+            # to the binding; the ones it inherits from the Odoo record, to
+            # that record.
+            context = dict(connector_no_export=True, lang=storeview.lang_id.code)
+            own_data = {
+                field: value
+                for field, value in data.items()
+                if not binding._fields[field].inherited
+            }
+            inherited_data = {
+                field: value for field, value in data.items() if field not in own_data
+            }
+            if inherited_data:
+                binding.odoo_id.with_context(**context).write(inherited_data)
+            if own_data:
+                binding.with_context(**context).write(own_data)

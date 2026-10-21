@@ -30,7 +30,24 @@ class MagentoProductAttribute(models.Model):
     field_id = fields.Many2one(
         comodel_name="ir.model.fields",
         string="Odoo Field",
-        domain=[("model", "ilike", "product.template")],
+        domain=[
+            (
+                "model",
+                "in",
+                (
+                    "product.template",
+                    "product.product",
+                    "magento.product.product",
+                    "magento.product.template",
+                ),
+            )
+        ],
+        help="Field of Odoo this attribute is synchronized with: the export "
+        "sends its value and the import writes it. Empty: the attribute is "
+        "left alone in both ways. The attributes of fixed code (description, "
+        "url_key, meta_title...) get their field when they are imported; "
+        "clearing it here switches them off, and a re-import does not put it "
+        "back.",
     )
 
     attribute_id = fields.Integer(string="Magento Attribute ID")
@@ -74,6 +91,52 @@ class MagentoProductAttribute(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         return super().create(vals_list)
+
+    @api.model
+    def _default_field_by_code(self):
+        """Odoo field each Magento attribute of fixed code is synchronized
+        with, as {attribute_code: (model, field name)}: the fields the product
+        page of the shop is made of. Another module adds the attributes of its
+        shop by extending it. The import puts the field on the attribute when it
+        creates it; clearing it on the attribute switches the mapping off."""
+        return {
+            "description": ("product.template", "description"),
+            "short_description": ("product.template", "magento_short_description"),
+            "meta_title": ("product.template", "meta_title"),
+            "meta_keyword": ("product.template", "meta_keyword"),
+            "meta_description": ("product.template", "meta_description"),
+            "news_from_date": ("product.template", "magento_news_from_date"),
+            "news_to_date": ("product.template", "magento_news_to_date"),
+            # The URL key is per product in Magento, and per binding here.
+            "url_key": ("magento.product.product", "magento_url_key"),
+        }
+
+    @api.model
+    def _default_field_for_code(self, attribute_code):
+        """The ir.model.fields record ``attribute_code`` maps on by default,
+        or an empty recordset."""
+        model_field = self._default_field_by_code().get(attribute_code)
+        if not model_field:
+            return self.env["ir.model.fields"]
+        model, name = model_field
+        return self.env["ir.model.fields"].search(
+            [("model", "=", model), ("name", "=", name)], limit=1
+        )
+
+    @api.model
+    def _apply_default_field_ids(self):
+        """Map the attributes of fixed code that have no field yet (those
+        imported before their default existed). An attribute whose field was
+        cleared on purpose gets it back only here, never on a re-import."""
+        codes = list(self._default_field_by_code())
+        attributes = self.search(
+            [("field_id", "=", False), ("attribute_code", "in", codes)]
+        )
+        for attribute in attributes:
+            field = self._default_field_for_code(attribute.attribute_code)
+            if field:
+                attribute.with_context(connector_no_export=True).field_id = field
+        return attributes
 
     def export_product_attribute_button(self):
         self.ensure_one()

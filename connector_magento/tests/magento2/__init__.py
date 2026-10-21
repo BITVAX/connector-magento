@@ -5,6 +5,7 @@ from . import test_magento2_export_product
 from . import test_magento2_export_product_stock
 from . import test_magento2_product_copy
 from . import test_magento2_product_strategy
+from . import test_magento2_product_page
 from . import test_magento2_attribute_value_labels
 from . import test_magento2_product_category_access
 from . import test_magento2_import_metadata

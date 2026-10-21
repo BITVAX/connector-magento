@@ -7,12 +7,14 @@ from odoo import api, fields, models
 
 # from odoo.addons.queue_job.job import job, related_action
 from odoo.exceptions import ValidationError
+from odoo.tools import html_sanitize
 from odoo.tools.translate import _
 
 from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import identity_exact
 
 from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
+from ...components.product_adapter import ADMIN_STORE
 
 _logger = logging.getLogger(__name__)
 
@@ -116,7 +118,15 @@ class MagentoProductTemplate(models.Model):
     #     compute='_compute_product_categories',
     #     string='Product categories'
     # )
-    magento_url_key = fields.Char(string="URL Key", store=True, readonly=False)
+    # The URL key is the address of the product page, per store view in
+    # Magento: per backend and per language here.
+    magento_url_key = fields.Char(string="URL Key", translate=True, copy=False)
+    magento_images_signature = fields.Char(
+        copy=False,
+        readonly=True,
+        help="File names of the images in Magento at the last export, to know "
+        "when the gallery has to be sent again.",
+    )
     magento_status = fields.Selection(
         [
             ("2", "Disabled"),
@@ -214,6 +224,30 @@ class MagentoProductTemplate(models.Model):
         self.backend_id._check_product_strategy("export")
         return super().delete_from_magento()
 
+    # The jobs themselves obey the strategies too, wherever they were
+    # enqueued from (listeners, server actions, other modules). The variants a
+    # configurable exports and the products a sale order imports do not pass
+    # here: their exporters and importers are run directly.
+    def export_record(self, fields=None, **kwargs):
+        self.ensure_one()
+        if not self.backend_id._product_strategy_allows(
+            "export", self._exists_in_magento()
+        ):
+            return _("Left out by the Product Export strategy of the backend.")
+        return super().export_record(fields=fields, **kwargs)
+
+    @api.model
+    def import_record(self, backend, external_id, force=False, **kwargs):
+        exists = bool(
+            self.search(
+                [("backend_id", "=", backend.id), ("external_id", "=", external_id)],
+                limit=1,
+            )
+        )
+        if not backend._product_strategy_allows("import", exists):
+            return _("Left out by the Product Import strategy of the backend.")
+        return super().import_record(backend, external_id, force=force, **kwargs)
+
     # @job(default_channel='root.magento')
     def run_sync_from_magento(self):
         self.ensure_one()
@@ -241,13 +275,40 @@ class MagentoProductTemplate(models.Model):
             return exporter.run(self, fields)
 
 
+def sanitize_magento_html(value):
+    """The texts sent to Magento are plain text with basic HTML: only safe
+    tags and attributes are kept; scripts, event handlers, javascript: links
+    and inline styles are dropped."""
+    if not value:
+        return value
+    return html_sanitize(value, sanitize_attributes=True, strip_style=True)
+
+
+def magento_html_field(string, help=None):
+    """An HTML text of the product page of the shop, translatable as a whole.
+
+    translate=True and not html_translate: every language keeps its whole
+    HTML, which is what Magento needs, instead of a paragraph-by-paragraph
+    translation of the base one. Odoo turns a sanitized translate=True Html
+    field into html_translate (fields.Html._get_attrs), so the field is not
+    sanitized by Odoo and product.template sanitizes it on every way in."""
+    return fields.Html(string=string, help=help, translate=True, sanitize=False)
+
+
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
+    # The URL key lives on the Magento binding (per backend and language);
+    # here it is the one of the binding of the product: of the template for a
+    # configurable product, of its only variant for a simple one.
     url_key = fields.Char(
         string="URL Key",
-        help="SEO-friendly URL key for this product. Usually imported from Magento.",
-        index=True,
+        help="SEO-friendly URL key of the product page in Magento, in the "
+        "language being edited. Held by the Magento binding of the product.",
+        translate=True,
+        compute="_compute_url_key",
+        inverse="_inverse_url_key",
+        search="_search_url_key",
     )
 
     meta_title = fields.Char(
@@ -255,15 +316,137 @@ class ProductTemplate(models.Model):
         help="SEO title for this product. Usually imported from Magento.",
         translate=True,
     )
-    meta_keyword = fields.Char(
+    meta_keyword = fields.Text(
         string="Keywords",
         help="SEO keywords for this product. Usually imported from Magento.",
+        translate=True,
     )
     meta_description = fields.Text(
         string="SEO Description",
         help="SEO description for this product. Usually imported from Magento.",
         translate=True,
     )
+    magento_short_description = magento_html_field(
+        "Magento Short Description",
+        help="Short description of the product page in Magento "
+        "(short_description). The description of the page is the description "
+        "of the product.",
+    )
+    magento_news_from_date = fields.Date(
+        string="New From",
+        help="Magento shows the product as new from this date (news_from_date).",
+    )
+    magento_news_to_date = fields.Date(
+        string="New To",
+        help="Magento shows the product as new until this date (news_to_date).",
+    )
+    # The attribute set lives on the Magento binding (per backend); here it
+    # is the one of the binding of the product, like the URL key.
+    magento_attribute_set_id = fields.Many2one(
+        comodel_name="magento.product.attribute.set",
+        compute="_compute_magento_attribute_set_id",
+        inverse="_inverse_magento_attribute_set_id",
+        help="Attribute set of the product in Magento, e.g. one for jackets "
+        "and another one for trousers. Held by the Magento binding of the "
+        "product; editable once the product is linked to Magento.",
+    )
+
+    @api.model
+    def _magento_sanitized_html_fields(self):
+        """HTML fields of the product page of the shop that product.template
+        sanitizes itself (see magento_html_field). Another module adds the
+        ones of its shop by extending it."""
+        return ["magento_short_description"]
+
+    def _sanitize_magento_vals(self, vals):
+        for fname in self._magento_sanitized_html_fields():
+            if vals.get(fname):
+                vals[fname] = sanitize_magento_html(vals[fname])
+        return vals
+
+    def _magento_product_binding(self):
+        """The Magento binding that holds the URL key and the attribute set
+        of this product: the one of the template for a configurable product,
+        the one of its only variant for a simple one. The first backend when
+        there are several."""
+        self.ensure_one()
+        binding = self.magento_bind_ids[:1]
+        if not binding and len(self.product_variant_ids) == 1:
+            binding = self.product_variant_ids.magento_bind_ids[:1]
+        return binding
+
+    @api.depends(
+        "magento_bind_ids.magento_url_key",
+        "product_variant_ids.magento_bind_ids.magento_url_key",
+    )
+    @api.depends_context("lang")
+    def _compute_url_key(self):
+        for template in self:
+            binding = template._magento_product_binding()
+            template.url_key = binding.magento_url_key if binding else False
+
+    def _inverse_url_key(self):
+        for template in self:
+            binding = template._magento_product_binding()
+            if binding:
+                binding.magento_url_key = template.url_key
+
+    def _search_url_key(self, operator, value):
+        return [
+            "|",
+            ("magento_bind_ids.magento_url_key", operator, value),
+            ("product_variant_ids.magento_bind_ids.magento_url_key", operator, value),
+        ]
+
+    @api.depends(
+        "magento_bind_ids.attribute_set_id",
+        "product_variant_ids.magento_bind_ids.attribute_set_id",
+    )
+    def _compute_magento_attribute_set_id(self):
+        for template in self:
+            binding = template._magento_product_binding()
+            template.magento_attribute_set_id = (
+                binding.attribute_set_id if binding else False
+            )
+
+    def _inverse_magento_attribute_set_id(self):
+        for template in self:
+            attribute_set = template.magento_attribute_set_id
+            if not attribute_set:
+                continue
+            # The bindings of the template and the ones of its variants are
+            # two models: written one model at a time.
+            for bindings in (
+                template.magento_bind_ids,
+                template.product_variant_ids.magento_bind_ids,
+            ):
+                bindings.filtered(
+                    lambda b: b.backend_id == attribute_set.backend_id
+                ).with_context(connector_no_export=True).write(
+                    {"attribute_set_id": attribute_set.id}
+                )
+
+    def _update_field_translations(
+        self, field_name, translations, digest=None, source_lang=None
+    ):
+        # The translation dialog writes here, not through write(): the URL key
+        # goes to the binding that holds it, the HTML texts get sanitized.
+        if field_name == "url_key":
+            self.ensure_one()
+            binding = self._magento_product_binding()
+            if not binding:
+                return False
+            return binding._update_field_translations(
+                "magento_url_key", translations, digest=digest, source_lang=source_lang
+            )
+        if field_name in self._magento_sanitized_html_fields():
+            translations = {
+                lang: sanitize_magento_html(value)
+                for lang, value in translations.items()
+            }
+        return super()._update_field_translations(
+            field_name, translations, digest=digest, source_lang=source_lang
+        )
 
     product_category_public_ids = fields.Many2many(
         comodel_name="product.category.public",
@@ -604,6 +787,7 @@ class ProductTemplate(models.Model):
         no_variant_vals = []
         variant_vals = []
         for vals in vals_list:
+            self._sanitize_magento_vals(vals)
             if vals.get("auto_create_variants", True):
                 variant_vals.append(vals)
             else:
@@ -624,6 +808,7 @@ class ProductTemplate(models.Model):
 
     def write(self, vals):
         res = False
+        self._sanitize_magento_vals(vals)
         for tpl in self:
             if vals.get("auto_create_variants", tpl.auto_create_variants):
                 # do auto create variants
@@ -674,11 +859,12 @@ class ProductTemplateAdapter(Component):
         return res
 
     def write(self, id, data, storeview=None, **kwargs):
-        """Update records on the external system"""
+        """Update records on the external system, in the admin store unless a
+        store view is given (translations)."""
         id = data["sku"]
         return super()._call(
             "products/%s" % id,
             {"product": data},
             http_method="put",
-            storeview=storeview,
+            storeview=storeview or ADMIN_STORE,
         )

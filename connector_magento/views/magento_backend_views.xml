@@ -6,62 +6,72 @@
         <field name="arch" type="xml">
             <form string="Magento Backend">
                 <header>
-                <button
-                    name="synchronize_metadata"
-                    type="object"
-                    class="oe_highlight"
-                    string="Synchronize Metadata"
-                />
-            </header>
+                    <button
+                        name="synchronize_metadata"
+                        type="object"
+                        class="oe_highlight"
+                        string="Synchronize Metadata"
+                    />
+                </header>
                 <sheet>
-                <label for="name" class="oe_edit_only" />
-                <h1>
-                    <field name="name" class="oe_inline" />
-                </h1>
-                <!--                    <group name="magento" string="Magento Configuration">-->
-                <notebook>
-                    <page string="API" name="api">
-                        <group colspan="4" col="4">
-                            <field name="version" colspan="2" />
-                            <field
-                                name="location"
-                                placeholder="e.g. http://my.magento.com"
-                                colspan="2"
-                            />
-                            <field name="use_custom_api_path" colspan="2" />
-                            <field name="verify_ssl" colspan="2" />
-                            <field name="log_sync_to_chatter" colspan="2" />
-                            <field name="rename_duplicate_values" colspan="2" />
-                            <field name="search_page_size" colspan="2" />
-                            <field name="token" password="1" colspan="2" required="1" />
-                        </group>
-                    </page>
-                    <page string="HTTP Authentication" name="auth" colspan="4" col="4">
-                        <group col="4">
-                            <field name="use_auth_basic" colspan="4" />
-                            <field
-                                name="auth_basic_username"
-                                colspan="2"
-                                invisible="not use_auth_basic"
-                                required="use_auth_basic"
-                            />
-                            <field
-                                name="auth_basic_password"
-                                colspan="2"
-                                password="1"
-                                invisible="not use_auth_basic"
-                                required="use_auth_basic"
-                            />
-                        </group>
-                    </page>
-                </notebook>
-                <!--                    </group>-->
-                <group name="main_configuration" string="Main Configuration">
-                    <field name="warehouse_id" />
-                </group>
-                <notebook>
-                    <page name="import" string="Imports">
-                        <p class="text-muted">
+                    <label for="name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" class="oe_inline" />
+                    </h1>
+                    <!--                    <group name="magento" string="Magento Configuration">-->
+                    <notebook>
+                        <page string="API" name="api">
+                            <group colspan="4" col="4">
+                                <field name="version" colspan="2" />
+                                <field
+                                    name="location"
+                                    placeholder="e.g. http://my.magento.com"
+                                    colspan="2"
+                                />
+                                <field name="use_custom_api_path" colspan="2" />
+                                <field name="verify_ssl" colspan="2" />
+                                <field name="log_sync_to_chatter" colspan="2" />
+                                <field name="rename_duplicate_values" colspan="2" />
+                                <field name="search_page_size" colspan="2" />
+                                <field
+                                    name="token"
+                                    password="1"
+                                    colspan="2"
+                                    required="1"
+                                />
+                            </group>
+                        </page>
+                        <page
+                            string="HTTP Authentication"
+                            name="auth"
+                            colspan="4"
+                            col="4"
+                        >
+                            <group col="4">
+                                <field name="use_auth_basic" colspan="4" />
+                                <field
+                                    name="auth_basic_username"
+                                    colspan="2"
+                                    invisible="not use_auth_basic"
+                                    required="use_auth_basic"
+                                />
+                                <field
+                                    name="auth_basic_password"
+                                    colspan="2"
+                                    password="1"
+                                    invisible="not use_auth_basic"
+                                    required="use_auth_basic"
+                                />
+                            </group>
+                        </page>
+                    </notebook>
+                    <!--                    </group>-->
+                    <group name="main_configuration" string="Main Configuration">
+                        <field name="warehouse_id" />
+                    </group>
+                    <notebook>
+                        <page name="import" string="Imports">
+                            <p class="text-muted">
                                 By clicking on the buttons,
                                 you will initiate the synchronizations
                                 with Magento.
@@ -70,196 +80,194 @@
                                 they will create 'Jobs'
                                 executed as soon as possible.
                             </p>
-                        <group name="imports">
-                            <group name="import_setup" string="Store Setup">
-                                <label
-                                    for="import_customer_groups"
-                                    string="Customer groups"
-                                    class="o_form_label"
-                                />
-                                <div>
-                                    <button
-                                        name="import_customer_groups"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
+                            <group name="imports">
+                                <group name="import_setup" string="Store Setup">
+                                    <label
+                                        for="import_customer_groups"
+                                        string="Customer groups"
+                                        class="o_form_label"
                                     />
-                                </div>
-                                <label
-                                    for="import_tax_classes"
-                                    string="Tax classes"
-                                    class="o_form_label"
-                                />
-                                <div>
-                                    <button
-                                        name="import_tax_classes"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
+                                    <div>
+                                        <button
+                                            name="import_customer_groups"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="import_tax_classes"
+                                        string="Tax classes"
+                                        class="o_form_label"
                                     />
-                                </div>
-                                <label
-                                    for="import_attribute_sets"
-                                    string="Attribute sets"
-                                    class="o_form_label"
-                                />
-                                <div>
-                                    <button
-                                        name="import_attribute_sets"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
+                                    <div>
+                                        <button
+                                            name="import_tax_classes"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="import_attribute_sets"
+                                        string="Attribute sets"
+                                        class="o_form_label"
                                     />
-                                </div>
-                                <label
-                                    for="import_partners"
-                                    string="Customers of all websites"
-                                    class="o_form_label"
-                                />
-                                <div>
-                                    <button
-                                        name="import_partners"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
+                                    <div>
+                                        <button
+                                            name="import_attribute_sets"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="import_partners"
+                                        string="Customers of all websites"
+                                        class="o_form_label"
                                     />
-                                </div>
+                                    <div>
+                                        <button
+                                            name="import_partners"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                </group>
+                                <group name="import_catalog" string="Catalog and Sales">
+                                    <label
+                                        for="import_categories_from_date"
+                                        string="Product categories since"
+                                    />
+                                    <div class="o_row">
+                                        <field name="import_categories_from_date" />
+                                        <button
+                                            name="import_product_categories"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="import_products_from_date"
+                                        string="Simple products since"
+                                    />
+                                    <div class="o_row">
+                                        <field name="import_products_from_date" />
+                                        <button
+                                            name="import_product_product"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="import_configurables_from_date"
+                                        string="Configurable products since"
+                                    />
+                                    <div class="o_row">
+                                        <field name="import_configurables_from_date" />
+                                        <button
+                                            name="import_product_template"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="import_sale_orders"
+                                        string="Sale orders of all store views"
+                                        class="o_form_label"
+                                    />
+                                    <div>
+                                        <button
+                                            name="import_sale_orders"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-download"
+                                            string="Import in background"
+                                        />
+                                    </div>
+                                    <label
+                                        for="update_product_stock_qty"
+                                        string="Stock quantities of all products"
+                                        class="o_form_label"
+                                    />
+                                    <div>
+                                        <button
+                                            name="update_product_stock_qty"
+                                            type="object"
+                                            class="btn-secondary"
+                                            icon="fa-refresh"
+                                            string="Update"
+                                        />
+                                    </div>
+                                </group>
                             </group>
-                            <group name="import_catalog" string="Catalog and Sales">
-                                <label
-                                    for="import_categories_from_date"
-                                    string="Product categories since"
-                                />
-                                <div class="o_row">
-                                    <field name="import_categories_from_date" />
-                                    <button
-                                        name="import_product_categories"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
-                                    />
-                                </div>
-                                <label
-                                    for="import_products_from_date"
-                                    string="Simple products since"
-                                    invisible="product_import_strategy == 'never'"
-                                />
-                                <div
-                                    class="o_row"
-                                    invisible="product_import_strategy == 'never'"
-                                >
-                                    <field name="import_products_from_date" />
-                                    <button
-                                        name="import_product_product"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
-                                    />
-                                </div>
-                                <label
-                                    for="import_configurables_from_date"
-                                    string="Configurable products since"
-                                    invisible="product_import_strategy == 'never'"
-                                />
-                                <div
-                                    class="o_row"
-                                    invisible="product_import_strategy == 'never'"
-                                >
-                                    <field name="import_configurables_from_date" />
-                                    <button
-                                        name="import_product_template"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
-                                    />
-                                </div>
-                                <label
-                                    for="import_sale_orders"
-                                    string="Sale orders of all store views"
-                                    class="o_form_label"
-                                />
-                                <div>
-                                    <button
-                                        name="import_sale_orders"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-download"
-                                        string="Import in background"
-                                    />
-                                </div>
-                                <label
-                                    for="update_product_stock_qty"
-                                    string="Stock quantities of all products"
-                                    class="o_form_label"
-                                />
-                                <div>
-                                    <button
-                                        name="update_product_stock_qty"
-                                        type="object"
-                                        class="btn-secondary"
-                                        icon="fa-refresh"
-                                        string="Update"
-                                    />
-                                </div>
-                            </group>
-                        </group>
-                    </page>
+                        </page>
 
-                    <page name="advanced_configuration" string="Advanced Configuration">
-                        <group name="advanced">
-                            <group name="catalog" string="Catalog">
-                                <field
-                                    name="admin_location"
-                                    placeholder="e.g. http://my.magento.com/admin"
-                                />
-                                <field name="default_lang_id" widget="selection" />
-                                <field name="default_category_id" />
-                                <field name="default_attribute_set_id" />
-                                <field
-                                    name="default_attribute_group_id"
-                                    help="Default attribute group ID for new attributes in Magento. Used when no other group is given."
-                                />
+                        <page
+                            name="advanced_configuration"
+                            string="Advanced Configuration"
+                        >
+                            <group name="advanced">
+                                <group name="catalog" string="Catalog">
+                                    <field
+                                        name="admin_location"
+                                        placeholder="e.g. http://my.magento.com/admin"
+                                    />
+                                    <field name="default_lang_id" widget="selection" />
+                                    <field name="default_category_id" />
+                                    <field name="default_attribute_set_id" />
+                                    <field
+                                        name="default_attribute_group_id"
+                                        help="Default attribute group ID for new attributes in Magento. Used when no other group is given."
+                                    />
+                                </group>
+                                <group
+                                    name="product_sync"
+                                    string="Product Synchronization"
+                                >
+                                    <field name="product_import_strategy" />
+                                    <field name="product_export_strategy" />
+                                    <field name="product_synchro_strategy" />
+                                </group>
+                                <group name="sales" string="Sales">
+                                    <field name="sale_prefix" placeholder="mag-" />
+                                    <field name="pricelist_id" />
+                                    <field name="special_price_pricelist_id" />
+                                    <field name="fiscal_position_id" />
+                                    <field
+                                        name="account_analytic_id"
+                                        groups="analytic.group_analytic_accounting"
+                                    />
+                                    <field name="is_multi_company" />
+                                </group>
+                                <group name="stock" string="Stock">
+                                    <field
+                                        name="product_stock_field_id"
+                                        widget="selection"
+                                        domain="[('model', 'in', ['product.product', 'product.template']), ('ttype', '=', 'float')]"
+                                    />
+                                    <field name="no_stock_sync" />
+                                </group>
                             </group>
-                            <group name="product_sync" string="Product Synchronization">
-                                <field name="product_import_strategy" />
-                                <field name="product_export_strategy" />
-                                <field name="product_synchro_strategy" />
+                        </page>
+                        <page name="website" string="Websites">
+                            <group string="Websites" col="6">
+                                <field name="website_ids" nolabel="1" colspan="5" />
                             </group>
-                            <group name="sales" string="Sales">
-                                <field name="sale_prefix" placeholder="mag-" />
-                                <field name="pricelist_id" />
-                                <field name="special_price_pricelist_id" />
-                                <field name="fiscal_position_id" />
-                                <field
-                                    name="account_analytic_id"
-                                    groups="analytic.group_analytic_accounting"
-                                />
-                                <field name="is_multi_company" />
-                            </group>
-                            <group name="stock" string="Stock">
-                                <field
-                                    name="product_stock_field_id"
-                                    widget="selection"
-                                    domain="[('model', 'in', ['product.product', 'product.template']), ('ttype', '=', 'float')]"
-                                />
-                                <field name="no_stock_sync" />
-                            </group>
-                        </group>
-                    </page>
-                    <page name="website" string="Websites">
-                        <group string="Websites" col="6">
-                            <field name="website_ids" nolabel="1" colspan="5" />
-                        </group>
-                    </page>
-                </notebook>
-            </sheet>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>

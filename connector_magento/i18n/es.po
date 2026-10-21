@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-01 10:40+0000\n"
+"POT-Creation-Date: 2026-10-21 05:04+0000\n"
 "PO-Revision-Date: 2026-10-01 10:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -563,6 +564,13 @@ msgid "Admin Location"
 msgstr "Ubicación de administración"
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_attribute_value__magento_labels_signature
+msgid "Admin label and store view labels last sent to Magento."
+msgstr ""
+"Etiqueta de administración y etiquetas de vista de tienda enviadas a Magento"
+" por última vez."
+
+#. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Advanced Configuration"
 msgstr "Configuración avanzada"
@@ -766,6 +774,25 @@ msgid "Attribute set"
 msgstr "Conjunto de atributos"
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_attribute_set_id
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_attribute_set_id
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_attribute_set_id
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_attribute_set_id
+msgid ""
+"Attribute set of the product in Magento, e.g. one for jackets and another "
+"one for trousers. Held by the Magento binding of the product; editable once "
+"the product is linked to Magento."
+msgstr ""
+"Conjunto de atributos del producto en Magento, p. ej. uno para chaquetas y "
+"otro para pantalones. Lo guarda el vínculo de Magento del producto; editable"
+" cuando el producto está vinculado a Magento."
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Attribute sets"
+msgstr "Conjuntos de atributos"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute_set__attribute_ids
 msgid "Attribute(s)"
 msgstr "Atributo(s)"
@@ -842,6 +869,8 @@ msgid "Auto-post until"
 msgstr "Contabilizar automáticamente hasta"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_address__workflow_process_id
+#: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__workflow_process_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__workflow_process_id
 msgid "Automatic Workflow"
 msgstr "Flujo de trabajo automático"
@@ -1094,7 +1123,6 @@ msgstr "Lista de materiales"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__birthday
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__birthday
 #: model:ir.model.fields,field_description:connector_magento.field_res_partner__birthday
-#: model:ir.model.fields,field_description:connector_magento.field_res_users__birthday
 msgid "Birthday"
 msgstr "Cumpleaños"
 
@@ -1331,6 +1359,11 @@ msgstr "Método de redondeo de efectivo"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
 msgid "Catalog"
 msgstr "Catálogo"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Catalog and Sales"
+msgstr "Catálogo y ventas"
 
 #. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_product__magento_visibility__4
@@ -1629,6 +1662,11 @@ msgid "Configurable Product"
 msgstr "Producto configurable"
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Configurable products since"
+msgstr "Productos configurables desde"
+
+#. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.wizard_add_backend_view_form
 msgid "Configure Magento backend binding for selected products"
 msgstr ""
@@ -1731,6 +1769,12 @@ msgstr "Crear vinculación"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__use_create_lots
 msgid "Create New Lots/Serial Numbers"
 msgstr "Crear nuevos lotes/números de serie"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__always
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__always
+msgid "Create and Update"
+msgstr "Crear y actualizar"
 
 #. module: connector_magento
 #. odoo-python
@@ -1865,7 +1909,6 @@ msgstr "Límite de crédito específico de este contacto."
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__currency_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__currency_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__currency_id
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__currency_id
 msgid "Currency"
 msgstr "Moneda"
 
@@ -1908,6 +1951,8 @@ msgid "Custom Values"
 msgstr "Valores personalizados"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__customer_ids
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__customer_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__partner_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__order_partner_id
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_account_tax__class_type__customer
@@ -1965,6 +2010,16 @@ msgstr "Ref. del cliente"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__client_order_ref
 msgid "Customer Reference"
 msgstr "Referencia del cliente"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Customer groups"
+msgstr "Grupos de clientes"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Customers of all websites"
+msgstr "Clientes de todas las webs"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__date
@@ -2201,7 +2256,6 @@ msgstr "Dirección de entrega"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__delivery_date
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__commitment_date
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__date_delivered
 msgid "Delivery Date"
 msgstr "Fecha de entrega"
 
@@ -2461,6 +2515,16 @@ msgstr "Distribución cuando el impuesto se usa en una factura"
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_product__manage_stock__no
 msgid "Do Not Manage Stock"
 msgstr "No gestionar stock"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__never
+msgid "Do not Export"
+msgstr "No exportar"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__never
+msgid "Do not Import"
+msgstr "No importar"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_document_ids
@@ -2799,6 +2863,21 @@ msgid "Favorite"
 msgstr "Favorito"
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_attribute__field_id
+msgid ""
+"Field of Odoo this attribute is synchronized with: the export sends its "
+"value and the import writes it. Empty: the attribute is left alone in both "
+"ways. The attributes of fixed code (description, url_key, meta_title...) get"
+" their field when they are imported; clearing it here switches them off, and"
+" a re-import does not put it back."
+msgstr ""
+"Campo de Odoo con el que se sincroniza este atributo: la exportación envía "
+"su valor y la importación lo escribe. Vacío: el atributo no se toca en "
+"ningún sentido. Los atributos de código fijo (description, url_key, "
+"meta_title...) reciben su campo al importarse; vaciarlo aquí los desactiva, "
+"y una reimportación no lo vuelve a poner."
+
+#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_address__phone_sanitized
 #: model:ir.model.fields,help:connector_magento.field_magento_res_partner__phone_sanitized
 msgid ""
@@ -2817,6 +2896,16 @@ msgstr "Archivo"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_binding_backend_read__name
 msgid "File Name"
 msgstr "Nombre del archivo"
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_images_signature
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_images_signature
+msgid ""
+"File names of the images in Magento at the last export, to know when the "
+"gallery has to be sent again."
+msgstr ""
+"Nombres de fichero de las imágenes en Magento en la última exportación, para"
+" saber cuándo hay que volver a enviar la galería."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_sale_order__carrier_id
@@ -3795,6 +3884,11 @@ msgid "Import categories from date"
 msgstr "Importar categorías desde la fecha"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_configurables_from_date
+msgid "Import configurable products from date"
+msgstr "Importar productos configurables desde la fecha"
+
+#. module: connector_magento
 #. odoo-python
 #: code:addons/connector_magento/models/magento_binding/common.py:0
 #: code:addons/connector_magento/models/product_template/common.py:0
@@ -3829,6 +3923,11 @@ msgstr "Importar contactos desde"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_storeview__import_orders_from_date
 msgid "Import sale orders from date"
 msgstr "Importar pedidos de venta desde la fecha"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_products_from_date
+msgid "Import simple products from date"
+msgstr "Importar productos simples desde la fecha"
 
 #. module: connector_magento
 #. odoo-python
@@ -4129,6 +4228,7 @@ msgstr "Cantidad facturada (contabilizada)"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__invoice_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__invoice_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__invoice_ids
+#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__invoice_ids
 msgid "Invoices"
 msgstr "Facturas"
 
@@ -4533,6 +4633,20 @@ msgid "Ledger"
 msgstr "Libro mayor"
 
 #. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
+msgid "Left out by the Product Export strategy of the backend."
+msgstr "Excluido por la estrategia de exportación de productos del backend."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
+msgid "Left out by the Product Import strategy of the backend."
+msgstr "Excluido por la estrategia de importación de productos del backend."
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_tax__invoice_legal_notes
 msgid "Legal Notes"
 msgstr "Notas legales"
@@ -4611,13 +4725,13 @@ msgstr "Hueco de secuencia creado"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_binding_backend_read__magento_id
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__magento_first
 #: model:ir.ui.menu,name:connector_magento.menu_magento_root
 #: model_terms:ir.ui.view,arch_db:connector_magento.account_payment_mode_form_inherit
 #: model_terms:ir.ui.view,arch_db:connector_magento.product_template_form_view
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_delivery_carrier_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_res_partner_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_partner_category_form
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__magento_first
 msgid "Magento"
 msgstr "Magento"
 
@@ -4681,6 +4795,14 @@ msgstr "Código de atributo del atributo de Magento"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__attribute_id
 msgid "Magento Attribute ID"
 msgstr "ID de atributo de Magento"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_attribute_set_id
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_attribute_set_id
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_attribute_set_id
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_attribute_set_id
+msgid "Magento Attribute Set"
+msgstr "Conjunto de atributos de Magento"
 
 #. module: connector_magento
 #: model:ir.actions.act_window,name:connector_magento.action_magento_attribute_set
@@ -4851,6 +4973,12 @@ msgid "Magento ID"
 msgstr "ID de Magento"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_images_signature
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_images_signature
+msgid "Magento Images Signature"
+msgstr "Firma de las imágenes de Magento"
+
+#. module: connector_magento
 #. odoo-python
 #: code:addons/connector_magento/components/importer.py:0
 msgid "Magento Import"
@@ -4879,6 +5007,11 @@ msgstr "Factura de Magento"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute_value__label
 msgid "Magento Label"
 msgstr "Etiqueta de Magento"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute_value__magento_labels_signature
+msgid "Magento Labels Signature"
+msgstr "Firma de las etiquetas de Magento"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__magento_order_id
@@ -5018,6 +5151,14 @@ msgid "Magento Sales Orders"
 msgstr "Pedidos de venta de Magento"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_short_description
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_short_description
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_short_description
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_short_description
+msgid "Magento Short Description"
+msgstr "Descripción corta de Magento"
+
+#. module: connector_magento
 #: model:ir.model,name:connector_magento.model_magento_store
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_store_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_store_tree
@@ -5147,6 +5288,24 @@ msgstr "Valor de atributo de producto de Magento"
 #: code:addons/connector_magento/models/sale_order/exporter.py:0
 msgid "Magento sales order is already in state %s"
 msgstr "El pedido de venta de Magento ya está en estado %s"
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_news_from_date
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_news_from_date
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_news_from_date
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_news_from_date
+msgid "Magento shows the product as new from this date (news_from_date)."
+msgstr ""
+"Magento muestra el producto como novedad desde esta fecha (news_from_date)."
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_news_to_date
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_news_to_date
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_news_to_date
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_news_to_date
+msgid "Magento shows the product as new until this date (news_to_date)."
+msgstr ""
+"Magento muestra el producto como novedad hasta esta fecha (news_to_date)."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__message_main_attachment_id
@@ -5436,6 +5595,22 @@ msgstr "Términos necesarios"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__needed_terms_dirty
 msgid "Needed Terms Dirty"
 msgstr "Términos necesarios sucios"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_news_from_date
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_news_from_date
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_news_from_date
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_news_from_date
+msgid "New From"
+msgstr "Novedad desde"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_news_to_date
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_news_to_date
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_news_to_date
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_news_to_date
+msgid "New To"
+msgstr "Novedad hasta"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_res_partner__newsletter
@@ -5756,6 +5931,18 @@ msgid "Online signature"
 msgstr "Firma en línea"
 
 #. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__update
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__update
+msgid "Only Existing Products"
+msgstr "Solo productos existentes"
+
+#. module: connector_magento
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__create
+#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__create
+msgid "Only New Products"
+msgstr "Solo productos nuevos"
+
+#. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__connector_magento_add_backend_wizard__action__only_create
 msgid "Only create binding"
 msgstr "Solo crear vinculación"
@@ -5812,7 +5999,6 @@ msgstr ""
 "software, etc.)."
 
 #. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__option_ids
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_store_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_storeview_form
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_website_form
@@ -6375,6 +6561,55 @@ msgid "Product Count"
 msgstr "Número de productos"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_synchro_strategy
+msgid "Product Data Master"
+msgstr "Sistema maestro de productos"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_export_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_export_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_export_strategy
+msgid "Product Export"
+msgstr "Exportación de productos"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid ""
+"Product Export is set to 'Only Existing Products' on the Magento backend: no"
+" new product is created in Magento."
+msgstr ""
+"La exportación de productos del backend de Magento está en «Solo productos "
+"existentes»: no se crea ningún producto nuevo en Magento."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid ""
+"Product Export is set to 'Only New Products' on the Magento backend: the "
+"products already in Magento are not updated."
+msgstr ""
+"La exportación de productos del backend de Magento está en «Solo productos "
+"nuevos»: los productos que ya están en Magento no se actualizan."
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_import_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_import_strategy
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_import_strategy
+msgid "Product Import"
+msgstr "Importación de productos"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid ""
+"Product Import is set to 'Only New Products' on the Magento backend: the "
+"products already in Odoo are not updated from Magento."
+msgstr ""
+"La importación de productos del backend de Magento está en «Solo productos "
+"nuevos»: los productos que ya están en Odoo no se actualizan desde Magento."
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__packaging_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__packaging_ids
 msgid "Product Packages"
@@ -6394,6 +6629,11 @@ msgstr "Cantidad de producto"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_tax__product_tax_ids
 msgid "Product Sale Tax Ids"
 msgstr "IDs de impuestos de venta del producto"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Product Synchronization"
+msgstr "Sincronización de productos"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_tmpl_id
@@ -6455,6 +6695,11 @@ msgstr "Línea de atributo de producto"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute_value__odoo_id
 msgid "Product attribute value"
 msgstr "Valor de atributo de producto"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Product categories since"
+msgstr "Categorías de producto desde"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__production_ids
@@ -7119,7 +7364,9 @@ msgstr "Título SEO de este producto. Normalmente importado desde Magento."
 #: model:ir.model.fields,help:connector_magento.field_magento_product_template__url_key
 #: model:ir.model.fields,help:connector_magento.field_product_product__url_key
 #: model:ir.model.fields,help:connector_magento.field_product_template__url_key
-msgid "SEO-friendly URL key for this product. Usually imported from Magento."
+msgid ""
+"SEO-friendly URL key of the product page in Magento, in the language being "
+"edited. Held by the Magento binding of the product."
 msgstr ""
 "Clave de URL amigable para SEO de este producto. Normalmente importada desde"
 " Magento."
@@ -7169,6 +7416,11 @@ msgstr "Proceso de flujo de trabajo de venta"
 #: code:addons/connector_magento/models/sale_order/exporter.py:0
 msgid "Sale is not linked with a Magento sales order"
 msgstr "La venta no está vinculada a un pedido de venta de Magento"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Sale orders of all store views"
+msgstr "Pedidos de venta de todas las vistas de tienda"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__sale_ok
@@ -7508,6 +7760,18 @@ msgid "Shipping Weight"
 msgstr "Peso de envío"
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_short_description
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_short_description
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_short_description
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_short_description
+msgid ""
+"Short description of the product page in Magento (short_description). The "
+"description of the page is the description of the product."
+msgstr ""
+"Descripción corta de la página del producto en Magento (short_description). "
+"La descripción de la página es la descripción del producto."
+
+#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_account_payment_mode__create_invoice_on
 msgid ""
 "Should the invoice be created in Magento when it is validated or when it is paid in Odoo?\n"
@@ -7622,6 +7886,11 @@ msgstr "Tipo de token de registro"
 #: model:ir.model.fields.selection,name:connector_magento.selection__connector_magento_add_backend_wizard__product_type__simple
 msgid "Simple Product"
 msgstr "Producto simple"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Simple products since"
+msgstr "Productos simples desde"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__aeat_simplified_invoice
@@ -7796,6 +8065,11 @@ msgstr ""
 " fecha de la actividad es hoy. Planificada: actividades futuras."
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Stock"
+msgstr "Stock"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_stock_field_id
 msgid "Stock Field"
 msgstr "Campo de stock"
@@ -7836,6 +8110,11 @@ msgid "Stock move"
 msgstr "Movimiento de stock"
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Stock quantities of all products"
+msgstr "Cantidades de stock de todos los productos"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__storage_category_capacity_ids
 msgid "Storage Category Capacity"
 msgstr "Capacidad de la categoría de almacenamiento"
@@ -7844,6 +8123,11 @@ msgstr "Capacidad de la categoría de almacenamiento"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_storeview__store_id
 msgid "Store"
 msgstr "Tienda"
+
+#. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Store Setup"
+msgstr "Configuración de la tienda"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_website__store_ids
@@ -8078,6 +8362,11 @@ msgid "Tax calculation rounding method"
 msgstr "Método de redondeo del cálculo de impuestos"
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
+msgid "Tax classes"
+msgstr "Clases de impuestos"
+
+#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_product_product__tax_group_id
 #: model:ir.model.fields,help:connector_magento.field_magento_product_template__tax_group_id
 msgid "Tax groups are used with some external system like Prestashop"
@@ -8093,7 +8382,6 @@ msgstr "Impuesto utilizado"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_tax
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__tax_id
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__amount_tax
 msgid "Taxes"
 msgstr "Impuestos"
 
@@ -8210,6 +8498,26 @@ msgid ""
 msgstr ""
 "Las órdenes de fabricación en las que se basó este asiento de trabajo en "
 "curso. Se espera que se establezcan al crear el asiento."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_backend/common.py:0
+msgid ""
+"The Magento backend %s does not export products (Product Export: Do not "
+"Export)."
+msgstr ""
+"El backend de Magento %s no exporta productos (Exportación de productos: No "
+"exportar)."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_backend/common.py:0
+msgid ""
+"The Magento backend %s does not import products (Product Import: Do not "
+"Import)."
+msgstr ""
+"El backend de Magento %s no importa productos (Importación de productos: No "
+"importar)."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_address__vat
@@ -8708,7 +9016,6 @@ msgstr "Token"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_total
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_total
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__price_total
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__amount_total
 msgid "Total"
 msgstr "Total"
 
@@ -8929,6 +9236,19 @@ msgid "URL Key"
 msgstr "Clave de URL"
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__variant_url_key
+#: model:ir.model.fields,help:connector_magento.field_product_product__variant_url_key
+msgid ""
+"URL key this variant gets as a simple product of a configurable one when it "
+"has none of its own: the URL key of the product followed by the values that "
+"make the variant, e.g. -xl, in the language being edited."
+msgstr ""
+"Clave de URL que recibe esta variante como producto simple de uno "
+"configurable cuando no tiene una propia: la clave de URL del producto "
+"seguida de los valores que forman la variante, p. ej. -xl, en el idioma que "
+"se edita."
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_to_invoice
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__amount_to_invoice
 msgid "Un-invoiced Balance"
@@ -8967,7 +9287,6 @@ msgstr "No publicado"
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__amount_untaxed
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order__amount_untaxed
-#: model:ir.model.fields,field_description:connector_magento.field_magento_stock_picking__amount_untaxed
 msgid "Untaxed Amount"
 msgstr "Importe sin impuestos"
 
@@ -9240,6 +9559,12 @@ msgid "Variant Tags"
 msgstr "Etiquetas de la variante"
 
 #. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__variant_url_key
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__variant_url_key
+msgid "Variant URL Key"
+msgstr "Clave de URL de la variante"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_template_variant_value_ids
 msgid "Variant Values"
 msgstr "Valores de la variante"
@@ -9480,6 +9805,39 @@ msgstr ""
 "Al validar la transferencia, los productos se asignarán a este propietario."
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_export_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_export_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_export_strategy
+msgid ""
+"Which products are exported to Magento. Create and Update: all of them. Do not Export: none; the export and delete buttons and actions are hidden. Only New Products: those not yet in Magento; the ones already there are not updated. Only Existing Products: those already in Magento; no new product is created there.\n"
+"The variants of an exported configurable product always go with it."
+msgstr ""
+"Qué productos se exportan a Magento. Crear y actualizar: todos. No exportar: ninguno; los botones y acciones de exportación y borrado se ocultan. Solo productos nuevos: los que aún no están en Magento; los que ya están no se actualizan. Solo productos existentes: los que ya están en Magento; no se crea ningún producto nuevo allí.\n"
+"Las variantes de un producto configurable exportado van siempre con él."
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_import_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_import_strategy
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_import_strategy
+msgid ""
+"Which products are imported from Magento. Create and Update: all of them. Do not Import: none; the import buttons and actions are hidden and the scheduled product import skips this backend. Only New Products: those not yet in Odoo; the ones already linked are not updated. Only Existing Products: those already linked; the new ones in Magento are not created in Odoo.\n"
+"The products a sale order needs are always imported."
+msgstr ""
+"Qué productos se importan desde Magento. Crear y actualizar: todos. No importar: ninguno; los botones y acciones de importación se ocultan y la importación programada de productos se salta este backend. Solo productos nuevos: los que aún no están en Odoo; los ya vinculados no se actualizan. Solo productos existentes: los ya vinculados; los nuevos de Magento no se crean en Odoo.\n"
+"Los productos que necesita un pedido de venta se importan siempre."
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_synchro_strategy
+msgid ""
+"Which system wins after a product is exported. Odoo: the product keeps its "
+"Odoo data. Magento: the product is read back from Magento and its data "
+"replaces the Odoo one."
+msgstr ""
+"Qué sistema prevalece después de exportar un producto. Odoo: el producto "
+"conserva sus datos de Odoo. Magento: el producto se vuelve a leer de Magento"
+" y sus datos sustituyen a los de Odoo."
+
+#. module: connector_magento
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_product_attribute__frontend_input__boolean
 msgid "Yes/No"
 msgstr "Sí/No"
@@ -9574,207 +9932,7 @@ msgstr "o"
 msgid "warehouse"
 msgstr "almacén"
 
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_products_from_date
-msgid "Import simple products from date"
-msgstr "Importar productos simples desde la fecha"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__import_configurables_from_date
-msgid "Import configurable products from date"
-msgstr "Importar productos configurables desde la fecha"
-
-#. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_backend/common.py:0
-msgid ""
-"The Magento backend %s does not import products (Product Import: Do not "
-"Import)."
-msgstr ""
-"El backend de Magento %s no importa productos (Importación de productos: No "
-"importar)."
-
-#. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_backend/common.py:0
-msgid ""
-"The Magento backend %s does not export products (Product Export: Do not "
-"Export)."
-msgstr ""
-"El backend de Magento %s no exporta productos (Exportación de productos: No "
-"exportar)."
-
-#. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_binding/common.py:0
-msgid ""
-"Product Import is set to 'Only New Products' on the Magento backend: the "
-"products already in Odoo are not updated from Magento."
-msgstr ""
-"La importación de productos del backend de Magento está en «Solo productos "
-"nuevos»: los productos que ya están en Odoo no se actualizan desde Magento."
-
-#. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_binding/common.py:0
-msgid ""
-"Product Export is set to 'Only New Products' on the Magento backend: the "
-"products already in Magento are not updated."
-msgstr ""
-"La exportación de productos del backend de Magento está en «Solo productos "
-"nuevos»: los productos que ya están en Magento no se actualizan."
-
-#. module: connector_magento
-#. odoo-python
-#: code:addons/connector_magento/models/magento_binding/common.py:0
-msgid ""
-"Product Export is set to 'Only Existing Products' on the Magento backend: no"
-" new product is created in Magento."
-msgstr ""
-"La exportación de productos del backend de Magento está en «Solo productos "
-"existentes»: no se crea ningún producto nuevo en Magento."
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Store Setup"
-msgstr "Configuración de la tienda"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Customer groups"
-msgstr "Grupos de clientes"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Tax classes"
-msgstr "Clases de impuestos"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Attribute sets"
-msgstr "Conjuntos de atributos"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Customers of all websites"
-msgstr "Clientes de todas las webs"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Catalog and Sales"
-msgstr "Catálogo y ventas"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Product categories since"
-msgstr "Categorías de producto desde"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Simple products since"
-msgstr "Productos simples desde"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Configurable products since"
-msgstr "Productos configurables desde"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Sale orders of all store views"
-msgstr "Pedidos de venta de todas las vistas de tienda"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Stock quantities of all products"
-msgstr "Cantidades de stock de todos los productos"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Product Synchronization"
-msgstr "Sincronización de productos"
-
-#. module: connector_magento
-#: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form
-msgid "Stock"
-msgstr "Stock"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_synchro_strategy
-msgid "Product Data Master"
-msgstr "Sistema maestro de productos"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_synchro_strategy
-msgid ""
-"Which system wins after a product is exported. Odoo: the product keeps its "
-"Odoo data. Magento: the product is read back from Magento and its data "
-"replaces the Odoo one."
-msgstr ""
-"Qué sistema prevalece después de exportar un producto. Odoo: el producto "
-"conserva sus datos de Odoo. Magento: el producto se vuelve a leer de Magento"
-" y sus datos sustituyen a los de Odoo."
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_import_strategy
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_import_strategy
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_import_strategy
-msgid "Product Import"
-msgstr "Importación de productos"
-
-#. module: connector_magento
-#: model:ir.model.fields,field_description:connector_magento.field_magento_backend__product_export_strategy
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_export_strategy
-#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__product_export_strategy
-msgid "Product Export"
-msgstr "Exportación de productos"
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_import_strategy
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_import_strategy
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_import_strategy
-msgid ""
-"Which products are imported from Magento. Create and Update: all of them. Do not Import: none; the import buttons and actions are hidden and the scheduled product import skips this backend. Only New Products: those not yet in Odoo; the ones already linked are not updated. Only Existing Products: those already linked; the new ones in Magento are not created in Odoo.\n"
-"The products a sale order needs are always imported."
-msgstr ""
-"Qué productos se importan desde Magento. Crear y actualizar: todos. No importar: ninguno; los botones y acciones de importación se ocultan y la importación programada de productos se salta este backend. Solo productos nuevos: los que aún no están en Odoo; los ya vinculados no se actualizan. Solo productos existentes: los ya vinculados; los nuevos de Magento no se crean en Odoo.\n"
-"Los productos que necesita un pedido de venta se importan siempre."
-
-#. module: connector_magento
-#: model:ir.model.fields,help:connector_magento.field_magento_backend__product_export_strategy
-#: model:ir.model.fields,help:connector_magento.field_magento_product_product__product_export_strategy
-#: model:ir.model.fields,help:connector_magento.field_magento_product_template__product_export_strategy
-msgid ""
-"Which products are exported to Magento. Create and Update: all of them. Do not Export: none; the export and delete buttons and actions are hidden. Only New Products: those not yet in Magento; the ones already there are not updated. Only Existing Products: those already in Magento; no new product is created there.\n"
-"The variants of an exported configurable product always go with it."
-msgstr ""
-"Qué productos se exportan a Magento. Crear y actualizar: todos. No exportar: ninguno; los botones y acciones de exportación y borrado se ocultan. Solo productos nuevos: los que aún no están en Magento; los que ya están no se actualizan. Solo productos existentes: los que ya están en Magento; no se crea ningún producto nuevo allí.\n"
-"Las variantes de un producto configurable exportado van siempre con él."
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__always
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__always
-msgid "Create and Update"
-msgstr "Crear y actualizar"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__never
-msgid "Do not Import"
-msgstr "No importar"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__never
-msgid "Do not Export"
-msgstr "No exportar"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__create
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__create
-msgid "Only New Products"
-msgstr "Solo productos nuevos"
-
-#. module: connector_magento
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_import_strategy__update
-#: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_export_strategy__update
-msgid "Only Existing Products"
-msgstr "Solo productos existentes"
+#~ msgid "SEO-friendly URL key for this product. Usually imported from Magento."
+#~ msgstr ""
+#~ "Clave de URL amigable para SEO de este producto. Normalmente importada desde"
+#~ " Magento."

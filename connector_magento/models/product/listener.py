@@ -14,6 +14,14 @@ def _get_sku(binding):
     )
 
 
+def _export_allowed(binding):
+    """Whether the Product Export strategy of the backend lets ``binding`` go
+    to Magento by itself (Do not Export, Only New / Only Existing Products)."""
+    return binding.backend_id._product_strategy_allows(
+        "export", binding._exists_in_magento()
+    )
+
+
 class MagentoProductProductBindingExportListener(Component):
     _name = "magento.product.product.binding.export.listener"
     _inherit = "base.connector.listener"
@@ -22,6 +30,8 @@ class MagentoProductProductBindingExportListener(Component):
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_create(self, record, fields=None):
         if record.backend_id.product_synchro_strategy == "odoo_first":
+            return
+        if not _export_allowed(record):
             return
         record.with_delay(
             identity_key=identity_exact,
@@ -32,6 +42,8 @@ class MagentoProductProductBindingExportListener(Component):
     def on_record_write(self, record, fields=None):
         if record.backend_id.product_synchro_strategy == "odoo_first":
             return
+        if not _export_allowed(record):
+            return
         record.with_delay(
             identity_key=identity_exact,
             description=_("Export product %s to Magento") % _get_sku(record),
@@ -39,6 +51,8 @@ class MagentoProductProductBindingExportListener(Component):
 
     def on_record_unlink(self, record):
         if record.backend_id.product_synchro_strategy == "odoo_first":
+            return
+        if record.backend_id._product_strategy("export") == "never":
             return
         with record.backend_id.work_on(record._name) as work:
             external_id = work.component(usage="binder").to_external(record)
@@ -60,7 +74,7 @@ class MagentoProductProductExportListener(Component):
         for binding in record.magento_bind_ids:
             if binding.backend_id.product_synchro_strategy == "magento_first":
                 continue
-            if binding.backend_id.product_export_strategy in ("never", "create"):
+            if not _export_allowed(binding):
                 continue
             binding.with_delay(
                 identity_key=identity_exact,

@@ -4,7 +4,7 @@
 
 {
     "name": "Magento Connector",
-    "version": "18.0.1.4.0",
+    "version": "18.0.1.5.0",
     "category": "Connector",
     "depends": [
         "account",
@@ -17,6 +17,7 @@
         "product_variant_default_code",
         "product_variant_sale_price",
     ],
+    "external_dependencies": {"python": ["python-slugify"]},
     "author": "Camptocamp,Akretion,Sodexis,TRIVAX INNOVA SL,Wolfgang Pichler,Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "website": "https://github.com/OCA/connector-magento",

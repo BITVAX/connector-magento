@@ -5,6 +5,8 @@
 import logging
 from collections import defaultdict
 
+from slugify import slugify
+
 from odoo import _, api, fields, models
 
 # # from odoo.addons.queue_job.job import job3, related_action
@@ -97,7 +99,17 @@ class MagentoProductProduct(models.Model):
         help="Check this to exclude the product from stock synchronizations.",
     )
 
-    magento_url_key = fields.Char(string="URL Key", store=True, readonly=False)
+    # The URL key is the address of the product page, per store view in
+    # Magento: per backend and per language here. A variant of a configurable
+    # product takes the one of its configurable plus its own values when it
+    # has none (see the exporter).
+    magento_url_key = fields.Char(string="URL Key", translate=True, copy=False)
+    magento_images_signature = fields.Char(
+        copy=False,
+        readonly=True,
+        help="File names of the images in Magento at the last export, to know "
+        "when the gallery has to be sent again.",
+    )
     attribute_set_id = fields.Many2one(
         comodel_name="magento.product.attribute.set",
         required=True,
@@ -200,6 +212,30 @@ class MagentoProductProduct(models.Model):
     def delete_from_magento(self):
         self.backend_id._check_product_strategy("export")
         return super().delete_from_magento()
+
+    # The jobs themselves obey the strategies too, wherever they were
+    # enqueued from (listeners, server actions, other modules). The variants a
+    # configurable exports and the products a sale order imports do not pass
+    # here: their exporters and importers are run directly.
+    def export_record(self, fields=None, **kwargs):
+        self.ensure_one()
+        if not self.backend_id._product_strategy_allows(
+            "export", self._exists_in_magento()
+        ):
+            return _("Left out by the Product Export strategy of the backend.")
+        return super().export_record(fields=fields, **kwargs)
+
+    @api.model
+    def import_record(self, backend, external_id, force=False, **kwargs):
+        exists = bool(
+            self.search(
+                [("backend_id", "=", backend.id), ("external_id", "=", external_id)],
+                limit=1,
+            )
+        )
+        if not backend._product_strategy_allows("import", exists):
+            return _("Left out by the Product Import strategy of the backend.")
+        return super().import_record(backend, external_id, force=force, **kwargs)
 
     # @job(default_channel='root.magento')
     # @related_action(action='related_action_unwrap_binding')
@@ -417,34 +453,47 @@ class ProductProduct(models.Model):
             },
         }
 
-    #
-    # variant_url_key = fields.Char(
-    #     compute='_compute_variant_url_key',
-    #     store=True,
-    #     string="Variant URL Key",
-    #     help="SEO-friendly URL key for product variants. Auto-generated from template + variant attributes."
-    # )
-    #
-    # @api.depends('product_tmpl_id.url_key', 'product_template_attribute_value_ids')
-    # def _compute_variant_url_key(self):
-    #     for product in self:
-    #         if product.product_tmpl_id.url_key:
-    #             base_url = product.product_tmpl_id.url_key
-    #
-    #             # Extract variant attributes that create variants (dynamic)
-    #             variant_parts = []
-    #             for ptav in product.product_template_attribute_value_ids:
-    #                 if ptav.attribute_id.create_variant == 'always':
-    #                     variant_parts.append(ptav.name.lower().replace(' ', '-'))
-    #
-    #             if variant_parts:
-    #                 # Has real variant attributes: add them to URL
-    #                 product.variant_url_key = f"{base_url}-{'-'.join(variant_parts)}"
-    #             else:
-    #                 # Simple product without variants: use template URL as-is
-    #                 product.variant_url_key = base_url
-    #         else:
-    #             product.variant_url_key = False
+    variant_url_key = fields.Char(
+        string="Variant URL Key",
+        compute="_compute_variant_url_key",
+        help="URL key this variant gets as a simple product of a configurable "
+        "one when it has none of its own: the URL key of the product followed "
+        "by the values that make the variant, e.g. -xl, in the language being "
+        "edited.",
+    )
+
+    @api.depends(
+        "product_tmpl_id.url_key",
+        "product_template_attribute_value_ids.name",
+        "product_template_attribute_value_ids.attribute_line_id.value_ids",
+    )
+    @api.depends_context("lang")
+    def _compute_variant_url_key(self):
+        for product in self:
+            product.variant_url_key = product._magento_variant_url_key(
+                product.product_tmpl_id.url_key
+            )
+
+    def _magento_variant_values(self):
+        """Values of the attributes that make this variant: those with more
+        than one value on the product (a size, not the only colour of a
+        model), in the order of the attributes."""
+        self.ensure_one()
+        return self.product_template_attribute_value_ids.filtered(
+            lambda v: (
+                v.attribute_id.create_variant != "no_variant"
+                and len(v.attribute_line_id.value_ids) > 1
+            )
+        ).sorted(lambda v: (v.attribute_id.sequence, v.attribute_id.id))
+
+    def _magento_variant_url_key(self, base_url_key):
+        """URL key of this variant built on ``base_url_key``, the one of its
+        configurable product, in the language of the context."""
+        self.ensure_one()
+        if not base_url_key:
+            return False
+        values = self._magento_variant_values().mapped("name")
+        return slugify(" ".join([base_url_key] + values))
 
 
 class ProductProductAdapter(Component):

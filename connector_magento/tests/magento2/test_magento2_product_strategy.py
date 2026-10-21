@@ -23,11 +23,20 @@ from .common import Magento2TestCase
 class TestProductStrategy(Magento2TestCase):
     def setUp(self):
         super().setUp()
+        # The bindings need an attribute set: the test's own, so that the
+        # tests run on an empty database too.
+        self.attr_set = self.env["magento.product.attribute.set"].create(
+            {"name": "ZZ Default", "backend_id": self.backend.id, "external_id": "4"}
+        )
         self.product = self.env["product.product"].create(
             {"name": "ZZ Strategy", "default_code": "ZZ-STRATEGY", "type": "consu"}
         )
         self.new_product = self.env["product.product"].create(
-            {"name": "ZZ Strategy New", "default_code": "ZZ-STRATEGY-NEW", "type": "consu"}
+            {
+                "name": "ZZ Strategy New",
+                "default_code": "ZZ-STRATEGY-NEW",
+                "type": "consu",
+            }
         )
         # Already in Magento: it has the internal id Magento gave it.
         self.binding = self.create_binding_no_export(
@@ -35,10 +44,14 @@ class TestProductStrategy(Magento2TestCase):
             self.product,
             "ZZ-STRATEGY",
             magento_internal_id="9001",
+            attribute_set_id=self.attr_set.id,
         )
         # Linked in Odoo but never created in Magento.
         self.new_binding = self.create_binding_no_export(
-            "magento.product.product", self.new_product, "ZZ-STRATEGY-NEW"
+            "magento.product.product",
+            self.new_product,
+            "ZZ-STRATEGY-NEW",
+            attribute_set_id=self.attr_set.id,
         )
         self.template_binding = self.create_binding_no_export(
             "magento.product.template",
@@ -46,6 +59,7 @@ class TestProductStrategy(Magento2TestCase):
             "ZZ-STRATEGY-T",
             code_prefix="ZZ-STRATEGY-T",
             magento_id=9002,
+            attribute_set_id=self.attr_set.id,
         )
 
     def _batch_importer_allows(self, model_name, external_id):
@@ -141,9 +155,7 @@ class TestProductStrategy(Magento2TestCase):
             # The one already in Magento is left out.
             (self.binding | self.new_binding).sync_to_magento()
             trap.assert_jobs_count(1)
-            trap.assert_enqueued_job(
-                self.new_binding.export_record, args=(), kwargs={}
-            )
+            trap.assert_enqueued_job(self.new_binding.export_record, args=(), kwargs={})
         with self.assertRaises(UserError):
             self.binding.sync_to_magento()
         with self.assertRaises(UserError):

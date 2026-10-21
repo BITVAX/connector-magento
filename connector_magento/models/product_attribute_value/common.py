@@ -51,15 +51,10 @@ class MagentoProductAttributevalue(models.Model):
     )
 
     def _magento_sort_order(self):
-        """Position of the value in its Odoo attribute, from 1. Magento saves
-        the order of an option with its labels, and the sequences of the
-        values are often all the same. Without a default language on the
-        backend, the sequence as before."""
+        """The sequence of the value in Odoo, as it has always been sent: an
+        option update must not reorder the options of the shop."""
         self.ensure_one()
-        if not self.backend_id._magento_admin_lang():
-            return self.odoo_id.sequence or 0
-        values = self.odoo_id.attribute_id.value_ids.sorted(lambda v: (v.sequence, v.id))
-        return values.ids.index(self.odoo_id.id) + 1 if self.odoo_id in values else 0
+        return self.odoo_id.sequence or 0
 
     def _magento_admin_label(self):
         self.ensure_one()

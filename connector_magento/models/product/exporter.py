@@ -3,6 +3,7 @@
 
 import base64
 import logging
+import re
 
 import magic
 from slugify import slugify
@@ -14,24 +15,301 @@ from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.connector.exception import IDMissingInBackend, JobError
 
-# import odoo.addons.connector_magento.models.get_exported_value
+from ...components.backend_adapter import MAGENTO_DATETIME_FORMAT
+
+# Dates go to Magento as datetimes at midnight (news_from_date...).
+MAGENTO_DATE_FORMAT = "%Y-%m-%d 00:00:00"
+
+# Bookkeeping attributes of Odoo's HTML editor (data-oe-version...): they mean
+# nothing to Magento.
+ODOO_EDITOR_ATTRIBUTES_RE = re.compile(r"""\s+data-oe-[\w-]+=(?:"[^"]*"|'[^']*')""")
+
+# Roles of the main image and the attributes that hold its label (alt text).
+IMAGE_LABEL_CODES = {
+    "image": "image_label",
+    "small_image": "small_image_label",
+    "thumbnail": "thumbnail_label",
+}
+# Keys of a gallery entry of Magento that are sent back to it when only the
+# labels of a store view are updated.
+MEDIA_ENTRY_KEYS = ("id", "media_type", "position", "disabled", "types", "file")
 
 
 def get_exported_value(matt_id, record):
-    if matt_id.field_id.ttype == "boolean":
-        return int(record[matt_id.field_id.sudo().name])
-    if matt_id.field_id.ttype in ("char", "text", "selection", "html"):
-        return (
-            str(record[matt_id.field_id.sudo().name])
-            if record[matt_id.field_id.sudo().name]
-            else None
-        )
+    """Value of the Odoo field the Magento attribute ``matt_id`` is mapped on,
+    read on ``record`` (a product binding) in the language of its context and
+    turned into what Magento takes. None when the field is empty: the
+    attribute is then left out of the payload and the shop keeps its value."""
+    field = matt_id.field_id.sudo()
+    if not field or field.name not in record._fields:
+        return None
+    value = record[field.name]
+    if field.ttype == "boolean":
+        return int(value)
+    if not value:
+        return None
+    if field.ttype == "html":
+        return ODOO_EDITOR_ATTRIBUTES_RE.sub("", str(value))
+    if field.ttype in ("char", "text", "selection"):
+        return str(value)
+    if field.ttype == "date":
+        return value.strftime(MAGENTO_DATE_FORMAT)
+    if field.ttype == "datetime":
+        return value.strftime(MAGENTO_DATETIME_FORMAT)
+    if field.ttype in ("many2one", "one2many", "many2many"):
+        return ", ".join(value.mapped("display_name"))
+    return value
 
-    return (
-        record[matt_id.field_id.sudo().name]
-        if record[matt_id.field_id.sudo().name]
-        else None
+
+def mapped_attributes(binding):
+    """Magento attributes of the attribute set of ``binding`` (a product
+    binding) that are synchronized with an Odoo field (``field_id``)."""
+    attribute_set = (
+        binding.attribute_set_id or binding.backend_id.default_attribute_set_id
     )
+    return attribute_set.attribute_ids.filtered(
+        lambda a: a.field_id and a.backend_id == binding.backend_id
+    )
+
+
+def mapped_custom_attributes(binding):
+    """Custom attributes of the fields mapped on the attribute set of
+    ``binding``, with the values that are not empty, read in the language of
+    its context. A URL key goes with ``save_rewrites_history``: Magento keeps
+    the previous URL as a 301 redirect when the key changes."""
+    attributes = []
+    for matt_id in mapped_attributes(binding):
+        value = get_exported_value(matt_id, binding)
+        if value is None:
+            continue
+        attributes.append({"attribute_code": matt_id.attribute_code, "value": value})
+        if matt_id.attribute_code == "url_key":
+            attributes.append(
+                {"attribute_code": "save_rewrites_history", "value": True}
+            )
+    return attributes
+
+
+def translated_codes(binding):
+    """Codes of the mapped attributes whose Odoo field is translatable: the
+    ones a store view holds in its language."""
+    return {
+        attribute.attribute_code
+        for attribute in mapped_attributes(binding)
+        if attribute.field_id.translate
+    }
+
+
+def translation_storeviews(backend):
+    """Store views of ``backend`` whose language is not the one of the admin
+    store (the default language of the backend): the ones that hold
+    translations. None without a default language."""
+    admin_lang = backend._magento_admin_lang()
+    if not admin_lang:
+        return backend.env["magento.storeview"]
+    return backend.env["magento.storeview"].search(
+        [
+            ("backend_id", "=", backend.id),
+            ("lang_id", "!=", False),
+            ("code", "!=", False),
+            ("lang_id.code", "!=", admin_lang),
+        ]
+    )
+
+
+# Gallery. The payload carries the gallery only when it changed since the last
+# export (a product new in Magento, another set of images, an image modified in
+# Odoo); without it Magento keeps the images it has.
+
+
+def gallery_images(binding):
+    """Images sent to the gallery of ``binding``, in their order: for a
+    configurable product those not tied to one variant (or all of them when
+    every image belongs to a variant); for a simple product the images of the
+    variant when there are some, otherwise all of them."""
+    product = binding.odoo_id
+    if binding._name == "magento.product.template":
+        images = (
+            product.image_ids.filtered(lambda i: not i.product_variant_ids)
+            or product.image_ids
+        )
+    else:
+        images = product.image_ids
+        shared = images.filtered(lambda i: not i.product_variant_ids)
+        if len(images) > 1 and shared:
+            images = (images - shared) or images
+    return images.filtered("image_1920")
+
+
+def image_base_name(binding):
+    """Start of the file names of the images of ``binding`` in Magento: the
+    URL key of the product and its reference, the same in every export."""
+    product = binding.odoo_id
+    template = (
+        product if product._name == "product.template" else product.product_tmpl_id
+    )
+    url_key = binding.magento_url_key or slugify(template.name or "")
+    if product._name == "product.template":
+        reference = binding.code_prefix or binding.external_id
+    else:
+        reference = product.default_code or binding.external_id
+    return slugify("%s %s" % (url_key, reference or ""))
+
+
+def images_signature(binding, images):
+    """What the gallery of ``binding`` looks like: its file names and their
+    order. A change (an image removed, another URL key...) touches no image
+    date, so it is compared with the one of the last export."""
+    base = image_base_name(binding)
+    return ",".join("%s-%s" % (base, image.id) for image in images)
+
+
+def images_changed(binding, images):
+    """Whether the gallery has to go to Magento: a product new there, a
+    gallery other than the one exported last, or an image modified in Odoo
+    since the last export."""
+    if not binding.external_id or not binding.sync_date:
+        return True
+    if binding.magento_images_signature != images_signature(binding, images):
+        return True
+    return any(
+        image.write_date and image.write_date > binding.sync_date for image in images
+    )
+
+
+def media_gallery_entries(mapper, binding, images):
+    """Magento gallery entries for ``images``, in their order. The first one
+    takes the image, small_image and thumbnail roles. Each file is named
+    after the product and the image, the same in every export."""
+    mime = magic.Magic(mime=True)
+    base = image_base_name(binding)
+    entries = []
+    for image in images:
+        # image_1920 is a bytes value holding base64-encoded data
+        image_data = image.image_1920
+        if not image_data:
+            continue
+        mimetype = mime.from_buffer(base64.b64decode(image_data))
+        extension = mapper.mime_to_extension.get(mimetype, "jpg")
+        entries.append(
+            {
+                "media_type": "image",
+                "label": image.name or binding.name,
+                "position": len(entries) + 1,
+                "disabled": False,
+                "content": {
+                    # decode() because json.dumps cannot serialize bytes
+                    "base64_encoded_data": image_data.decode(),
+                    "type": mimetype,
+                    "name": "%s-%s.%s" % (base, image.id, extension),
+                },
+            }
+        )
+    if entries:
+        entries[0]["types"] = ["image", "small_image", "thumbnail"]
+    return entries
+
+
+def gallery_values(mapper, binding):
+    """The gallery of ``binding`` when it has to be sent, otherwise nothing."""
+    images = gallery_images(binding)
+    if not images_changed(binding, images):
+        return {}
+    return {"media_gallery_entries": media_gallery_entries(mapper, binding, images)}
+
+
+def add_image_labels(values):
+    """Send the label of the image that takes each role (the name of the image
+    in Odoo) to the matching *_label attribute too."""
+    labels = {}
+    for entry in values.get("media_gallery_entries") or []:
+        for role in entry.get("types") or []:
+            if role in IMAGE_LABEL_CODES and entry.get("label"):
+                labels[IMAGE_LABEL_CODES[role]] = entry["label"]
+    if labels:
+        attributes = [
+            attr
+            for attr in values.get("custom_attributes", [])
+            if attr.get("attribute_code") not in labels
+        ]
+        attributes += [
+            {"attribute_code": code, "value": label} for code, label in labels.items()
+        ]
+        values["custom_attributes"] = attributes
+    return values
+
+
+# Translations. The admin store holds the texts in the default language of the
+# backend; each store view of another language gets only what differs.
+
+
+def translatable_values(mapper, binding):
+    """Name, translatable mapped attributes and image labels of ``binding``
+    in the language of its context."""
+    if binding._name == "magento.product.template":
+        name = binding.name
+    else:
+        name = mapper.names(binding)["name"]
+    codes = translated_codes(binding)
+    attributes = {
+        attr["attribute_code"]: attr["value"]
+        for attr in mapped_custom_attributes(binding)
+        if attr["attribute_code"] in codes
+    }
+    labels = [image.name or binding.name for image in gallery_images(binding)]
+    return name, attributes, labels
+
+
+def translation_payload(base, values):
+    """What a store view must hold on top of the admin store: only the values
+    that differ from the base language, so the rest keeps falling back."""
+    name, attributes, labels = values
+    base_name, base_attributes, base_labels = base
+    data = {}
+    if name and name != base_name:
+        data["name"] = name
+    custom_attributes = [
+        {"attribute_code": code, "value": value}
+        for code, value in attributes.items()
+        if value and value != base_attributes.get(code)
+    ]
+    if any(attr["attribute_code"] == "url_key" for attr in custom_attributes):
+        custom_attributes.append(
+            {"attribute_code": "save_rewrites_history", "value": True}
+        )
+    if custom_attributes:
+        data["custom_attributes"] = custom_attributes
+    return data
+
+
+def add_store_view_labels(data, labels):
+    """Image labels of the store view, translated or not. Saving a product on
+    a store view makes Magento copy the image labels to it, so whenever a
+    store view gets something its labels go along and its copies stay right."""
+    if not labels:
+        return
+    codes = set(IMAGE_LABEL_CODES.values())
+    custom_attributes = [
+        attr
+        for attr in data.get("custom_attributes", [])
+        if attr["attribute_code"] not in codes
+    ]
+    custom_attributes += [
+        {"attribute_code": code, "value": labels[0]} for code in sorted(codes)
+    ]
+    data["custom_attributes"] = custom_attributes
+
+
+def gallery_label_entries(media_entries, labels):
+    """Gallery entries of the admin store with the labels of a store view, or
+    None when they do not match the images sent."""
+    if not labels or len(media_entries) != len(labels):
+        return None
+    entries = sorted(media_entries, key=lambda e: e.get("position") or 0)
+    return [
+        dict({key: entry.get(key) for key in MEDIA_ENTRY_KEYS}, label=label)
+        for entry, label in zip(entries, labels)
+    ]
 
 
 _logger = logging.getLogger(__name__)
@@ -94,15 +372,117 @@ class ProductProductExporter(Component):
             self.binding.export_inventory(fields=["magento_qty"])
         return _("Record exported with ID %s on Magento.") % self.external_id
 
+    def run(self, binding, *args, **kwargs):
+        # The payload goes to the admin store: every text is read in its
+        # language, the default language of the backend, whatever the language
+        # of the user or the job that exports.
+        admin_lang = self.backend_record._magento_admin_lang()
+        if admin_lang:
+            binding = binding.with_context(lang=admin_lang)
+        return super().run(binding, *args, **kwargs)
+
+    def _after_export(self):
+        res = super()._after_export()
+        binding = self.binding
+        signature = images_signature(binding, gallery_images(binding))
+        if binding.magento_images_signature != signature:
+            binding.with_context(
+                connector_no_export=True
+            ).magento_images_signature = signature
+        self._export_translations()
+        return res
+
+    def _shop_langs(self):
+        """Languages of the shop: the one of the admin store first, then the
+        ones of the store views that hold translations."""
+        backend = self.backend_record
+        langs = [backend._magento_admin_lang() or self.env.lang or "en_US"]
+        for storeview in translation_storeviews(backend):
+            if storeview.lang_id.code not in langs:
+                langs.append(storeview.lang_id.code)
+        return langs
+
+    def _fill_variant_url_key(self):
+        """A variant of a configurable product takes, in every language of the
+        shop where it has none of its own, the URL key of its configurable
+        followed by the values that make the variant (e.g. -xl)."""
+        binding = self.binding
+        if binding._name != "magento.product.product":
+            return
+        product = binding.odoo_id
+        template = product.product_tmpl_id
+        if len(template.product_variant_ids) == 1:
+            return
+        template_binding = template.magento_bind_ids.filtered(
+            lambda b: b.backend_id == self.backend_record
+        )[:1]
+        if not template_binding:
+            return
+        field = binding._fields["magento_url_key"]
+        for lang in self._shop_langs():
+            binding.flush_recordset(["magento_url_key"])
+            if (field._get_stored_translations(binding) or {}).get(lang):
+                continue
+            key = product.with_context(lang=lang)._magento_variant_url_key(
+                template_binding.with_context(lang=lang).magento_url_key
+            )
+            if key:
+                binding.with_context(
+                    lang=lang, connector_no_export=True
+                ).magento_url_key = key
+
+    def _export_translations(self):
+        """Send to each store view of the backend the texts of the product in
+        the language of the store view: the name, the translatable mapped
+        attributes and the image labels, only what differs from the admin
+        store, which already holds the default language."""
+        backend = self.backend_record
+        admin_lang = backend._magento_admin_lang()
+        if not admin_lang or not self.external_id:
+            return
+        storeviews = translation_storeviews(backend)
+        if not storeviews:
+            return
+        mapper = self.component(usage="export.mapper")
+        base = translatable_values(mapper, self.binding.with_context(lang=admin_lang))
+        media_entries = None
+        for storeview in storeviews:
+            values = translatable_values(
+                mapper, self.binding.with_context(lang=storeview.lang_id.code)
+            )
+            data = translation_payload(base, values)
+            labels = values[2]
+            if not data and labels == base[2]:
+                continue
+            add_store_view_labels(data, labels)
+            if labels:
+                if media_entries is None:
+                    media_entries = self.backend_adapter.get_media(self.external_id)
+                entries = gallery_label_entries(media_entries, labels)
+                if entries:
+                    data["media_gallery_entries"] = entries
+            data["sku"] = self.external_id
+            _logger.info(
+                "Export %s translations to store view %s: %s",
+                self.external_id,
+                storeview.code,
+                sorted(data),
+            )
+            self.backend_adapter.write(self.external_id, data, storeview=storeview.code)
+
     def _clear_existing_images_before_update(self, record):
         """Clear all existing images from Magento before updating product.
 
         This prevents image duplication when syncing products.
-        Called during update operations, before sending new image data.
+        Called during update operations, before sending new image data. Without
+        a gallery in the payload Magento keeps its images: deleting them would
+        leave the product without any.
 
         :param record: Product data dictionary to be sent to Magento
         :return: None
         """
+        if "media_gallery_entries" not in record:
+            return
         new_image_count = len(record.get("media_gallery_entries", []))
         entity_type = (
             "Product" if self._apply_on == ["magento.product.product"] else "Template"
@@ -426,6 +806,7 @@ class ProductProductExporter(Component):
                 )  # Clear spezial prices here
 
         self._export_attribute_values()
+        self._fill_variant_url_key()
         return
 
 
@@ -531,52 +912,10 @@ class ProductProductExportMapper(Component):
 
     @mapping
     def media_gallery_entries(self, record):
-        if record.image_ids:
-            media_gallery_entries = []
-            mime = magic.Magic(mime=True)
-            image_count = 0
-            img_without_variants = record.image_ids.filtered(
-                lambda i: len(i.product_variant_ids) == 0
-            )
-            if len(record.image_ids) > 1 and img_without_variants:
-                # If we have multiple images and some are not linked to variants - use them first
-                images = record.image_ids - img_without_variants
-                if not images:
-                    images = record.image_ids
-            else:
-                images = record.image_ids
-            for image in images:
-                # image_1920 is a bytes value holding base64-encoded data
-                image_data = image.image_1920
-                if not image_data:
-                    continue
-                mimetype = mime.from_buffer(base64.b64decode(image_data))
-                extension = self.mime_to_extension.get(mimetype, "jpg")
-                filename = f"{slugify(image.name or record.default_code)}_{record.id}_{image_count}.{extension}"
-                image_count += 1
-                media_gallery_entries.append(
-                    {
-                        "media_type": "image",
-                        "label": image.name or record.name,
-                        "position": image_count,
-                        "disabled": False,
-                        # "file": filename,
-                        "content": {
-                            # decode() because json.dumps cannot serialize bytes
-                            "base64_encoded_data": image_data.decode(),
-                            "type": mimetype,
-                            "name": filename,
-                        },
-                    }
-                )
-            if len(media_gallery_entries):
-                media_gallery_entries[0]["types"] = [
-                    "image",
-                    "small_image",
-                    "thumbnail",
-                ]
-            return {"media_gallery_entries": media_gallery_entries}
-        return {}
+        return gallery_values(self, record)
+
+    def finalize(self, map_record, values):
+        return add_image_labels(super().finalize(map_record, values))
 
     def get_website_ids(self, record):
         if record.website_ids:
@@ -654,42 +993,10 @@ class ProductProductExportMapper(Component):
                         "value": mvalue_id.external_id.split("_")[1],
                     }
                 )
-            if record.attribute_set_id:
-                for matt_id in record.attribute_set_id.attribute_ids.filtered(
-                    lambda a: a.field_id
-                ):
-                    custom_attributes.append(
-                        {
-                            "attribute_code": matt_id.attribute_code,
-                            "value": get_exported_value(matt_id, record),
-                        }
-                    )
+            # The fields mapped on the attributes of the set (URL key, SEO,
+            # descriptions...): every text of the product page goes this way.
+            custom_attributes.extend(mapped_custom_attributes(record))
             custom_attributes.append(self.category_ids(record))
-            if record.magento_url_key:
-                custom_attributes.append(
-                    {"attribute_code": "url_key", "value": record.magento_url_key}
-                )
-            # Add meta fields as custom attributes
-            if record.odoo_id.meta_title:
-                custom_attributes.append(
-                    {"attribute_code": "meta_title", "value": record.odoo_id.meta_title}
-                )
-
-            if record.odoo_id.meta_keyword:
-                custom_attributes.append(
-                    {
-                        "attribute_code": "meta_keyword",
-                        "value": record.odoo_id.meta_keyword,
-                    }
-                )
-
-            if record.odoo_id.meta_description:
-                custom_attributes.append(
-                    {
-                        "attribute_code": "meta_description",
-                        "value": record.odoo_id.meta_description,
-                    }
-                )
 
             # Export tax_class_id from product's taxes_id (inherited from template)
             tax_class_value = self._get_tax_class_id(record)

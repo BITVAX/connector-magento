@@ -222,20 +222,17 @@ class ProductImportMapper(Component):
     _apply_on = ["magento.product.product"]
 
     # TODO :     categ, special_price => minimal_price
+    # The texts of the product page (description, url_key, meta_*...) are not
+    # here: they come through the Odoo field mapped on each Magento attribute
+    # (magento.product.attribute.field_id), see attributes() below.
     direct = [
         ("name", "name"),
         ("id", "magento_internal_id"),
-        ("description", "description"),
         ("weight", "weight"),
         (convert("status", str), "magento_status"),
         (convert("visibility", str), "magento_visibility"),
-        ("url_key", "magento_url_key"),
-        ("meta_title", "meta_title"),
-        ("meta_keyword", "meta_keyword"),
-        ("meta_description", "meta_description"),
         # (convert('cost', float), 'standard_price'),
         # (convert('price',float), 'list_price'),
-        # ('short_description', 'description_sale'),
         ("sku", "default_code"),
         ("type_id", "product_type"),
         (normalize_datetime("created_at"), "created_at"),
@@ -631,32 +628,44 @@ class ProductImporter(Component):
         """
         self._validate_product_type(data)
 
+    def _template_level_fields(self):
+        """Fields a variant of a configurable product must not write: they
+        belong to the template, which the configurable import fills. The name,
+        the prices and every template field mapped on a Magento attribute
+        (description, SEO texts...); the URL key is not among them, it is per
+        variant."""
+        fields = {"name", "description", "meta_title", "meta_description"}
+        fields |= {"standard_price", "lst_price"}
+        attributes = self.env["magento.product.attribute"].search(
+            [
+                ("backend_id", "=", self.backend_record.id),
+                ("field_id.model", "=", "product.template"),
+            ]
+        )
+        fields |= set(attributes.mapped("field_id.name"))
+        return fields
+
+    def _variant_data(self, data, **kwargs):
+        """The data of a variant of a configurable product, without the
+        template-level fields."""
+        if "binding_template_id" not in kwargs:
+            return data
+        filtered_fields = [f for f in self._template_level_fields() if f in data]
+        for field in filtered_fields:
+            del data[field]
+        if filtered_fields:
+            _logger.info(
+                "ProductImporter: template-level fields left out of the variant: %s",
+                filtered_fields,
+            )
+        return data
+
     def _create(self, data, **kwargs):
         if "binding_template_id" in kwargs:
             binding_template_id = kwargs["binding_template_id"]
             template_id = binding_template_id.odoo_id
             data["product_tmpl_id"] = template_id.id
-
-            # data['magento_configurable_id'] = kwargs['_binding_template_id'].id
-            # Name and translatable fields are set on product template for configurables
-            # Variants should not write these fields to avoid overwriting template translations
-            filtered_fields = []
-            for field in [
-                "name",
-                "description",
-                "meta_title",
-                "meta_description",
-                "standard_price",
-                "lst_price",
-            ]:
-                if field in data:
-                    filtered_fields.append(field)
-                    del data[field]
-            if filtered_fields:
-                _logger.info(
-                    "ProductImporter._create: Filtered fields for variant: %s",
-                    filtered_fields,
-                )
+            self._variant_data(data, **kwargs)
         binding = super()._create(data, **kwargs)
         if not binding.active:
             # Disable reordering rules that has been created automatically
@@ -670,27 +679,7 @@ class ProductImporter(Component):
         # rules on it
         if "binding_template_id" in kwargs:
             data["product_tmpl_id"] = kwargs["binding_template_id"].odoo_id.id
-            # data['magento_configurable_id'] = kwargs['_binding_template_id'].id
-            # Name and translatable fields are set on product template for configurables
-            # Variants should not write these fields to avoid overwriting template translations
-            filtered_fields = []
-            for field in [
-                "name",
-                "description",
-                "meta_title",
-                "meta_description",
-                "standard_price",
-                "lst_price",
-            ]:
-                if field in data:
-                    filtered_fields.append(field)
-                    del data[field]
-            if filtered_fields:
-                _logger.info(
-                    "ProductImporter._update: Filtered fields for variant %s: %s",
-                    binding.external_id,
-                    filtered_fields,
-                )
+            self._variant_data(data, **kwargs)
         if "active" in data and not data.get("active"):
             binding.mapped("orderpoint_ids").write({"active": False})
         res = super()._update(binding, data, **kwargs)
@@ -720,10 +709,7 @@ class ProductImporter(Component):
                             "attribute_line_id": attribute_line.id,
                         }
                     )
-                if (
-                    ptav
-                    and binding.odoo_id.id not in ptav.ptav_product_variant_ids.ids
-                ):
+                if ptav and binding.odoo_id.id not in ptav.ptav_product_variant_ids.ids:
                     ptav_ids.append(ptav.id)
         if ptav_ids:
             binding.write(

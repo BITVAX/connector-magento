@@ -110,6 +110,9 @@ class TestImportAttribute(Magento2SyncTestCase):
         self.assertEqual(url_key.frontend_input, "text")
         # text attributes should NOT create variants
         self.assertEqual(url_key.odoo_id.create_variant, "no_variant")
+        # An attribute of fixed code is mapped to its Odoo field on import.
+        self.assertEqual(url_key.field_id.model, "magento.product.product")
+        self.assertEqual(url_key.field_id.name, "magento_url_key")
 
     def test_import_attribute_size_values(self):
         """Size attribute has correct values S and M."""

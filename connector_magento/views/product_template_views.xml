@@ -29,6 +29,14 @@
                     name="meta_description"
                     placeholder="SEO description of the product"
                 />
+                <field name="magento_short_description" options="{'codeview': true}" />
+                <field name="magento_news_from_date" />
+                <field name="magento_news_to_date" />
+                <field
+                    name="magento_attribute_set_id"
+                    options="{'no_create': True}"
+                    invisible="not magento_attribute_set_id and not magento_bind_ids and not magento_variant_bind_ids"
+                />
             </field>
             <notebook position="inside">
                 <page string="Magento Bindings">

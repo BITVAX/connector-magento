@@ -8,7 +8,7 @@ interactions:
         Content-Type: ["application/json"]
         User-Agent: ["python-requests/2.25.1"]
       method: GET
-      uri: http://magento/index.php/rest/V1/products/TEST-EXPORT-UPDATE/media
+      uri: http://magento/index.php/rest/all/V1/products/TEST-EXPORT-UPDATE/media
     response:
       body: {string: "[]"}
       headers:
@@ -22,7 +22,7 @@ interactions:
         Content-Type: ["application/json"]
         User-Agent: ["python-requests/2.25.1"]
       method: GET
-      uri: http://magento/index.php/rest/V1/products/TEST-EXPORT-UPDATE/media
+      uri: http://magento/index.php/rest/all/V1/products/TEST-EXPORT-UPDATE/media
     response:
       body: {string: "[]"}
       headers:
