@@ -275,7 +275,10 @@ class MagentoProductProduct(models.Model):
 
         """
         if backend.product_stock_field_id:
-            stock_field = backend.product_stock_field_id.name
+            # sudo: the Odoo fields are readable only with Administration /
+            # Access Rights, and the export jobs run as the user who saved
+            # the product.
+            stock_field = backend.product_stock_field_id.sudo().name
         else:
             stock_field = "virtual_available"
 

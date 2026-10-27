@@ -670,7 +670,8 @@ class TestProductPage(Magento2TestCase):
         return binding
 
     def _run_translations(self, binding, media=None):
-        with self.backend.work_on("magento.product.product") as work:
+        # The work runs as the user of the binding, like the export job.
+        with binding.backend_id.work_on("magento.product.product") as work:
             exporter = work.component(usage="record.exporter")
             exporter.binding = binding
             exporter.external_id = binding.external_id
@@ -695,6 +696,31 @@ class TestProductPage(Magento2TestCase):
         self.assertEqual(attributes["meta_title"], "Chaqueta de esquí")
         # Not translated: the store view keeps falling back to the admin store.
         self.assertNotIn("meta_keyword", attributes)
+
+    def _connector_user(self):
+        """A user who manages the connector and the stock but not the access
+        rights, so cannot read the Odoo fields (ir.model.fields). The export
+        jobs run as the user who saved the product."""
+        return new_test_user(
+            self.env,
+            login="zz_connector_user",
+            groups="base.group_user,connector.group_connector_manager,"
+            "stock.group_stock_user",
+        )
+
+    def test_a_user_without_access_rights_exports_the_translations(self):
+        self._storeviews()
+        binding = self._translated_simple().with_user(self._connector_user())
+        puts = self._run_translations(binding)
+        self.assertEqual([c.kwargs["storeview"] for c in puts], ["zz_es"])
+
+    def test_a_user_without_access_rights_recomputes_the_stock(self):
+        # A product exported for the first time recomputes its quantity from
+        # the stock field of the backend, an Odoo field.
+        self.assertTrue(self.backend.product_stock_field_id)
+        binding = self._bind(self._simple(), external_id="ZZ-JACKET")
+        binding.with_user(self._connector_user()).recompute_magento_qty()
+        self.assertEqual(binding.magento_qty, 0)
 
     def test_no_translation_sends_nothing(self):
         self._storeviews()

@@ -93,10 +93,12 @@ def mapped_custom_attributes(binding):
 def translated_codes(binding):
     """Codes of the mapped attributes whose Odoo field is translatable: the
     ones a store view holds in its language."""
+    # The Odoo fields are readable only with Administration / Access Rights,
+    # and the export jobs run as the user who saved the product.
     return {
         attribute.attribute_code
         for attribute in mapped_attributes(binding)
-        if attribute.field_id.translate
+        if attribute.field_id.sudo().translate
     }
 
 
