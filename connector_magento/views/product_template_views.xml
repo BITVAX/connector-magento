@@ -30,6 +30,7 @@
                     placeholder="SEO description of the product"
                 />
                 <field name="magento_short_description" options="{'codeview': true}" />
+                <field name="magento_description" options="{'codeview': true}" />
                 <field name="magento_news_from_date" />
                 <field name="magento_news_to_date" />
                 <field

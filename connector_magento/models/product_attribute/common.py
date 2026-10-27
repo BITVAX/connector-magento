@@ -100,7 +100,7 @@ class MagentoProductAttribute(models.Model):
         shop by extending it. The import puts the field on the attribute when it
         creates it; clearing it on the attribute switches the mapping off."""
         return {
-            "description": ("product.template", "description"),
+            "description": ("product.template", "magento_description"),
             "short_description": ("product.template", "magento_short_description"),
             "meta_title": ("product.template", "meta_title"),
             "meta_keyword": ("product.template", "meta_keyword"),

@@ -328,9 +328,18 @@ class ProductTemplate(models.Model):
     )
     magento_short_description = magento_html_field(
         "Magento Short Description",
-        help="Short description of the product page in Magento "
-        "(short_description). The description of the page is the description "
-        "of the product.",
+        help="Short description of the product page in Magento (short_description).",
+    )
+    # Not the description of the product: that one is an internal note in
+    # Odoo and, being a sanitized translate=True Html field, it is translated
+    # paragraph by paragraph (html_translate): a translation with other
+    # paragraphs than the base text replaced the text of every language.
+    # sanitize=False keeps translate=True whole per language; product.template
+    # sanitizes it on every way in (_magento_sanitized_html_fields).
+    magento_description = fields.Html(
+        help="Description of the product page in Magento (description).",
+        translate=True,
+        sanitize=False,
     )
     magento_news_from_date = fields.Date(
         string="New From",
@@ -356,7 +365,7 @@ class ProductTemplate(models.Model):
         """HTML fields of the product page of the shop that product.template
         sanitizes itself (see magento_html_field). Another module adds the
         ones of its shop by extending it."""
-        return ["magento_short_description"]
+        return ["magento_short_description", "magento_description"]
 
     def _sanitize_magento_vals(self, vals):
         for fname in self._magento_sanitized_html_fields():
@@ -381,8 +390,11 @@ class ProductTemplate(models.Model):
     )
     @api.depends_context("lang")
     def _compute_url_key(self):
+        # Read with sudo: any user who opens a product reads its URL key, and
+        # only the connector managers can read the bindings. Writing it (the
+        # inverse) still needs access to them.
         for template in self:
-            binding = template._magento_product_binding()
+            binding = template.sudo()._magento_product_binding()
             template.url_key = binding.magento_url_key if binding else False
 
     def _inverse_url_key(self):
@@ -403,10 +415,11 @@ class ProductTemplate(models.Model):
         "product_variant_ids.magento_bind_ids.attribute_set_id",
     )
     def _compute_magento_attribute_set_id(self):
+        # Read with sudo, like the URL key.
         for template in self:
-            binding = template._magento_product_binding()
+            binding = template.sudo()._magento_product_binding()
             template.magento_attribute_set_id = (
-                binding.attribute_set_id if binding else False
+                binding.attribute_set_id.id if binding else False
             )
 
     def _inverse_magento_attribute_set_id(self):

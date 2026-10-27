@@ -12,7 +12,7 @@ each store view gets the texts of its language.
 from datetime import date, timedelta
 from unittest import mock
 
-from odoo.tests import tagged
+from odoo.tests import new_test_user, tagged
 
 from ...components.backend_adapter import (
     MagentoCRUDAdapter,
@@ -212,7 +212,9 @@ class TestProductPage(Magento2TestCase):
     # The mapping of the attributes of fixed code
 
     def test_fixed_code_attributes_are_mapped_by_default(self):
-        self.assertEqual(self.attributes["description"].field_id.name, "description")
+        self.assertEqual(
+            self.attributes["description"].field_id.name, "magento_description"
+        )
         self.assertEqual(
             self.attributes["description"].field_id.model, "product.template"
         )
@@ -258,7 +260,7 @@ class TestProductPage(Magento2TestCase):
         template.write(
             {
                 "meta_title": "Ski jacket",
-                "description": '<div data-oe-version="1.2"><p>Text</p></div>',
+                "magento_description": '<div data-oe-version="1.2"><p>Text</p></div>',
                 "magento_news_from_date": date(2026, 10, 1),
             }
         )
@@ -444,6 +446,44 @@ class TestProductPage(Magento2TestCase):
         spanish = template.with_context(lang="es_ES").magento_short_description
         self.assertIn("<h2>Uno y dos</h2>", spanish)
         self.assertNotIn("onerror", spanish)
+
+    def test_description_is_whole_html_per_language(self):
+        # Each language keeps its own description, also when it does not have
+        # the paragraphs of the base one: the field the Magento description
+        # goes through is not translated paragraph by paragraph.
+        self.env["res.lang"]._activate_lang("ca_ES")
+        template = self._simple().product_tmpl_id
+        fname = self.attributes["description"].field_id.name
+        texts = {
+            "en_US": "<p>One</p><p>Two</p>",
+            "es_ES": "<p>Uno, dos y tres</p>",
+            "ca_ES": "<p>U</p><p>Dos</p><p>Tres</p>",
+        }
+        for lang, text in texts.items():
+            template.with_context(lang=lang)[fname] = text
+        for lang, text in texts.items():
+            self.assertEqual(template.with_context(lang=lang)[fname], text, lang)
+
+    def test_internal_user_reads_the_magento_fields_of_a_product(self):
+        # The URL key and the attribute set of a product are read from its
+        # Magento binding: opening the product must not need access to the
+        # bindings, which only the connector managers have.
+        user = new_test_user(
+            self.env, login="zz_product_reader", groups="base.group_user"
+        )
+        simple = self._simple()
+        self._bind(simple, magento_url_key="zz-jacket")
+        template = self._configurable()
+        self._bind_template(template, magento_url_key="zz-midlayer")
+        for product, url_key in (
+            (simple.product_tmpl_id, "zz-jacket"),
+            (template, "zz-midlayer"),
+        ):
+            [values] = product.with_user(user).read(
+                ["url_key", "magento_attribute_set_id"]
+            )
+            self.assertEqual(values["url_key"], url_key)
+            self.assertEqual(values["magento_attribute_set_id"][0], self.attr_set.id)
 
     # Variants of a configurable product keep the template texts
 

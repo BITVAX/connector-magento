@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-21 15:31+0000\n"
+"POT-Creation-Date: 2026-10-27 08:56+0000\n"
 "PO-Revision-Date: 2026-10-01 10:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -2392,6 +2392,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:connector_magento.field_product_category_public__description
 msgid "Description"
 msgstr "Descripció"
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_description
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_description
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_description
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_description
+msgid "Description of the product page in Magento (description)."
+msgstr "Descripció de la pàgina del producte a Magento (description)."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__description_pickingout
@@ -5011,6 +5019,14 @@ msgstr "Albarans de Magento"
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_stock_picking_out_tree
 msgid "Magento Delivery Order"
 msgstr "Albarà de Magento"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_description
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_description
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_description
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_description
+msgid "Magento Description"
+msgstr "Descripció de Magento"
 
 #. module: connector_magento
 #. odoo-python
@@ -7840,12 +7856,9 @@ msgstr "Pes d'enviament"
 #: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_short_description
 #: model:ir.model.fields,help:connector_magento.field_product_product__magento_short_description
 #: model:ir.model.fields,help:connector_magento.field_product_template__magento_short_description
-msgid ""
-"Short description of the product page in Magento (short_description). The "
-"description of the page is the description of the product."
+msgid "Short description of the product page in Magento (short_description)."
 msgstr ""
-"Descripció curta de la pàgina del producte a Magento (short_description). La"
-" descripció de la pàgina és la descripció del producte."
+"Descripció curta de la pàgina del producte a Magento (short_description)."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_account_payment_mode__create_invoice_on
@@ -10011,6 +10024,13 @@ msgstr "o"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_website__warehouse_id
 msgid "warehouse"
 msgstr "magatzem"
+
+#~ msgid ""
+#~ "Short description of the product page in Magento (short_description). The "
+#~ "description of the page is the description of the product."
+#~ msgstr ""
+#~ "Descripció curta de la pàgina del producte a Magento (short_description). La"
+#~ " descripció de la pàgina és la descripció del producte."
 
 #~ msgid "Magento Product Categories"
 #~ msgstr "Categories de producte de Magento"
