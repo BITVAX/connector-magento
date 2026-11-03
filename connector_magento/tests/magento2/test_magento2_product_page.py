@@ -517,6 +517,24 @@ class TestProductPage(Magento2TestCase):
         self.assertNotIn("types", entries[1])
         self.assertEqual(len({e["content"]["name"] for e in entries}), 3)
 
+    def _image_name(self, url_key):
+        template = self._configurable()
+        self._add_images(template, ["Front"])
+        binding = self._bind_template(template, magento_url_key=url_key)
+        [entry] = self._gallery(binding)["media_gallery_entries"]
+        return entry["content"]["name"], template.image_ids.id
+
+    def test_image_names_take_the_url_key_and_the_reference(self):
+        name, image_id = self._image_name("zz-midlayer-black")
+        self.assertEqual(name, "zz-midlayer-black-zz-midlayer-%s.png" % image_id)
+
+    def test_image_names_do_not_repeat_the_reference_of_the_url_key(self):
+        """A URL key that already ends with the reference (the one of SOLL
+        ends with the code of the configurable) does not get it twice:
+        ...-black-42353104-3957.jpg, not ...-black-42353104-42353104-3957.jpg."""
+        name, image_id = self._image_name("zz-midlayer-black-zz-midlayer")
+        self.assertEqual(name, "zz-midlayer-black-zz-midlayer-%s.png" % image_id)
+
     def test_gallery_leaves_out_images_of_one_variant(self):
         template = self._configurable()
         self._add_images(template, ["Front", "Only XL"])

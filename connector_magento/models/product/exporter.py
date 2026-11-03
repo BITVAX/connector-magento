@@ -145,17 +145,22 @@ def gallery_images(binding):
 
 def image_base_name(binding):
     """Start of the file names of the images of ``binding`` in Magento: the
-    URL key of the product and its reference, the same in every export."""
+    URL key of the product and its reference, the same in every export. A URL
+    key that already ends with the reference (the one of SOLL ends with the
+    code of the configurable) does not get it twice."""
     product = binding.odoo_id
     template = (
         product if product._name == "product.template" else product.product_tmpl_id
     )
-    url_key = binding.magento_url_key or slugify(template.name or "")
+    url_key = slugify(binding.magento_url_key or template.name or "")
     if product._name == "product.template":
         reference = binding.code_prefix or binding.external_id
     else:
         reference = product.default_code or binding.external_id
-    return slugify("%s %s" % (url_key, reference or ""))
+    reference = slugify(reference or "")
+    if not reference or url_key == reference or url_key.endswith("-" + reference):
+        return url_key
+    return "%s-%s" % (url_key, reference) if url_key else reference
 
 
 def images_signature(binding, images):
