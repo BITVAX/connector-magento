@@ -5,7 +5,7 @@ import copy
 import logging
 import socket
 from datetime import date, datetime
-from urllib.parse import quote_plus
+from urllib.parse import quote
 
 import requests
 
@@ -357,9 +357,17 @@ class GenericAdapter(AbstractComponent):
 
     @staticmethod
     def escape(term):
+        """Encode ``term`` as one segment of a URL path: a slash goes as %2F,
+        which is the only way Magento routes a SKU that has one, and a space
+        as %20 (``+`` only means a space in a query string)."""
         if isinstance(term, str):
-            return quote_plus(term)
+            return quote(term, safe="")
         return term
+
+    def _record_path(self, external_id, **kwargs):
+        """Path of one record: the placeholders of the model are filled first,
+        so that a ``%`` of the escaped id is never read as a format."""
+        return "%s/%s" % (self._magento2_model % kwargs, self.escape(external_id))
 
     def read(self, external_id, attributes=None, storeview=None, **kwargs):
         """Returns the information of a record
@@ -367,9 +375,7 @@ class GenericAdapter(AbstractComponent):
         :rtype: dict
         """
         if self._magento2_key:
-            path = "%s/%s" % (self._magento2_model, self.escape(external_id))
-            if kwargs:
-                path = path % kwargs
+            path = self._record_path(external_id, **kwargs)
             return self._call(path, None, storeview=storeview)
         res = self._call(self._magento2_model % kwargs, None)
         match = next(
@@ -415,14 +421,14 @@ class GenericAdapter(AbstractComponent):
         """Update records on the external system"""
         if self._magento2_name:
             return self._call(
-                ("%s/%s" % (self._magento2_model, id)) % kwargs,
+                self._record_path(id, **kwargs),
                 {self._magento2_name: data},
                 http_method="put",
                 storeview=storeview or "all",
             )
         else:
             return self._call(
-                ("%s/%s" % (self._magento2_model, id)) % kwargs,
+                self._record_path(id, **kwargs),
                 data,
                 http_method="put",
                 storeview=storeview or "all",

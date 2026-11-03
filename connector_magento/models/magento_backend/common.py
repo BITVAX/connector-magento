@@ -425,6 +425,19 @@ class MagentoBackend(models.Model):
             return False
         return strategy == ("update" if exists else "create")
 
+    def _product_default_action(self):
+        """What the Magento button of a product does for the users who do not
+        manage the connector: "export" on a backend that only exports
+        products, "import" on one that only imports them. False on a backend
+        that does both or neither, where the button opens the bindings or the
+        wizard as for the connector managers."""
+        self.ensure_one()
+        exports = self._product_strategy("export") != "never"
+        imports = self._product_strategy("import") != "never"
+        if exports == imports:
+            return False
+        return "export" if exports else "import"
+
     def _check_product_strategy(self, direction):
         """Refuse the product ``direction`` ("import" or "export") on the
         backends whose strategy is "Do not Import" / "Do not Export"."""

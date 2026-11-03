@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import AccessError, UserError
 
 from odoo.addons.queue_job.job import identity_exact
 
@@ -147,6 +147,22 @@ class MagentoBinding(models.AbstractModel):
             raise UserError(message)
         return allowed
 
+    def _run_default_product_action(self):
+        """Run on these product bindings the action of their backend for the
+        users who do not manage the connector (see
+        ``magento.backend._product_default_action``). Return the notification
+        of the jobs, or None when they have no such action: a backend that
+        does both or neither, or backends that do different things."""
+        actions = {binding.backend_id._product_default_action() for binding in self}
+        if len(actions) != 1:
+            return None
+        action = actions.pop()
+        if action == "export":
+            return self.sync_to_magento()
+        if action == "import":
+            return self.sync_from_magento()
+        return None
+
     def sync_to_magento(self):
         for binding in self:
             binding.with_delay(
@@ -166,6 +182,14 @@ class MagentoBinding(models.AbstractModel):
         }
 
     def delete_from_magento(self):
+        # Its buttons and actions are only shown to the connector managers;
+        # this stops a call that does not go through them.
+        if not self.env.su and not self.env.user.has_group(
+            "connector.group_connector_manager"
+        ):
+            raise AccessError(
+                _("Only the connector managers can delete records in Magento.")
+            )
         for binding in self:
             binding.with_delay(
                 identity_key=identity_exact,

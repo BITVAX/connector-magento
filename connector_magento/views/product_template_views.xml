@@ -38,6 +38,31 @@
                     options="{'no_create': True}"
                     invisible="not magento_attribute_set_id and not magento_bind_ids and not magento_variant_bind_ids"
                 />
+                <separator string="Linked Products" />
+                <field
+                    name="magento_related_product_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                    domain="[('id', '!=', id), '|', ('company_id', '=', company_id), ('company_id', '=', False)]"
+                    context="{'search_product_product': True}"
+                />
+                <field
+                    name="magento_upsell_product_ids"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                    domain="[('id', '!=', id), '|', ('company_id', '=', company_id), ('company_id', '=', False)]"
+                    context="{'search_product_product': True}"
+                />
+                <!-- The optional products of the Sales page: Magento's
+                     cross-sells. -->
+                <field
+                    name="optional_product_ids"
+                    string="Cross-sell Products"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                    domain="[('id', '!=', id), '|', ('company_id', '=', company_id), ('company_id', '=', False)]"
+                    context="{'search_product_product': True}"
+                />
             </field>
             <notebook position="inside">
                 <page string="Magento Bindings">
@@ -60,9 +85,20 @@
             ref="connector_base_product.product_template_common_form"
         />
         <field name="arch" type="xml">
+            <!-- Only the queue job managers may read queue.job: for the other
+                 users the field would stop the product page from opening. -->
             <page name="connector" position="inside">
-                <separator string="Queue Jobs" invisible="not job_ids" />
-                <field name="job_ids" readonly="1" invisible="not job_ids">
+                <separator
+                    string="Queue Jobs"
+                    invisible="not job_ids"
+                    groups="queue_job.group_queue_job_manager"
+                />
+                <field
+                    name="job_ids"
+                    readonly="1"
+                    invisible="not job_ids"
+                    groups="queue_job.group_queue_job_manager"
+                >
                     <list
                         decoration-danger="state=='failed'"
                         decoration-warning="state in ('pending','enqueued')"

@@ -314,6 +314,54 @@ def gallery_label_entries(media_entries, labels):
     ]
 
 
+# Link type of Magento and the field of product.template that holds it.
+PRODUCT_LINK_FIELDS = (
+    ("related", "magento_related_product_ids"),
+    ("upsell", "magento_upsell_product_ids"),
+    ("crosssell", "optional_product_ids"),
+)
+
+
+def magento_product_binding(template, backend):
+    """The binding of ``template`` that is a product of the shop of
+    ``backend``: its configurable product, or the simple one of its only
+    variant. Empty when it is not in Magento."""
+    if template.has_variant_attributes:
+        bindings = template.magento_bind_ids
+    else:
+        bindings = template.product_variant_ids[:1].magento_bind_ids
+    return bindings.filtered(
+        lambda b: b.backend_id == backend and b._exists_in_magento()
+    )[:1]
+
+
+def product_links_values(template, backend, sku):
+    """Related, up-sell and cross-sell products of ``template``, as the
+    product_links of the product ``sku`` of ``backend``. Magento replaces all
+    the links of the product with them: Odoo is the master. A linked product
+    not in Magento yet is left out."""
+    links = []
+    for link_type, field_name in PRODUCT_LINK_FIELDS:
+        position = 0
+        for linked in template[field_name]:
+            binding = magento_product_binding(linked, backend)
+            if not binding:
+                continue
+            position += 1
+            links.append(
+                {
+                    "sku": sku,
+                    "link_type": link_type,
+                    "linked_product_sku": binding.external_id,
+                    "linked_product_type": (
+                        "configurable" if linked.has_variant_attributes else "simple"
+                    ),
+                    "position": position,
+                }
+            )
+    return links
+
+
 _logger = logging.getLogger(__name__)
 
 
@@ -892,8 +940,15 @@ class ProductProductExportMapper(Component):
 
     @mapping
     def product_links(self, record):
+        """The related, up-sell and cross-sell products of a simple product,
+        after the products of a grouped one. The variants of a configurable
+        product send none: the shop shows the configurable, which has its own
+        (Magento would otherwise replace their links with nothing)."""
+        template = record.odoo_id.product_tmpl_id
+        if template.has_variant_attributes:
+            return {}
+        data = []
         if record.product_type == "grouped":
-            data = []
             position = 1
             for link in record.product_links:
                 position += 1
@@ -909,8 +964,8 @@ class ProductProductExportMapper(Component):
                         },
                     }
                 )
-            return {"product_links": data}
-        return {}
+        data += product_links_values(template, record.backend_id, record.external_id)
+        return {"product_links": data}
 
     @mapping
     def media_gallery_entries(self, record):
@@ -1038,13 +1093,11 @@ class ProductProductExportMapper(Component):
 
     @mapping
     def price(self, record):
-        if (
-            record.backend_id.pricelist_id
-            and record.backend_id.pricelist_id.discount_policy == "with_discount"
-        ):
-            price = record.with_context(
-                pricelist=record.backend_id.pricelist_id.id
-            ).price
+        """The price of the variant in the pricelist of the backend, or its
+        sales price when the backend has none."""
+        pricelist = record.backend_id.pricelist_id
+        if pricelist:
+            price = pricelist._get_product_price(record.odoo_id, 1.0)
         else:
             price = record["lst_price"]
         return {

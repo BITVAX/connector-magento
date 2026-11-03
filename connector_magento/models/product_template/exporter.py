@@ -17,6 +17,7 @@ from ..product.exporter import (
     add_image_labels,
     gallery_values,
     mapped_custom_attributes,
+    product_links_values,
 )
 
 _logger = logging.getLogger(__name__)
@@ -306,13 +307,23 @@ class ProductTemplateExportMapper(Component):
 
     @mapping
     def price(self, record):
-        if record.backend_id.pricelist_id:
-            price = record.with_context(
-                pricelist=record.backend_id.pricelist_id.id
-            ).price
+        """The price of the template in the pricelist of the backend, or its
+        sales price when the backend has none."""
+        pricelist = record.backend_id.pricelist_id
+        if pricelist:
+            price = pricelist._get_product_price(record.odoo_id, 1.0)
         else:
             price = record["list_price"]
         return {"price": price}
+
+    @mapping
+    def product_links(self, record):
+        """The related, up-sell and cross-sell products of the configurable."""
+        return {
+            "product_links": product_links_values(
+                record.odoo_id, record.backend_id, record.external_id
+            )
+        }
 
     @mapping
     def get_extension_attributes(self, record):

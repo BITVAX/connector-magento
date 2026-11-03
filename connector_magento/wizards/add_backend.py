@@ -516,6 +516,38 @@ class WizardModel(models.TransientModel):
         help="Action to perform after creating binding",
     )
 
+    @api.model
+    def _add_with_default_action(self, records):
+        """Link ``records`` (products or templates) to the default backend and
+        run its default action, what the wizard does, without the wizard: the
+        Magento button of the users who do not manage the connector. Return
+        the notification, or None when the backend has no default action (it
+        both imports and exports products, or does neither)."""
+        backend = self.get_default_backend()
+        action = backend and backend._product_default_action()
+        if not action:
+            return None
+        wizard = self.with_context(
+            active_model=records._name,
+            active_id=records[:1].id,
+            active_ids=records.ids,
+        ).create({"backend_id": backend.id, "action": action})
+        wizard.action_accept()
+        if action == "export":
+            message = _("%s queued for export to Magento.")
+        else:
+            message = _("%s queued for import from Magento.")
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _("Magento"),
+                "message": message % ", ".join(records.mapped("display_name")),
+                "type": "info",
+                "sticky": False,
+            },
+        }
+
     def action_accept(self):
         """Process wizard and create bindings with validation."""
         self.ensure_one()

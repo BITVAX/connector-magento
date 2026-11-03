@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-27 08:56+0000\n"
+"POT-Creation-Date: 2026-11-03 12:23+0000\n"
 "PO-Revision-Date: 2026-10-01 10:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -124,6 +124,18 @@ msgstr "%d registre(s) en cua per exportar a Magento"
 #: code:addons/connector_magento/models/product_template/common.py:0
 msgid "%d record(s) queued for import from Magento"
 msgstr "%d registre(s) en cua per importar des de Magento"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/wizards/add_backend.py:0
+msgid "%s queued for export to Magento."
+msgstr "%s a la cua per exportar a Magento."
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/wizards/add_backend.py:0
+msgid "%s queued for import from Magento."
+msgstr "%s a la cua per importar de Magento."
 
 #. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_sale_order__magento_order_id
@@ -515,6 +527,9 @@ msgid "Add Magento"
 msgstr "Afegir Magento"
 
 #. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
 #: model_terms:ir.ui.view,arch_db:connector_magento.wizard_add_backend_view_form
 msgid "Add Magento Backend"
 msgstr "Afegir backend de Magento"
@@ -1936,6 +1951,11 @@ msgid "Credit limit specific to this partner."
 msgstr "Límit de crèdit específic d'aquest contacte."
 
 #. module: connector_magento
+#: model_terms:ir.ui.view,arch_db:connector_magento.product_template_form_view
+msgid "Cross-sell Products"
+msgstr "Vendes creuades"
+
+#. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_account_invoice__currency_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_address__currency_id
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__currency_id
@@ -2896,6 +2916,13 @@ msgstr "Exportar variant %s a Magento"
 #: code:addons/connector_magento/components/exporter.py:0
 msgid "Exported to %(backend)s (ID: %(ext_id)s)"
 msgstr "Exportat a %(backend)s (ID: %(ext_id)s)"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
+msgid "Exporting %(count)s of %(total)s binding(s) to Magento..."
+msgstr "S'estan exportant %(count)s de %(total)s vinculació(ns) a Magento..."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_sale_order_line__product_no_variant_attribute_value_ids
@@ -4732,6 +4759,7 @@ msgstr "Línies de comanda vinculades"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_connector_magento_add_backend_wizard__product_links
+#: model_terms:ir.ui.view,arch_db:connector_magento.product_template_form_view
 msgid "Linked Products"
 msgstr "Productes vinculats"
 
@@ -4783,6 +4811,8 @@ msgid "Made Sequence Gap"
 msgstr "Buit de seqüència creat"
 
 #. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/wizards/add_backend.py:0
 #: model:ir.model.fields,field_description:connector_magento.field_magento_binding_backend_read__magento_id
 #: model:ir.model.fields.selection,name:connector_magento.selection__magento_backend__product_synchro_strategy__magento_first
 #: model:ir.ui.menu,name:connector_magento.menu_magento_root
@@ -4926,6 +4956,13 @@ msgid "Magento Base Carrier Code"
 msgstr "Codi base de transportista de Magento"
 
 #. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
+msgid "Magento Binding"
+msgstr "Vinculació de Magento"
+
+#. module: connector_magento
 #: model:ir.model,name:connector_magento.model_magento_binding
 msgid "Magento Binding (abstract)"
 msgstr "Vinculació de Magento (abstracta)"
@@ -4936,6 +4973,9 @@ msgid "Magento Binding Model"
 msgstr "Model de vinculació de Magento"
 
 #. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
 #: model:ir.model.fields,field_description:connector_magento.field_account_bank_statement_line__magento_bind_ids
 #: model:ir.model.fields,field_description:connector_magento.field_account_move__magento_bind_ids
 #: model:ir.model.fields,field_description:connector_magento.field_account_tax__magento_bind_ids
@@ -5270,6 +5310,13 @@ msgstr "Vista de botiga de Magento"
 #: model:ir.actions.act_window,name:connector_magento.action_magento_storeview
 msgid "Magento Storeviews"
 msgstr "Vistes de botiga de Magento"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/product/common.py:0
+#: code:addons/connector_magento/models/product_template/common.py:0
+msgid "Magento Sync"
+msgstr "Sincronització amb Magento"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_sync_state
@@ -6028,6 +6075,13 @@ msgstr "Només crear vinculació"
 #: model:ir.model.fields,help:connector_magento.field_magento_backend__verify_ssl
 msgid "Only for Magento 2.0+"
 msgstr "Només per a Magento 2.0+"
+
+#. module: connector_magento
+#. odoo-python
+#: code:addons/connector_magento/models/magento_binding/common.py:0
+msgid "Only the connector managers can delete records in Magento."
+msgstr ""
+"Només els administradors del connector poden esborrar registres a Magento."
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__open_job_count
@@ -6808,6 +6862,26 @@ msgid "Products Links"
 msgstr "Enllaços de productes"
 
 #. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_upsell_product_ids
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_upsell_product_ids
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_upsell_product_ids
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_upsell_product_ids
+msgid ""
+"Products Magento offers instead of this one, as better or pricier "
+"alternatives."
+msgstr ""
+"Productes que Magento ofereix en lloc d'aquest, com a alternatives millors o"
+" més cares."
+
+#. module: connector_magento
+#: model:ir.model.fields,help:connector_magento.field_magento_product_product__magento_related_product_ids
+#: model:ir.model.fields,help:connector_magento.field_magento_product_template__magento_related_product_ids
+#: model:ir.model.fields,help:connector_magento.field_product_product__magento_related_product_ids
+#: model:ir.model.fields,help:connector_magento.field_product_template__magento_related_product_ids
+msgid "Products Magento shows as related to this one."
+msgstr "Productes que Magento mostra com a relacionats amb aquest."
+
+#. module: connector_magento
 #: model:ir.model.fields,help:connector_magento.field_magento_stock_picking__priority
 msgid ""
 "Products will be reserved first for the transfers with the highest "
@@ -7244,7 +7318,11 @@ msgstr "Empresa relacionada"
 
 #. module: connector_magento
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_attribute__product_tmpl_ids
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_related_product_ids
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__product_links
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_related_product_ids
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_related_product_ids
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_related_product_ids
 msgid "Related Products"
 msgstr "Productes relacionats"
 
@@ -9403,6 +9481,14 @@ msgstr "Import facturat sense impostos"
 #: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__uom_category_id
 msgid "UoM Category"
 msgstr "Categoria d'UdM"
+
+#. module: connector_magento
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_product__magento_upsell_product_ids
+#: model:ir.model.fields,field_description:connector_magento.field_magento_product_template__magento_upsell_product_ids
+#: model:ir.model.fields,field_description:connector_magento.field_product_product__magento_upsell_product_ids
+#: model:ir.model.fields,field_description:connector_magento.field_product_template__magento_upsell_product_ids
+msgid "Up-sell Products"
+msgstr "Vendes addicionals"
 
 #. module: connector_magento
 #: model_terms:ir.ui.view,arch_db:connector_magento.view_magento_backend_form

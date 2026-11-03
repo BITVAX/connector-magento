@@ -634,6 +634,28 @@ class TestProductPage(Magento2TestCase):
                     [c.kwargs["storeview"] for c in call.call_args_list], ["all", "all"]
                 )
 
+    def test_product_update_escapes_the_sku_in_the_url(self):
+        """The update sends the SKU escaped in the URL, as read and delete do.
+
+        Magento only routes ``PUT products/{sku}`` with a slash sent as %2F; a
+        raw one answers "Request does not match any route". A ``%`` in the SKU
+        must not be taken for a Python format either, and a space goes as %20,
+        the path encoding, not as the ``+`` of a query string.
+        """
+        for model in ("magento.product.product", "magento.product.template"):
+            with self.backend.work_on(model) as work:
+                adapter = work.component(usage="backend.adapter")
+                for sku, path in (
+                    ("MONTE-GR-C/DEF", "products/MONTE-GR-C%2FDEF"),
+                    ("PROMO-50%", "products/PROMO-50%25"),
+                    ("ZZ SKU", "products/ZZ%20SKU"),
+                ):
+                    with mock.patch.object(
+                        MagentoCRUDAdapter, "_call", return_value=True
+                    ) as call:
+                        adapter.write(sku, {"sku": sku})
+                    self.assertEqual(call.call_args.args[0], path, model)
+
     def test_exporter_maps_in_the_language_of_the_admin_store(self):
         from ...components.exporter import (
             MagentoBaseExporter,

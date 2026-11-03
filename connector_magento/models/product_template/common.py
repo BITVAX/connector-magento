@@ -511,6 +511,25 @@ class ProductTemplate(models.Model):
         compute="_compute_magento_variant_bind_ids",
         string="Magento Variant Bindings",
     )
+    # The linked products of the product page of the shop. Its cross-sells are
+    # the optional products of the product (optional_product_ids).
+    magento_related_product_ids = fields.Many2many(
+        comodel_name="product.template",
+        relation="product_template_magento_related_rel",
+        column1="product_tmpl_id",
+        column2="related_tmpl_id",
+        string="Related Products",
+        help="Products Magento shows as related to this one.",
+    )
+    magento_upsell_product_ids = fields.Many2many(
+        comodel_name="product.template",
+        relation="product_template_magento_upsell_rel",
+        column1="product_tmpl_id",
+        column2="upsell_tmpl_id",
+        string="Up-sell Products",
+        help="Products Magento offers instead of this one, as better or "
+        "pricier alternatives.",
+    )
     # copy=False: a duplicate is a brand new Odoo product, not an imported
     # webshop one. Importers force this flag to False so that they create the
     # variant themselves; without copy=False the duplicate inherits False and
@@ -702,22 +721,21 @@ class ProductTemplate(models.Model):
         - Unpublished: Execute sync_to_magento() on all bindings
         - Partial: Execute sync_to_magento() only on unpublished bindings (no external_id)
         - Published: Open binding form/tree view
+
+        A user who does not manage the connector gets, instead, the default
+        action of the backend: export or import, without opening anything.
         """
         self.ensure_one()
-
-        # Determine which bindings model to use
-        if self.has_variant_attributes:
-            # Configurable product: use template bindings
-            bindings = self.magento_bind_ids
-            res_model = "magento.product.template"
-        else:
-            # Simple product: use first product variant bindings
-            bindings = (
-                self.product_variant_ids[:1].magento_bind_ids
-                if self.product_variant_ids
-                else self.env["magento.product.product"].browse()
-            )
-            res_model = "magento.product.product"
+        if not self.env.user.has_group("connector.group_connector_manager"):
+            # They may not read the bindings: the action runs with sudo.
+            bindings = self.sudo()._magento_button_bindings()
+            if not bindings:
+                return self.action_add_magento_backend()
+            notification = bindings._run_default_product_action()
+            if notification:
+                return notification
+        bindings = self._magento_button_bindings()
+        res_model = bindings._name
 
         # Determine action based on sync state
         if not bindings:
@@ -739,8 +757,11 @@ class ProductTemplate(models.Model):
                     "type": "ir.actions.client",
                     "tag": "display_notification",
                     "params": {
-                        "title": "Magento Sync",
-                        "message": f"Exporting {len(bindings_to_sync)} of {len(bindings)} binding(s) to Magento...",
+                        "title": _("Magento Sync"),
+                        "message": _(
+                            "Exporting %(count)s of %(total)s binding(s) to Magento..."
+                        )
+                        % {"count": len(bindings_to_sync), "total": len(bindings)},
                         "type": "info",
                         "sticky": False,
                     },
@@ -751,7 +772,7 @@ class ProductTemplate(models.Model):
             # Single binding: open form view
             return {
                 "type": "ir.actions.act_window",
-                "name": "Magento Binding",
+                "name": _("Magento Binding"),
                 "res_model": res_model,
                 "res_id": bindings.id,
                 "view_mode": "form",
@@ -761,19 +782,40 @@ class ProductTemplate(models.Model):
             # Multiple bindings: open tree view
             return {
                 "type": "ir.actions.act_window",
-                "name": "Magento Bindings",
+                "name": _("Magento Bindings"),
                 "res_model": res_model,
                 "view_mode": "tree,form",
                 "domain": [("id", "in", bindings.ids)],
                 "target": "current",
             }
 
-    def action_add_magento_backend(self):
-        """Open wizard to add a new Magento backend binding."""
+    def _magento_button_bindings(self):
+        """The bindings the Magento button of the product works on: the
+        configurable's own, or those of the only variant of a simple product."""
         self.ensure_one()
+        if self.has_variant_attributes:
+            return self.magento_bind_ids
+        return self.product_variant_ids[:1].magento_bind_ids
+
+    def action_add_magento_backend(self):
+        """Open wizard to add a new Magento backend binding.
+
+        A user who does not manage the connector skips the wizard: the product
+        goes to the default backend, which runs its default action.
+        """
+        self.ensure_one()
+        if not self.env.user.has_group("connector.group_connector_manager"):
+            # They may not create bindings: the wizard runs with sudo.
+            notification = (
+                self.env["connector_magento.add_backend.wizard"]
+                .sudo()
+                ._add_with_default_action(self.sudo())
+            )
+            if notification:
+                return notification
         return {
             "type": "ir.actions.act_window",
-            "name": "Add Magento Backend",
+            "name": _("Add Magento Backend"),
             "res_model": "connector_magento.add_backend.wizard",
             "view_mode": "form",
             "target": "new",
@@ -876,7 +918,7 @@ class ProductTemplateAdapter(Component):
         store view is given (translations)."""
         id = data["sku"]
         return super()._call(
-            "products/%s" % id,
+            "products/%s" % self.escape(id),
             {"product": data},
             http_method="put",
             storeview=storeview or ADMIN_STORE,

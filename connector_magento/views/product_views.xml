@@ -26,18 +26,21 @@
                                 string="To Magento"
                                 type="object"
                                 class="oe_highlight"
+                                groups="connector.group_connector_manager"
                             />
                             <button
                                 name="sync_from_magento"
                                 string="From Magento"
                                 type="object"
                                 class="oe_highlight"
+                                groups="connector.group_connector_manager"
                             />
                             <button
                                 name="delete_from_magento"
                                 string="Delete from Magento"
                                 type="object"
                                 class="oe_highlight"
+                                groups="connector.group_connector_manager"
                             />
                         </list>
                     </field>
@@ -121,6 +124,10 @@
         <field name="model_id" ref="model_magento_product_product" />
         <field name="binding_model_id" ref="model_magento_product_product" />
         <field name="binding_view_types">list</field>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="state">code</field>
         <field name="code">records.sync_from_magento()</field>
     </record>
@@ -130,6 +137,10 @@
         <field name="model_id" ref="model_magento_product_product" />
         <field name="binding_model_id" ref="model_magento_product_product" />
         <field name="binding_view_types">list</field>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="state">code</field>
         <field name="code">records.sync_to_magento()</field>
     </record>
@@ -139,6 +150,10 @@
         <field name="model_id" ref="model_magento_product_product" />
         <field name="binding_model_id" ref="model_magento_product_product" />
         <field name="binding_view_types">list</field>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="state">code</field>
         <field name="code">records.delete_from_magento()</field>
     </record>
@@ -152,6 +167,10 @@
         <field name="model_id" ref="model_magento_product_template" />
         <field name="binding_model_id" ref="model_magento_product_template" />
         <field name="binding_view_types">list</field>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="state">code</field>
         <field name="code">records.sync_from_magento()</field>
     </record>
@@ -164,6 +183,10 @@
         <field name="model_id" ref="model_magento_product_template" />
         <field name="binding_model_id" ref="model_magento_product_template" />
         <field name="binding_view_types">list</field>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="state">code</field>
         <field name="code">records.sync_to_magento()</field>
     </record>
@@ -176,6 +199,10 @@
         <field name="model_id" ref="model_magento_product_template" />
         <field name="binding_model_id" ref="model_magento_product_template" />
         <field name="binding_view_types">list</field>
+        <field
+            name="groups_id"
+            eval="[(4, ref('connector.group_connector_manager'))]"
+        />
         <field name="state">code</field>
         <field name="code">records.delete_from_magento()</field>
     </record>
@@ -202,18 +229,21 @@
                         string="To Magento"
                         type="object"
                         class="oe_highlight"
+                        groups="connector.group_connector_manager"
                     />
                     <button
                         name="sync_from_magento"
                         string="From Magento"
                         type="object"
                         class="oe_highlight"
+                        groups="connector.group_connector_manager"
                     />
                     <button
                         name="delete_from_magento"
                         string="Delete from Magento"
                         type="object"
                         class="oe_highlight"
+                        groups="connector.group_connector_manager"
                     />
                 </header>
                 <sheet>
@@ -289,18 +319,21 @@
                     string="To Magento"
                     type="object"
                     class="oe_highlight"
+                    groups="connector.group_connector_manager"
                 />
                 <button
                     name="sync_from_magento"
                     string="From Magento"
                     type="object"
                     class="oe_highlight"
+                    groups="connector.group_connector_manager"
                 />
                 <button
                     name="delete_from_magento"
                     string="Delete from Magento"
                     type="object"
                     class="oe_highlight"
+                    groups="connector.group_connector_manager"
                 />
             </list>
         </field>
@@ -314,9 +347,24 @@
                 <field name="external_id" />
                 <field name="odoo_id" />
                 <field name="backend_id" />
-                <button name="sync_to_magento" string="To Magento" type="object" />
-                <button name="sync_from_magento" string="From Magento" type="object" />
-                <button name="delete_from_magento" string="Delete" type="object" />
+                <button
+                    name="sync_to_magento"
+                    string="To Magento"
+                    type="object"
+                    groups="connector.group_connector_manager"
+                />
+                <button
+                    name="sync_from_magento"
+                    string="From Magento"
+                    type="object"
+                    groups="connector.group_connector_manager"
+                />
+                <button
+                    name="delete_from_magento"
+                    string="Delete"
+                    type="object"
+                    groups="connector.group_connector_manager"
+                />
             </list>
         </field>
     </record>
@@ -348,18 +396,21 @@
                         string="To Magento"
                         type="object"
                         class="oe_highlight"
+                        groups="connector.group_connector_manager"
                     />
                     <button
                         name="sync_from_magento"
                         string="From Magento"
                         type="object"
                         class="oe_highlight"
+                        groups="connector.group_connector_manager"
                     />
                     <button
                         name="delete_from_magento"
                         string="Delete from Magento"
                         type="object"
                         class="oe_highlight"
+                        groups="connector.group_connector_manager"
                     />
                 </header>
                 <sheet>

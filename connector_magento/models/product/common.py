@@ -387,8 +387,19 @@ class ProductProduct(models.Model):
         - Unpublished: Execute sync_to_magento() on all bindings
         - Partial: Execute sync_to_magento() only on unpublished bindings (no external_id)
         - Published: Open binding form/tree view
+
+        A user who does not manage the connector gets, instead, the default
+        action of the backend: export or import, without opening anything.
         """
         self.ensure_one()
+        if not self.env.user.has_group("connector.group_connector_manager"):
+            # They may not read the bindings: the action runs with sudo.
+            bindings = self.sudo().magento_bind_ids
+            if not bindings:
+                return self.action_add_magento_backend()
+            notification = bindings._run_default_product_action()
+            if notification:
+                return notification
         bindings = self.magento_bind_ids
 
         # Determine action based on sync state
@@ -411,8 +422,11 @@ class ProductProduct(models.Model):
                     "type": "ir.actions.client",
                     "tag": "display_notification",
                     "params": {
-                        "title": "Magento Sync",
-                        "message": f"Exporting {len(bindings_to_sync)} of {len(bindings)} binding(s) to Magento...",
+                        "title": _("Magento Sync"),
+                        "message": _(
+                            "Exporting %(count)s of %(total)s binding(s) to Magento..."
+                        )
+                        % {"count": len(bindings_to_sync), "total": len(bindings)},
                         "type": "info",
                         "sticky": False,
                     },
@@ -423,7 +437,7 @@ class ProductProduct(models.Model):
             # Single binding: open form view
             return {
                 "type": "ir.actions.act_window",
-                "name": "Magento Binding",
+                "name": _("Magento Binding"),
                 "res_model": "magento.product.product",
                 "res_id": bindings.id,
                 "view_mode": "form",
@@ -433,7 +447,7 @@ class ProductProduct(models.Model):
             # Multiple bindings: open tree view
             return {
                 "type": "ir.actions.act_window",
-                "name": "Magento Bindings",
+                "name": _("Magento Bindings"),
                 "res_model": "magento.product.product",
                 "view_mode": "tree,form",
                 "domain": [("id", "in", bindings.ids)],
@@ -441,11 +455,24 @@ class ProductProduct(models.Model):
             }
 
     def action_add_magento_backend(self):
-        """Open wizard to add a new Magento backend binding."""
+        """Open wizard to add a new Magento backend binding.
+
+        A user who does not manage the connector skips the wizard: the product
+        goes to the default backend, which runs its default action.
+        """
         self.ensure_one()
+        if not self.env.user.has_group("connector.group_connector_manager"):
+            # They may not create bindings: the wizard runs with sudo.
+            notification = (
+                self.env["connector_magento.add_backend.wizard"]
+                .sudo()
+                ._add_with_default_action(self.sudo())
+            )
+            if notification:
+                return notification
         return {
             "type": "ir.actions.act_window",
-            "name": "Add Magento Backend",
+            "name": _("Add Magento Backend"),
             "res_model": "connector_magento.add_backend.wizard",
             "view_mode": "form",
             "target": "new",

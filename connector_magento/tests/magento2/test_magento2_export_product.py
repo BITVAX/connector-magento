@@ -49,6 +49,16 @@ def _add_image(env, owner, name="Test image"):
     return owner.image_ids[:1]
 
 
+def _set_backend_pricelist(env, backend, item):
+    """Give the backend a pricelist with one fixed-price rule."""
+    backend.pricelist_id = env["product.pricelist"].create(
+        {
+            "name": "ZZ Magento prices",
+            "item_ids": [(0, 0, dict(item, compute_price="fixed"))],
+        }
+    )
+
+
 # post_install: estas pruebas necesitan el registry COMPLETO. Las pruebas
 # at_install corren dentro de load_module_graph, justo después de cargar este
 # módulo, cuando los módulos que dependen de él todavía no están cargados; sus
@@ -179,6 +189,105 @@ class TestExportProduct(Magento2SyncTestCase):
         self.assertIn(
             "website_ids", ext_attrs, "extension_attributes should contain website_ids"
         )
+
+    def test_export_product_mapper_price_from_the_backend_pricelist(self):
+        """With a pricelist on the backend, the price comes from it.
+
+        Odoo 18 has neither ``product.pricelist.discount_policy`` nor a
+        ``price`` field computed from the ``pricelist`` context: the mapper
+        raised AttributeError as soon as the backend had a pricelist.
+        """
+        binding = self._create_product_binding(
+            "Pricelist Product", "PRICELIST-SKU", list_price=49.99
+        )
+        _set_backend_pricelist(
+            self.env,
+            self.backend,
+            {
+                "applied_on": "0_product_variant",
+                "product_id": binding.odoo_id.id,
+                "fixed_price": 39.0,
+            },
+        )
+
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        self.assertEqual(data["price"], 39.0)
+
+    def test_export_product_mapper_price_without_pricelist(self):
+        """Without a pricelist on the backend, the sales price of the variant."""
+        binding = self._create_product_binding(
+            "No Pricelist Product", "NO-PRICELIST-SKU"
+        )
+        # product_variant_sale_price computes list_price on the variant, without
+        # an inverse: the sales price of a variant is written through lst_price.
+        binding.odoo_id.lst_price = 49.99
+
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        self.assertEqual(data["price"], 49.99)
+
+    def _in_magento(self, name, sku, magento_id):
+        """The template of a simple product already in Magento as ``sku``."""
+        binding = self._create_product_binding(
+            name, sku, external_id=sku, magento_internal_id=magento_id
+        )
+        return binding.odoo_id.product_tmpl_id
+
+    def test_export_product_mapper_linked_products(self):
+        """A simple product sends its related, up-sell and cross-sell (its
+        optional) products, by their SKU; those not in Magento are left out."""
+        binding = self._create_product_binding(
+            "Linking Product", "LINKING-SKU", external_id="LINKING-SKU"
+        )
+        not_in_magento = self.env["product.template"].create({"name": "Not There"})
+        related = self._in_magento("Related", "RELATED-SKU", "9301")
+        binding.odoo_id.product_tmpl_id.write(
+            {
+                "magento_related_product_ids": [
+                    (6, 0, [related.id, not_in_magento.id])
+                ],
+                "magento_upsell_product_ids": [
+                    (6, 0, self._in_magento("Upsell", "UPSELL-SKU", "9302").ids)
+                ],
+                "optional_product_ids": [
+                    (6, 0, self._in_magento("Cross", "CROSS-SKU", "9303").ids)
+                ],
+            }
+        )
+
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            links = mapper.map_record(binding).values()["product_links"]
+
+        self.assertEqual(
+            [
+                (link["sku"], link["link_type"], link["linked_product_sku"])
+                for link in links
+            ],
+            [
+                ("LINKING-SKU", "related", "RELATED-SKU"),
+                ("LINKING-SKU", "upsell", "UPSELL-SKU"),
+                ("LINKING-SKU", "crosssell", "CROSS-SKU"),
+            ],
+        )
+
+    def test_export_product_mapper_without_linked_products_clears_them(self):
+        """Odoo is the master of the linked products: a product without any
+        sends an empty list, and Magento removes the ones it had."""
+        binding = self._create_product_binding(
+            "No Links", "NO-LINKS-SKU", external_id="NO-LINKS-SKU"
+        )
+
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        self.assertEqual(data["product_links"], [])
 
 
 @tagged("post_install", "-at_install")
@@ -324,6 +433,140 @@ class TestExportProductTemplate(Magento2SyncTestCase):
         self.assertEqual(data.get("name"), "Configurable Export Test")
         self.assertIn("extension_attributes", data)
         self.assertIn("weight", data)
+
+    def test_template_export_mapper_price_from_the_backend_pricelist(self):
+        """The configurable takes its price from the backend's pricelist too:
+        Odoo 18 has no ``price`` field computed from the context."""
+        binding = self._create_configurable_template()
+        _set_backend_pricelist(
+            self.env,
+            self.backend,
+            {
+                "applied_on": "1_product",
+                "product_tmpl_id": binding.odoo_id.id,
+                "fixed_price": 79.0,
+            },
+        )
+
+        with self.backend.work_on("magento.product.template") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        self.assertEqual(data["price"], 79.0)
+
+    def test_template_export_mapper_price_without_pricelist(self):
+        """Without a pricelist on the backend, the sales price of the template."""
+        binding = self._create_configurable_template()
+
+        with self.backend.work_on("magento.product.template") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+
+        self.assertEqual(data["price"], 99.0)
+
+    def test_template_export_mapper_linked_products(self):
+        """The configurable sends its linked products: a configurable one by
+        the SKU of its configurable product, a simple one by its own."""
+        binding = self._create_configurable_template()
+        binding.with_context(connector_no_export=True).external_id = "CONF-EXPORT"
+        size = self.env["product.attribute"].create(
+            {
+                "name": "ZZ Link Size",
+                "create_variant": "always",
+                "value_ids": [(0, 0, {"name": "S"}), (0, 0, {"name": "M"})],
+            }
+        )
+        linked_configurable = self.env["product.template"].create(
+            {
+                "name": "ZZ Linked Configurable",
+                "type": "consu",
+                "attribute_line_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "attribute_id": size.id,
+                            "value_ids": [(6, 0, size.value_ids.ids)],
+                        },
+                    )
+                ],
+            }
+        )
+        self.env["magento.product.template"].with_context(
+            connector_no_export=True
+        ).create(
+            {
+                "odoo_id": linked_configurable.id,
+                "backend_id": self.backend.id,
+                "attribute_set_id": self.attr_set.id,
+                "product_type": "configurable",
+                "code_prefix": "ZZ-LINK-CONF",
+                "external_id": "ZZ-LINK-CONF",
+                "magento_id": 9401,
+            }
+        )
+        linked_simple = self.env["product.product"].create(
+            {"name": "ZZ Linked Simple", "default_code": "ZZ-LINK-SIMPLE"}
+        )
+        self.env["magento.product.product"].with_context(
+            connector_no_export=True
+        ).create(
+            {
+                "odoo_id": linked_simple.id,
+                "backend_id": self.backend.id,
+                "attribute_set_id": self.attr_set.id,
+                "external_id": "ZZ-LINK-SIMPLE",
+                "magento_internal_id": "9402",
+            }
+        )
+        binding.odoo_id.write(
+            {
+                "magento_related_product_ids": [(6, 0, linked_configurable.ids)],
+                "optional_product_ids": [(6, 0, linked_simple.product_tmpl_id.ids)],
+            }
+        )
+
+        with self.backend.work_on("magento.product.template") as work:
+            mapper = work.component(usage="export.mapper")
+            links = mapper.map_record(binding).values()["product_links"]
+
+        self.assertEqual(
+            [
+                (
+                    link["sku"],
+                    link["link_type"],
+                    link["linked_product_sku"],
+                    link["linked_product_type"],
+                )
+                for link in links
+            ],
+            [
+                ("CONF-EXPORT", "related", "ZZ-LINK-CONF", "configurable"),
+                ("CONF-EXPORT", "crosssell", "ZZ-LINK-SIMPLE", "simple"),
+            ],
+        )
+
+    def test_variants_of_a_configurable_send_no_linked_products(self):
+        """The shop shows the configurable, which has the links: its variants
+        send none, and Magento leaves theirs as they are."""
+        binding = self._create_configurable_template()
+        variant_binding = (
+            self.env["magento.product.product"]
+            .with_context(connector_no_export=True)
+            .create(
+                {
+                    "odoo_id": binding.odoo_id.product_variant_ids[0].id,
+                    "backend_id": self.backend.id,
+                    "attribute_set_id": self.attr_set.id,
+                }
+            )
+        )
+
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(variant_binding).values()
+
+        self.assertNotIn("product_links", data)
 
     def test_template_export_variants_created(self):
         """Exporting template creates variant bindings."""
