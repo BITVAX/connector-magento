@@ -412,6 +412,47 @@ class TestExportProductTemplate(Magento2SyncTestCase):
         self.assertTrue(template.has_variant_attributes)
         self.assertEqual(len(template.product_variant_ids), 2)
 
+    def _link_attribute_lines(self, binding):
+        with self.backend.work_on("magento.product.template") as work:
+            exporter = work.component(usage="record.exporter")
+            exporter.binding = binding
+            exporter._create_attribute_lines()
+        return binding.odoo_id.attribute_line_ids.magento_bind_ids
+
+    def _variant_prices(self, binding):
+        self.env.invalidate_all()
+        return binding.odoo_id.product_variant_ids.mapped("lst_price")
+
+    def test_first_export_keeps_the_prices_of_the_variants(self):
+        """The first export of a configurable links its attribute lines to
+        Magento. That must not touch its variants: recomputing them gives each
+        one the price of the template (product_variant_sale_price), as it
+        happened at Taramundi on 01/11."""
+        binding = self._create_configurable_template()
+        first, second = binding.odoo_id.product_variant_ids
+        first.lst_price = 79.0
+        second.lst_price = 109.0
+
+        self.assertTrue(self._link_attribute_lines(binding))
+
+        self.assertEqual(self._variant_prices(binding), [79.0, 109.0])
+
+    def test_updating_a_linked_attribute_line_keeps_the_prices_of_the_variants(self):
+        binding = self._create_configurable_template()
+        line_binding = self._link_attribute_lines(binding)
+        first, second = binding.odoo_id.product_variant_ids
+        first.lst_price = 79.0
+        second.lst_price = 109.0
+
+        line_binding.write(
+            {
+                "magento_attribute_id": line_binding.magento_attribute_id.id,
+                "position": 3,
+            }
+        )
+
+        self.assertEqual(self._variant_prices(binding), [79.0, 109.0])
+
     def test_template_sku_proposal(self):
         """Template exporter uses code_prefix as SKU."""
         binding = self._create_configurable_template()

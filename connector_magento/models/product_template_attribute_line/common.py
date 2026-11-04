@@ -51,19 +51,29 @@ class MagentoTemplateAttributeline(models.Model):
         required=False,
     )
 
-    @api.model
     def write(self, vals):
-        # Do resolve the attribute id from the magento binding
-        binding = self.env["magento.product.attribute"].browse(
-            vals["magento_attribute_id"]
-        )
-        vals["attribute_id"] = binding.odoo_id.id
-        line = super().write(vals)
-        return line
+        # Writing the attribute on the line (through _inherits) recomputes the
+        # variants of the template, which with product_variant_sale_price gives
+        # every variant the price of the template: only when it really changes.
+        if "magento_attribute_id" in vals:
+            attribute = (
+                self.env["magento.product.attribute"]
+                .browse(vals["magento_attribute_id"])
+                .odoo_id
+            )
+            if any(line.attribute_id != attribute for line in self):
+                vals["attribute_id"] = attribute.id
+        return super().write(vals)
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            # The binding of an existing line only links it: its template and
+            # attribute would be written on the line (see write), and the first
+            # export of a configurable left all its variants at the price of
+            # the template.
+            if vals.get("odoo_id"):
+                continue
             # Do read product_tmpl_id using the magento_tmpl_id
             tmpl_binding = self.env["magento.product.template"].browse(
                 vals["magento_template_id"]
