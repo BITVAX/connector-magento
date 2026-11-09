@@ -292,6 +292,24 @@ class MagentoBackend(models.Model):
         self.ensure_one()
         return self.default_lang_id.code
 
+    def _special_prices(self, products, pricelist=None):
+        """Special price of each product in ``pricelist`` (by default the
+        special price pricelist of the backend): {product id: price}, or None
+        when no rule of the pricelist applies to the product or its price is 0.
+
+        Without a rule the pricelist gives the sales price, which is no offer:
+        Magento has to clear the special_price of that product, not get the
+        sales price as one."""
+        self.ensure_one()
+        pricelist = pricelist or self.special_price_pricelist_id
+        if not pricelist or not products:
+            return {product.id: None for product in products}
+        results = pricelist._compute_price_rule(products, quantity=1.0)
+        return {
+            product_id: price if rule_id and price else None
+            for product_id, (price, rule_id) in results.items()
+        }
+
     @contextmanager
     def work_on(self, model_name, **kwargs):
         self.ensure_one()

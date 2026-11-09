@@ -1080,21 +1080,20 @@ class ProductProductExportMapper(Component):
         """Get special_price custom attribute for export.
 
         Returns empty list if no pricelist configured (respects Magento value).
+        Without a rule of the pricelist for the variant, special_price goes
+        empty so that Magento clears it (see magento.backend._special_prices).
         """
         backend = record.backend_id
-        pricelist = backend.special_price_pricelist_id
-
-        if not pricelist:
+        if not backend.special_price_pricelist_id:
             return []
 
-        price = pricelist._get_products_price(record.odoo_id, quantity=1.0).get(
-            record.odoo_id.id, 0.0
-        )
-
-        if not price:
-            return [{"attribute_code": "special_price", "value": None}]
-
-        return [{"attribute_code": "special_price", "value": str(price)}]
+        price = backend._special_prices(record.odoo_id)[record.odoo_id.id]
+        return [
+            {
+                "attribute_code": "special_price",
+                "value": str(price) if price else None,
+            }
+        ]
 
     @mapping
     def price(self, record):

@@ -231,6 +231,51 @@ class TestExportProduct(Magento2SyncTestCase):
 
         self.assertEqual(data["price"], 49.99)
 
+    def _special_price(self, binding):
+        """The special_price that the export mapper sends for ``binding``."""
+        with self.backend.work_on("magento.product.product") as work:
+            mapper = work.component(usage="export.mapper")
+            data = mapper.map_record(binding).values()
+        values = [
+            attribute["value"]
+            for attribute in data["custom_attributes"]
+            if attribute["attribute_code"] == "special_price"
+        ]
+        self.assertEqual(len(values), 1, "special_price must go exactly once")
+        return values[0]
+
+    def test_export_product_mapper_special_price_only_with_a_rule(self):
+        """The special price of a variant comes from the special price
+        pricelist of the backend only when one of its rules applies to it.
+
+        Without a rule the pricelist gives the sales price, which is no offer,
+        and the variant went with its sales price as special_price. It must go
+        empty, so that Magento clears it.
+        """
+        on_sale = self._create_product_binding("On Sale", "ON-SALE-SKU")
+        not_on_sale = self._create_product_binding("Not On Sale", "NOT-ON-SALE-SKU")
+        not_on_sale.odoo_id.lst_price = 59.99
+        self.backend.special_price_pricelist_id = self.env["product.pricelist"].create(
+            {
+                "name": "ZZ Magento special prices",
+                "item_ids": [
+                    (
+                        0,
+                        0,
+                        {
+                            "applied_on": "0_product_variant",
+                            "product_id": on_sale.odoo_id.id,
+                            "compute_price": "fixed",
+                            "fixed_price": 39.0,
+                        },
+                    )
+                ],
+            }
+        )
+
+        self.assertEqual(self._special_price(on_sale), "39.0")
+        self.assertIsNone(self._special_price(not_on_sale))
+
     def _in_magento(self, name, sku, magento_id):
         """The template of a simple product already in Magento as ``sku``."""
         binding = self._create_product_binding(
