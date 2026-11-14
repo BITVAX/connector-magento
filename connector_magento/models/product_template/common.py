@@ -367,10 +367,21 @@ class ProductTemplate(models.Model):
         ones of its shop by extending it."""
         return ["magento_short_description", "magento_description"]
 
+    @api.model
+    def _magento_html_sanitize(self, value):
+        """Sanitizer of the HTML texts of the product page of the shop, on
+        every way in (write and the translation dialog).
+
+        By default the texts are plain text with basic HTML: inline styles
+        are dropped (sanitize_magento_html). A module whose shop shows the
+        colours or the alignment of its texts overrides this method to keep
+        the safe ones."""
+        return sanitize_magento_html(value)
+
     def _sanitize_magento_vals(self, vals):
         for fname in self._magento_sanitized_html_fields():
             if vals.get(fname):
-                vals[fname] = sanitize_magento_html(vals[fname])
+                vals[fname] = self._magento_html_sanitize(vals[fname])
         return vals
 
     def _magento_product_binding(self):
@@ -454,7 +465,7 @@ class ProductTemplate(models.Model):
             )
         if field_name in self._magento_sanitized_html_fields():
             translations = {
-                lang: sanitize_magento_html(value)
+                lang: self._magento_html_sanitize(value)
                 for lang, value in translations.items()
             }
         return super()._update_field_translations(
