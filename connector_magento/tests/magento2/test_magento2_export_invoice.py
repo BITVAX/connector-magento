@@ -3,9 +3,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import json
+from unittest import mock
 
 from odoo.tests import tagged
 
+from odoo.addons.queue_job.exception import JobError
+
+from ...components.backend_adapter import Magento2Client
 from .common import Magento2SyncTestCase, recorder
 
 
@@ -202,4 +206,49 @@ class TestExportInvoice(Magento2SyncTestCase):
                 "appendComment": False,
             },
         )
+        self.assertEqual(invoice_binding.external_id, "4")
+
+    def test_export_invoice_already_invoiced_by_the_shop(self):
+        """The shop invoiced the order on its own: no invoice is created
+
+        A Magento 2 shop whose payment method captures on order placement
+        invoices the order and leaves it «complete», and refuses any other
+        invoice for it. The exporter links the binding to the shop's invoice
+        instead of failing the job.
+        """
+        self.payment_mode.write({"create_invoice_on": "open"})
+        with self.mock_with_delay():
+            self._invoice_open()
+        invoice_binding = self.invoice.magento_bind_ids
+        self.assertEqual(len(invoice_binding), 1)
+
+        calls = []
+
+        def shop(client, resource_path, arguments, http_method=None, storeview=None):
+            calls.append(resource_path)
+            if resource_path == "orders/16":
+                return {
+                    "entity_id": 16,
+                    "increment_id": "000000019",
+                    "state": "complete",
+                    "base_grand_total": 54,
+                    "base_total_invoiced": 54,
+                    "total_due": 0,
+                }
+            if resource_path == "invoices":
+                return {
+                    "items": [{"entity_id": 4, "increment_id": "4", "order_id": 16}],
+                    "total_count": 1,
+                }
+            if resource_path == "order/16/invoice":
+                raise JobError(
+                    '{"message":"An invoice cannot be created when an order has a '
+                    'status of complete"}'
+                )
+            raise AssertionError("unexpected call to Magento: %s" % resource_path)
+
+        with mock.patch.object(Magento2Client, "call", autospec=True, side_effect=shop):
+            invoice_binding.export_record()
+
+        self.assertNotIn("order/16/invoice", calls)
         self.assertEqual(invoice_binding.external_id, "4")

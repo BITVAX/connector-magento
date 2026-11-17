@@ -801,4 +801,24 @@ interactions:
       headers:
         Content-Type: ["application/json; charset=utf-8"]
       status: {code: 200, message: OK}
+  # Before creating the invoice the exporter asks for the order, to skip the
+  # orders the shop already invoiced on its own (#3788). Order 16 is not
+  # invoiced yet: values taken from import_sale_order_16.yaml.
+  - request:
+      body: null
+      headers:
+        Accept: ["application/json"]
+        Authorization: ["Bearer test_token"]
+        Content-Type: ["application/json"]
+        User-Agent: ["python-requests/2.25.1"]
+      method: GET
+      uri: http://magento/index.php/rest/V1/orders/16
+    response:
+      body:
+        {
+          string: '{"entity_id":16,"increment_id":"000000019","state":"new","status":"pending","base_grand_total":54,"base_total_due":54,"total_due":54}',
+        }
+      headers:
+        Content-Type: ["application/json; charset=utf-8"]
+      status: {code: 200, message: OK}
 version: 1

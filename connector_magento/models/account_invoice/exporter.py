@@ -4,6 +4,7 @@
 import logging
 
 from odoo import _
+from odoo.tools import float_compare
 
 from odoo.addons.component.core import Component
 
@@ -71,7 +72,20 @@ class MagentoInvoiceExporter(Component):
         # Magento 2 REST API uses entity_id (magento_order_id),
         # not increment_id (external_id) in the URL
         order_id = magento_order.magento_order_id or magento_order.external_id
-        external_id = self._export_invoice(order_id, lines_info, mail_notification)
+        if self._order_fully_invoiced(order_id):
+            # The shop invoiced the order on its own (payment methods that
+            # capture on order placement do it, and leave the order complete):
+            # Magento refuses any other invoice for it, so link the binding to
+            # the shop's invoice instead of failing the job.
+            external_id = self._get_existing_invoice(magento_order)
+            _logger.info(
+                "Order %s already invoiced by Magento: invoice %s linked to %s",
+                magento_order.external_id,
+                binding.odoo_id.name,
+                external_id,
+            )
+        else:
+            external_id = self._export_invoice(order_id, lines_info, mail_notification)
         # When the invoice already exists on Magento, it may return
         # silently without ID
         if not external_id:
@@ -82,6 +96,18 @@ class MagentoInvoiceExporter(Component):
 
         if external_id:
             self.binder.bind(external_id, binding.id)
+
+    def _order_fully_invoiced(self, order_id):
+        """The whole order is already invoiced on Magento"""
+        adapter = self.component(
+            usage="backend.adapter", model_name="magento.sale.order"
+        )
+        record = adapter.read(order_id) or {}
+        total = record.get("base_grand_total")
+        if total is None:
+            return False
+        invoiced = record.get("base_total_invoiced") or 0.0
+        return float_compare(invoiced, total, precision_digits=2) >= 0
 
     def _get_existing_invoice(self, magento_order):
         invoices = self.backend_adapter.search_read(
