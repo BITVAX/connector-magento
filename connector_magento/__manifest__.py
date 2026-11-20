@@ -4,7 +4,7 @@
 
 {
     "name": "Magento Connector",
-    "version": "18.0.1.8.5",
+    "version": "18.0.1.8.6",
     "category": "Connector",
     "depends": [
         "account",

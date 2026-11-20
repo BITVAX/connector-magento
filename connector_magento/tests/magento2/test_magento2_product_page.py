@@ -23,6 +23,8 @@ from ...models.product.exporter import (
     gallery_label_entries,
     get_exported_value,
     images_signature,
+    mapped_custom_attributes,
+    translated_codes,
 )
 from .common import Magento2TestCase
 
@@ -761,6 +763,33 @@ class TestProductPage(Magento2TestCase):
         binding = self._bind(self._simple(), external_id="ZZ-JACKET")
         binding.with_user(self._connector_user()).recompute_magento_qty()
         self.assertEqual(binding.magento_qty, 0)
+
+    def _sales_manager(self):
+        """A sales manager who does not manage the connector, like the users
+        who press the shop buttons of a product: the export runs as the user
+        who presses them (#4055)."""
+        return new_test_user(
+            self.env,
+            login="zz_sales_manager",
+            groups="base.group_user,sales_team.group_sale_manager",
+        )
+
+    def test_a_sales_manager_maps_the_attributes_of_the_set(self):
+        # The export reads the Magento attributes of the attribute set of the
+        # product, which only the connector managers could read.
+        binding = self._translated_simple().with_user(self._sales_manager())
+        attributes = {
+            a["attribute_code"]: a["value"] for a in mapped_custom_attributes(binding)
+        }
+        self.assertEqual(attributes["url_key"], "ski-jacket")
+        self.assertEqual(attributes["meta_title"], "Ski jacket")
+        self.assertIn("meta_title", translated_codes(binding))
+
+    def test_a_sales_manager_exports_the_translations(self):
+        self._storeviews()
+        binding = self._translated_simple().with_user(self._sales_manager())
+        puts = self._run_translations(binding)
+        self.assertEqual([c.kwargs["storeview"] for c in puts], ["zz_es"])
 
     def test_no_translation_sends_nothing(self):
         self._storeviews()
